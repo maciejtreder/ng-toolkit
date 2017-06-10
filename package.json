@@ -1,6 +1,6 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
-  "description": "Angular Universal boilerplate for serverless environment.",
+  "description": "Angular Universal boilerplate for serverless environment. Built on top of https://github.com/FrozenPandaz/ng-universal-demo",
   "name": "angular-universal-serverless",
   "version": "1.0.0",
   "repository": {

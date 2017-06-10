@@ -1,7 +1,7 @@
 # Angular Universal starter for serverless environment
 
 ## Live demo
-[Angular Universal on AWS Lambda][https://www.angular-universal-serverless.maciejtreder.com]
+[Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
 
 ## Get Started
 ```sh
