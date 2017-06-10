@@ -1,0 +1,11 @@
+div {
+  background: url('assets/img/sandbox.gif') no-repeat center;
+  height: 350px;
+  position: relative;
+}
+h3 {
+  position: absolute;
+  right: 460px;
+  top: 14px;
+  color: deepskyblue;
+}

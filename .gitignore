@@ -1,0 +1,9 @@
+/node_modules/
+/dist/
+/lib/
+/yarn.lock
+*.log
+.idea
+.serverless
+*.iml
+.DS_Store

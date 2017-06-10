@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.server.json",
+  "angularCompilerOptions": {
+    "genDir": "ngfactory",
+    "entryModule": "./app/server-app.module#ServerAppModule"
+  },
+  "include": [
+    "main.server.aot.ts",
+    "./app/+lazy/lazy.module.ts",
+    "./app/server-app.module.ts"
+  ]
+}

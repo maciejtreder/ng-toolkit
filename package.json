@@ -1,0 +1,66 @@
+{
+  "author": "Maciej Treder <contact@maciejtreder.com>",
+  "description": "Angular Universal boilerplate for serverless environment.",
+  "name": "angular-universal-serverless",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maciejtreder/angular-universal-serverless.git"
+  },
+  "scripts": {
+    "start": "npm run build && npm run server",
+    "build": "webpack",
+    "build:aot": "webpack --env.aot --env.client & webpack --env.aot --env.server",
+    "build:prod": "webpack --env.aot --env.client -p & webpack --env.aot --env.server",
+    "build:deploy": "npm run build:aot && npm run deploy",
+    "prebuild": "npm run clean",
+    "prebuild:aot": "npm run clean",
+    "prebuild:prod": "npm run clean",
+    "clean": "rimraf dist",
+    "server": "nodemon local.js",
+    "watch": "webpack --watch",
+    "deploy": "serverless deploy"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@angular/animations": "^4.0.0",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/http": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/platform-server": "^4.0.0",
+    "@angular/router": "^4.0.0",
+    "@nguniversal/express-engine": "^1.0.0-beta.0",
+    "express": "^4.15.2",
+    "rxjs": "^5.3.0",
+    "xhr2": "^0.1.4",
+    "zone.js": "^0.8.8",
+    "aws-serverless-express": "^3.0.0",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "cors": "^2.8.3",
+    "serverless": "^1.10.0"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "^4.0.0",
+    "@ngtools/webpack": "^1.2.14",
+    "@types/express": "^4.0.35",
+    "@types/node": "^7.0.8",
+    "copy-webpack-plugin": "^4.0.1",
+    "html-webpack-plugin": "^2.28.0",
+    "nodemon": "^1.11.0",
+    "raw-loader": "^0.5.1",
+    "rimraf": "^2.6.1",
+    "script-ext-html-webpack-plugin": "^1.7.1",
+    "serverless": "^1.10.0",
+    "serverless-apigw-binary": "^0.1.2",
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-merge": "^4.0.0"
+  }
+}
