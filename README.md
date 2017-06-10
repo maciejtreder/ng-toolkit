@@ -1,12 +1,12 @@
-# Angular Universal starter for Serverless environment
+# Angular Universal starter for serverless environment
 
 ## Live demo
-https://www.angular-universal-serverless.maciejtreder.com
+[Angular Universal on AWS Lambda][https://www.angular-universal-serverless.maciejtreder.com]
 
 ## Get Started
 ```sh
 npm install
-npm run start
+npm start
 ```
 ## Developement mode
 * Terminal 1: ```npm run watch```
