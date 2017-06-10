@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <title>Angular Universal Serverless Starter</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300);
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      .page-wrap {
+        min-height: 100%;
+        /* equal to footer height */
+        margin-bottom: -35px !important;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .page-wrap:after {
+        content: "";
+        display: block;
+      }
+      .credentials, .page-wrap:after {
+        height: 35px;
+      }
+      .credentials p {
+        font-weight: 300;
+        font-family: 'Source Sans Pro', calibri, Arial, sans-serif;
+        margin: 0;
+        text-align: center;
+        font-size: 14px;
+      }
+      .credentials a {
+        margin: 0;
+        color: black;
+      }
+      .credentials a:hover {
+        text-decoration: none;
+      }
+      .credentials p.built {
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrap">
+      <app></app>
+    </div>
+    <footer class="credentials">
+      <p class="built">Built with</p>
+      <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "angularCompilerOptions": {
+    "entryModule": "./app/server-app.module#ServerAppModule"
+  },
+  "include": [
+    "main.server.ts",
+    "./app/+lazy/lazy.module.ts"
+  ]
+}
