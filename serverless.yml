@@ -16,6 +16,7 @@ package:
    - src/**
    - node_modules/**
    - '!node_modules/aws-serverless-express/**'
+   - '!node_modules/binary-case/**'
 
 custom:
   apigwBinary:
