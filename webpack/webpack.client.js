@@ -1,7 +1,5 @@
 const { root } = require('./helpers');
-
 const { AotPlugin } = require('@ngtools/webpack');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
