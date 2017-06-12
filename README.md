@@ -3,6 +3,13 @@
 ## Live demo
 [Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
 
+## What's inside
+* Webpack
+* UglifyJS
+* OptimizeJS
+* Sass loader
+
+
 ## Get Started
 ```sh
 npm install
