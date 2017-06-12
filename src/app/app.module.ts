@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { HomeView } from './home/home-view.component';
 import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
 
+import '../styles/main.scss';
+
 
 @NgModule({
   imports: [

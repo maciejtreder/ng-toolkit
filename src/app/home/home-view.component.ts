@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'home-view',
   template: `<div><h3>Hello World!</h3></div>`,
-  styleUrls: ['../common.component.css']
+  styleUrls: ['../common.component.scss'],
 })
 export class HomeView implements OnInit {
   public subs: Observable<string>;
