@@ -7,11 +7,16 @@ import { AppComponent } from './app.component';
 import { HomeView } from './home/home-view.component';
 import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
 
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule } from '@angular/material';
+
 import '../styles/main.scss';
 
 
 @NgModule({
   imports: [
+    //BrowserAnimationsModule,
+    MdButtonModule,
     CommonModule,
     HttpModule,
     TransferHttpModule,

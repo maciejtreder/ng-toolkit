@@ -6,7 +6,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs6.10
-  memorySize: 128
+  memorySize: 192
   timeout: 10
   stage: production
   region: eu-central-1
