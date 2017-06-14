@@ -32,3 +32,4 @@ npm run server
 npm run build:deploy
 ```
 
+Built on top of [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
