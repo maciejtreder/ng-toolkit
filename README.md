@@ -1,9 +1,10 @@
-# Angular Universal starter for serverless environment
+# Angular Universal starter for serverless environment (Angular material included)
 
 ## Live demo
 [Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
 
 ## What's inside
+* Angular Material
 * Webpack
 * UglifyJS
 * OptimizeJS
