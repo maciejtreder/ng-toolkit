@@ -5,8 +5,8 @@ import { TransferState } from '../modules/transfer-state/transfer-state';
   selector: 'app',
   template: `
     <h1>Angular Universal Serverless</h1>
-    <a routerLink="/">Home</a>
-    <a routerLink="/lazy">Lazy</a>
+    <a md-raised-button routerLink="/">Home</a>
+    <a md-raised-button routerLink="/lazy">Lazy</a>
     <router-outlet></router-outlet>
   `,
   styles: [
