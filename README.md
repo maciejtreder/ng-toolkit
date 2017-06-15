@@ -1,4 +1,5 @@
 # Angular Universal starter for serverless environment (Angular material included)
+This repo is boilerplate of Angular Universal (serverside rendering) deployed on AWS Lambda (serverless) environment.
 
 ## Live demo
 [Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
