@@ -6,7 +6,7 @@
   },
   "include": [
     "main.server.aot.ts",
-    "./app/+lazy/lazy.module.ts",
+    "./app/lazy/lazy.module.ts",
     "./app/server-app.module.ts"
   ]
 }

@@ -5,6 +5,6 @@
   },
   "include": [
     "./main.browser.ts",
-    "./app/+lazy/lazy.module.ts"
+    "./app/lazy/lazy.module.ts"
   ]
 }

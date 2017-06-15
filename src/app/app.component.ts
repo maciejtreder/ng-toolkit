@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
+  moduleId: module.id,
   selector: 'app',
   template: `
     <h1>Angular Universal Serverless</h1>

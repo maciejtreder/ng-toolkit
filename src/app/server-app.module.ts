@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { BrowserModule } from '@angular/platform-browser';
 
+import '../styles/main.scss';
 
 @NgModule({
   bootstrap: [AppComponent],
