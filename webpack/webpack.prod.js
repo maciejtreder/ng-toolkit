@@ -2,7 +2,6 @@ const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 
-
 module.exports = {
     plugins: [
         new OptimizeJsPlugin({

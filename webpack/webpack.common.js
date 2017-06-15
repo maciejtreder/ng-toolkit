@@ -37,7 +37,7 @@ module.exports = {
         include: [/src\/styles/]
       },
       {
-        test: /\.(jpg|png|gif)$/,
+        test: /\.(jpg|png|gif|ttf)$/,
         use: 'file-loader'
       }
     ]
@@ -45,6 +45,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
         { from: 'src/assets', to: 'assets' },
+        { from: 'src/service-workers', to: './' },
       ]
     ),
       extractSass

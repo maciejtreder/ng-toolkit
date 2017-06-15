@@ -5,6 +5,6 @@
   },
   "include": [
     "main.server.ts",
-    "./app/+lazy/lazy.module.ts"
+    "./app/lazy/lazy.module.ts"
   ]
 }

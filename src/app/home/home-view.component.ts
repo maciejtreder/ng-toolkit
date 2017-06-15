@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
+  moduleId: module.id,
   selector: 'home-view',
-  template: `<div><h3>Hello World!</h3></div>`,
-  styleUrls: ['../common.component.scss'],
+  templateUrl: './home-view.component.html',
+  styleUrls: ['../common.component.scss']
 })
 export class HomeView {
 }
