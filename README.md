@@ -1,11 +1,14 @@
-# Angular Universal starter for serverless environment (Angular material included)
+# Progressive Web App written in Angular Universal technology for serverless environment (Angular Material included)
 This repo is boilerplate of Angular Universal (serverside rendering) deployed on AWS Lambda (serverless) environment.
+It is running as a **progressive web app** and includes Angular Material!
 
 ## Live demo
 [Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
 
-## What's inside
+## What's inside?
 * Angular Material
+* Service worker
+* Works offline
 * Webpack
 * UglifyJS
 * OptimizeJS
@@ -14,9 +17,12 @@ This repo is boilerplate of Angular Universal (serverside rendering) deployed on
 
 ## Get Started
 ```sh
+git clone https://github.com/maciejtreder/angular-universal-serverless.git
+cd angular-universal-serverless
 npm install
 npm start
 ```
+
 ## Developement mode
 * Terminal 1: ```npm run watch```
 * Wait for the build to finish
