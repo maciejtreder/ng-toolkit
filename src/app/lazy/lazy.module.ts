@@ -3,6 +3,7 @@ import {RouterModule} from '@angular/router'
 
 
 @Component({
+  moduleId: module.id,
   selector: 'lazy-view',
   template: `<div><h3>I am lazy!</h3></div>`,
   styleUrls: ['../common.component.scss']

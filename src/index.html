@@ -1,46 +1,74 @@
-<html>
+<html lang="en">
   <head>
+
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
+    
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Angular Universal - Serverless Demo by @maciejtreder">
+
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Angular Universal">
+
+    <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+
+
+    <meta name="msapplication-navbutton-color" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/mstile-150x150.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="msapplication-starturl" content="/">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+
+
+    <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="assets/icons/favicon.ico">
+    <meta name="msapplication-config" content="assets/browserconfig.xml">
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+
+
+    <meta property="og:title" content="Angular Universal Serverless Demo">
+    <meta property="og:site_name" content="Angular Universal Serverless Demo by Maciej Treder">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.angular-universal-serverless.maciejtreder.com/">
+    <meta property="og:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
+    <meta property="og:image" content="assets/img/sandbox.png">
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@maciejtreder">
+    <meta name="twitter:title" content="Angular Universal Serverless Demo by Maciej Treder">
+    <meta name="twitter:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
+    <meta name="twitter:image" content="assets/img/sandbox.png">
+
+
+
     <meta charset="UTF-8">
     <base href="/">
     <title>Angular Universal Serverless Starter - serverside rendering</title>
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300);
-      html, body {
-        height: 100%;
-        margin: 0;
-      }
-      .page-wrap {
-        min-height: 100%;
-        /* equal to footer height */
-        margin-bottom: -35px !important;
-        max-width: 1000px;
-        margin: 0 auto;
-      }
-      .page-wrap:after {
-        content: "";
-        display: block;
-      }
-      .credentials, .page-wrap:after {
-        height: 35px;
-      }
-      .credentials p {
-        font-weight: 300;
-        font-family: 'Source Sans Pro', calibri, Arial, sans-serif;
-        margin: 0;
-        text-align: center;
-        font-size: 14px;
-      }
-      .credentials a {
-        margin: 0;
-        color: black;
-      }
-      .credentials a:hover {
-        text-decoration: none;
-      }
-      .credentials p.built {
-        font-size: 12px;
-      }
-    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>

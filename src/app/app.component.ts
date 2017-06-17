@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { TransferState } from '../modules/transfer-state/transfer-state';
 
 @Component({
+  moduleId: module.id,
   selector: 'app',
   template: `
     <h1>Angular Universal Serverless</h1>
@@ -16,9 +16,5 @@ import { TransferState } from '../modules/transfer-state/transfer-state';
     }`
   ]
 })
-export class AppComponent implements OnInit {
-  constructor(private cache: TransferState) {}
-  ngOnInit() {
-    this.cache.set('cached', true);
-  }
+export class AppComponent {
 }

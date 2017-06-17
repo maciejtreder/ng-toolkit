@@ -1,11 +1,12 @@
 div {
-  background: url('../assets/img/sandbox.gif') no-repeat center;
+  background: url('../assets/img/sandbox.png') no-repeat center;
   height: 350px;
   position: relative;
 }
 h3 {
-  position: absolute;
-  right: 460px;
-  top: 14px;
+  position: relative;
   color: deepskyblue;
+  text-align: center;
+  top: 35px;
+  left: -10px;
 }

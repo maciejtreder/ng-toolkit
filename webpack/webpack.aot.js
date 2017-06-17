@@ -1,6 +1,7 @@
 const { root } = require('./helpers');
 const { AotPlugin } = require('@ngtools/webpack');
 
+
 const tsconfigs = {
   client: root('./src/tsconfig.browser.json'),
   server: root('./src/tsconfig.server.json')
@@ -26,5 +27,5 @@ function getAotPlugin(platform, aot) {
 }
 
 module.exports = {
-  getAotPlugin: getAotPlugin
+  getAotPlugin: getAotPlugin,
 };
