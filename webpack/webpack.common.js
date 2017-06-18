@@ -1,6 +1,7 @@
 const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJS = require("uglify-es");
 
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -45,7 +46,10 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
         { from: 'src/assets', to: 'assets' },
-        { from: 'src/service-workers', to: './' },
+        { from: 'src/service-workers/manifest.json', to: './manifest.json' },
+        { from: 'src/service-workers/worker-basic.js', to: './worker-basic.min.js', transform: (content, path) => {
+          return UglifyJS.minify(content.toString()).code;
+        } },
       ]
     ),
       extractSass
