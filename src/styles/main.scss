@@ -13,3 +13,9 @@ a {
   margin: 0 10px;
   color: orange;
 }
+
+.service_worker_snack { // can be removed when https://github.com/angular/material2/pull/4045 will be merged
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}

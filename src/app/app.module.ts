@@ -6,13 +6,14 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeView } from './home/home-view.component';
 
-import { MdButtonModule } from '@angular/material';
+import { MdButtonModule, MdSnackBarModule } from '@angular/material';
 
-import { NgServiceWorker, ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
     MdButtonModule,
+    MdSnackBarModule,
     CommonModule,
     HttpModule,
     RouterModule.forRoot([
@@ -22,7 +23,8 @@ import { NgServiceWorker, ServiceWorkerModule } from '@angular/service-worker';
     ServiceWorkerModule
   ],
   declarations: [ AppComponent, HomeView ],
-  exports: [ AppComponent ]
+  exports: [ AppComponent ],
+  //entryComponents: [ AppComponent ]
 })
 export class AppModule {
 }
