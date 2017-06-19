@@ -1,0 +1,17 @@
+{
+  "push": {
+    "showNotifications": true
+  },
+  "static.ignore": [
+    "^\/worker-basic.min.js$"
+  ],
+  "external": {
+    "urls": [{
+      "url": "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300"
+    }, {
+      "url": "https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGCP2LEk6lMzYsRqr3dHFImA.woff2"
+    }, {
+      "url": "https://fonts.googleapis.com/css?family=Material+Icons"
+    }]
+  }
+}

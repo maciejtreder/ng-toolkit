@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { BrowserModule } from '@angular/platform-browser';
 
 import '../styles/main.scss';
+import '../styles/credentials.scss'; //respect MIT license, do not remove.
 
 @NgModule({
   bootstrap: [AppComponent],

@@ -45,7 +45,7 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-        { from: 'src/assets', to: 'assets' },
+        { from: 'src/assets', to: 'assets', ignore: "*.ttf" },
         { from: 'src/service-workers/manifest.json', to: './manifest.json' },
         { from: 'src/service-workers/worker-basic.js', to: './worker-basic.min.js', transform: (content, path) => {
           return UglifyJS.minify(content.toString()).code;

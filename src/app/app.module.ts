@@ -10,7 +10,6 @@ import { MdButtonModule } from '@angular/material';
 
 import { NgServiceWorker, ServiceWorkerModule } from '@angular/service-worker';
 
-
 @NgModule({
   imports: [
     MdButtonModule,
@@ -26,16 +25,4 @@ import { NgServiceWorker, ServiceWorkerModule } from '@angular/service-worker';
   exports: [ AppComponent ]
 })
 export class AppModule {
-  constructor(private ws: NgServiceWorker) {
-    console.log("constructor");
-    this.ws.ping().subscribe(value => {
-      console.log('ping', value);
-    });
-    this.ws.checkForUpdate().subscribe(value => {
-      console.log("checkForUpdate", value);
-    })
-    this.ws.log().subscribe(something => {
-      console.log(something);
-    })
-  }
 }

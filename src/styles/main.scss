@@ -1,29 +1,5 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(../assets/fonts/SourceSansPro-Light.ttf) format('ttf');
-}
-
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(../assets/fonts/SourceSansPro-Regular.ttf) format('ttf');
-}
-
-@font-face {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Source Sans Pro SemiBold'), local('SourceSansPro-SemiBold'), url(../assets/fonts/SourceSansPro-SemiBold.ttf) format('ttf');
-}
-
-body {
-  padding-top: 10px;
-}
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300);
 
 * {
   font-weight: 300;
