@@ -3,6 +3,9 @@ import { isPlatformBrowser } from '@angular/common'
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { NgServiceWorker } from '@angular/service-worker';
 import { Observable } from 'rxjs';
+import { RequestOptions, Headers } from '@angular/http';
+
+import { HttpIndexedService } from './http-indexed-service';
 
 import * as _ from 'underscore';
 
@@ -25,7 +28,7 @@ export class AppComponent implements OnInit {
     private isUpdatePending: boolean = false;
     private snackBarConfig: MdSnackBarConfig = new MdSnackBarConfig();
 
-    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBar: MdSnackBar, private sw: NgServiceWorker) {
+    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBar: MdSnackBar, private sw: NgServiceWorker, private http: HttpIndexedService) {
         this.platformId = platformId; //Intellij type checking workaround.
         this.snackBarConfig.extraClasses = ['service_worker_snack'];
     }
@@ -33,6 +36,27 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         if(!isPlatformBrowser(this.platformId))
             return;
+
+        this.http.post('testPost', {exampleKey: "exampleValue"}).subscribe(res => {
+            console.log('post');
+            console.log(res.status);
+        });
+        console.log("version 2");
+
+        this.http.post('inexisting', {exampleKey: "exampleValue"}).subscribe(res => {
+            console.log('wrongPost');
+            console.log(res.status);
+        });
+
+
+        let headers = new Headers({"Content-Type": "application/json"});
+        let options = new RequestOptions({headers: headers});
+        this.http.post('testPost', {exampleKey: "exampleValue"}, options).subscribe(res => {
+            console.log('post');
+            console.log(res.status);
+        });
+
+
         this.checkServiceWorker();
         this.checkOnlineStatus();
 
@@ -69,7 +93,8 @@ export class AppComponent implements OnInit {
         this.snackBar.dismiss();
         this.snackBar.open(message, action, this.snackBarConfig).afterDismissed().subscribe(() => {
             this.snackBarDisplayed = false;
-            callback();
+            if (callback)
+                callback();
         });
     }
 
@@ -97,7 +122,7 @@ export class AppComponent implements OnInit {
             Observable.of(navigator.onLine),
             Observable.fromEvent(window, 'online').map(() => true),
             Observable.fromEvent(window, 'offline').map(() => false)
-        ).filter(status => status != previouseStatus).debounceTime(5000).subscribe(status => {
+        ).filter(status => status != previouseStatus).debounceTime(1000).subscribe(status => {
                 previouseStatus = status;
                 if (status == false) {
                     this.showBlockingStatus("You are offline. All changes will be synced when you will go online again.", null, null);
@@ -115,6 +140,11 @@ export class AppComponent implements OnInit {
         if (!(process.env.NODE_ENV == 'production' && 'serviceWorker' in navigator) || localStorage.getItem("cache_done") == "true")
             return;
 
+        this.sw.ping().subscribe(resp => {
+            console.log("ping");
+            console.log(resp);
+        })
+
         let interval;
         interval = setInterval(() => {
             navigator['serviceWorker']
@@ -131,7 +161,7 @@ export class AppComponent implements OnInit {
                         })
                 })
                 .then(value => {
-                    if (value[0].active == true) {
+                    if (value[0] && value[0].active == true) {
                         clearInterval(interval);
                         localStorage.setItem("cache_done", "true");
 

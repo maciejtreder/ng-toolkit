@@ -45,5 +45,10 @@ ROUTES.forEach(route => {
     console.timeEnd(`GET: ${req.originalUrl}`);
   });
 });
-
+app.post('/testPost', (req, res) => {
+  console.log("responding to POST");
+  console.log(req.body);
+  console.log(req.body.exampleKey);
+  res.status(200).send("request response");
+});
 export = app;

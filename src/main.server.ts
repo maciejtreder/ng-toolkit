@@ -45,4 +45,9 @@ ROUTES.forEach(route => {
   });
 });
 
+app.post('/testPost', (req, res) => {
+  console.log("responding to POST");
+  res.status(200).send("ok");
+});
+
 export = app;
