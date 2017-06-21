@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
             Observable.of(navigator.onLine),
             Observable.fromEvent(window, 'online').map(() => true),
             Observable.fromEvent(window, 'offline').map(() => false)
-        ).filter(status => status != previouseStatus).subscribe(status => {
+        ).filter(status => status != previouseStatus).debounceTime(5000).subscribe(status => {
                 previouseStatus = status;
                 if (status == false) {
                     this.showBlockingStatus("You are offline. All changes will be synced when you will go online again.", null, null);
