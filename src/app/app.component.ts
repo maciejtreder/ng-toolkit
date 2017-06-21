@@ -1,7 +1,7 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { NgServiceWorker, UpdateEvent } from '@angular/service-worker';
+import { NgServiceWorker } from '@angular/service-worker';
 import { Observable } from 'rxjs';
 
 import * as _ from 'underscore';
