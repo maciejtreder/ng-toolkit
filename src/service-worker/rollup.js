@@ -13,6 +13,7 @@ rollup.rollup({
             }
         }),
     ],
+
 }).then(bundle => bundle.write({
     format: 'iife',
     dest: 'dist/worker-basic.min.js',

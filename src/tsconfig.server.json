@@ -5,6 +5,7 @@
   },
   "include": [
     "main.server.ts",
+    "./app/httpProxy/http-proxy-demo.module.ts",
     "./app/lazy/lazy.module.ts"
   ]
 }

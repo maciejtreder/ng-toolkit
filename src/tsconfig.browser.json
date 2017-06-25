@@ -5,6 +5,7 @@
   },
   "include": [
     "./main.browser.ts",
-    "./app/lazy/lazy.module.ts"
+    "./app/lazy/lazy.module.ts",
+    "./app/httpProxy/http-proxy-demo.module.ts"
   ]
 }

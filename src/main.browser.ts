@@ -12,5 +12,5 @@ if (process.env.NODE_ENV == 'production')
 
 platformBrowserDynamic().bootstrapModule(BrowserAppModule).then(() => {
     if (process.env.NODE_ENV == 'production' && 'serviceWorker' in navigator)
-        navigator.serviceWorker.register('./worker-basic.min.js');
+        navigator.serviceWorker.register('./worker-basic.min.js').then(() => navigator.serviceWorker.ready);
 });

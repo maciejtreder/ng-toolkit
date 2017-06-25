@@ -3,30 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { HomeView } from './home/home-view.component';
-import { HttpIndexedService } from './http-indexed-service';
+import { MdButtonModule, MdSnackBarModule } from '@angular/material';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
+import { HttpSwProxyModule } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
 
-import { MdButtonModule, MdSnackBarModule } from '@angular/material';
+import { AppComponent } from './app.component';
+import { HomeView } from './home/home-view.component';
 
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
     MdButtonModule,
     MdSnackBarModule,
     CommonModule,
-    HttpModule,
+    HttpSwProxyModule,
     RouterModule.forRoot([
       { path: '', component: HomeView, pathMatch: 'full'},
-      { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'}
+      { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
+      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy-demo.module#HttpProxyDemoModule'}
     ]),
     ServiceWorkerModule
   ],
   declarations: [ AppComponent, HomeView ],
   exports: [ AppComponent ],
-  providers: [HttpIndexedService, SnackBarService]
+  providers: [SnackBarService]
 })
 export class AppModule {
 }

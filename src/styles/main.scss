@@ -19,3 +19,9 @@ a {
   bottom: 10px;
   left: 10px;
 }
+
+app div.content {
+  background: url('../assets/img/sandbox.png') no-repeat top center;
+  min-height: 350px;
+  position: relative;
+}

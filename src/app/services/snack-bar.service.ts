@@ -16,14 +16,14 @@ export class SnackBarService {
             return;
 
         let config : MdSnackBarConfig = _.clone(this.defaultConfig)
-        if (duration > -1)
             config.duration = duration;
 
         this.snackBar.dismiss();
         this.snackBar.open(message, action, config).afterDismissed().subscribe(() => {
             this.isDisplayed = false;
-            if (callback)
+            if (callback) {
                 callback();
+            }
         });
     }
 }

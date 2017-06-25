@@ -4,7 +4,7 @@ import {ExternalContentCache} from '@angular/service-worker/plugins/external';
 import {RouteRedirection} from '@angular/service-worker/plugins/routes';
 import {StaticContentCache} from '@angular/service-worker/plugins/static';
 import {Push} from '@angular/service-worker/plugins/push';
-import {CustomListeners} from './plugins/custom-listeners';
+import {HttpSwProxyPlugin} from 'ng-http-sw-proxy/plugin';
 
 bootstrapServiceWorker({
     manifestUrl: 'ngsw-manifest.json',
@@ -17,6 +17,6 @@ bootstrapServiceWorker({
         ExternalContentCache(),
         RouteRedirection(),
         Push(),
-        CustomListeners()
+        HttpSwProxyPlugin()
     ],
 });

@@ -1,0 +1,10 @@
+<div class="content">
+    <h3>Proxy demo!</h3>
+    <div>
+        <md-input-container>
+            <input mdInput placeholder="Value to send" [(ngModel)]="valueToSend">
+        </md-input-container>
+        <button md-raised-button (click)="sendPost()">send request</button>
+        <span>response: {{response | async | json}}</span>
+    </div>
+</div>

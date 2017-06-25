@@ -4,7 +4,7 @@ import { NgServiceWorker } from '@angular/service-worker';
 import { Observable } from 'rxjs';
 import { RequestOptions, Headers } from '@angular/http';
 
-import { HttpIndexedService } from './http-indexed-service';
+import { HttpSwProxy } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
 
 import * as _ from 'underscore';
@@ -17,6 +17,7 @@ import * as _ from 'underscore';
     <h1>Angular Universal Serverless</h1>
     <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
     <a md-raised-button routerLink="/lazy"><i class="material-icons">free_breakfast</i> Lazy</a>
+    <a md-raised-button routerLink="/httpProxy"><i class="material-icons">merge_type</i> Http proxy demo</a>
     <router-outlet></router-outlet>
   `,
     styleUrls: ['app.component.scss']
@@ -24,8 +25,9 @@ import * as _ from 'underscore';
 export class AppComponent implements OnInit {
 
     private platformId: Object;
+    private updateInfoDisplayed: boolean;
 
-    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: HttpIndexedService) {
+    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: HttpSwProxy) {
         this.platformId = platformId; //Intellij type checking workaround.
     }
 
@@ -33,31 +35,12 @@ export class AppComponent implements OnInit {
         if(!isPlatformBrowser(this.platformId))
             return;
 
-        this.http.post('testPost', {exampleKey: "exampleValue"}).subscribe(res => {
-            console.log('post');
-            console.log(res.status);
-        });
-
-        this.http.post('inexisting', {exampleKey: "exampleValue"}).subscribe(res => {
-            console.log('wrongPost');
-            console.log(res.status);
-        });
-
-
-        let headers = new Headers({"Content-Type": "application/json"});
-        let options = new RequestOptions({headers: headers});
-        this.http.post('testPost', {exampleKey: "exampleValue"}, options).subscribe(res => {
-            console.log('post');
-            console.log(res.status);
-        });
-
-
         this.checkServiceWorker();
         this.checkOnlineStatus();
 
         //checks if any new data is fetched by service worker
         this.sw.log().map((log:any) => log.message)
-            .filter((message: string) => message.indexOf("caching from network") > -1).first()
+            .filter((message: string) => message && message.indexOf("caching from network") > -1).first()
             .subscribe((message) => this.updateDone());
 
         //checks if there is new version of service worker
@@ -70,6 +53,9 @@ export class AppComponent implements OnInit {
      * Wrapper for action invoked, when new files appear or new version of service-worker is installed.
      */
     private updateDone(): void {
+        if (this.updateInfoDisplayed)
+            return
+        this.updateInfoDisplayed = true;
         this.snackBarService.showMessage("New version of application installed", "Reload now", -1, () => window.location.reload(), true);
     }
 
