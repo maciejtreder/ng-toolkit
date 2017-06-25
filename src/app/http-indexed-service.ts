@@ -38,7 +38,7 @@ export class HttpIndexedService {
         return this.resolveRequest({method: methods.POST, url, body, options});
     }
 
-    private hasNetworkConnection(): Observable<boolean> {
+    public hasNetworkConnection(): Observable<boolean> {
         if(!isPlatformBrowser(this.platformId))
             return Observable.of(true);
         return Observable.merge(

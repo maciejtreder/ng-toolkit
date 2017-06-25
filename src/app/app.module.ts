@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeView } from './home/home-view.component';
 import { HttpIndexedService } from './http-indexed-service';
+import { SnackBarService } from './services/snack-bar.service';
 
 import { MdButtonModule, MdSnackBarModule } from '@angular/material';
 
@@ -25,7 +26,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   ],
   declarations: [ AppComponent, HomeView ],
   exports: [ AppComponent ],
-  providers: [HttpIndexedService]
+  providers: [HttpIndexedService, SnackBarService]
 })
 export class AppModule {
 }
