@@ -1,6 +1,7 @@
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     plugins: [
@@ -30,5 +31,9 @@ module.exports = {
                 negate_iife: false // we need this for lazy v8
             },
         }),
+        new CopyWebpackPlugin([
+                { from: 'src/manifest.json', to: './manifest.json' }
+            ]
+        )
     ]
 };

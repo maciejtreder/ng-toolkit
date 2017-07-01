@@ -46,10 +46,6 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
         { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
-        { from: 'src/service-workers/manifest.json', to: './manifest.json' },
-        { from: 'src/service-workers/worker-basic.js', to: './worker-basic.min.js', transform: (content, path) => {
-          return UglifyJS.minify(content.toString()).code;
-        } },
       ]
     ),
       extractSass

@@ -1,8 +1,11 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { NgServiceWorker } from '@angular/service-worker';
 import { Observable } from 'rxjs';
+import { RequestOptions, Headers } from '@angular/http';
+
+import { HttpSwProxy } from 'ng-http-sw-proxy';
+import { SnackBarService } from './services/snack-bar.service';
 
 import * as _ from 'underscore';
 
@@ -14,6 +17,7 @@ import * as _ from 'underscore';
     <h1>Angular Universal Serverless</h1>
     <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
     <a md-raised-button routerLink="/lazy"><i class="material-icons">free_breakfast</i> Lazy</a>
+    <a md-raised-button routerLink="/httpProxy"><i class="material-icons">merge_type</i> Http proxy demo</a>
     <router-outlet></router-outlet>
   `,
     styleUrls: ['app.component.scss']
@@ -21,24 +25,22 @@ import * as _ from 'underscore';
 export class AppComponent implements OnInit {
 
     private platformId: Object;
-    private snackBarDisplayed: boolean = false;
-    private isUpdatePending: boolean = false;
-    private snackBarConfig: MdSnackBarConfig = new MdSnackBarConfig();
+    private updateInfoDisplayed: boolean;
 
-    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBar: MdSnackBar, private sw: NgServiceWorker) {
+    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: HttpSwProxy) {
         this.platformId = platformId; //Intellij type checking workaround.
-        this.snackBarConfig.extraClasses = ['service_worker_snack'];
     }
 
     ngOnInit() {
         if(!isPlatformBrowser(this.platformId))
             return;
+
         this.checkServiceWorker();
         this.checkOnlineStatus();
 
         //checks if any new data is fetched by service worker
         this.sw.log().map((log:any) => log.message)
-            .filter((message: string) => message.indexOf("caching from network") > -1).first()
+            .filter((message: string) => message && message.indexOf("caching from network") > -1).first()
             .subscribe((message) => this.updateDone());
 
         //checks if there is new version of service worker
@@ -51,41 +53,10 @@ export class AppComponent implements OnInit {
      * Wrapper for action invoked, when new files appear or new version of service-worker is installed.
      */
     private updateDone(): void {
-        this.isUpdatePending = true;
-        this.showBlockingStatus("New version of application installed", "Reload now", () => window.location.reload());
-    }
-
-    /**
-     * Displays information which cannot be overriden by any other message, until 'force' flag will be used.
-     * Displayed info stays on the screen.
-     * @param message
-     * @param action
-     * @param callback
-     */
-    private showBlockingStatus(message: string, action?: string, callback?: () => void): void {
-        if (this.snackBarDisplayed)
-            return;
-        this.snackBarDisplayed = true;
-        this.snackBar.dismiss();
-        this.snackBar.open(message, action, this.snackBarConfig).afterDismissed().subscribe(() => {
-            this.snackBarDisplayed = false;
-            callback();
-        });
-    }
-
-    /**
-     * Displays information which can be overriden by other message. Force flag can be set to override blocked message (not applicable for info about update).
-     * @param message
-     * @param action
-     * @param forceClose
-     */
-    private showNonBlockingStatus(message: string, action: string, forceClose: boolean = false): void {
-        if (!this.snackBarDisplayed || (forceClose && !this.isUpdatePending)) {
-            this.snackBar.dismiss();
-            let settings: MdSnackBarConfig = _.clone(this.snackBarConfig);
-            settings.duration = 5000;
-            this.snackBar.open(message, action, settings);
-        }
+        if (this.updateInfoDisplayed)
+            return
+        this.updateInfoDisplayed = true;
+        this.snackBarService.showMessage("New version of application installed", "Reload now", -1, () => window.location.reload(), true);
     }
 
     /**
@@ -93,17 +64,13 @@ export class AppComponent implements OnInit {
      */
     private checkOnlineStatus(): void {
         let previouseStatus: boolean = true;
-        Observable.merge(
-            Observable.of(navigator.onLine),
-            Observable.fromEvent(window, 'online').map(() => true),
-            Observable.fromEvent(window, 'offline').map(() => false)
-        ).filter(status => status != previouseStatus).debounceTime(5000).subscribe(status => {
+        this.http.hasNetworkConnection().filter(status => status != previouseStatus).debounceTime(1000).subscribe(status => {
                 previouseStatus = status;
                 if (status == false) {
-                    this.showBlockingStatus("You are offline. All changes will be synced when you will go online again.", null, null);
+                    this.snackBarService.showMessage("You are offline. All changes will be synced when you will go online again.")
                 }
                 else {
-                    this.showNonBlockingStatus("You are online. All data is synced.", "Ok", true);
+                    this.snackBarService.showMessage("You are online. All data is synced.", "Ok", 5000);
                 }
             });
     }
@@ -131,11 +98,11 @@ export class AppComponent implements OnInit {
                         })
                 })
                 .then(value => {
-                    if (value[0].active == true) {
+                    if (value[0] && value[0].active == true) {
                         clearInterval(interval);
                         localStorage.setItem("cache_done", "true");
 
-                        this.showNonBlockingStatus("Caching complete! Future visits will work offline", "Ok");
+                        this.snackBarService.showMessage("Caching complete! Future visits will work offline", "Ok", 5000);
                     }
                 });
         }, 100);
