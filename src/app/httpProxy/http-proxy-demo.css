@@ -4,7 +4,16 @@ div div {
 }
 span {
     display: block;
+    margin-bottom: 20px;
 }
 input {
     width: 200px;
+}
+
+div.ng-http-sw-proxy {
+    padding: 0 !important;
+}
+
+.ng-http-sw-proxy img {
+    margin-top: 20px;
 }

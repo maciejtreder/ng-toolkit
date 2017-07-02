@@ -9,6 +9,7 @@ It is running as a **progressive web app** and includes Angular Material!
 * Angular Material
 * Service worker
 * Works offline
+* [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy)
 * Webpack
 * UglifyJS
 * OptimizeJS
@@ -31,12 +32,14 @@ npm start
 ## Production mode
 Includes AoT
 ```sh
+cp -r node_modules/ng-http-sw-proxy/service-worker .
 npm run build:prod
 npm run server
 ```
 
 ## Deploy on AWS Lambda
 ```sh
+cp -r node_modules/ng-http-sw-proxy/service-worker .
 npm run build:deploy
 ```
 

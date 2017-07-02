@@ -18,6 +18,7 @@ import * as _ from 'underscore';
     <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
     <a md-raised-button routerLink="/lazy"><i class="material-icons">free_breakfast</i> Lazy</a>
     <a md-raised-button routerLink="/httpProxy"><i class="material-icons">merge_type</i> Http proxy demo</a>
+    <a md-raised-button href="https://github.com/maciejtreder/angular-universal-serverless"><i class="material-icons">code</i> Fork on github</a>
     <router-outlet></router-outlet>
   `,
     styleUrls: ['app.component.scss']
