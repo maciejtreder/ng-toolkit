@@ -1,6 +1,7 @@
 {
   "push": {
-    "showNotifications": true
+    "showNotifications": true,
+    "backgroundOnly": false
   },
   "static.ignore": [
     "^\/worker-basic.min.js$"

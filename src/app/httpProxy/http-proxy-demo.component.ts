@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpSwProxy } from 'ng-http-sw-proxy';
+import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 
 
@@ -17,7 +17,7 @@ export class HttpProxyDemoComponent {
     public showHideText: string = "Show flow";
     public showFlow: boolean = false;
 
-    constructor(private http: HttpSwProxy) {}
+    constructor(private http: Http) {}
 
     public sendPost():void {
         this.response = this.http.post("testPost", {exampleKey: this.valueToSend}).map(res => res.json());
