@@ -1,11 +1,11 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
-import { NgServiceWorker } from '@angular/service-worker';
+import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
 import { Observable } from 'rxjs';
-import { RequestOptions, Headers } from '@angular/http';
+import { RequestOptions, Headers, RequestOptionsArgs, Http } from '@angular/http';
 
-import { HttpSwProxy } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
+import { ConnectivityService } from 'ng-http-sw-proxy';
 
 import * as _ from 'underscore';
 
@@ -14,11 +14,13 @@ import * as _ from 'underscore';
   moduleId: module.id,
   selector: 'app',
   template: `
-    <h1>Angular Universal Serverless</h1>
+    <h1>Angular PWA Serverless</h1>
+    <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
     <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
     <a md-raised-button routerLink="/lazy"><i class="material-icons">free_breakfast</i> Lazy</a>
     <a md-raised-button routerLink="/httpProxy"><i class="material-icons">merge_type</i> Http proxy demo</a>
-    <a md-raised-button href="https://github.com/maciejtreder/angular-universal-serverless"><i class="material-icons">code</i> Fork on github</a>
+    <a md-raised-button (click)="subscribeToPush()"><i class="material-icons">message</i> Subscribe to push</a>
+    <a md-raised-button target="_blank" href="https://github.com/maciejtreder/angular-universal-serverless"><i class="material-icons">code</i> Fork on github</a>
     <router-outlet></router-outlet>
   `,
     styleUrls: ['app.component.scss']
@@ -27,8 +29,9 @@ export class AppComponent implements OnInit {
 
     private platformId: Object;
     private updateInfoDisplayed: boolean;
+    private pushRegistration: NgPushRegistration;
 
-    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: HttpSwProxy) {
+    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: Http, private conn: ConnectivityService) {
         this.platformId = platformId; //Intellij type checking workaround.
     }
 
@@ -45,9 +48,31 @@ export class AppComponent implements OnInit {
             .subscribe((message) => this.updateDone());
 
         //checks if there is new version of service worker
+        this.checkAndUpdate();
+
+        //push notifications
+        this.sw.push.filter(msg => msg.notification.title == "New version of app is available").subscribe(() => this.checkAndUpdate());
+
+    }
+
+    private checkAndUpdate(): void {
         this.sw.checkForUpdate().filter(update => update)
             .flatMap((x) => this.sw.updates).map(updateEvent => updateEvent.version)
             .flatMap(ver => this.sw.activateUpdate(ver)).subscribe(() => this.updateDone());
+    }
+
+    public subscribeToPush() {
+        this.sw.registerForPush({
+            applicationServerKey: 'BKxp6BwVzRWy1Qbe63rHNbG46uwPTrl1RoeTJuyVBm42kvlUk0RuSkYk8NKoO0QK2GNV7eRhOLyV1KfmZhwU9Sc'
+        }).subscribe((reg: NgPushRegistration) => {
+            this.pushRegistration = reg;
+            let headers: Headers = new Headers();
+            headers.append("content-type", "application/json");
+            let options: RequestOptionsArgs = new RequestOptions({headers: headers});
+            this.http.post("https://api.angular-universal-serverless.maciejtreder.com/webpush/subscribe", JSON.stringify(this.pushRegistration), options).subscribe(res => console.log(res), err => console.log("error!!!", err));
+        }, err => {
+            console.error("error during register for push", err);
+        });
     }
 
     /**
@@ -65,7 +90,7 @@ export class AppComponent implements OnInit {
      */
     private checkOnlineStatus(): void {
         let previouseStatus: boolean = true;
-        this.http.hasNetworkConnection().filter(status => status != previouseStatus).debounceTime(1000).subscribe(status => {
+        this.conn.hasNetworkConnection().filter(status => status != previouseStatus).debounceTime(1000).subscribe(status => {
                 previouseStatus = status;
                 if (status == false) {
                     this.snackBarService.showMessage("You are offline. All changes will be synced when you will go online again.")
