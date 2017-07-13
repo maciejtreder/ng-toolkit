@@ -47,7 +47,6 @@ ROUTES.forEach(route => {
 });
 
 app.post('/testPost', (req, res) => {
-  console.log("got post");
   res.status(200).send({receivedValue: req.body.exampleKey});
 });
 
