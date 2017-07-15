@@ -51,8 +51,7 @@ export class AppComponent implements OnInit {
         this.checkAndUpdate();
 
         //push notifications
-        this.sw.push.filter(msg => msg.notification.title == "New version of app is available").subscribe(() => this.checkAndUpdate());
-
+        this.sw.push.filter(msg => msg.notification.title == "New version available").subscribe(() => {this.checkAndUpdate()});
     }
 
     private checkAndUpdate(): void {

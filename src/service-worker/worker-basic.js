@@ -5,6 +5,7 @@ import {RouteRedirection} from '@angular/service-worker/plugins/routes';
 import {StaticContentCache} from '@angular/service-worker/plugins/static';
 import {Push} from '@angular/service-worker/plugins/push';
 import {HttpSwProxyPlugin} from 'ng-http-sw-proxy/dist/plugin';
+import {NotificationClick} from './notification-click';
 
 bootstrapServiceWorker({
     manifestUrl: 'ngsw-manifest.json',
@@ -17,6 +18,7 @@ bootstrapServiceWorker({
         ExternalContentCache(),
         RouteRedirection(),
         Push(),
-        HttpSwProxyPlugin()
+        HttpSwProxyPlugin(),
+        NotificationClick()
     ],
 });
