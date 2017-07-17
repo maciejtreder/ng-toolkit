@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject, HostListener, HostBinding } from '@angular/core'
+import { Component, OnInit, PLATFORM_ID, Inject, HostListener, HostBinding, Directive, ElementRef } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
 import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 
 import { SnackBarService } from './services/snack-bar.service';
 import { ConnectivityService } from 'ng-http-sw-proxy';
-//import { Ng2DeviceService } from 'ng2-device-detector';
+import { Ng2DeviceService } from 'ng2-device-detector';
 
 import * as _ from 'underscore';
 
@@ -15,50 +15,7 @@ import * as _ from 'underscore';
 @Component({
   moduleId: module.id,
   selector: 'app',
-  template: `
-        <header *ngIf="isDesktop" [class.fixed]="headerIsFixed">
-            <h1>Angular PWA Serverless</h1>
-            <menu *ngIf="navIsFixed"></menu>
-        </header>
-        <div id="content-wrapper" *ngIf="isDesktop" [class.headerFixed]="headerIsFixed">
-            <div id="content">
-                <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
-                <menu [class.fixed]="navIsFixed"></menu>
-                <router-outlet></router-outlet>
-            </div>
-            <footer class="credentials">
-              <!-- Please respect MIT License and don't remove this footer. --->
-              <p class="built">Built with</p>
-              <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
-            </footer>
-        </div>
-
-
-    <md-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false" >
-      <md-sidenav>
-        <button md-mini-fab (click)="sidenav.close()" class="menu-button">
-            <i class="material-icons">menu</i>
-        </button>
-        <menu (click)="sidenav.close()" class="side-nav"></menu>
-      </md-sidenav>
-        <header>
-            <h1>
-                <button md-mini-fab (click)="sidenav.open()" class="menu-button">
-                    <i class="material-icons">menu</i>
-                </button>
-            Angular PWA Serverless</h1>
-        </header>
-        <div id="content">
-            <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
-            <router-outlet></router-outlet>
-        </div>
-        <footer class="credentials">
-          <!-- Please respect MIT License and don't remove this footer. --->
-          <p class="built">Built with</p>
-          <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
-        </footer>
-    </md-sidenav-container>
-  `,
+  templateUrl: './app.component.html',
     styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
@@ -67,13 +24,9 @@ export class AppComponent implements OnInit {
     private document: Document;
     private updateInfoDisplayed: boolean;
     private pushRegistration: NgPushRegistration;
-    //public isDesktop: boolean = !this.deviceService.isDesktop();
-    public isDesktop: boolean = true;
-
-    //@HostBinding('class.navFixed')
+    public isDesktop: boolean = !this.deviceService.isDesktop();
+    public offset: number = 0;
     public navIsFixed: boolean = false;
-
-    //@HostBinding('class.headerFixed')
     public headerIsFixed: boolean = false;
 
     constructor(
@@ -82,18 +35,31 @@ export class AppComponent implements OnInit {
         private sw: NgServiceWorker,
         private http: Http,
         private conn: ConnectivityService,
-        //private deviceService: Ng2DeviceService,
-        @Inject(DOCUMENT) document: Document
+        private deviceService: Ng2DeviceService,
+        @Inject(DOCUMENT) document: Document,
+        private elRef:ElementRef
     ) {
         this.platformId = platformId; //Intellij type checking workaround.
         this.document = document; //Intellij type checking workaround.
     }
 
+    ngAfterViewInit() {
+        // "sticky" header
+        if (!isPlatformBrowser(this.platformId))
+            return;
+
+        if (this.isDesktop) {
+            Observable.fromEvent(window, "scroll").subscribe((e: Event) => this.onScroll(e));
+        } else {
+            var div = this.elRef.nativeElement.querySelector('div.mat-sidenav-content');
+            Observable.fromEvent(div, "scroll").subscribe((e: Event) => this.onScroll(e));
+        }
+        this.onScroll();
+    }
+
     ngOnInit() {
         if(!isPlatformBrowser(this.platformId))
             return;
-
-        this.onWindowScroll();
 
         this.checkServiceWorker();
         this.checkOnlineStatus();
@@ -110,12 +76,6 @@ export class AppComponent implements OnInit {
         this.sw.push.filter(msg => msg.notification.title == "New version available").subscribe(() => {this.checkAndUpdate()});
     }
 
-    private checkAndUpdate(): void {
-        this.sw.checkForUpdate().filter(update => update)
-            .flatMap((x) => this.sw.updates).map(updateEvent => updateEvent.version)
-            .flatMap(ver => this.sw.activateUpdate(ver)).subscribe(() => this.updateDone());
-    }
-
     public subscribeToPush() {
         this.sw.registerForPush({
             applicationServerKey: 'BKxp6BwVzRWy1Qbe63rHNbG46uwPTrl1RoeTJuyVBm42kvlUk0RuSkYk8NKoO0QK2GNV7eRhOLyV1KfmZhwU9Sc'
@@ -128,6 +88,12 @@ export class AppComponent implements OnInit {
         }, err => {
             console.error("error during register for push", err);
         });
+    }
+
+    private checkAndUpdate(): void {
+        this.sw.checkForUpdate().filter(update => update)
+            .flatMap((x) => this.sw.updates).map(updateEvent => updateEvent.version)
+            .flatMap(ver => this.sw.activateUpdate(ver)).subscribe(() => this.updateDone());
     }
 
     /**
@@ -148,7 +114,7 @@ export class AppComponent implements OnInit {
         this.conn.hasNetworkConnection().filter(status => status != previouseStatus).debounceTime(1000).subscribe(status => {
                 previouseStatus = status;
                 if (status == false) {
-                    this.snackBarService.showMessage("You are offline. All changes will be synced when you will go online again.")
+                    this.snackBarService.showMessage("You are offline. All changes will be synced when you will go online again.", "Close")
                 }
                 else {
                     this.snackBarService.showMessage("You are online. All data is synced.", "Ok", 5000);
@@ -177,8 +143,7 @@ export class AppComponent implements OnInit {
                                 waiting: !!reg.waiting
                             };
                         })
-                })
-                .then(value => {
+                }).then(value => {
                     if (value[0] && value[0].active == true) {
                         clearInterval(interval);
                         localStorage.setItem("cache_done", "true");
@@ -190,10 +155,14 @@ export class AppComponent implements OnInit {
         setTimeout(()=> clearInterval(interval), 10000); //check timeout
     }
 
-    @HostListener("window:scroll", [])
-    private onWindowScroll(): void {
-        let number = this.document.body.scrollTop;
-        this.headerIsFixed = number > 0;
-        this.navIsFixed = number > 46;
+
+    private onScroll(event?: Event): void {
+        if(!event || !event.srcElement.scrollTop) {
+            this.offset = this.document.body.scrollTop;
+        } else {
+            this.offset = event.srcElement.scrollTop;
+        }
+        this.headerIsFixed = this.offset > 0;
+        this.navIsFixed = this.offset > 46;
     }
 }

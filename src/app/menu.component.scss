@@ -1,8 +1,9 @@
 :host-context(.side-nav) a {
-  display:block;
-  text-align: right;
+  display: block;
+  text-align: left;
+  padding: 10px;
 }
 :host-context(.side-nav) {
-  padding: 50px 0;
-  width: 200px;
+  padding: 47px 0;
+  width: 220px;
 }

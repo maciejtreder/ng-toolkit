@@ -7,7 +7,6 @@ import { MdButtonModule, MdSnackBarModule, MdSidenavModule } from '@angular/mate
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
-//import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { SnackBarService } from './services/snack-bar.service';
 
 import { AppComponent } from './app.component';
@@ -22,7 +21,6 @@ import { HomeView } from './home/home-view.component';
     MdSidenavModule,
     CommonModule,
     HttpSwProxyModule,
-    //Ng2DeviceDetectorModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeView, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},

@@ -1,0 +1,48 @@
+<!---DESKTOP---->
+<header *ngIf="isDesktop" [class.fixed]="headerIsFixed">
+    <h1>Angular PWA Serverless</h1>
+    <menu *ngIf="navIsFixed"></menu>
+</header>
+<div id="content-wrapper" *ngIf="isDesktop" class="desktop" [class.headerFixed]="headerIsFixed">
+    <div id="content">
+        <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
+        <menu [class.fixed]="navIsFixed"></menu>
+        <router-outlet></router-outlet>
+    </div>
+    <footer class="credentials">
+        <!-- Please respect MIT License and don't remove this footer. --->
+        <p class="built">Built with</p>
+        <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+    </footer>
+</div>
+
+<!---MOBILE---->
+<md-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false">
+    <md-sidenav>
+        <div>
+            <button md-mini-fab (click)="sidenav.close()" class="menu-button">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        </div>
+        <menu (click)="sidenav.close()" class="side-nav"></menu>
+    </md-sidenav>
+    <header *ngIf="!isDesktop" [class.fixed]="headerIsFixed" [style.top]="offset">
+        <h1>
+            <button md-mini-fab (click)="sidenav.open()" class="menu-button">
+                <i class="material-icons">menu</i>
+            </button>
+            Angular PWA Serverless
+        </h1>
+    </header>
+    <div id="content-wrapper" class="mobile" [class.headerFixed]="headerIsFixed">
+        <div id="content">
+            <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
+            <router-outlet></router-outlet>
+        </div>
+        <footer class="credentials">
+            <!-- Please respect MIT License and don't remove this footer. --->
+            <p class="built">Built with</p>
+            <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+        </footer>
+    </div>
+</md-sidenav-container>

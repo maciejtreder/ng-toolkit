@@ -35,13 +35,13 @@ h2 {
   background-color: cornflowerblue;
   color: white;
   float: left;
-  margin: 0 0 0 20px;
+  margin: 3px 0 0 3px;
 }
 
 md-sidenav .menu-button {
   position: static;
   float: right;
-  margin: 10px 10px 0 0;
+  margin: 3px 3px 0 0;
 }
 
 :host {
@@ -59,9 +59,14 @@ md-sidenav .menu-button {
   max-width: 1000px;
   margin: auto;
 }
-#content-wrapper.headerFixed {
+#content-wrapper.headerFixed.desktop {
   padding-top: 50px;
 }
+
+#content-wrapper.headerFixed.mobile {
+  padding-top: 48px;
+}
+
 #content {
   flex: 1;
 }
