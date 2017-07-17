@@ -1,7 +1,3 @@
-div div {
-    padding-top: 320px;
-    text-align: center;
-}
 span {
     display: block;
     margin-bottom: 20px;
@@ -16,4 +12,18 @@ div.ng-http-sw-proxy {
 
 .ng-http-sw-proxy img {
     margin-top: 20px;
+}
+@media (max-device-width: 768px) {
+    div.content div {
+        padding-top: 130px;
+    }
+    img {
+        width: 100%
+    }
+}
+
+@media (min-device-width: 768px) {
+    div.content div {
+        padding-top: 320px;
+    }
 }

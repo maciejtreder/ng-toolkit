@@ -2,6 +2,17 @@ h3 {
   position: relative;
   color: deepskyblue;
   text-align: center;
-  top: 35px;
-  left: -10px;
+}
+@media (max-device-width: 768px) {
+  h3 {
+    top: 7px;
+    left: -30px;
+  }
+}
+
+@media (min-device-width: 768px) {
+  h3 {
+    top: 35px;
+    left: -10px;
+  }
 }

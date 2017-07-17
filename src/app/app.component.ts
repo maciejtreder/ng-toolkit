@@ -3,9 +3,11 @@ import { isPlatformBrowser } from '@angular/common'
 import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
 import { Observable } from 'rxjs';
 import { RequestOptions, Headers, RequestOptionsArgs, Http } from '@angular/http';
+import { DOCUMENT } from '@angular/platform-browser';
 
 import { SnackBarService } from './services/snack-bar.service';
 import { ConnectivityService } from 'ng-http-sw-proxy';
+//import { Ng2DeviceService } from 'ng2-device-detector';
 
 import * as _ from 'underscore';
 
@@ -14,25 +16,71 @@ import * as _ from 'underscore';
   moduleId: module.id,
   selector: 'app',
   template: `
-    <h1>Angular PWA Serverless</h1>
-    <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
-    <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
-    <a md-raised-button routerLink="/lazy"><i class="material-icons">free_breakfast</i> Lazy</a>
-    <a md-raised-button routerLink="/httpProxy"><i class="material-icons">merge_type</i> Http proxy demo</a>
-    <a md-raised-button (click)="subscribeToPush()"><i class="material-icons">message</i> Subscribe to push</a>
-    <a md-raised-button target="_blank" href="https://github.com/maciejtreder/angular-universal-serverless"><i class="material-icons">code</i> Fork on github</a>
-    <router-outlet></router-outlet>
+        <header *ngIf="isDesktop">
+            <h1>Angular PWA Serverless</h1>
+        </header>
+        <div id="content-wrapper" *ngIf="isDesktop">
+            <div id="content">
+                <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
+                <menu></menu>
+                <router-outlet></router-outlet>
+            </div>
+            <footer class="credentials">
+              <!-- Please respect MIT License and don't remove this footer. --->
+              <p class="built">Built with</p>
+              <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+            </footer>
+        </div>
+
+
+    <md-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false" >
+      <md-sidenav>
+        <button md-mini-fab (click)="sidenav.close()" class="menu-button">
+            <i class="material-icons">menu</i>
+        </button>
+        <menu (click)="sidenav.close()" class="side-nav"></menu>
+      </md-sidenav>
+        <header>
+            <h1>
+                <button md-mini-fab (click)="sidenav.open()" class="menu-button">
+                    <i class="material-icons">menu</i>
+                </button>
+            Angular PWA Serverless</h1>
+        </header>
+        <div id="content">
+            <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
+            <router-outlet></router-outlet>
+        </div>
+        <footer class="credentials">
+          <!-- Please respect MIT License and don't remove this footer. --->
+          <p class="built">Built with</p>
+          <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+        </footer>
+    </md-sidenav-container>
   `,
     styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
 
     private platformId: Object;
+    private document: Document;
     private updateInfoDisplayed: boolean;
     private pushRegistration: NgPushRegistration;
+    //public isDesktop: boolean = !this.deviceService.isDesktop();
+    public isDesktop: boolean = true;
+    public navIsFixed: boolean = false;
 
-    constructor(@Inject(PLATFORM_ID)  platformId: Object, private snackBarService: SnackBarService, private sw: NgServiceWorker, private http: Http, private conn: ConnectivityService) {
+    constructor(
+        @Inject(PLATFORM_ID)  platformId: Object,
+        private snackBarService: SnackBarService,
+        private sw: NgServiceWorker,
+        private http: Http,
+        private conn: ConnectivityService,
+        //private deviceService: Ng2DeviceService,
+        @Inject(DOCUMENT) document: Document
+    ) {
         this.platformId = platformId; //Intellij type checking workaround.
+        this.document = document; //Intellij type checking workaround.
     }
 
     ngOnInit() {

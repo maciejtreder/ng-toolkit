@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MdButtonModule, MdSnackBarModule } from '@angular/material';
+import { MdButtonModule, MdSnackBarModule, MdSidenavModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
+//import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
 import { SnackBarService } from './services/snack-bar.service';
 
 import { AppComponent } from './app.component';
+import { MenuComponent } from './menu.component';
 import { HomeView } from './home/home-view.component';
 
 
@@ -17,8 +19,10 @@ import { HomeView } from './home/home-view.component';
   imports: [
     MdButtonModule,
     MdSnackBarModule,
+    MdSidenavModule,
     CommonModule,
     HttpSwProxyModule,
+    //Ng2DeviceDetectorModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: HomeView, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
@@ -26,7 +30,7 @@ import { HomeView } from './home/home-view.component';
     ]),
     ServiceWorkerModule
   ],
-  declarations: [ AppComponent, HomeView ],
+  declarations: [ AppComponent, HomeView, MenuComponent ],
   exports: [ AppComponent ],
   providers: [SnackBarService]
 })

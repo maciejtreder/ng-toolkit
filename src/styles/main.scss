@@ -1,9 +1,18 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300);
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 * {
   font-weight: 300;
   font-family: 'Source Sans Pro', calibri, Arial, sans-serif;
+}
+
+.mat-sidenav-container {
+  background: #ffffff !important;
 }
 a:hover, button:hover {
   text-decoration: none;
@@ -21,7 +30,20 @@ a {
 }
 
 app div.content {
-  background: url('../assets/img/sandbox.png') no-repeat top center;
-  min-height: 350px;
   position: relative;
+  text-align: center;
+}
+
+@media (max-device-width: 768px) {
+  app div.content {
+    background: url('../assets/img/sandbox-mobile.png') no-repeat top center;
+    min-height: 175px;
+  }
+}
+
+@media (min-device-width: 768px) {
+  app div.content {
+    background: url('../assets/img/sandbox.png') no-repeat top center;
+    min-height: 350px;
+  }
 }

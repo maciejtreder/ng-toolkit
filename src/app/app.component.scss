@@ -1,10 +1,9 @@
-:host {padding-top: 10px}
-
 h1,h2 {
   text-align: center;
 }
 h1 {
   color: orange;
+  height: 30px;
 }
 h2 {
   color: cornflowerblue;
@@ -12,3 +11,58 @@ h2 {
   margin-top: 0px;
 }
 
+.menu-button {
+  background-color: cornflowerblue;
+  color: white;
+  float: left;
+  margin: 0 0 0 20px;
+}
+
+md-sidenav .menu-button {
+  position: static;
+  float: right;
+  margin: 10px 10px 0 0;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
+
+
+#content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+#content {
+  flex: 1;
+  max-width: 1000px;
+}
+
+footer {
+  //bottom: 0;
+  height: 35px;
+  padding-top:20px;
+}
+
+footer p {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', calibri, Arial, sans-serif;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+}
+footer a {
+  margin: 0;
+  color: black;
+}
+footer a:hover {
+  text-decoration: none;
+}
+footer p.built {
+  font-size: 12px;
+}
