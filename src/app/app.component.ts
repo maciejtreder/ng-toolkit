@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core'
+import { Component, OnInit, PLATFORM_ID, Inject, HostListener, HostBinding } from '@angular/core'
 import { isPlatformBrowser } from '@angular/common'
 import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
 import { Observable } from 'rxjs';
@@ -16,13 +16,14 @@ import * as _ from 'underscore';
   moduleId: module.id,
   selector: 'app',
   template: `
-        <header *ngIf="isDesktop">
+        <header *ngIf="isDesktop" [class.fixed]="headerIsFixed">
             <h1>Angular PWA Serverless</h1>
+            <menu *ngIf="navIsFixed"></menu>
         </header>
-        <div id="content-wrapper" *ngIf="isDesktop">
+        <div id="content-wrapper" *ngIf="isDesktop" [class.headerFixed]="headerIsFixed">
             <div id="content">
                 <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
-                <menu></menu>
+                <menu [class.fixed]="navIsFixed"></menu>
                 <router-outlet></router-outlet>
             </div>
             <footer class="credentials">
@@ -68,7 +69,12 @@ export class AppComponent implements OnInit {
     private pushRegistration: NgPushRegistration;
     //public isDesktop: boolean = !this.deviceService.isDesktop();
     public isDesktop: boolean = true;
+
+    //@HostBinding('class.navFixed')
     public navIsFixed: boolean = false;
+
+    //@HostBinding('class.headerFixed')
+    public headerIsFixed: boolean = false;
 
     constructor(
         @Inject(PLATFORM_ID)  platformId: Object,
@@ -86,6 +92,8 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         if(!isPlatformBrowser(this.platformId))
             return;
+
+        this.onWindowScroll();
 
         this.checkServiceWorker();
         this.checkOnlineStatus();
@@ -180,5 +188,12 @@ export class AppComponent implements OnInit {
                 });
         }, 100);
         setTimeout(()=> clearInterval(interval), 10000); //check timeout
+    }
+
+    @HostListener("window:scroll", [])
+    private onWindowScroll(): void {
+        let number = this.document.body.scrollTop;
+        this.headerIsFixed = number > 0;
+        this.navIsFixed = number > 46;
     }
 }
