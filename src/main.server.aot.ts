@@ -37,12 +37,10 @@ app.use('/', express.static('dist', { index: false }));
 
 ROUTES.forEach(route => {
   app.get(route, (req, res) => {
-    console.time(`GET: ${req.originalUrl}`);
     res.render('../dist/index', {
       req: req,
       res: res
     });
-    console.timeEnd(`GET: ${req.originalUrl}`);
   });
 });
 

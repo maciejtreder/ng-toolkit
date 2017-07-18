@@ -26,7 +26,7 @@
         </div>
         <menu (click)="sidenav.close()" class="side-nav"></menu>
     </md-sidenav>
-    <header *ngIf="!isDesktop" [class.fixed]="headerIsFixed" [style.top]="offset">
+    <header [style.top]="offset" [class.fixed]="headerIsFixed">
         <h1>
             <button md-mini-fab (click)="sidenav.open()" class="menu-button">
                 <i class="material-icons">menu</i>

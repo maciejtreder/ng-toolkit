@@ -8,6 +8,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
+import { ServiceWorkerService } from './services/service-worker.service';
+import { DeviceService } from './services/device-service';
+import { ReTree } from './services/retree.service';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
@@ -30,7 +33,7 @@ import { HomeView } from './home/home-view.component';
   ],
   declarations: [ AppComponent, HomeView, MenuComponent ],
   exports: [ AppComponent ],
-  providers: [SnackBarService]
+  providers: [SnackBarService, ServiceWorkerService, DeviceService, ReTree]
 })
 export class AppModule {
 }
