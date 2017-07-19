@@ -10,8 +10,6 @@ import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService} from './services/service-worker.service';
 
 
-
-
 @Component({
   moduleId: module.id,
   selector: 'app',

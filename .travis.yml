@@ -6,7 +6,7 @@ before_install:
   - npm install
 script:
   - npm run build:deploy
-  - aws sns publish --subject "New version available" --message "Check out newest version of PWA Angular Universal by Maciej Treder! " --topic-arn arn:aws:sns:eu-central-1:$ACC_ID:sns-webpush-angular-universal
+  - aws sns publish --subject "New version available" --message "Check out newest version of PWA with Angular Universal by Maciej Treder! " --topic-arn arn:aws:sns:eu-central-1:$ACC_ID:sns-webpush-angular-universal
 
 env:
   global:

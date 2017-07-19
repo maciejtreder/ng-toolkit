@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { APP_BASE_HREF, CommonModule } from '@angular/common';
-import { HttpModule } from '@angular/http';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MdButtonModule, MdSnackBarModule, MdSidenavModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
