@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
     private platformId: Object;
     private document: any;
     public isDesktop: boolean = this.deviceService.isDesktop();
-    public offset: number = 0;
     public navIsFixed: boolean = false;
     public headerIsFixed: boolean = false;
 
@@ -71,12 +70,13 @@ export class AppComponent implements OnInit {
     }
 
     private onScroll(event?: Event): void {
+        let offset;
         if(!event || !event.srcElement.scrollTop) {
-            this.offset = this.document.body.scrollTop;
+            offset = this.document.body.scrollTop;
         } else {
-            this.offset = event.srcElement.scrollTop;
+            offset = event.srcElement.scrollTop;
         }
-        this.headerIsFixed = this.offset > 0;
-        this.navIsFixed = this.offset > 46;
+        this.headerIsFixed = offset > 0;
+        this.navIsFixed = offset > 55;
     }
 }
