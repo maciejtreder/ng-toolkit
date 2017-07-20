@@ -10,6 +10,7 @@ import { SnackBarService } from './snack-bar.service';
 export class ServiceWorkerService {
 
     private updateInfoDisplayed:boolean = false;
+    private subscribed: boolean = false;
 
     constructor(private snackBarService: SnackBarService,  private sw: NgServiceWorker,  private http: Http) {
         if (!(process.env.NODE_ENV == 'production' && 'serviceWorker' in navigator) || localStorage.getItem("cache_done") == "true")
@@ -38,19 +39,31 @@ export class ServiceWorkerService {
                     }
                 });
         }, 100);
-        setTimeout(()=> clearInterval(interval), 10000); //check timeout
+        setTimeout(()=> clearInterval(interval), 10000); //installation check timeout
     }
 
     public checkForUpdates():void {
-        Observable.merge(
-            this.sw.push.filter(msg => msg.notification.title == "New version available"),
-            this.sw.checkForUpdate().filter(update => update)
-        ).flatMap(() => this.sw.updates).map(updateEvent => updateEvent.version)
-        .subscribe(ver => this.sw.activateUpdate(ver).subscribe(() => this.displayUpdateMessage()));
+        this.sw.checkForUpdate()
+            .filter(update => {console.log("isUpdate?", update); return update})
+            .flatMap(() => this.sw.updates)
+            .map(updateEvent => updateEvent.version)
+            .flatMap(ver => {console.log("updating to version", ver); return this.sw.activateUpdate(ver)})
+            .subscribe(result => {console.log("updated?", result); this.displayUpdateMessage()})
 
-        this.sw.log().map((log:any) => log.message)
-            .filter((message: string) => message && message.indexOf("caching from network") > -1).first()
-            .subscribe((message) => this.displayUpdateMessage());
+        if (this.subscribed)
+            return;
+
+        this.subscribed = true;
+
+        this.sw.push
+            .filter(msg => msg.notification.title == "New version available")
+            .subscribe(() => {console.log("push with update."), this.checkForUpdates()});
+
+        this.sw.log()
+            .map((log: any) => log.message)
+            .filter(message => {console.log("sw log", message); return message && message.indexOf("caching from network") > -1})
+            .first()
+            .subscribe(() => this.displayUpdateMessage())
     }
 
     /**
