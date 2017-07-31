@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { ServiceWorkerService } from './services/service-worker.service';
 import {Observable} from 'rxjs';
+import { isPlatformBrowser } from '@angular/common'
 
 @Component({
     moduleId: module.id,
@@ -18,11 +19,16 @@ import {Observable} from 'rxjs';
 export class MenuComponent implements OnInit {
     public isRegistered: Observable<boolean> = this.sws.isRegisteredToPush();
     public isSafari: boolean = false;
+    private platformId: any;
 
-    constructor(private sws: ServiceWorkerService) {}
+    constructor(private sws: ServiceWorkerService, @Inject(PLATFORM_ID)  platformId: Object) {
+        this.platformId = platformId;
+    }
 
     ngOnInit() {
-        this.isSafari = window && window['safari'];
+        if (!isPlatformBrowser(this.platformId))
+            return;
+        this.isSafari = window['safari'];
     }
 
     public subscribeToPush():void {

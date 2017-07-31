@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
         this.sws.checkForUpdates();
 
-        let isOnline: boolean = true;
+        let isOnline: boolean;
         this.conn.hasNetworkConnection().filter(status => status != isOnline).debounceTime(1000).subscribe(status => {
             isOnline = status;
             if (status == false) {
