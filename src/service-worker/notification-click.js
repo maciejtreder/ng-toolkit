@@ -11,6 +11,10 @@ export class NotificationClickImpl {
                 includeUncotrolled: true,
                 type: 'window'
             }).then(function(clientList) {
+                if (event.notification.data) {
+                    if (clients.openWindow)
+                        return clients.openWindow(event.notification.data);
+                }
                 if (event.notification.title == 'New version available') {
                     for (var i = 0; i < clientList.length; i++) {
                         var client = clientList[i];
@@ -22,10 +26,6 @@ export class NotificationClickImpl {
                     if (clients.openWindow) {
                         return clients.openWindow('/');
                     }
-                }
-                else if (event.notification.title == 'Star on GitHub') {
-                    if(clients.openWindow)
-                        return clients.openWindow('https://github.com/maciejtreder/angular-universal-serverless')
                 }
             }))
         });

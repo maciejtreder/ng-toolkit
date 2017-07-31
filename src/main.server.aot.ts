@@ -44,6 +44,11 @@ ROUTES.forEach(route => {
   });
 });
 
+app.get('/redirect/**', (req, res) => { //redirection from safari notification to given external page
+  var location = req.url.substring(10);
+  res.redirect(301, location);
+});
+
 app.post('/testPost', (req, res) => {
   res.status(200).send({receivedValue: req.body.exampleKey});
 });
