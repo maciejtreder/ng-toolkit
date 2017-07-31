@@ -7,14 +7,16 @@ It is also built with serverless environment in mind and can be easily deployed 
 [Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
 
 ## What's inside?
-* Service-Worker (for content-caching - application works offline)
+* Service-Worker (for content-caching - application works offline - PWA)
 * Push notifications:
-    * Webpush - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
-    * Safari push - **In progress**
+    * Vapid webpush (Chrome & Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
+    * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
 * Mobile devices support
 * Angular Material
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy)
 * Webpack
+* Unit tests - in progress
+* e2e tests - in progress
 * UglifyJS
 * OptimizeJS
 * Sass loader
