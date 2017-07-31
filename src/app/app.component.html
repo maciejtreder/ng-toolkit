@@ -1,9 +1,11 @@
 <!---DESKTOP---->
-<header *ngIf="isDesktop" [class.fixed]="headerIsFixed">
-    <h1>Angular PWA Serverless</h1>
-    <menu *ngIf="navIsFixed"></menu>
-</header>
-<div id="content-wrapper" *ngIf="isDesktop" class="desktop" [class.headerFixed]="headerIsFixed">
+<md-toolbar *ngIf="isDesktop" [class.withNav]="navIsFixed">
+    <div>
+        <h1>Angular PWA Serverless</h1>
+        <menu *ngIf="navIsFixed"></menu>
+    </div>
+</md-toolbar>
+<div id="content-wrapper" *ngIf="isDesktop" class="desktop" >
     <div id="content">
         <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
         <menu [class.fixed]="navIsFixed"></menu>
@@ -17,14 +19,7 @@
 </div>
 
 <!---MOBILE---->
-<header *ngIf="!isDesktop" [class.fixed]="headerIsFixed">
-    <h1>
-        <button md-mini-fab (click)="sidenav.open()" class="menu-button">
-            <i class="material-icons">menu</i>
-        </button>
-        Angular PWA Serverless
-    </h1>
-</header>
+
 <md-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false">
     <md-sidenav>
         <div>
@@ -33,8 +28,17 @@
             </button>
         </div>
         <menu (click)="sidenav.close()" class="side-nav"></menu>
+
     </md-sidenav>
-    <div id="content-wrapper" class="mobile" [class.headerFixed]="headerIsFixed">
+    <md-toolbar *ngIf="!isDesktop">
+        <h1>
+            <button md-mini-fab (click)="sidenav.open()" class="menu-button open-nav">
+                <i class="material-icons">menu</i>
+            </button>
+            Angular PWA Serverless
+        </h1>
+    </md-toolbar>
+    <div id="content-wrapper" class="mobile">
         <div id="content">
             <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
             <router-outlet></router-outlet>

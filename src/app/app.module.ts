@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MdButtonModule, MdSnackBarModule, MdSidenavModule } from '@angular/material';
+import { MdButtonModule, MdSnackBarModule, MdSidenavModule, MdToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
@@ -18,6 +18,7 @@ import { HomeView } from './home/home-view.component';
 @NgModule({
   imports: [
     MdButtonModule,
+    MdToolbarModule,
     MdSnackBarModule,
     MdSidenavModule,
     CommonModule,

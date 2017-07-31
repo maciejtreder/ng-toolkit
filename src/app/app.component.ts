@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
     private document: any;
     public isDesktop: boolean = this.deviceService.isDesktop();
     public navIsFixed: boolean = false;
-    public headerIsFixed: boolean = false;
 
     constructor(
         @Inject(PLATFORM_ID)  platformId: Object,
@@ -30,8 +29,8 @@ export class AppComponent implements OnInit {
         private conn: ConnectivityService,
         private deviceService: DeviceService,
         @Inject(DOCUMENT) document: any,
-        private elRef:ElementRef,
-        private sws: ServiceWorkerService
+        private sws: ServiceWorkerService,
+        private elRef: ElementRef
     ) {
         this.platformId = platformId; //Intellij type checking workaround.
         this.document = document; //Intellij type checking workaround.
@@ -39,15 +38,10 @@ export class AppComponent implements OnInit {
 
     ngAfterViewInit() {
         // "sticky" header
-        if (!isPlatformBrowser(this.platformId))
+        if (!isPlatformBrowser(this.platformId) || !this.isDesktop)
             return;
 
-        if (this.isDesktop) {
-            Observable.fromEvent(window, "scroll").subscribe((e: Event) => this.onScroll(e));
-        } else {
-            var div = this.elRef.nativeElement.querySelector('div.mat-sidenav-content');
-            Observable.fromEvent(div, "scroll").subscribe((e: Event) => this.onScroll(e));
-        }
+        Observable.fromEvent(window, "scroll").subscribe((e: Event) => this.onScroll());
         this.onScroll();
     }
 
@@ -69,14 +63,8 @@ export class AppComponent implements OnInit {
         });
     }
 
-    private onScroll(event?: Event): void {
-        let offset;
-        if(!event || !event.srcElement.scrollTop) {
-            offset = this.document.body.scrollTop;
-        } else {
-            offset = event.srcElement.scrollTop;
-        }
-        this.headerIsFixed = offset > 0;
-        this.navIsFixed = offset > 55;
+    private onScroll(): void {
+        var rect = this.elRef.nativeElement.querySelector('#content menu').getBoundingClientRect();
+        this.navIsFixed = rect.top <  64;
     }
 }

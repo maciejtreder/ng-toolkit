@@ -6,13 +6,14 @@ html, body {
   margin: 0;
 }
 
-* {
-  font-weight: 300;
-  font-family: 'Source Sans Pro', calibri, Arial, sans-serif;
+*:not(.material-icons) {
+  font-weight: 300 !important;;
+  font-family: 'Source Sans Pro', calibri, Arial, sans-serif !important;
 }
 
 .mat-sidenav-container {
   background: #ffffff !important;
+  height: 100%;
 }
 a:hover, button:hover {
   text-decoration: none;
