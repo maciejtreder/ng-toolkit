@@ -11,6 +11,6 @@
 			"es6",
 			"dom"
 		],
-	"types": ["node", "hammerjs"]
+	"types": ["node", "hammerjs", "jasmine"]
   }
 }
