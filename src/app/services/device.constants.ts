@@ -160,7 +160,7 @@ export const BROWSER_VERSIONS_RE_MAP: any = {
     MS_EDGE: /\bEdge\/([\d\.]+)\b/
 };
 
-export const BROWSER_VERSIONS_RE: any = Object.keys(BROWSER_VERSIONS_RE_MAP).reduce(function (obj: any, key: any) {
+export const BROWSER_VERSIONS_RE: any = Object.keys(BROWSER_VERSIONS_RE_MAP).reduce((obj: any, key: any) => {
     obj[BROWSERS[key]] = BROWSER_VERSIONS_RE_MAP[key];
     return obj;
 }, {});

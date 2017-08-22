@@ -13,7 +13,6 @@ import { ngExpressEngine } from '@nguniversal/express-engine';
 import { ROUTES } from './routes';
 import { enableProdMode } from '@angular/core';
 
-
 enableProdMode();
 const app = express();
 
@@ -23,35 +22,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
 
-
 app.engine('html', ngExpressEngine({
   bootstrap: ServerAppModuleNgFactory
 }));
-
-
 
 app.set('view engine', 'html');
 app.set('views', 'src');
 
 app.use('/', express.static('dist', { index: false }));
 
-ROUTES.forEach(route => {
+ROUTES.forEach((route) => {
   app.get(route, (req, res) => {
-    res.render('../dist/index', {
-      req: req,
-      res: res
-    });
+    res.render('../dist/index', { req, res });
   });
 });
 
-app.get('/redirect/**', (req, res) => { //redirection from safari notification to given external page
-  var location = req.url.substring(10);
+// redirection from safari notification to given external page
+app.get('/redirect/**', (req, res) => {
+  const location = req.url.substring(10);
   res.redirect(301, location);
 });
 
 app.post('/testPost', (req, res) => {
   res.status(200).send({receivedValue: req.body.exampleKey});
 });
-
 
 export = app;

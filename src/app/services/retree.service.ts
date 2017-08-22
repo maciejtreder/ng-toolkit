@@ -4,44 +4,34 @@
 
 export class ReTree {
 
-    constructor() {
-
-    }
-
-    public test(string: string , regex: any): any {
-        let self = this;
+    public test(str: string , regex: any): any {
         if (typeof regex === 'string') {
             regex = new RegExp(regex);
         }
 
         if (regex instanceof RegExp) {
-            return regex.test(string);
-        }else if (regex && Array.isArray(regex.and)) {
-            return regex.and.every(function (item: any) {
-                return self.test(string, item);
-            });
-        }else if (regex && Array.isArray(regex.or)) {
-            return regex.or.some(function (item: any) {
-                return self.test(string, item);
-            });
-        }else if (regex && regex.not) {
-            return !self.test(string, regex.not);
-        }else {
+            return regex.test(str);
+        } else if (regex && Array.isArray(regex.and)) {
+            return regex.and.every((item: any) => this.test(str, item));
+        } else if (regex && Array.isArray(regex.or)) {
+            return regex.or.some((item: any) => this.test(str, item));
+        } else if (regex && regex.not) {
+            return !this.test(str, regex.not);
+        } else {
             return false;
         }
     }
 
-    public exec(string: string, regex: any): any {
-        let self = this;
+    public exec(str: string, regex: any): any {
         if (typeof regex === 'string') {
             regex = new RegExp(regex);
         }
 
         if (regex instanceof RegExp) {
-            return regex.exec(string);
-        }else if (regex && Array.isArray(regex)) {
-            return regex.reduce(function (res: any, item: any) {
-                return (!!res) ? res : self.exec(string, item);
+            return regex.exec(str);
+        } else if (regex && Array.isArray(regex)) {
+            return regex.reduce((res: any, item: any) => {
+                return (!!res) ? res : this.exec(str, item);
             }, null);
         }else {
             return null;

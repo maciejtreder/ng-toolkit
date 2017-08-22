@@ -18,7 +18,6 @@ const app = express();
 const port = 8000;
 const baseUrl = `http://localhost:${port}`;
 
-
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
@@ -34,17 +33,15 @@ app.set('views', 'src');
 
 app.use('/', express.static('dist', {index: false}));
 
-ROUTES.forEach(route => {
+ROUTES.forEach((route) => {
   app.get(route, (req, res) => {
-    res.render('../dist/index', {
-      req: req,
-      res: res
-    });
+    res.render('../dist/index', { req, res });
   });
 });
 
-app.get('/redirect/**', (req, res) => { //redirection from safari notification to given external page
-  var location = req.url.substring(10);
+// redirection from safari notification to given external page
+app.get('/redirect/**', (req, res) => {
+  const location = req.url.substring(10);
   res.redirect(301, location);
 });
 
