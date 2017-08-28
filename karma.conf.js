@@ -3,12 +3,12 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      { pattern: 'src/verify-environment.spec.js', watched: false }
+      { pattern: './spec-bundle.js', watched: false }
     ],
     exclude: [
     ],
     preprocessors: {
-      'src/verify-environment.spec.js': ['webpack', 'sourcemap']
+      './spec-bundle.js': ['webpack', 'sourcemap']
     },
     webpack: require('./webpack/webpack.test')({env: 'test'}),
     reporters: ['progress'],
