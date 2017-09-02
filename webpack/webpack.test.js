@@ -55,6 +55,9 @@ module.exports = function (options) {
         module: {
 
             rules: [
+                {
+                    test: /.*/, loader: 'string-replace-loader', query: { search: 'moduleId: module.id,', replace: '' }
+                },
 
             /**
              * Source map loader support for *.js files
