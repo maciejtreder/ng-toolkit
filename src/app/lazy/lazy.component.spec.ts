@@ -19,7 +19,7 @@ describe('Lazy component -', () => {
 
     it('title is \'I am lazy!\'', () => {
         fixture.detectChanges();
-        let de: DebugElement = fixture.debugElement.query(By.css('h3'));
+        const de: DebugElement = fixture.debugElement.query(By.css('h3'));
         expect(de.nativeElement.textContent).toBe('I am lazy!');
     });
 });
