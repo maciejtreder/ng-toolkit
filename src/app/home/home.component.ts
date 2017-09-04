@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   moduleId: module.id,
   selector: 'home-view',
-  templateUrl: './home-view.component.html',
+  templateUrl: './home.component.html',
   styleUrls: ['../common.component.scss']
 })
-export class HomeViewComponent {
+export class HomeComponent {
 }

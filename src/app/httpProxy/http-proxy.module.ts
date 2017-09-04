@@ -3,18 +3,18 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MdInputModule, MdButtonModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
-import { HttpProxyDemoComponent } from './http-proxy-demo.component';
+import { HttpProxyComponent } from './http-proxy.component';
 
 @NgModule({
-  declarations: [HttpProxyDemoComponent],
+  declarations: [HttpProxyComponent],
   imports: [
     MdButtonModule,
     MdInputModule,
     FormsModule,
     CommonModule,
     RouterModule.forChild([
-      { path: '', component: HttpProxyDemoComponent, pathMatch: 'full'}
+      { path: '', component: HttpProxyComponent, pathMatch: 'full'}
     ])
   ]
 })
-export class HttpProxyDemoModule {}
+export class HttpProxyModule {}

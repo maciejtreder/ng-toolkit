@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 
 @Component({
     moduleId: module.id,
-    selector: 'http-proxy-demo',
-    templateUrl: `./http-proxy-demo.html`,
-    styleUrls: ['../common.component.scss', './http-proxy-demo.css'],
+    selector: 'http-proxy',
+    templateUrl: `./http-proxy.component.html`,
+    styleUrls: ['../common.component.scss', './http-proxy.component.css'],
 })
-export class HttpProxyDemoComponent {
+export class HttpProxyComponent {
 
     public valueToSend: string;
     public response: Observable<any>;
