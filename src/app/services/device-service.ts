@@ -6,29 +6,72 @@ import * as Constants from './device.constants';
 import { ReTree } from './retree.service';
 
 export class DeviceService {
-    ua = '';
-    userAgent = '';
-    os = '';
-    browser = '';
-    device = '';
-    os_version = '';
-    browser_version = '';
+    private ua = '';
+    private userAgent = '';
+    private os = '';
+    private browser = '';
+    private device = '';
+    private osVersion = '';
+    private browserVersion = '';
     constructor(@Inject(PLATFORM_ID) platformId, private injector: Injector) {
         if (isPlatformBrowser(platformId)) {
             this.ua = window.navigator.userAgent;
-        }
-        else {
-            let req: any = this.injector.get(REQUEST);
+        } else {
+            const req: any = this.injector.get(REQUEST);
             this.ua = req.get('User-Agent');
         }
         this._setDeviceInfo();
     }
 
+    public getDeviceInfo(): any {
+        return {
+            userAgent: this.userAgent,
+            os : this.os,
+            browser: this.browser,
+            device : this.device,
+            os_version: this.osVersion,
+            browser_version: this.browserVersion,
+        };
+    }
+
+    public isMobile(): boolean {
+        return [
+            Constants.DEVICES.ANDROID,
+            Constants.DEVICES.IPHONE,
+            Constants.DEVICES.I_POD,
+            Constants.DEVICES.BLACKBERRY,
+            Constants.DEVICES.FIREFOX_OS,
+            Constants.DEVICES.WINDOWS_PHONE,
+            Constants.DEVICES.VITA
+        ].some((item) => {
+                return this.device === item;
+            });
+    }
+
+    public isTablet(): boolean {
+        return [
+            Constants.DEVICES.I_PAD,
+            Constants.DEVICES.FIREFOX_OS
+        ].some((item) => {
+                return this.device === item;
+            });
+    }
+
+    public isDesktop(): boolean {
+        return [
+            Constants.DEVICES.PS4,
+            Constants.DEVICES.CHROME_BOOK,
+            Constants.DEVICES.UNKNOWN
+        ].some((item) => {
+                return this.device === item;
+            });
+    }
+
     private _setDeviceInfo() {
-        let reTree = new ReTree();
-        let ua = this.ua;
+        const reTree = new ReTree();
+        const ua = this.ua;
         this.userAgent = ua;
-        let mappings = [
+        const mappings = [
             { const : 'OS' , prop: 'os'},
             { const : 'BROWSERS' , prop: 'browser'},
             { const : 'DEVICES' , prop: 'device'},
@@ -52,56 +95,13 @@ export class DeviceService {
                 }, Constants[mapping.const].UNKNOWN);
         });
 
-        this.browser_version = '0';
+        this.browserVersion = '0';
         if (this.browser !== Constants.BROWSERS.UNKNOWN) {
-            let re = Constants.BROWSER_VERSIONS_RE[this.browser];
-            let res = reTree.exec(ua, re);
+            const re = Constants.BROWSER_VERSIONS_RE[this.browser];
+            const res = reTree.exec(ua, re);
             if (!!res) {
-                this.browser_version = res[1];
+                this.browserVersion = res[1];
             }
         }
     }
-
-    public getDeviceInfo(): any {
-        return {
-            userAgent: this.userAgent,
-            os : this.os,
-            browser: this.browser,
-            device : this.device,
-            os_version: this.os_version,
-            browser_version: this.browser_version,
-        };
-    }
-    public isMobile() {
-        return [
-            Constants.DEVICES.ANDROID,
-            Constants.DEVICES.IPHONE,
-            Constants.DEVICES.I_POD,
-            Constants.DEVICES.BLACKBERRY,
-            Constants.DEVICES.FIREFOX_OS,
-            Constants.DEVICES.WINDOWS_PHONE,
-            Constants.DEVICES.VITA
-        ].some((item) => {
-                return this.device === item;
-            });
-    };
-
-    public isTablet() {
-        return [
-            Constants.DEVICES.I_PAD,
-            Constants.DEVICES.FIREFOX_OS
-        ].some((item) => {
-                return this.device === item;
-            });
-    };
-
-    public isDesktop() {
-        return [
-            Constants.DEVICES.PS4,
-            Constants.DEVICES.CHROME_BOOK,
-            Constants.DEVICES.UNKNOWN
-        ].some((item) => {
-                return this.device === item;
-            });
-    };
 }

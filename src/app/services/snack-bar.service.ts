@@ -11,12 +11,19 @@ export class SnackBarService {
         this.defaultConfig.extraClasses = ['service_worker_snack'];
     }
 
-    public showMessage(message: string, action?: string, duration: number = -1, callback?: () => void, forceDisplay?: boolean): void {
-        if (this.isDisplayed && !forceDisplay)
+    public showMessage(
+        message: string,
+        action?: string,
+        duration: number = -1,
+        callback?: () => void,
+        forceDisplay?: boolean
+    ): void {
+        if (this.isDisplayed && !forceDisplay) {
             return;
+        }
 
-        let config : MdSnackBarConfig = _.clone(this.defaultConfig)
-            config.duration = duration;
+        const config: MdSnackBarConfig = _.clone(this.defaultConfig);
+        config.duration = duration;
 
         this.snackBar.dismiss();
         this.snackBar.open(message, action, config).afterDismissed().subscribe(() => {

@@ -12,8 +12,7 @@ import { ReTree } from './services/retree.service';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
-import { HomeView } from './home/home-view.component';
-
+import { HomeViewComponent } from './home/home-view.component';
 
 @NgModule({
   imports: [
@@ -24,13 +23,13 @@ import { HomeView } from './home/home-view.component';
     CommonModule,
     HttpSwProxyModule,
     RouterModule.forRoot([
-      { path: '', component: HomeView, pathMatch: 'full'},
+      { path: '', component: HomeViewComponent, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
       { path: 'httpProxy', loadChildren: './httpProxy/http-proxy-demo.module#HttpProxyDemoModule'}
     ]),
     ServiceWorkerModule
   ],
-  declarations: [ AppComponent, HomeView, MenuComponent ],
+  declarations: [ AppComponent, HomeViewComponent, MenuComponent ],
   exports: [ AppComponent ],
   providers: [SnackBarService, ServiceWorkerService, DeviceService, ReTree]
 })

@@ -1,11 +1,9 @@
-import { NgModule, Component } from '@angular/core'
-import { RouterModule } from '@angular/router'
-import { FormsModule }   from '@angular/forms';
+import { NgModule, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MdInputModule, MdButtonModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
-
 import { HttpProxyDemoComponent } from './http-proxy-demo.component';
-
 
 @NgModule({
   declarations: [HttpProxyDemoComponent],
@@ -19,5 +17,4 @@ import { HttpProxyDemoComponent } from './http-proxy-demo.component';
     ])
   ]
 })
-export class HttpProxyDemoModule {
-}
+export class HttpProxyDemoModule {}

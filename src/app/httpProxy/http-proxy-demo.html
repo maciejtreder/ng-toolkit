@@ -5,7 +5,7 @@
             <input mdInput placeholder="Value to send" [(ngModel)]="valueToSend">
         </md-input-container>
         <button md-raised-button (click)="sendPost()">send request</button>
-        <span>response: {{response | async | json}}</span>
+        <span id="response">response: {{response | async | json}}</span>
         <div class="ng-http-sw-proxy">
             <a md-raised-button target="_blank" href="https://www.npmjs.com/package/ng-http-sw-proxy">ng-http-sw-proxy on npm</a>
             <a md-raised-button target="_blank" href="https://github.com/maciejtreder/ng-http-sw-proxy">ng-http-sw-proxy on github</a>
