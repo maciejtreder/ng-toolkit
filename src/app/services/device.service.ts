@@ -1,9 +1,6 @@
-import { REQUEST } from '@nguniversal/express-engine/tokens';
-
-import { PLATFORM_ID, Inject, Injector } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import * as Constants from './device.constants';
 import { ReTree } from './retree.service';
+import { WindowRef } from '../windowRef';
 
 export class DeviceService {
     private ua = '';
@@ -13,13 +10,9 @@ export class DeviceService {
     private device = '';
     private osVersion = '';
     private browserVersion = '';
-    constructor(@Inject(PLATFORM_ID) platformId, private injector: Injector) {
-        if (isPlatformBrowser(platformId)) {
-            this.ua = window.navigator.userAgent;
-        } else {
-            const req: any = this.injector.get(REQUEST);
-            this.ua = req.get('User-Agent');
-        }
+
+    constructor(window: WindowRef) {
+        this.ua = window.nativeWindow.navigator.userAgent;
         this._setDeviceInfo();
     }
 
