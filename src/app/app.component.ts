@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.sws.checkForUpdates();
 
-        let isOnline: boolean;
+        let isOnline: boolean = true;
         this.conn.hasNetworkConnection()
             .filter((status: boolean) => status !== isOnline)
             .debounceTime(1000)
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                         'Close'
                     );
                 } else {
-                    this.snackBarService.showMessage('You are online. All data is synced.', 'Ok', 5000);
+                    this.snackBarService.showMessage('You are online. All data is synced.', 'Ok', 3000);
                 }
             });
     }
