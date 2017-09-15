@@ -20,7 +20,7 @@ import { isPlatformBrowser } from '@angular/common';
         <a md-raised-button (click)="unsubscribeFromPush()" *ngIf="(isRegistered | async) && !isSafari">
             <i class="material-icons">message</i> Unsubscribe from push
         </a>
-        <a md-raised-button target="_blank" href="https://github.com/maciejtreder/angular-universal-serverless">
+        <a md-raised-button target="_blank" rel="noopener" href="https://github.com/maciejtreder/angular-universal-serverless">
             <i class="material-icons">code</i> Fork on github
         </a>
     `,
