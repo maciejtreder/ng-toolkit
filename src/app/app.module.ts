@@ -9,6 +9,7 @@ import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService } from './services/service-worker.service';
 import { DeviceService } from './services/device.service';
 import { ReTree } from './services/retree.service';
+import { WindowRef } from './windowRef';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
@@ -31,7 +32,13 @@ import { HomeComponent } from './home/home.component';
   ],
   declarations: [ AppComponent, HomeComponent, MenuComponent ],
   exports: [ AppComponent ],
-  providers: [SnackBarService, ServiceWorkerService, DeviceService, ReTree]
+  providers: [
+    WindowRef,
+    SnackBarService,
+    {provide: ServiceWorkerService, useClass: ServiceWorkerService, deps:[WindowRef]},
+    {provide: DeviceService, useClass: DeviceService, deps:[WindowRef, ReTree]},
+    ReTree
+  ]
 })
 export class AppModule {
 }
