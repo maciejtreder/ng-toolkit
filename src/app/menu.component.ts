@@ -14,12 +14,12 @@ import { isPlatformBrowser } from '@angular/common';
         <a md-raised-button routerLink="/httpProxy">
             <i class="material-icons">merge_type</i> Http proxy demo
         </a>
-        <a md-raised-button (click)="subscribeToPush()" *ngIf="isPushAvailable() && !(isRegistered | async)">
-            <i class="material-icons">message</i> Subscribe to push
-        </a>
-        <a md-raised-button (click)="unsubscribeFromPush()" *ngIf="(isRegistered | async) && !isSafari">
-            <i class="material-icons">message</i> Unsubscribe from push
-        </a>
+        <!--<a md-raised-button (click)="subscribeToPush()" *ngIf="isPushAvailable() && !(isRegistered | async)">-->
+            <!--<i class="material-icons">message</i> Subscribe to push-->
+        <!--</a>-->
+        <!--<a md-raised-button (click)="unsubscribeFromPush()" *ngIf="(isRegistered | async) && !isSafari">-->
+            <!--<i class="material-icons">message</i> Unsubscribe from push-->
+        <!--</a>-->
         <a md-raised-button target="_blank" rel="noopener" href="https://github.com/maciejtreder/angular-universal-serverless">
             <i class="material-icons">code</i> Fork on github
         </a>
@@ -27,7 +27,7 @@ import { isPlatformBrowser } from '@angular/common';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    public isRegistered: Observable<boolean> = this.sws.isRegisteredToPush();
+    // public isRegistered: Observable<boolean> = this.sws.isRegisteredToPush();
     public isSafari: boolean = false;
     private platformId: any;
 
@@ -43,14 +43,15 @@ export class MenuComponent implements OnInit {
     }
 
     public subscribeToPush(): void {
-        this.sws.registerToPush();
+        // this.sws.registerToPush();
     }
 
     public unsubscribeFromPush(): void {
-        this.sws.unregisterFromPush();
+        // this.sws.unregisterFromPush();
     }
 
     public isPushAvailable(): boolean {
-        return this.sws.isPushAvailable();
+        return true;
+        // return this.sws.isPushAvailable();
     }
 }

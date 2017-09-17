@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        this.sws.checkForUpdates();
+        // this.sws.checkForUpdates();
 
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()
