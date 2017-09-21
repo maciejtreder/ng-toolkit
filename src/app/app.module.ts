@@ -36,7 +36,7 @@ import { HomeComponent } from './home/home.component';
     WindowRef,
     SnackBarService,
     {provide: ServiceWorkerService, useClass: ServiceWorkerService, deps:[WindowRef]},
-    {provide: DeviceService, useClass: DeviceService, deps:[WindowRef, ReTree]},
+    {provide: DeviceService, useClass: DeviceService, deps:[WindowRef]},
     ReTree
   ]
 })
