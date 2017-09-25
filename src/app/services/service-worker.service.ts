@@ -26,13 +26,13 @@ export class ServiceWorkerService {
         private appRef: ApplicationRef
     ) {
         this.platformId = platformId;
-        let interval;
-        interval = setInterval(() => {
-            this.window.nativeWindow.navigator['serviceWorker'].getRegistrations().then((registrations) => {
-                console.log(registrations);
-                clearInterval(interval);
-            });
-        }, 100);
+        //let interval;
+        //interval = setInterval(() => {
+        //    this.window.nativeWindow.navigator['serviceWorker'].getRegistrations().then((registrations) => {
+        //        console.log(registrations);
+        //        clearInterval(interval);
+        //    });
+        //}, 100);
         // this.platformId = platformId;
         // if (this.isPushAvailable()) {
         //     this.isRegisteredToPushObs.next(this.isRegistered());
@@ -69,6 +69,10 @@ export class ServiceWorkerService {
         //         });
         // }, 100);
         // setTimeout(() => clearInterval(interval), 10000); //  installation check timeout
+    }
+
+    public isServiceWorkerAvailable(): boolean {
+        return ('serviceWorker' in this.window.nativeWindow.navigator);
     }
 
     // public checkForUpdates(): void {

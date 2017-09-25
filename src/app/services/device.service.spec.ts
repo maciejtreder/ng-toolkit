@@ -24,7 +24,6 @@ const desktops: Map<string, string> = new Map([
 let windowStub = sinon.createStubInstance(WindowRef);
 describe('device service - ', () => {
     beforeEach(() => {
-        //windowStub = sinon.createStubInstance(WindowRef);
         windowStub._window = {navigator: {userAgent: 'test'}};
         TestBed.configureTestingModule({
             providers: [
