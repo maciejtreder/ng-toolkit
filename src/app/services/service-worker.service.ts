@@ -1,7 +1,7 @@
 import { PLATFORM_ID, Injectable, Inject, ApplicationRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { RequestOptions, Headers, RequestOptionsArgs, Http, Response } from '@angular/http';
 import { WindowRef } from '../windowRef';
 // import { SnackBarService } from './snack-bar.service';
@@ -11,7 +11,6 @@ export class ServiceWorkerService {
 
     private updateInfoDisplayed: boolean = false;
     private subscribed: boolean = false;
-    private platformId: any;
     private isRegisteredToPushObs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private apiEndpoint: string =
         'https:// api.angular-universal-serverless.maciejtreder.com/webpush';
@@ -20,19 +19,16 @@ export class ServiceWorkerService {
 
     constructor(
         private sw: NgServiceWorker,
-        private http: Http,
-        @Inject(PLATFORM_ID) platformId: any,
-        private window: WindowRef,
-        private appRef: ApplicationRef
+        @Inject(PLATFORM_ID) private platformId: any,
+        private window: WindowRef
     ) {
-        this.platformId = platformId;
-        //let interval;
-        //interval = setInterval(() => {
+        // let interval;
+        // interval = setInterval(() => {
         //    this.window.nativeWindow.navigator['serviceWorker'].getRegistrations().then((registrations) => {
         //        console.log(registrations);
         //        clearInterval(interval);
         //    });
-        //}, 100);
+        // }, 100);
         // this.platformId = platformId;
         // if (this.isPushAvailable()) {
         //     this.isRegisteredToPushObs.next(this.isRegistered());
@@ -72,7 +68,29 @@ export class ServiceWorkerService {
     }
 
     public isServiceWorkerAvailable(): boolean {
-        return ('serviceWorker' in this.window.nativeWindow.navigator);
+        return (isPlatformBrowser(this.platformId) && 'serviceWorker' in this.window.nativeWindow.navigator);
+    }
+
+    public update(): Observable<boolean> {
+        if (!this.isServiceWorkerAvailable()) {
+            return Observable.of(false);
+        }
+        return Observable.create((subscriber: Subscriber<boolean>) => {
+            this.sw.checkForUpdate().subscribe((isAvailable: boolean) => {
+                if (isAvailable) {
+                   this.sw.updates
+                       .filter((updateEvent) => updateEvent.type === 'pending')
+                       .map((updateEvent) => updateEvent.version)
+                       .flatMap((version: string) => {
+                            return this.sw.activateUpdate(version);
+                       }).subscribe(() => {
+                            subscriber.next(isAvailable);
+                        });
+               } else {
+                   subscriber.next(isAvailable);
+               }
+           });
+        });
     }
 
     // public checkForUpdates(): void {

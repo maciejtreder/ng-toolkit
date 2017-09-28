@@ -19,21 +19,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public isDesktop: boolean = this.deviceService.isDesktop();
     public navIsFixed: boolean = false;
-    private platformId: any;
-    private document: any;
 
     constructor(
-        @Inject(PLATFORM_ID)  platformId: any,
+        @Inject(PLATFORM_ID) private platformId: any,
         private snackBarService: SnackBarService,
         private conn: ConnectivityService,
         private deviceService: DeviceService,
-        @Inject(DOCUMENT) document: any,
+        @Inject(DOCUMENT) private document: any,
         private sws: ServiceWorkerService,
         private elRef: ElementRef
-    ) {
-        this.platformId = platformId; // Intellij type checking workaround.
-        this.document = document; // Intellij type checking workaround.
-    }
+    ) {}
 
     public ngAfterViewInit(): void {
         // "sticky" header
@@ -50,7 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        // this.sws.checkForUpdates();
+        this.sws.update().subscribe((response) => console.log('update subscribe', response));
 
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()

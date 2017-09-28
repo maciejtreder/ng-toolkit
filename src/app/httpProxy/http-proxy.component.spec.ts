@@ -2,7 +2,6 @@ import { Observable } from 'rxjs';
 import { Http } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { MdInputModule, MdButtonModule } from '@angular/material';
-import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';

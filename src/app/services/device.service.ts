@@ -1,7 +1,9 @@
 import * as Constants from './device.constants';
 import { ReTree } from './retree.service';
 import { WindowRef } from '../windowRef';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class DeviceService {
     private ua = '';
     private userAgent = '';

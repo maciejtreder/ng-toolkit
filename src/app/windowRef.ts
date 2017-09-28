@@ -9,8 +9,7 @@ export class WindowRef {
         if (!isPlatformBrowser(platformId)) {
             const req: any = this.injector.get(REQUEST);
             this._window = {navigator: {userAgent: req.get('User-Agent')}};
-        }
-        else {
+        } else {
             this._window = window;
         }
     }

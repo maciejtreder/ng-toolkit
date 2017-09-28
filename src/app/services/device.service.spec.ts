@@ -1,6 +1,5 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 import { DeviceService } from './device.service';
-import { ReTree } from './retree.service';
 import { WindowRef } from '../windowRef';
 import * as sinon from 'sinon';
 
@@ -21,14 +20,14 @@ const desktops: Map<string, string> = new Map([
     ['Linux + firefox', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1']
 ]);
 
-let windowStub = sinon.createStubInstance(WindowRef);
+const windowStub = sinon.createStubInstance(WindowRef);
 describe('device service - ', () => {
     beforeEach(() => {
         windowStub._window = {navigator: {userAgent: 'test'}};
         TestBed.configureTestingModule({
             providers: [
                 {provide: WindowRef, useValue: windowStub },
-                {provide: DeviceService, useClass: DeviceService, deps:[WindowRef]}
+                {provide: DeviceService, useClass: DeviceService, deps: [WindowRef]}
             ]
         });
     });
@@ -39,7 +38,6 @@ describe('device service - ', () => {
 
 });
 
-
 mobileDevices.forEach((value, key) => {
     describe('device service - mobile devices - ', () => {
         beforeEach(() => {
@@ -47,12 +45,11 @@ mobileDevices.forEach((value, key) => {
             TestBed.configureTestingModule({
                 providers: [
                     {provide: WindowRef, useValue: windowStub },
-                    {provide: DeviceService, useClass: DeviceService, deps:[WindowRef]}
+                    DeviceService
                 ]
             });
         });
 
-        //windowStub._window = {navigator: {userAgent: value}};
         it('should be able to detect mobile devices', async(inject([DeviceService], (deviceService) => {
             expect(deviceService.isDesktop()).toBeFalsy();
             expect(deviceService.isTablet()).toBeFalsy();
@@ -68,7 +65,7 @@ desktops.forEach((value, key) => {
             windowStub.nativeWindow.navigator.userAgent = value;
             TestBed.configureTestingModule({
                 providers: [
-                    {provide: DeviceService, useClass: DeviceService, deps:[WindowRef]},
+                    {provide: DeviceService, useClass: DeviceService, deps: [WindowRef]},
                     {provide: WindowRef, useValue: windowStub}
                 ]
             });
