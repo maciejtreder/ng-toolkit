@@ -14,6 +14,7 @@ import { WindowRef } from './windowRef';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { HomeComponent } from './home/home.component';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { HomeComponent } from './home/home.component';
     WindowRef,
     SnackBarService,
     ServiceWorkerService,
+    NotificationService,
     DeviceService,
     ReTree
   ]
