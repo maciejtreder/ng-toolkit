@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationService } from './services/notification.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     moduleId: module.id,
@@ -25,18 +26,22 @@ import { NotificationService } from './services/notification.service';
     `,
     styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent {
-    public isRegistered: Observable<boolean> = Observable.of(false);
+export class MenuComponent implements OnInit {
+    public isRegistered: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public isSafari: boolean = false;
 
     constructor(private ns: NotificationService) {}
 
+    public ngOnInit(): void {
+        this.isRegistered.next(this.ns.isRegistered());
+    }
+
     public subscribeToPush(): void {
-        this.ns.registerToPush();
+        this.ns.registerToPush().subscribe((registered: boolean) => this.isRegistered.next(registered));
     }
 
     public unsubscribeFromPush(): void {
-        // this.sws.unregisterFromPush();
+        this.ns.unregisterFromPush().subscribe((unregistered: boolean) => this.isRegistered.next(!unregistered));
     }
 
     public isPushAvailable(): boolean {
