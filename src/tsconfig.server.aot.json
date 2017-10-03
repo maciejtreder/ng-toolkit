@@ -7,7 +7,7 @@
   "include": [
     "main.server.aot.ts",
     "./app/lazy/lazy.module.ts",
-    "./app/httpProxy/http-proxy-demo.module.ts",
+    "./app/httpProxy/http-proxy.module.ts",
     "./app/server-app.module.ts"
   ]
 }

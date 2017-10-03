@@ -7,12 +7,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService } from './services/service-worker.service';
-import { DeviceService } from './services/device-service';
+import { DeviceService } from './services/device.service';
 import { ReTree } from './services/retree.service';
+import { WindowRef } from './windowRef';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
-import { HomeViewComponent } from './home/home-view.component';
+import { HomeComponent } from './home/home.component';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   imports: [
@@ -23,15 +25,22 @@ import { HomeViewComponent } from './home/home-view.component';
     CommonModule,
     HttpSwProxyModule,
     RouterModule.forRoot([
-      { path: '', component: HomeViewComponent, pathMatch: 'full'},
+      { path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
-      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy-demo.module#HttpProxyDemoModule'}
+      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy.module#HttpProxyModule'}
     ]),
     ServiceWorkerModule
   ],
-  declarations: [ AppComponent, HomeViewComponent, MenuComponent ],
+  declarations: [ AppComponent, HomeComponent, MenuComponent ],
   exports: [ AppComponent ],
-  providers: [SnackBarService, ServiceWorkerService, DeviceService, ReTree]
+  providers: [
+    WindowRef,
+    SnackBarService,
+    ServiceWorkerService,
+    NotificationService,
+    DeviceService,
+    ReTree
+  ]
 })
 export class AppModule {
 }

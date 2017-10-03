@@ -1,13 +1,12 @@
 import { Component, OnInit, PLATFORM_ID, Inject, ElementRef, AfterViewInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
-import { DOCUMENT } from '@angular/platform-browser';
-import * as _ from 'underscore';
 import { ConnectivityService } from 'ng-http-sw-proxy';
 
-import { DeviceService } from './services/device-service';
+import { DeviceService } from './services/device.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService } from './services/service-worker.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   moduleId: module.id,
@@ -19,21 +18,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public isDesktop: boolean = this.deviceService.isDesktop();
     public navIsFixed: boolean = false;
-    private platformId: any;
-    private document: any;
 
     constructor(
-        @Inject(PLATFORM_ID)  platformId: any,
+        @Inject(PLATFORM_ID) private platformId: any,
         private snackBarService: SnackBarService,
         private conn: ConnectivityService,
         private deviceService: DeviceService,
-        @Inject(DOCUMENT) document: any,
         private sws: ServiceWorkerService,
         private elRef: ElementRef
-    ) {
-        this.platformId = platformId; // Intellij type checking workaround.
-        this.document = document; // Intellij type checking workaround.
-    }
+    ) {}
 
     public ngAfterViewInit(): void {
         // "sticky" header
@@ -49,8 +42,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-
-        this.sws.checkForUpdates();
+        console.log('new version output 2');
+        this.sws.update().subscribe((response) => console.log('update subscribe', response));
 
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()

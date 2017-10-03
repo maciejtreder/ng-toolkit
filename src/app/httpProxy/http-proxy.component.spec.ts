@@ -2,16 +2,15 @@ import { Observable } from 'rxjs';
 import { Http } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { MdInputModule, MdButtonModule } from '@angular/material';
-import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { HttpProxyDemoComponent } from './http-proxy-demo.component';
+import { HttpProxyComponent } from './http-proxy.component';
 
 describe('Lazy component -', () => {
-    let component: HttpProxyDemoComponent;
-    let fixture: ComponentFixture<HttpProxyDemoComponent>;
+    let component: HttpProxyComponent;
+    let fixture: ComponentFixture<HttpProxyComponent>;
     let httpService: Http;
     let spy;
     const httpProxyStub = {
@@ -20,7 +19,7 @@ describe('Lazy component -', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [HttpProxyDemoComponent],
+            declarations: [HttpProxyComponent],
             imports: [
                 FormsModule,
                 MdInputModule,
@@ -32,7 +31,7 @@ describe('Lazy component -', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(HttpProxyDemoComponent);
+        fixture = TestBed.createComponent(HttpProxyComponent);
         component = fixture.componentInstance;
         httpService = TestBed.get(Http);
         spy = spyOn(httpService, 'post').and.callThrough();

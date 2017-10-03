@@ -1,7 +1,7 @@
-import { Component, Output, EventEmitter, OnInit, PLATFORM_ID, Inject } from '@angular/core';
-import { ServiceWorkerService } from './services/service-worker.service';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
+import { NotificationService } from './services/notification.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     moduleId: module.id,
@@ -27,30 +27,24 @@ import { isPlatformBrowser } from '@angular/common';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    public isRegistered: Observable<boolean> = this.sws.isRegisteredToPush();
+    public isRegistered: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public isSafari: boolean = false;
-    private platformId: any;
 
-    constructor(private sws: ServiceWorkerService, @Inject(PLATFORM_ID) platformId: any) {
-        this.platformId = platformId;
-    }
+    constructor(private ns: NotificationService) {}
 
     public ngOnInit(): void {
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-        this.isSafari = window['safari'];
+        this.isRegistered.next(this.ns.isRegistered());
     }
 
     public subscribeToPush(): void {
-        this.sws.registerToPush();
+        this.ns.registerToPush().subscribe((registered: boolean) => this.isRegistered.next(registered));
     }
 
     public unsubscribeFromPush(): void {
-        this.sws.unregisterFromPush();
+        this.ns.unregisterFromPush().subscribe((unregistered: boolean) => this.isRegistered.next(!unregistered));
     }
 
     public isPushAvailable(): boolean {
-        return this.sws.isPushAvailable();
+        return this.ns.isPushAvailable();
     }
 }
