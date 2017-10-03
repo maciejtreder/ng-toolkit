@@ -34,6 +34,7 @@ export class MenuComponent implements OnInit {
 
     public ngOnInit(): void {
         this.isRegistered.next(this.ns.isRegistered());
+        this.isSafari = !!window['safari'];
     }
 
     public subscribeToPush(): void {
