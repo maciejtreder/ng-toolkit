@@ -1,10 +1,8 @@
-import { PLATFORM_ID, Injectable, Inject, ApplicationRef } from '@angular/core';
+import { PLATFORM_ID, Injectable, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
-import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
-import { RequestOptions, Headers, RequestOptionsArgs, Http, Response } from '@angular/http';
+import { NgServiceWorker } from '@angular/service-worker';
+import { Observable, Subscriber } from 'rxjs';
 import { WindowRef } from '../windowRef';
-// import { SnackBarService } from './snack-bar.service';
 
 @Injectable()
 export class ServiceWorkerService {
@@ -40,89 +38,4 @@ export class ServiceWorkerService {
            });
         });
     }
-
-    // public registerToPush(): void {
-    //     this.sw.registerForPush({applicationServerKey: this.applicationServerKey})
-    //         .subscribe((pushRegistration: NgPushRegistration) => {
-    //         const headers: Headers = new Headers();
-    //         headers.append('content-type', 'application/json');
-    //         const options: RequestOptionsArgs = new RequestOptions({headers});
-    //         this.http.post(
-    //             this.apiEndpoint + '/vapid/subscribe',
-    //             JSON.stringify(pushRegistration),
-    //             options
-    //         ).subscribe((res: Response) => {
-    //             if (res.status === 202) {
-    //                 this.isRegisteredToPushObs.next(true);
-    //                 localStorage.setItem('subscription', JSON.stringify(pushRegistration));
-    //             }
-    //         }, (err) => console.log('error!!!', err));
-    //     }, (err) => {
-    //         console.error('error during register for push', err);
-    //     });
-    //
-    //     if (window['safari'] && window['safari'].pushNotification) {
-    //         window['safari'].pushNotification.requestPermission(
-    //             this.apiEndpoint + '/safari',
-    //             'web.com.maciejtreder.angular-universal-serverless',
-    //             null,
-    //             (permission) => {
-    //                 if (permission.permission === 'granted') {
-    //                     this.isRegisteredToPushObs.next(true);
-    //                     this.appRef.tick();
-    //                 }
-    //             }
-    //         );
-    //     }
-    // }
-    //
-    // public unregisterFromPush(): void {
-    //     if (!this.isRegistered()) {
-    //         return;
-    //     }
-    //     if (window['safari']) {
-    //         const result = window['safari'].pushNotification.permission(
-    //             'web.com.maciejtreder.angular-universal-serverless'
-    //         );
-    //         console.log(window['safari'].pushNotification);
-    //     } else {
-    //         this.sw.registerForPush({applicationServerKey: this.applicationServerKey})
-    //             .subscribe((subscription: NgPushRegistration) => {
-    //             subscription.unsubscribe().subscribe((result) => {
-    //                 if (result) {
-    //                     const headers: Headers = new Headers();
-    //                     headers.append('content-type', 'application/json');
-    //                     const options: RequestOptionsArgs = new RequestOptions({headers});
-    //                     this.http.post(
-    //                         this.apiEndpoint + '/vapid/unsubscribe',
-    //                         JSON.stringify(subscription),
-    //                         options
-    //                     ).subscribe((res: Response) => {
-    //                         if (res.status === 202) {
-    //                             localStorage.removeItem('subscription');
-    //                             this.isRegisteredToPushObs.next(false);
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         });
-    //     }
-    // }
-    //
-    // private isRegistered(): boolean {
-    //     if (!this.isPushAvailable()) {
-    //         return false;
-    //     }
-    //     if (window['safari']) {
-    //         const result = window['safari'].pushNotification.permission(
-    //             'web.com.maciejtreder.angular-universal-serverless'
-    //         );
-    //         return result.permission === 'granted';
-    //     } else {
-    //         if (localStorage.getItem('subscription')) {
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-    // }
 }

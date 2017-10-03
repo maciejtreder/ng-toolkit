@@ -3,7 +3,7 @@ import { Http, RequestOptions, RequestOptionsArgs, Response, Headers } from '@an
 import { ServiceWorkerService } from './service-worker.service';
 import { NotificationService } from './notification.service';
 import { WindowRef } from '../windowRef';
-import { NgServiceWorker, NgPushRegistration } from '@angular/service-worker';
+import { NgServiceWorker } from '@angular/service-worker';
 import { Observable } from 'rxjs';
 import * as sinon from 'sinon';
 
@@ -35,7 +35,7 @@ describe('Service-worker spec.', () => {
         httpStub.post.returns(Observable.of({status: 202} as Response));
     });
 
-    const setUpTestbed = () => {
+    const setUpTestBed = () => {
         TestBed.configureTestingModule({
             providers: [
                 NotificationService,
@@ -51,7 +51,7 @@ describe('Service-worker spec.', () => {
     describe('Without subscribed client.', () => {
         beforeEach(() => {
             localStorage.clear();
-            setUpTestbed();
+            setUpTestBed();
         });
 
         it('Should construct', async(inject([NotificationService], (ns) => {
@@ -168,35 +168,92 @@ describe('Service-worker spec.', () => {
         });
 
         describe('Safari.', () => {
+            let permission = {deviceToken: 'device_token', permission: 'granted'};
             beforeEach(() => {
                 windowStub._window = {
                     safari: {
-                        pushNotification: {}
+                        pushNotification: {
+                            requestPermission: (param1, param2, param3, callback) => callback(permission),
+                            permission: (param: string) => {
+                                return {deviceToken: 'device_token', permission: 'default'};
+                            }
+                        }
                     }
                 };
                 serviceWorkerServiceStub.isServiceWorkerAvailable.returns(false);
             });
 
-            it('Should be able to check if push is available on Safari with push', async(inject([NotificationService], (ns: NotificationService) => {
+            it('Should be able to check if push is available', async(inject([NotificationService], (ns: NotificationService) => {
                 expect(ns.isPushAvailable()).toBeTruthy();
             })));
 
-            it('Should be able to check if push is NOT available on Safari without push', async(inject([NotificationService], (ns: NotificationService) => {
+            it('Should be able to check if push is NOT available', async(inject([NotificationService], (ns: NotificationService) => {
                 windowStub._window = {
                     safari: {}
                 };
                 expect(ns.isPushAvailable()).toBeFalsy();
             })));
 
-            xit( 'Should be able to subscribe', async(inject([NotificationService], (ns: NotificationService) => {
+            it( 'Should be able to subscribe', async(inject([NotificationService], (ns: NotificationService) => {
+                permission = {deviceToken: 'device_token', permission: 'granted'};
+                windowStub._window.safari.pushNotification.permission = () => permission;
                 let gotResult: boolean = false;
                 ns.registerToPush().subscribe((result) => {
-                    expect(result).toBeTruthy();
                     expect(result).toBe(true, 'Should respond with \'true\'.');
                     gotResult = true;
                 });
                 expect(gotResult).toBe(true, 'Observable did not give output.');
+                expect(ns.isRegistered()).toBe(true, 'isRegistered should return true');
             })));
+
+            it( 'Should respond as not subscribed when permission is denied', async(inject([NotificationService], (ns: NotificationService) => {
+                permission = {deviceToken: 'device_token', permission: 'denied'};
+                windowStub._window.safari.pushNotification.permission = () => permission;
+                let gotResult: boolean = false;
+                ns.registerToPush().subscribe((result) => {
+                    expect(result).toBe(false, 'Should respond with \'false\'.');
+                    gotResult = true;
+                });
+                expect(gotResult).toBe(true, 'Observable did not give output.');
+                expect(ns.isRegistered()).toBe(false, 'isRegistered should return false');
+            })));
+
+            describe('Default permission.', () => {
+                beforeEach(() => {
+                    windowStub._window.safari.pushNotification.permission = (param: string) => {
+                        return {deviceToken: 'device_token', permission: 'default'};
+                    };
+                });
+
+                it('Should be able to check that customer is NOT subscribed', async(inject([NotificationService], (ns: NotificationService) => {
+                    expect(ns.isRegistered()).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
+                })));
+            });
+
+            describe('Denied permission.', () => {
+                beforeEach(() => {
+                    windowStub._window.safari.pushNotification.permission = (param: string) => {
+                        return {deviceToken: 'device_token', permission: 'denied'};
+                    };
+                });
+
+                it('Should be able to check that customer is NOT subscribed', async(inject([NotificationService], (ns: NotificationService) => {
+                    const spy = sinon.spy(ns, 'checkSubscription');
+                    expect(ns.isRegistered()).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
+                })));
+            });
+
+            describe('Denied permission.', () => {
+                beforeEach(() => {
+                    windowStub._window.safari.pushNotification.permission = (param: string) => {
+                        return {deviceToken: 'device_token', permission: 'granted'};
+                    };
+                });
+
+                it ('Should be able to check that customer is subscribed', async(inject([NotificationService], (ns: NotificationService) => {
+                    expect(ns.isRegistered()).toBe(true, 'Subscribed customer should appear as subscribed.');
+                })));
+            });
         });
     });
 
@@ -208,7 +265,7 @@ describe('Service-worker spec.', () => {
 
             beforeEach(() => {
                 localStorage.setItem('subscription', JSON.stringify(pushSubscription2));
-                setUpTestbed();
+                setUpTestBed();
             });
 
             it('Should respond as subscribed when there is subscription in local storage', async(inject([NotificationService], (ns: NotificationService) => {

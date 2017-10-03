@@ -5,9 +5,7 @@ import { WindowRef } from '../windowRef';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions, RequestOptionsArgs, Headers, Http, Response } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
-import { AsyncSubject } from 'rxjs/AsyncSubject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscriber } from 'rxjs/Subscriber';
 
 @Injectable()
 export class NotificationService {
@@ -38,7 +36,7 @@ export class NotificationService {
             return Observable.of(false);
         }
         if (this._isSubscribed) {
-            return Observable.create((subject: Subject<boolean>) => subject.error('Another registration is pending or active.'));
+            return Observable.create((subscriber: Subscriber<boolean>) => subscriber.error('Another registration is pending or active.'));
         }
         this._isSubscribed = true; // for locking purpose, only one subscription try at time.
         if (this.serviceWorkerService.isServiceWorkerAvailable()) {
@@ -54,26 +52,33 @@ export class NotificationService {
 
     public unregisterFromPush(): Observable<boolean> {
         if (this.serviceWorkerService.isServiceWorkerAvailable() && this.isRegistered()) {
-            return Observable.create((subject: Subject<boolean>) => {
+            return Observable.create((subscriber: Subscriber<boolean>) => {
                 this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', JSON.stringify(this.subscription), this.options).subscribe(() => {
                     localStorage.removeItem('subscription');
                     this.checkSubscription();
-                    subject.next(true);
-                }, () => subject.next(false));
+                    subscriber.next(true);
+                }, () => subscriber.next(false));
             });
         }
         return Observable.of(false);
     }
 
     private checkSubscription(): void {
-        if (this.serviceWorkerService.isServiceWorkerAvailable()) {
+        if (this.window.nativeWindow['safari']) {
+            const result = this.window.nativeWindow['safari'].pushNotification.permission(
+                'web.com.maciejtreder.angular-universal-serverless'
+            );
+            this._isSubscribed = result.permission === 'granted';
+        } else if (this.serviceWorkerService.isServiceWorkerAvailable()) {
             this.subscription = JSON.parse(localStorage.getItem('subscription'));
             this._isSubscribed = !!this.subscription;
+        } else {
+            this._isSubscribed = false;
         }
     }
 
     private registerVapid(): Observable<boolean> {
-        return Observable.create((sub: Subject<boolean>) => {
+        return Observable.create((subscriber: Subscriber<boolean>) => {
             this.serviceWorker
                 .registerForPush({applicationServerKey: this.applicationServerKey})
                 .subscribe((pushRegistration: NgPushRegistration) => {
@@ -85,29 +90,27 @@ export class NotificationService {
                                 pushRegistration.unsubscribe().subscribe();
                             }
                             this.checkSubscription();
-                            sub.next(this.isRegistered());
+                            subscriber.next(this.isRegistered());
                         });
                 });
         });
     }
 
     private registerSafari(): Observable<boolean> {
-        console.log('safari');
-        return Observable.create((subject: Subject<boolean>) => {
+        return Observable.create((subscriber: Subscriber<boolean>) => {
             this.window.nativeWindow['safari'].pushNotification.requestPermission(
                 this.safariSubscriptionEndpoint,
                 'web.com.maciejtreder.angular-universal-serverless',
                 null,
                 (permission) => {
-                    console.log(permission);
                     if (permission.permission === 'granted') {
-                        subject.next(true);
+                        subscriber.next(true);
                     } else {
-                        subject.next(false);
+                        subscriber.next(false);
                     }
+                    this.checkSubscription();
                 }
             );
-            subject.next(true);
         });
     }
 }
