@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
     "test": "npm run lint && karma start --single-run",
-    "test:dev": "concurrently \"npm run watch\" \"karma start\"",
+    "test:dev": "karma start",
+    "test:dev:host": "concurrently \"npm run watch\" \"npm run test:dev\"",
     "pretest": "npm run build",
     "start": "npm run build && npm run server",
     "build": "webpack",
