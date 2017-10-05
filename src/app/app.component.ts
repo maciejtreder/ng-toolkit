@@ -42,8 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-        console.log('new version output 2');
-        this.sws.update().subscribe((response) => console.log('update subscribe', response));
+        this.sws.update().subscribe((response) => console.log('update', response));
 
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()

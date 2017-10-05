@@ -47,7 +47,7 @@ export class NotificationService {
     }
 
     public isRegistered(): boolean {
-        return this._isSubscribed;
+        return this.isPushAvailable() && this._isSubscribed;
     }
 
     public unregisterFromPush(): Observable<boolean> {

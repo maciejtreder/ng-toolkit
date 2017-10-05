@@ -15,7 +15,7 @@ It is also built with serverless environment in mind and can be easily deployed 
 * Angular Material
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy)
 * Webpack
-* Unit tests - in progress
+* Unit tests
 * e2e tests - in progress
 * UglifyJS
 * OptimizeJS
@@ -29,11 +29,10 @@ cd angular-universal-serverless
 npm install
 npm start
 ```
+* Development mode (autoreload): ```npm run watch```
+* Unit tests: ```npm run test:dev```
+* Unit tests + development mode: ```npm run test:dev:host```
 
-## Developement mode
-* Terminal 1: ```npm run watch```
-* Wait for the build to finish
-* Terminal 2: ```npm run server```
 
 ## Production mode
 Includes AoT
