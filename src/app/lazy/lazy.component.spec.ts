@@ -14,7 +14,6 @@ describe('Lazy component -', () => {
 
         fixture = TestBed.createComponent(LazyComponent);
         component = fixture.componentInstance;
-
     });
 
     it('title is \'I am lazy!\'', () => {
