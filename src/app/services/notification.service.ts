@@ -6,6 +6,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions, RequestOptionsArgs, Headers, Http, Response } from '@angular/http';
 import { Subscriber } from 'rxjs/Subscriber';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class NotificationService {
@@ -15,6 +17,7 @@ export class NotificationService {
     public safariSubscriptionEndpoint: string = this.endpoint + '/safari';
 
     private _isSubscribed: boolean;
+    private _isSubscribedObs: Subject<boolean> = new BehaviorSubject(false);
     private applicationServerKey: string =
         'BKxp6BwVzRWy1Qbe63rHNbG46uwPTrl1RoeTJuyVBm42kvlUk0RuSkYk8NKoO0QK2GNV7eRhOLyV1KfmZhwU9Sc';
     private subscription: NgPushRegistration;
@@ -46,12 +49,12 @@ export class NotificationService {
         }
     }
 
-    public isRegistered(): boolean {
-        return this.isPushAvailable() && this._isSubscribed;
+    public isRegistered(): Observable<boolean> {
+        return this._isSubscribedObs;
     }
 
     public unregisterFromPush(): Observable<boolean> {
-        if (this.serviceWorkerService.isServiceWorkerAvailable() && this.isRegistered()) {
+        if (this.serviceWorkerService.isServiceWorkerAvailable() && this._isSubscribed) {
             return Observable.create((subscriber: Subscriber<boolean>) => {
                 this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', JSON.stringify(this.subscription), this.options).subscribe(() => {
                     localStorage.removeItem('subscription');
@@ -75,6 +78,7 @@ export class NotificationService {
         } else {
             this._isSubscribed = false;
         }
+        this._isSubscribedObs.next(this._isSubscribed);
     }
 
     private registerVapid(): Observable<boolean> {
@@ -90,7 +94,7 @@ export class NotificationService {
                                 pushRegistration.unsubscribe().subscribe();
                             }
                             this.checkSubscription();
-                            subscriber.next(this.isRegistered());
+                            subscriber.next(this._isSubscribed);
                         });
                 });
         });

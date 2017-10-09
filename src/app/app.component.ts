@@ -6,7 +6,6 @@ import { ConnectivityService } from 'ng-http-sw-proxy';
 import { DeviceService } from './services/device.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService } from './services/service-worker.service';
-import { NotificationService } from './services/notification.service';
 
 @Component({
   moduleId: module.id,

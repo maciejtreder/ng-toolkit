@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { NotificationService } from './services/notification.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { WindowRef } from './windowRef';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     moduleId: module.id,
@@ -14,11 +17,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
         <a md-raised-button routerLink="/httpProxy">
             <i class="material-icons">merge_type</i> Http proxy demo
         </a>
-        <a md-raised-button (click)="subscribeToPush()" *ngIf="isPushAvailable() && !(isRegistered | async)">
-            <i class="material-icons">message</i> Subscribe to push
-        </a>
-        <a md-raised-button (click)="unsubscribeFromPush()" *ngIf="(isRegistered | async) && !isSafari">
-            <i class="material-icons">message</i> Unsubscribe from push
+        <a md-raised-button (click)="toggleSubscription()" *ngIf="isRegistrationAvailable() | async">
+            <i class="material-icons">message</i> {{subscribeText | async}}
         </a>
         <a md-raised-button target="_blank" rel="noopener" href="https://github.com/maciejtreder/angular-universal-serverless">
             <i class="material-icons">code</i> Fork on github
@@ -27,25 +27,35 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    public isRegistered: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    public isRegistered: Observable<boolean> = this.ns.isRegistered();
     public isSafari: boolean = false;
+    public subscribeText: Subject<string> = new ReplaySubject();
+    private _isRegistered: boolean;
 
-    constructor(private ns: NotificationService) {}
+    constructor(private ns: NotificationService, private window: WindowRef) {}
 
     public ngOnInit(): void {
-        this.isRegistered.next(this.ns.isRegistered());
-        this.isSafari = !!window['safari'];
+        this.isSafari = !!this.window.nativeWindow['safari'];
+        this.isRegistered.subscribe((registered: boolean) => {
+            registered ? this.subscribeText.next('Unsubscribe from push') : this.subscribeText.next('Subscribe to push');
+            this._isRegistered = registered;
+        });
     }
 
-    public subscribeToPush(): void {
-        this.ns.registerToPush().subscribe((registered: boolean) => this.isRegistered.next(registered));
+    public isRegistrationAvailable(): Observable<boolean> {
+        if (this.isSafari) {
+            return this.ns.isRegistered().map((registered) => !registered);
+        } else if (this.ns.isPushAvailable()) {
+            return Observable.of(true);
+        }
+        return Observable.of(false);
     }
 
-    public unsubscribeFromPush(): void {
-        this.ns.unregisterFromPush().subscribe((unregistered: boolean) => this.isRegistered.next(!unregistered));
-    }
-
-    public isPushAvailable(): boolean {
-        return this.ns.isPushAvailable();
+    public toggleSubscription(): void {
+        if (this._isRegistered) {
+            this.ns.unregisterFromPush().subscribe();
+        } else {
+            this.ns.registerToPush().subscribe();
+        }
     }
 }
