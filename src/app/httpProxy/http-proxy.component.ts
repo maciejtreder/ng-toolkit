@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 
 @Component({

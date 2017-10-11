@@ -41,20 +41,22 @@ const setupTestBed = () => {
 
     fixture = TestBed.createComponent(MenuComponent);
     fixture.detectChanges();
-
-    const anchors: DebugElement[] = fixture.debugElement.queryAll(By.css('a'));
-
-    homeLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Home'));
-    lazyLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Lazy'));
-    proxyLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Http proxy demo'));
-    forkLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Fork on github'));
 };
 
 describe('Menu component.', () => {
 
     beforeEach(() => {
+        isRegistered.next(false);
         windowRefStub._window = {};
         setupTestBed();
+
+        findSubscribeLink();
+        const anchors: DebugElement[] = fixture.debugElement.queryAll(By.css('a'));
+
+        homeLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Home'));
+        lazyLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Lazy'));
+        proxyLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Http proxy demo'));
+        forkLink = anchors.find((de: DebugElement) => de.nativeElement.textContent.includes('Fork on github'));
     });
 
     it('Home link should be displayed', () => {
@@ -73,35 +75,28 @@ describe('Menu component.', () => {
         expect(forkLink).toBeTruthy();
     });
 
-    describe('With push available.', () => {
-        beforeEach(() => {
-            isRegistered.next(false);
-            findSubscribeLink();
-        });
-
-        it('Should display subscribe link when subscription is available', () => {
-            expect(subscribeLink.nativeElement.textContent).toContain('Subscribe to push');
-        });
-
-        it('Should not display subscribe link when subscription is not available', async(() => {
-            nsServiceStub.isPushAvailable.returns(false);
-            findSubscribeLink();
-            expect(subscribeLink).toBeFalsy();
-        }));
-
-        it('When subscribe link is clicked, then subscribe method should be called', async(() => {
-            nsServiceStub.registerToPush.returns(Observable.of(true));
-            subscribeLink.nativeElement.click();
-            expect(nsServiceStub.registerToPush.calledOnce).toBe(true, 'Register to push method was not called.');
-        }));
-
-        it('Subscribe button value should be switch depending on isSubscribed observable', async(() => {
-            expect(subscribeLink.nativeElement.textContent).toContain('Subscribe to push');
-            isRegistered.next(true);
-            fixture.detectChanges();
-            expect(subscribeLink.nativeElement.textContent).toContain('Unsubscribe from push');
-        }));
+    it('Should display subscribe link when subscription is available', () => {
+        expect(subscribeLink.nativeElement.textContent).toContain('Subscribe to push');
     });
+
+    it('Should not display subscribe link when subscription is not available', async(() => {
+        nsServiceStub.isPushAvailable.returns(false);
+        findSubscribeLink();
+        expect(subscribeLink).toBeFalsy();
+    }));
+
+    it('When subscribe link is clicked, then subscribe method should be called', async(() => {
+        nsServiceStub.registerToPush.returns(Observable.of(true));
+        subscribeLink.nativeElement.click();
+        expect(nsServiceStub.registerToPush.calledOnce).toBe(true, 'Register to push method was not called.');
+    }));
+
+    it('Subscribe button value should be switch depending on isSubscribed observable', async(() => {
+        expect(subscribeLink.nativeElement.textContent).toContain('Subscribe to push');
+        isRegistered.next(true);
+        fixture.detectChanges();
+        expect(subscribeLink.nativeElement.textContent).toContain('Unsubscribe from push');
+    }));
 });
 
 describe('Safari', () => {
@@ -119,7 +114,6 @@ describe('Safari', () => {
     }));
 
     it('Unsubscribe button should not be visible on Safari', async(() => {
-        findSubscribeLink();
         isRegistered.next(true);
         findSubscribeLink();
         expect(subscribeLink).toBeUndefined('Button should disappear');

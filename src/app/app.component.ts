@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { ConnectivityService } from 'ng-http-sw-proxy';
 
 import { DeviceService } from './services/device.service';
-import { SnackBarService } from './services/snack-bar.service';
 import { ServiceWorkerService } from './services/service-worker.service';
+import { SnackBarNotification, SnackBarService } from './services/snack-bar.service';
 
 @Component({
   moduleId: module.id,
@@ -20,11 +20,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,
-        private snackBarService: SnackBarService,
         private conn: ConnectivityService,
         private deviceService: DeviceService,
         private sws: ServiceWorkerService,
-        private elRef: ElementRef
+        private elRef: ElementRef,
+        private snackBarService: SnackBarService
     ) {}
 
     public ngAfterViewInit(): void {
@@ -41,8 +41,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-        this.sws.update().subscribe((response) => console.log('update', response));
 
+        this.sws.update().filter((response) => response).subscribe(() => {
+            this.snackBarService.displayNotification({message: 'New version of app is available!', action: 'Launch', force: true} as SnackBarNotification);
+        });
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()
             .filter((status: boolean) => status !== isOnline)
@@ -50,12 +52,9 @@ export class AppComponent implements OnInit, AfterViewInit {
             .subscribe((status: boolean) => {
                 isOnline = status;
                 if (status === false) {
-                    this.snackBarService.showMessage(
-                        'You are offline. All changes will be synced when you will go online again.',
-                        'Close'
-                    );
+                    this.snackBarService.displayNotification({message: 'You are offline. All changes will be synced when you will go online again.', action: 'Close'} as SnackBarNotification);
                 } else {
-                    this.snackBarService.showMessage('You are online. All data is synced.', 'Ok', 3000);
+                    this.snackBarService.displayNotification({message: 'You are online. All data is synced.', action: 'Ok', duration: 3, force: true} as SnackBarNotification);
                 }
             });
     }
