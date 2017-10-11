@@ -1,36 +1,71 @@
 import { Injectable } from '@angular/core';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import * as _ from 'underscore';
+import Queue from 'typescript-collections/dist/lib/Queue';
 
 @Injectable()
 export class SnackBarService {
-    private isDisplayed: boolean = false;
-    private defaultConfig: MdSnackBarConfig = new MdSnackBarConfig();
+
+    private snackBarNotificationsQueue: Queue<SnackBarNotification> = new Queue<SnackBarNotification>();
+    private snackBarNotificationsForceQueue: Queue<SnackBarNotification> = new Queue<SnackBarNotification>();
+    private actuallyDisplayedNotification: SnackBarNotification = null;
+    private snackbarOpened: boolean = false;
 
     constructor(private snackBar: MdSnackBar) {
-        this.defaultConfig.extraClasses = ['service_worker_snack'];
     }
 
-    public showMessage(
-        message: string,
-        action?: string,
-        duration: number = -1,
-        callback?: () => void,
-        forceDisplay?: boolean
-    ): void {
-        if (this.isDisplayed && !forceDisplay) {
+    public displayNotification(notification: SnackBarNotification): void {
+        if (notification.force) {
+            this.snackBarNotificationsForceQueue.enqueue(notification);
+        } else {
+            this.snackBarNotificationsQueue.enqueue(notification);
+        }
+        this.runCarousel();
+    }
+
+    private loadNotificationToDisplay(): void {
+        if (this.snackBarNotificationsForceQueue.size() > 0) {
+            this.actuallyDisplayedNotification = this.snackBarNotificationsForceQueue.dequeue();
+        } else if (this.snackBarNotificationsQueue.size() > 0) {
+            this.actuallyDisplayedNotification = this.snackBarNotificationsQueue.dequeue();
+        } else {
+            this.actuallyDisplayedNotification = null;
+            return;
+        }
+    }
+
+    private runCarousel(): void {
+        if (this.snackbarOpened) {
+            if (!this.actuallyDisplayedNotification.force && this.snackBarNotificationsForceQueue.size() > 0) {
+                this.snackBar.dismiss();
+            }
+            return;
+        }
+        this.loadNotificationToDisplay();
+        if (this.actuallyDisplayedNotification == null) {
             return;
         }
 
-        const config: MdSnackBarConfig = _.clone(this.defaultConfig);
-        config.duration = duration;
+        this.snackbarOpened = true;
 
-        this.snackBar.dismiss();
-        this.snackBar.open(message, action, config).afterDismissed().subscribe(() => {
-            this.isDisplayed = false;
+        const config: MdSnackBarConfig = new MdSnackBarConfig();
+        config.duration = 1000 * this.actuallyDisplayedNotification.duration;
+        config.extraClasses = ['service_worker_snack'];
+        const callback = this.actuallyDisplayedNotification.callback;
+
+        this.snackBar.open(this.actuallyDisplayedNotification.message, this.actuallyDisplayedNotification.action, config).afterDismissed().subscribe(() => {
             if (callback) {
                 callback();
             }
+            this.snackbarOpened = false;
+            this.runCarousel();
         });
     }
+}
+
+export interface SnackBarNotification {
+    message: string;
+    action: string;
+    duration: number;
+    callback: () => void;
+    force: boolean;
 }

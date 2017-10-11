@@ -9,13 +9,18 @@ import { DeviceService } from './services/device.service';
 import { WindowRef } from './windowRef';
 import { ServiceWorkerService } from './services/service-worker.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 let fixture: ComponentFixture<AppComponent>;
 
 const connectivityServiceStub = sinon.createStubInstance(ConnectivityService);
+const hasConnection: Subject<boolean> = new BehaviorSubject(true);
+connectivityServiceStub.hasNetworkConnection.returns(hasConnection);
+
 const serviceWorkerServiceStub = sinon.createStubInstance(ServiceWorkerService);
-const isUpdateAvailable: BehaviorSubject<boolean> = new BehaviorSubject(false);
-serviceWorkerServiceStub.update.returns(isUpdateAvailable);
+const isUpdated: Subject<boolean> = new BehaviorSubject(false);
+serviceWorkerServiceStub.update.returns(isUpdated);
 
 xdescribe('App component', () => {
     beforeEach(() => {
@@ -23,24 +28,25 @@ xdescribe('App component', () => {
             declarations: [AppComponent],
             imports: [RouterTestingModule, MdSnackBarModule],
             providers: [
-                {provide: ConnectivityService, useValue: connectivityServiceStub},
                 DeviceService,
                 WindowRef,
+                {provide: ConnectivityService, useValue: connectivityServiceStub},
                 {provide: ServiceWorkerService, useValue: serviceWorkerServiceStub},
+                BrowserAnimationsModule
             ],
             schemas: [ NO_ERRORS_SCHEMA ]
         });
-
-        isUpdateAvailable.next(false);
 
         fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
     });
 
-    // it('Should display information about update', () => {
-    //     isUpdateAvailable.next(true);
-    //     expect(true).toBeTruthy();
-    // });
+    it('Should display information about update', () => {
+        isUpdated.next(true);
+        console.log(fixture.nativeElement);
+        expect(true).toBeTruthy();
+    });
+
     // it('Should display notifications', async(() => {
     //     fixture.componentInstance
     // }));
