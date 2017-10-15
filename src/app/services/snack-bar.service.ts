@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import Queue from 'typescript-collections/dist/lib/Queue';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class SnackBarService {
     private actuallyDisplayedNotification: SnackBarNotification = null;
     private snackbarOpened: boolean = false;
 
-    constructor(private snackBar: MdSnackBar) {
+    constructor(private snackBar: MatSnackBar) {
     }
 
     public displayNotification(notification: SnackBarNotification): void {
@@ -47,7 +47,7 @@ export class SnackBarService {
 
         this.snackbarOpened = true;
 
-        const config: MdSnackBarConfig = new MdSnackBarConfig();
+        const config: MatSnackBarConfig = new MatSnackBarConfig();
         config.duration = 1000 * this.actuallyDisplayedNotification.duration;
         config.extraClasses = ['service_worker_snack'];
         const callback = this.actuallyDisplayedNotification.callback;
