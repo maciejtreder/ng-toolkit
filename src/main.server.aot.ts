@@ -7,10 +7,8 @@ import * as cors from 'cors';
 import * as compression from 'compression';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 
-import { platformServer, renderModuleFactory } from '@angular/platform-server';
 import { ServerAppModuleNgFactory } from './ngfactory/app/server-app.module.ngfactory';
 import { ngExpressEngine } from '@nguniversal/express-engine';
-import { ROUTES } from './routes';
 import { enableProdMode } from '@angular/core';
 
 enableProdMode();
@@ -31,10 +29,8 @@ app.set('views', 'src');
 
 app.use('/', express.static('dist', { index: false }));
 
-ROUTES.forEach((route) => {
-  app.get(route, (req, res) => {
-    res.render('../dist/index', { req, res });
-  });
+app.get('/**', (req, res) => {
+  res.render('../dist/index', { req, res });
 });
 
 // redirection from safari notification to given external page
