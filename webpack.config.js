@@ -1,4 +1,3 @@
-const ngtools = require('@ngtools/webpack');
 const webpackMerge = require('webpack-merge');
 const commonPartial = require('./webpack/webpack.common');
 const clientPartial = require('./webpack/webpack.client');
@@ -20,7 +19,7 @@ module.exports = function (options, webpackOptions) {
     ]
   });
 
-  let clientConfig = webpackMerge({}, commonPartial, clientPartial, {
+  var clientConfig = webpackMerge({}, commonPartial, clientPartial, {
     plugins: [
       getAotPlugin('client', !!options.aot)
     ]

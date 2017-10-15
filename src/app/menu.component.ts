@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from './services/notification.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WindowRef } from './windowRef';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
@@ -10,17 +9,17 @@ import { Observable } from 'rxjs/Observable';
     moduleId: module.id,
     selector: 'menu',
     template: `
-        <a md-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
-        <a md-raised-button routerLink="/lazy">
+        <a mat-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
+        <a mat-raised-button routerLink="/lazy">
             <i class="material-icons">free_breakfast</i> Lazy
         </a>
-        <a md-raised-button routerLink="/httpProxy">
+        <a mat-raised-button routerLink="/httpProxy">
             <i class="material-icons">merge_type</i> Http proxy demo
         </a>
-        <a md-raised-button (click)="toggleSubscription()" *ngIf="isRegistrationAvailable() | async">
+        <a mat-raised-button (click)="toggleSubscription()" *ngIf="isRegistrationAvailable() | async">
             <i class="material-icons">message</i> {{subscribeText | async}}
         </a>
-        <a md-raised-button target="_blank" rel="noopener" href="https://github.com/maciejtreder/angular-universal-serverless">
+        <a mat-raised-button target="_blank" rel="noopener" href="https://github.com/maciejtreder/angular-universal-serverless">
             <i class="material-icons">code</i> Fork on github
         </a>
     `,

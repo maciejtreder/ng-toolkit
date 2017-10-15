@@ -9,21 +9,21 @@ h1 {
   margin: 16px 0 7px;
 }
 
-md-toolbar {
+mat-toolbar {
   position: fixed;
   z-index: 1;
 }
 
-md-toolbar.withNav {
+mat-toolbar.withNav {
   height: 100px;
 }
 
-md-toolbar div {
+mat-toolbar div {
   width: 100%;
   height: 100%;
 }
 
-md-toolbar, md-sidenav > div {
+mat-toolbar, mat-sidenav > div {
   border-bottom: 1px solid #c2c2c2;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   background: #f8f8f8;
@@ -68,14 +68,14 @@ h2 {
   -webkit-overflow-scrolling: touch;
 }
 
-md-sidenav > div {
+mat-sidenav > div {
   width: 100%;
   height: 64px;
   position: absolute;
   z-index: 2
 }
 
-md-sidenav > div button {
+mat-sidenav > div button {
   float: right;
   margin: 12px;
 }

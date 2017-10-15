@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MdButtonModule, MdSnackBarModule, MdSidenavModule, MdToolbarModule } from '@angular/material';
+import { MatButtonModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { HttpSwProxyModule } from 'ng-http-sw-proxy';
@@ -18,10 +18,10 @@ import { NotificationService } from './services/notification.service';
 
 @NgModule({
   imports: [
-    MdButtonModule,
-    MdToolbarModule,
-    MdSnackBarModule,
-    MdSidenavModule,
+      MatButtonModule,
+      MatToolbarModule,
+      MatSnackBarModule,
+      MatSidenavModule,
     CommonModule,
     HttpSwProxyModule,
     RouterModule.forRoot([

@@ -1,11 +1,10 @@
 import { Observable } from 'rxjs';
 import { Http } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { MdInputModule, MdButtonModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpProxyComponent } from './http-proxy.component';
 
 describe('Lazy component -', () => {
@@ -22,11 +21,10 @@ describe('Lazy component -', () => {
             declarations: [HttpProxyComponent],
             imports: [
                 FormsModule,
-                MdInputModule,
-                MdButtonModule,
                 NoopAnimationsModule
             ],
-            providers: [{provide: Http, useValue: httpProxyStub}]
+            providers: [{provide: Http, useValue: httpProxyStub}],
+            schemas: [ NO_ERRORS_SCHEMA ]
         }).compileComponents();
     }));
 

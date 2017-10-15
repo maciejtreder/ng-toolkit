@@ -20,6 +20,4 @@ import '../styles/credentials.scss'; // respect MIT license, do not remove.
     AppModule
   ]
 })
-export class ServerAppModule {
-
-}
+export class ServerAppModule {}

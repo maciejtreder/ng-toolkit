@@ -1,10 +1,10 @@
 <!---DESKTOP---->
-<md-toolbar *ngIf="isDesktop" [class.withNav]="navIsFixed">
+<mat-toolbar *ngIf="isDesktop" [class.withNav]="navIsFixed">
     <div>
         <h1>Angular PWA Serverless</h1>
         <menu *ngIf="navIsFixed"></menu>
     </div>
-</md-toolbar>
+</mat-toolbar>
 <div id="content-wrapper" *ngIf="isDesktop" class="desktop" >
     <div id="content">
         <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
@@ -20,24 +20,24 @@
 
 <!---MOBILE---->
 
-<md-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false">
-    <md-sidenav>
+<mat-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false">
+    <mat-sidenav>
         <div>
-            <button md-mini-fab (click)="sidenav.close()" class="menu-button">
+            <button mat-mini-fab (click)="sidenav.close()" class="menu-button">
                 <i class="material-icons">keyboard_backspace</i>
             </button>
         </div>
         <menu (click)="sidenav.close()" class="side-nav"></menu>
 
-    </md-sidenav>
-    <md-toolbar *ngIf="!isDesktop">
+    </mat-sidenav>
+    <mat-toolbar *ngIf="!isDesktop">
         <h1>
-            <button md-mini-fab (click)="sidenav.open()" class="menu-button open-nav">
+            <button mat-mini-fab (click)="sidenav.open()" class="menu-button open-nav">
                 <i class="material-icons">menu</i>
             </button>
             Angular PWA Serverless
         </h1>
-    </md-toolbar>
+    </mat-toolbar>
     <div id="content-wrapper" class="mobile">
         <div id="content">
             <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
@@ -49,4 +49,4 @@
             <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
         </footer>
     </div>
-</md-sidenav-container>
+</mat-sidenav-container>
