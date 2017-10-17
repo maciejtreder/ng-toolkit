@@ -37,7 +37,14 @@ describe('App component', () => {
         serviceWorkerServiceStub.update.returns(isUpdated);
 
         windowStub = sinon.createStubInstance(WindowRef);
-        windowStub._window = {navigator: {userAgent: 'test'}};
+        windowStub._window = {
+            navigator: {
+                userAgent: 'test'
+            },
+            location: {
+                reload: () => { const sth = 1 + 1; }
+            }
+        };
 
         snackBarServiceStub = sinon.createStubInstance(SnackBarService);
 
@@ -72,6 +79,13 @@ describe('App component', () => {
         isUpdated.next(true);
         expect(snackBarServiceStub.displayNotification.called).toBeTruthy('Snack bar was not displayed');
         expect(snackBarServiceStub.displayNotification.calledOnce).toBeTruthy('Snack bar was displayed more then once');
+    });
+
+    it('Update snackbar should contain page reload as a callback', () => {
+        isUpdated.next(true);
+        const spy = sinon.spy(windowStub._window.location, 'reload');
+        snackBarServiceStub.displayNotification.getCall(0).args[0].callback();
+        expect(spy.called).toBeTruthy('Reload method was not called');
     });
 
     it('Should display notification in case of that user is offline', async(() => {
