@@ -7,7 +7,7 @@ import * as cors from 'cors';
 import * as compression from 'compression';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 
-import { ServerAppModuleNgFactory } from './ngfactory/app/server-app.module.ngfactory';
+import { ServerAppModuleNgFactory } from './ngfactory/src/app/server-app.module.ngfactory';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { enableProdMode } from '@angular/core';
 

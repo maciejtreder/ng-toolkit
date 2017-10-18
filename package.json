@@ -18,8 +18,8 @@
     "build:aot": "webpack --env.aot --env.client & webpack --env.aot --env.server",
     "build:prod:client": "webpack --env.aot --env.client -p",
     "build:prod:server": "webpack --env.aot --env.server",
-    "build:prod": "npm run test && npm run build:prod:client && npm run service-worker && npm run build:prod:server && node src/service-worker/rollup.js",
-    "service-worker": "ngu-sw-manifest --module src/app/app.module.ts --lazy-root src/app --out dist/ngsw-manifest.json",
+    "build:prod": "npm run test && npm run clean && npm run build:prod:client && npm run service-worker && npm run build:prod:server && node src/service-worker/rollup.js",
+    "service-worker": "ngu-sw-manifest --out dist/ngsw-manifest.json",
     "build:deploy": "npm run build:prod && npm run deploy",
     "prebuild": "npm run clean",
     "prebuild:aot": "npm run clean",
@@ -34,6 +34,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@angular-universal-serverless/external-module": "git+https://github.com/maciejtreder/angular-external-module.git",
     "@angular/animations": "4.4.5",
     "@angular/app-shell": "^0.1.0",
     "@angular/cdk": "^2.0.0-beta.10",

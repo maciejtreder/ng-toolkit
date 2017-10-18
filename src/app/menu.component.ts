@@ -11,7 +11,10 @@ import { Observable } from 'rxjs/Observable';
     template: `
         <a mat-raised-button routerLink="/"> <i class="material-icons">home</i> Home</a>
         <a mat-raised-button routerLink="/lazy">
-            <i class="material-icons">free_breakfast</i> Lazy
+            <i class="material-icons">free_breakfast</i> Lazy module
+        </a>
+        <a mat-raised-button routerLink="/external">
+            <i class="material-icons">call_merge</i> External module
         </a>
         <a mat-raised-button routerLink="/httpProxy">
             <i class="material-icons">merge_type</i> Http proxy demo

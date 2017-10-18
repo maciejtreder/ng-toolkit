@@ -27,7 +27,8 @@ import { NotificationService } from './services/notification.service';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
-      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy.module#HttpProxyModule'}
+      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy.module#HttpProxyModule'},
+      { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule'}
     ]),
     ServiceWorkerModule
   ],
