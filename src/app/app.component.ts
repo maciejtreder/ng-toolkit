@@ -6,6 +6,7 @@ import { ConnectivityService } from 'ng-http-sw-proxy';
 import { DeviceService } from './services/device.service';
 import { ServiceWorkerService } from './services/service-worker.service';
 import { SnackBarNotification, SnackBarService } from './services/snack-bar.service';
+import { WindowRef } from './windowRef';
 
 @Component({
   moduleId: module.id,
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         private deviceService: DeviceService,
         private sws: ServiceWorkerService,
         private elRef: ElementRef,
-        private snackBarService: SnackBarService
+        private snackBarService: SnackBarService,
+        private windowRef: WindowRef
     ) {}
 
     public ngAfterViewInit(): void {
@@ -43,8 +45,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
 
         this.sws.update().filter((response) => response).subscribe(() => {
-            this.snackBarService.displayNotification({message: 'New version of app is available!', action: 'Launch', force: true} as SnackBarNotification);
+            this.snackBarService.displayNotification({message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {
+                this.windowRef.nativeWindow.location.reload(true);
+            }} as SnackBarNotification);
         });
+
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()
             .filter((status: boolean) => status !== isOnline)
