@@ -50,6 +50,11 @@ export class AppComponent implements OnInit, AfterViewInit {
             }} as SnackBarNotification);
         });
 
+        this.sws.isCached().filter((response) => response && !localStorage.getItem('cached')).subscribe((response) => {
+            localStorage.setItem('cached', 'cached');
+            this.snackBarService.displayNotification({message: 'Content is cached, from now you can work offline.', action: 'Ok', duration: 5000} as SnackBarNotification);
+        });
+
         let isOnline: boolean = true;
         this.conn.hasNetworkConnection()
             .filter((status: boolean) => status !== isOnline)

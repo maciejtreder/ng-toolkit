@@ -17,6 +17,15 @@ export class ServiceWorkerService {
         return (isPlatformBrowser(this.platformId) && 'serviceWorker' in this.window.nativeWindow.navigator);
     }
 
+    public isCached(): Observable<any> {
+        if (!this.isServiceWorkerAvailable()) {
+            return Observable.of(false);
+        }
+        return Observable.fromPromise(this.window.nativeWindow.navigator.serviceWorker.ready)
+            .filter((registration: ServiceWorkerRegistration) => registration.active != null)
+            .map((serviceWorker: ServiceWorkerRegistration) => serviceWorker.active.state === 'activated');
+    }
+
     public update(): Observable<boolean> {
         if (!this.isServiceWorkerAvailable()) {
             return Observable.of(false);

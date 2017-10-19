@@ -23,10 +23,13 @@ let snackBarServiceStub;
 
 let serviceWorkerServiceStub;
 let isUpdated: Subject<boolean>;
+let isCached: Subject<boolean>;
 
 describe('App component', () => {
     beforeEach(() => {
         Observable.prototype.debounceTime = function() { return this; }; // workaround for https://github.com/angular/angular/issues/10127
+
+        localStorage.clear();
 
         connectivityServiceStub = sinon.createStubInstance(ConnectivityService);
         hasConnection = new BehaviorSubject(true);
@@ -35,6 +38,8 @@ describe('App component', () => {
         serviceWorkerServiceStub = sinon.createStubInstance(ServiceWorkerService);
         isUpdated = new BehaviorSubject(false);
         serviceWorkerServiceStub.update.returns(isUpdated);
+        isCached = new BehaviorSubject(false);
+        serviceWorkerServiceStub.isCached.returns(isCached);
 
         windowStub = sinon.createStubInstance(WindowRef);
         windowStub._window = {
@@ -101,5 +106,17 @@ describe('App component', () => {
         hasConnection.next(true);
         expect(snackBarServiceStub.displayNotification.calledTwice).toBeTruthy('Snack bar was not displayed twice');
         expect(snackBarServiceStub.displayNotification.getCall(1).args[0].force).toBeTruthy('Message about online status should be forced!');
+    }));
+
+    it( 'Should display notification about cached content', async(() => {
+        isCached.next(true);
+        expect(snackBarServiceStub.displayNotification.called).toBeTruthy('Notification was not displayed');
+    }));
+
+    it('Should display notification about cached content only onec', async(() => {
+        isCached.next(true);
+        isCached.next(true);
+        expect(snackBarServiceStub.displayNotification.called).toBeTruthy('Notification was not displayed');
+        expect(snackBarServiceStub.displayNotification.calledOnce).toBeTruthy('Notification was not displayed once');
     }));
 });
