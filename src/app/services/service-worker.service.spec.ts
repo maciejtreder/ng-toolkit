@@ -1,4 +1,4 @@
-import { async, inject, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { ServiceWorkerService } from './service-worker.service';
 import { WindowRef } from '../windowRef';
 import { NgServiceWorker } from '@angular/service-worker';
@@ -78,17 +78,19 @@ describe('service-worker spec ', () => {
         expect(response).toBe(false, 'Did not respond with expected value.');
     })));
 
-    xit('When service worker is available, information about cache should be sent', async(inject([ServiceWorkerService], (sws: ServiceWorkerService) => {
-        windowStub._window.navigator.serviceWorker.ready = new Promise((resolve) => resolve({active: {state: 'waiting'}}));
+    it('When service worker is available, information about cache should be sent', fakeAsync(inject([ServiceWorkerService], (sws: ServiceWorkerService) => {
+        windowStub._window.navigator.serviceWorker.ready = new Promise((resolve) => resolve({active: {state: 'activated'}}));
         let response;
         sws.isCached().subscribe((resp) => response = resp);
+        tick();
         expect(response).toBe(true, 'Should respond as cached');
     })));
 
-    xit('When service worker is available, but not ready should get false', async(inject([ServiceWorkerService], (sws: ServiceWorkerService) => {
+    it('When service worker is available, but not ready should get false', fakeAsync(inject([ServiceWorkerService], (sws: ServiceWorkerService) => {
         windowStub._window.navigator.serviceWorker.ready = new Promise((resolve) => resolve({active: {state: 'waiting'}}));
         let response;
         sws.isCached().subscribe((resp) => response = resp);
+        tick();
         expect(response).toBe(false, 'Should respond as not cached');
     })));
 });

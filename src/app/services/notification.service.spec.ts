@@ -59,12 +59,9 @@ describe('Notification service spec.', () => {
         })));
 
         it( 'Should respond as not subscribed when there is no subscription', async(inject([NotificationService], (ns: NotificationService) => {
-            let gotResult = false;
-            ns.isRegistered().subscribe((isRegistered) => {
-                gotResult = true;
-                expect(isRegistered).toBe(false, 'Not subscribed client respons as subscribed.');
-            });
-            expect(gotResult).toBe(true, 'Did not get respond from observable');
+            let isRegistered;
+            ns.isRegistered().subscribe((resp) => isRegistered = resp);
+            expect(isRegistered).toBe(false, 'Not subscribed client respons as subscribed.');
         })));
 
         it('Should check if push is available before subscribing', async(inject([NotificationService], (ns: NotificationService) => {
@@ -86,12 +83,9 @@ describe('Notification service spec.', () => {
 
             it('Should not subscribe when push is not available', async(inject([NotificationService], (ns: NotificationService) => {
                 serviceWorkerServiceStub.isServiceWorkerAvailable.returns(false);
-                let gotResponse = false;
-                ns.registerToPush().subscribe((result) => {
-                    gotResponse = true;
-                    expect(result).toBeFalsy();
-                });
-                expect(gotResponse).toBeTruthy();
+                let registered;
+                ns.registerToPush().subscribe((result) => registered = result);
+                expect(registered).toBe(false, 'Responded as registered');
             })));
 
             it('Should call registerForPush method', async(inject([NotificationService], (ns: NotificationService) => {
@@ -115,29 +109,23 @@ describe('Notification service spec.', () => {
 
             it( 'Should not store subscription when get other then 202 response from origin', async(inject([NotificationService], (ns: NotificationService) => {
                 httpStub.post.returns(Observable.of({status: 400}));
-                ns.registerToPush().subscribe((result) => {
-                    expect(result).toBeFalsy();
-                });
+                let registerResponse;
+                ns.registerToPush().subscribe((result) => registerResponse = result);
+                expect(registerResponse).toBe(false, 'Responded as registered.');
                 expect(localStorage.getItem('subscription')).toBeNull();
 
-                let gotResponse = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResponse = true;
-                    expect(isRegistered).toBe(false, 'Responded as registered!');
-                });
+                let isRegisteredResponse;
 
-                expect(gotResponse).toBe(true, 'Did not got response from observable');
+                ns.isRegistered().subscribe((resp) => isRegisteredResponse = resp);
+                expect(isRegisteredResponse).toBe(false, 'Responded as registered!');
                 expect(httpStub.post.calledOnce).toBeTruthy();
             })));
 
             it('Should not try to subscribe when another subscription is pending', async(inject([NotificationService], (ns: NotificationService) => {
-                let errorThrowed = false;
                 ns.registerToPush().subscribe();
-                ns.registerToPush().subscribe(null, (error) => {
-                    expect(error).toBe('Another registration is pending or active.');
-                    errorThrowed = true;
-                });
-                expect(errorThrowed).toBeTruthy();
+                let error;
+                ns.registerToPush().subscribe(null, (err) => error = err);
+                expect(error).toBeDefined('Error was not throwed');
                 expect(ngServiceWorkerStub.registerForPush.calledOnce).toBeTruthy();
             })));
 
@@ -145,70 +133,61 @@ describe('Notification service spec.', () => {
                 httpStub.post.returns(Observable.of({status: 400}));
                 ns.registerToPush().subscribe();
 
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBe(false, 'Should not respond as subscribed after 400');
-                }).unsubscribe();
-                expect(gotResult).toBe(true, 'Observable should return value.');
+                let isRegistered;
+                ns.isRegistered().subscribe((resp) => isRegistered = resp);
+                expect(isRegistered).toBe(false, 'Should not respond as subscribed after 400');
 
                 httpStub.post.returns(Observable.of({status: 202}));
                 ns.registerToPush().subscribe();
 
-                gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBe(true, 'Should be registered after second try');
-                });
-                expect(gotResult).toBe(true, 'Observable should return value.');
+                ns.isRegistered().subscribe((resp) => isRegistered = resp);
+                expect(isRegistered).toBe(true, 'Should be registered after second try');
+
                 expect(ngServiceWorkerStub.registerForPush.calledTwice).toBeTruthy();
             })));
 
             it('Should be able to subscribe for VAPID subscription', async(inject([NotificationService], (ns: NotificationService) => {
-                ns.registerToPush().subscribe((result) => {
-                    expect(result).toBeTruthy();
-                });
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBeTruthy();
-                });
-                expect(gotResult).toBe(true, 'Observable should return value.');
+                let register;
+                ns.registerToPush().subscribe((resp)  => register = resp);
+                expect(register).toBe(true, 'Did not register to push.');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((resp) => isRegistered = resp);
+                expect(isRegistered).toBe(true, 'Did not responded as registered.');
             })));
 
             it('Should be able to unregister', async(inject([NotificationService], (ns: NotificationService) => {
                 ns.registerToPush().subscribe();
-                ns.unregisterFromPush().subscribe((result) => {
-                    expect(result).toBeTruthy();
-                });
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBeFalsy();
-                });
+                let unregistered;
+                ns.unregisterFromPush().subscribe((result) => unregistered = result);
+                expect(unregistered).toBe(true, 'Did not unregister successfully');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((result) => isRegistered = result);
+                expect(isRegistered).toBe(false, 'isRegistered should respond as false');
                 expect(httpStub.post.calledTwice).toBeTruthy();
-                expect(gotResult).toBe(true, 'Observable should return value.');
             })));
 
             it('Should not unregister not registered', async(inject([NotificationService], (ns: NotificationService) => {
-                ns.unregisterFromPush().subscribe((result) => {
-                    expect(result).toBeFalsy();
-                });
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBe(false, 'unregistered client responed as registered.');
-                });
+                let unregisterFromPush;
+                ns.unregisterFromPush().subscribe((result) => unregisterFromPush = result);
+                expect(unregisterFromPush).toBe(false, 'Still registered.');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((result) => isRegistered = result);
+                expect(isRegistered).toBe(false, 'unregistered client responed as registered.');
+
                 expect(httpStub.post.called).toBe(false, 'Post should not be called');
-                expect(gotResult).toBe(true, 'Observable should return value.');
             })));
 
             it('Should able to resubscribe', async(inject([NotificationService], (ns: NotificationService) => {
                 ns.registerToPush().subscribe();
                 ns.unregisterFromPush().subscribe();
-                ns.registerToPush().subscribe((result) => {
-                    expect(result).toBe(true, 'Was not able to subscribe again');
-                });
+
+                let registerToPush;
+                ns.registerToPush().subscribe((result) => registerToPush = result);
+                expect(registerToPush).toBe(true, 'Was not able to subscribe again');
+
                 expect(httpStub.post.calledThrice).toBe(true, 'Lack of calls to http');
             })));
         });
@@ -243,35 +222,26 @@ describe('Notification service spec.', () => {
             it( 'Should be able to subscribe', async(inject([NotificationService], (ns: NotificationService) => {
                 permission = {deviceToken: 'device_token', permission: 'granted'};
                 windowStub._window.safari.pushNotification.permission = () => permission;
-                let gotResult: boolean = false;
-                ns.registerToPush().subscribe((result) => {
-                    expect(result).toBe(true, 'Should respond with \'true\'.');
-                    gotResult = true;
-                });
-                expect(gotResult).toBe(true, 'Observable did not give output.');
-                gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBe(true, 'isRegistered should return true.');
-                });
-                expect(gotResult).toBe(true, 'Observable did not give output.');
+                let registerToPush;
+                ns.registerToPush().subscribe((result) => registerToPush = result);
+                expect(registerToPush).toBe(true, 'Should respond with \'true\'.');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((response) => isRegistered = response);
+                expect(isRegistered).toBe(true, 'isRegistered should return true.');
             })));
 
             it( 'Should respond as not subscribed when permission is denied', async(inject([NotificationService], (ns: NotificationService) => {
                 permission = {deviceToken: 'device_token', permission: 'denied'};
                 windowStub._window.safari.pushNotification.permission = () => permission;
-                let gotResult: boolean = false;
-                ns.registerToPush().subscribe((result) => {
-                    expect(result).toBe(false, 'Should respond with \'false\'.');
-                    gotResult = true;
-                });
-                expect(gotResult).toBe(true, 'Observable did not give output.');
-                gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBe(false, 'isRegistered should return false.');
-                });
-                expect(gotResult).toBe(true, 'Observable did not give output.');
+
+                let registerToPush;
+                ns.registerToPush().subscribe((result) => registerToPush = result);
+                expect(registerToPush).toBe(false, 'Should respond with \'false\'.');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((response) => isRegistered = response);
+                expect(isRegistered).toBe(false, 'isRegistered should return false.');
             })));
 
             describe('Default permission.', () => {
@@ -282,12 +252,9 @@ describe('Notification service spec.', () => {
                 });
 
                 it('Should be able to check that customer is NOT subscribed', async(inject([NotificationService], (ns: NotificationService) => {
-                    let gotResult = false;
-                    ns.isRegistered().subscribe((isRegistered) => {
-                        gotResult = true;
-                        expect(isRegistered).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
-                    });
-                    expect(gotResult).toBe(true, 'Observable did not give output.');
+                    let isRegistered;
+                    ns.isRegistered().subscribe((result) => isRegistered = result);
+                    expect(isRegistered).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
                 })));
             });
 
@@ -300,12 +267,9 @@ describe('Notification service spec.', () => {
 
                 it('Should be able to check that customer is NOT subscribed', async(inject([NotificationService], (ns: NotificationService) => {
                     const spy = sinon.spy(ns, 'checkSubscription');
-                    let gotResult = false;
-                    ns.isRegistered().subscribe((isRegistered) => {
-                        gotResult = true;
-                        expect(isRegistered).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
-                    });
-                    expect(gotResult).toBe(true, 'Observable did not give output.');
+                    let isRegistered;
+                    ns.isRegistered().subscribe((result) => isRegistered = result);
+                    expect(isRegistered).toBe(false, 'Unsubscribed customer should not appear as subscribed.');
                 })));
             });
 
@@ -317,12 +281,9 @@ describe('Notification service spec.', () => {
                 });
 
                 it ('Should be able to check that customer is subscribed', async(inject([NotificationService], (ns: NotificationService) => {
-                    let gotResult = false;
-                    ns.isRegistered().subscribe((isRegistered) => {
-                        gotResult = true;
-                        expect(isRegistered).toBe(true, 'Subscribed customer should not appear as unsubscribed.');
-                    });
-                    expect(gotResult).toBe(true, 'Observable did not give output.');
+                    let isRegistered;
+                    ns.isRegistered().subscribe((result) => isRegistered = result);
+                    expect(isRegistered).toBe(true, 'Subscribed customer should not appear as unsubscribed.');
                 })));
             });
         });
@@ -340,33 +301,25 @@ describe('Notification service spec.', () => {
             });
 
             it('Should respond as subscribed when there is subscription in local storage', async(inject([NotificationService], (ns: NotificationService) => {
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBeTruthy();
-                });
-                expect(gotResult).toBe(true, 'Observable did not respond!');
+                let isRegistered;
+                ns.isRegistered().subscribe((result) => isRegistered = result);
+                expect(isRegistered).toBe(true, 'Did not respond as registered');
             })));
 
             it('Should be able to unregister', async(inject([NotificationService], (ns: NotificationService) => {
-                ns.unregisterFromPush().subscribe((result) => {
-                    expect(result).toBeTruthy();
-                });
-                let gotResult = false;
-                ns.isRegistered().subscribe((isRegistered) => {
-                    gotResult = true;
-                    expect(isRegistered).toBeFalsy();
-                });
-                expect(gotResult).toBe(true, 'Observable did not respond!');
+                let unregisterFromPush;
+                ns.unregisterFromPush().subscribe((result) => unregisterFromPush = result);
+                expect(unregisterFromPush).toBe(true, 'Did not unregister from push');
+
+                let isRegistered;
+                ns.isRegistered().subscribe((result) => isRegistered = result);
+                expect(isRegistered).toBe(false, 'isRegistered still replies as true');
             })));
 
             it('Should not be able to register again', async(inject([NotificationService], (ns: NotificationService) => {
-                let gotResult: boolean = false;
-                ns.registerToPush().subscribe(null, (error) => {
-                    expect(error).toBe('Another registration is pending or active.');
-                    gotResult = true;
-                });
-                expect(gotResult).toBeTruthy();
+                let registerError;
+                ns.registerToPush().subscribe(null, (error) => registerError = error);
+                expect(registerError).toBe('Another registration is pending or active.');
             })));
         });
     });
