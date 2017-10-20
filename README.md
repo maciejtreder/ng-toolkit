@@ -4,7 +4,7 @@ It is running as a **progressive web app** and includes Angular Material!
 It is also built with serverless environment in mind and can be easily deployed on AWS Lambda.
 
 ## Live demo
-[Angular Universal on AWS Lambda + API Gateway](https://www.angular-universal-serverless.maciejtreder.com)
+[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 ## What's inside?
 * Service-Worker (for content-caching - application works offline - PWA)
