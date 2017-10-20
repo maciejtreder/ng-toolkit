@@ -30,7 +30,7 @@ app.set('views', 'src');
 app.use('/', express.static('dist', {index: false}));
 
 app.get('/**', (req, res) => {
-  console.log('H O S T', req.headers['host']);
+  console.log('H E A D E R S', req.headers);
   res.render('../dist/index', { req, res });
 });
 
