@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class NotificationService {
 
-    public endpoint: string = 'https://api.angular-universal-serverless.maciejtreder.com/webpush';
+    public endpoint: string = 'https://api.angular-universal-pwa.maciejtreder.com/webpush';
     public vapidSubscriptionEndpoint: string = this.endpoint + '/vapid/';
     public safariSubscriptionEndpoint: string = this.endpoint + '/safari';
 
@@ -69,7 +69,7 @@ export class NotificationService {
     private checkSubscription(): void {
         if (this.window.nativeWindow['safari']) {
             const result = this.window.nativeWindow['safari'].pushNotification.permission(
-                'web.com.maciejtreder.angular-universal-serverless'
+                'web.com.maciejtreder.angular-universal-pwa'
             );
             this._isSubscribed = result.permission === 'granted';
         } else if (this.serviceWorkerService.isServiceWorkerAvailable()) {
@@ -104,7 +104,7 @@ export class NotificationService {
         return Observable.create((subscriber: Subscriber<boolean>) => {
             this.window.nativeWindow['safari'].pushNotification.requestPermission(
                 this.safariSubscriptionEndpoint,
-                'web.com.maciejtreder.angular-universal-serverless',
+                'web.com.maciejtreder.angular-universal-pwa',
                 null,
                 (permission) => {
                     if (permission.permission === 'granted') {
