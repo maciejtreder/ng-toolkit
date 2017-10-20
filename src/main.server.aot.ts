@@ -30,7 +30,9 @@ app.set('views', 'src');
 app.use('/', express.static('dist', { index: false }));
 
 app.get('/**', (req, res) => {
-  res.render('../dist/index', { req, res });
+    console.log('H E A D E R S', req.headers);
+    console.log('M A T C H', req.headers.host.match(/^www\.angular-universal-pwa\.com$/));
+    res.render('../dist/index', { req, res });
 });
 
 // redirection from safari notification to given external page
