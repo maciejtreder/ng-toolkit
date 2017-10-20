@@ -30,8 +30,12 @@ app.set('views', 'src');
 app.use('/', express.static('dist', { index: false }));
 
 app.get('/**', (req, res) => {
-    console.log('H E A D E R S', req.headers);
-    console.log('M A T C H', req.headers.host.match(/^www\.angular-universal-pwa\.com$/));
+    console.log(process.env.NODE_ENV);
+    // www.angular-universal-pwa.maciejtreder.com
+    console.log(req.headers.host === 'www.angular-universal-pwa.maciejtreder.com');
+    // if (!req.headers.host.match(/^www\.angular-universal-pwa\.maciejtreder\.com$/)) {
+    //     res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
+    // }
     res.render('../dist/index', { req, res });
 });
 
