@@ -32,6 +32,7 @@ app.use('/', express.static('dist', { index: false }));
 app.get('/**', (req, res) => {
     if (req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
         res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
+        res.end();
     } else {
         res.render('../dist/index', {req, res});
     }
