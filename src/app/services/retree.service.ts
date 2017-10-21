@@ -33,7 +33,7 @@ export class ReTree {
             return regex.reduce((res: any, item: any) => {
                 return (!!res) ? res : this.exec(str, item);
             }, null);
-        }else {
+        } else {
             return null;
         }
     }
