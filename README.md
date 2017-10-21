@@ -6,7 +6,8 @@ It is prepared to be easily deployed on serverless environment (like AWS Lambda)
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
 ## Live demo
-[Angular Universal on serverless environment (AWS Lambda + API Gateway)](https://www.angular-universal-serverless.maciejtreder.com)
+[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
+
 
 ## What's inside?
 * PWA (with service worker, application content is cached for offline working)

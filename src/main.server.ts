@@ -30,7 +30,7 @@ app.set('views', 'src');
 app.use('/', express.static('dist', {index: false}));
 
 app.get('/**', (req, res) => {
-  res.render('../dist/index', { req, res });
+    res.render('../dist/index', { req, res });
 });
 
 // redirection from safari notification to given external page
