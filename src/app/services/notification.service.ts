@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ServiceWorkerService } from './service-worker.service';
 import { NgPushRegistration, NgServiceWorker } from '@angular/service-worker';
 import { WindowRef } from '../windowRef';
@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class NotificationService {
 
     public endpoint: string = 'https://api.angular-universal-pwa.maciejtreder.com/webpush';
-    public vapidSubscriptionEndpoint: string = this.endpoint + '/vapid/';
+    public vapidSubscriptionEndpoint: string = this.endpoint + '/vapid';
     public safariSubscriptionEndpoint: string = this.endpoint + '/safari';
 
     private _isSubscribed: boolean;
@@ -23,7 +23,7 @@ export class NotificationService {
     private subscription: NgPushRegistration;
     private options: RequestOptionsArgs;
 
-    constructor(private window: WindowRef, private serviceWorkerService: ServiceWorkerService, @Inject(PLATFORM_ID) private platformId: any, private serviceWorker: NgServiceWorker, private http: Http) {
+    constructor(private window: WindowRef, private serviceWorkerService: ServiceWorkerService, @Inject(PLATFORM_ID) private platformId: any, private serviceWorker: NgServiceWorker, private http: Http, private appRef: ApplicationRef) {
         this.checkSubscription();
         const headers: Headers = new Headers();
         headers.append('content-type', 'application/json');
@@ -109,6 +109,7 @@ export class NotificationService {
                 (permission) => {
                     if (permission.permission === 'granted') {
                         subscriber.next(true);
+                        this.appRef.tick();
                     } else {
                         subscriber.next(false);
                     }
