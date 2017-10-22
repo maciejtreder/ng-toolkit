@@ -8,6 +8,9 @@ import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { RouterModule } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
+import { RouterLinkStubDirective } from './testing/router-link-stub-directive';
 
 let fixture: ComponentFixture<MenuComponent>;
 let nsServiceStub;
@@ -32,7 +35,7 @@ const setupTestBed = () => {
     nsServiceStub.isPushAvailable.returns(true);
 
     TestBed.configureTestingModule({
-        declarations: [MenuComponent],
+        declarations: [MenuComponent, RouterLinkStubDirective],
         providers: [
             {provide: NotificationService, useValue: nsServiceStub},
             {provide: WindowRef, useValue: windowRefStub}
@@ -47,7 +50,14 @@ describe('Menu component.', () => {
 
     beforeEach(() => {
         isRegistered.next(false);
-        windowRefStub._window = {};
+        windowRefStub._window = {
+            on: (name, handler) => {
+                // noop
+            },
+            off: () => {
+                // noop
+            }
+        };
         setupTestBed();
 
         findSubscribeLink();
@@ -103,6 +113,12 @@ describe('Safari', () => {
     beforeEach(() => {
         isRegistered.next(false);
         windowRefStub._window = {
+            on: (name, handler) => {
+                // noop
+            },
+            off: () => {
+                // noop
+            },
             safari: {}
         };
         setupTestBed();
@@ -113,7 +129,7 @@ describe('Safari', () => {
         expect(subscribeLink.nativeElement.textContent).toContain('Subscribe to push', 'Message on the button is incorrect');
     }));
 
-    it('Unsubscribe button should not be visible on Safari', async(() => {
+    it('Unsubscribe button should not be visible on Safari', async(() => { // todo this test hangs
         isRegistered.next(true);
         findSubscribeLink();
         expect(subscribeLink).toBeUndefined('Button should disappear');

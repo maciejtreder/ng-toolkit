@@ -1,44 +1,23 @@
-<!---DESKTOP---->
-<mat-toolbar *ngIf="isDesktop" [class.withNav]="navIsFixed">
-    <div>
-        <h1>Angular PWA Serverless</h1>
-        <menu *ngIf="navIsFixed"></menu>
-    </div>
-</mat-toolbar>
-<div id="content-wrapper" *ngIf="isDesktop" class="desktop" >
-    <div id="content">
-        <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
-        <menu [class.fixed]="navIsFixed"></menu>
-        <router-outlet></router-outlet>
-    </div>
-    <footer class="credentials">
-        <!-- Please respect MIT License and don't remove this footer. --->
-        <p class="built">Built with</p>
-        <p><a href="https://github.com/maciejtreder/angular-universal-serverless">Angular Universal Serverless Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
-    </footer>
-</div>
-
-<!---MOBILE---->
-
-<mat-sidenav-container *ngIf="!isDesktop" #sidenav mode="side" opened="false">
+<mat-sidenav-container #sidenav mode="side" opened="false">
     <mat-sidenav>
         <div>
             <button mat-mini-fab (click)="sidenav.close()" class="menu-button">
                 <i class="material-icons">keyboard_backspace</i>
             </button>
         </div>
-        <menu (click)="sidenav.close()" class="side-nav"></menu>
+        <menu (click)="sidenav.close()" [vertical]="true"></menu>
 
     </mat-sidenav>
-    <mat-toolbar *ngIf="!isDesktop">
+    <mat-toolbar>
         <h1>
             <button mat-mini-fab (click)="sidenav.open()" class="menu-button open-nav">
                 <i class="material-icons">menu</i>
             </button>
             Angular PWA Serverless
         </h1>
+        <menu [vertical]="false"></menu>
     </mat-toolbar>
-    <div id="content-wrapper" class="mobile">
+    <div id="content-wrapper">
         <div id="content">
             <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda</h2>
             <router-outlet></router-outlet>

@@ -14,30 +14,15 @@ import { WindowRef } from './windowRef';
   templateUrl: './app.component.html',
     styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
-
-    public isDesktop: boolean = this.deviceService.isDesktop();
-    public navIsFixed: boolean = false;
+export class AppComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,
         private conn: ConnectivityService,
-        private deviceService: DeviceService,
         private sws: ServiceWorkerService,
-        private elRef: ElementRef,
         private snackBarService: SnackBarService,
         private windowRef: WindowRef
     ) {}
-
-    public ngAfterViewInit(): void {
-        // "sticky" header
-        if (!isPlatformBrowser(this.platformId) || !this.isDesktop) {
-            return;
-        }
-
-        Observable.fromEvent(window, 'scroll').subscribe((e: Event) => this.onScroll());
-        this.onScroll();
-    }
 
     public ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
@@ -67,10 +52,5 @@ export class AppComponent implements OnInit, AfterViewInit {
                     this.snackBarService.displayNotification({message: 'You are online. All data is synced.', action: 'Ok', duration: 3, force: true} as SnackBarNotification);
                 }
             });
-    }
-
-    private onScroll(): void {
-        const rect = this.elRef.nativeElement.querySelector('#content menu').getBoundingClientRect();
-        this.navIsFixed = rect.top <  64;
     }
 }
