@@ -1,9 +1,44 @@
-:host-context(.side-nav) a {
-  display: block;
-  text-align: left;
-  padding: 10px;
-}
-:host-context(.side-nav) {
+:host(.side-nav) {
   width: 220px;
   margin-top: 64px;
+  display: block;
+
+  a {
+    display: block;
+    text-align: left;
+    padding: 10px;
+  }
 }
+
+  :host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 6px;
+    padding: 0;
+  }
+
+  div {
+    overflow: auto;
+    padding: 3px;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: inline;
+    position: relative;
+    left: 0px;
+  }
+
+  li {
+    display: inline-block;
+    a {
+      margin: 0 3px;
+    }
+  }
+
+  span:hover {
+    cursor: pointer;
+  }

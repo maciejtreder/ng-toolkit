@@ -15,6 +15,7 @@ html, body {
   background: #ffffff !important;
   height: 100%;
 }
+
 a:hover, button:hover {
   text-decoration: none;
   color: orangered;
@@ -30,21 +31,6 @@ a {
   left: 10px;
 }
 
-app div.content {
-  position: relative;
-  text-align: center;
-}
-
-@media (max-device-width: 768px) {
-  app div.content {
-    background: url('../assets/img/sandbox-mobile.png') no-repeat top center;
-    min-height: 175px;
-  }
-}
-
-@media (min-device-width: 768px) {
-  app div.content {
-    background: url('../assets/img/sandbox.png') no-repeat top center;
-    min-height: 350px;
-  }
+#content {
+  padding: 5px;
 }

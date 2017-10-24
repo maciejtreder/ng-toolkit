@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
     moduleId: module.id,
     selector: 'http-proxy',
     templateUrl: `./http-proxy.component.html`,
-    styleUrls: ['../common.component.scss', './http-proxy.component.css'],
+    styleUrls: ['./http-proxy.component.css'],
 })
 export class HttpProxyComponent {
 
