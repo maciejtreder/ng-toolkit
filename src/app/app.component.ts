@@ -9,7 +9,6 @@ import { SnackBarNotification, SnackBarService } from './services/snack-bar.serv
 import { WindowRef } from './windowRef';
 
 @Component({
-  moduleId: module.id,
   selector: 'app',
   templateUrl: './app.component.html',
     styleUrls: ['app.component.scss']

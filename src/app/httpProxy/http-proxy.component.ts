@@ -3,7 +3,6 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 
 @Component({
-    moduleId: module.id,
     selector: 'http-proxy',
     templateUrl: `./http-proxy.component.html`,
     styleUrls: ['./http-proxy.component.css'],
