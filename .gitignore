@@ -7,3 +7,5 @@
 .serverless
 *.iml
 .DS_Store
+dll
+.awcache

@@ -10,9 +10,9 @@ This is a great starting point for **microservices application**! Because of sup
 
 
 ## What's inside?
-* PWA (with service worker, application content is cached for offline working)
+* PWA (thanks to service worker application content is cached for offline working, it can be also installed as native app on Android devices and Google Chrome)
 * Push notifications:
-    * Vapid webpush (Chrome & Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
+    * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
@@ -24,6 +24,7 @@ This is a great starting point for **microservices application**! Because of sup
 * Webpack
 * UglifyJS
 * OptimizeJS
+* DllPlugin (super fast reloading in development mode)
 * Sass loader
 * Serverless framework
 
@@ -35,9 +36,8 @@ cd angular-universal-serverless
 npm install
 npm start
 ```
-* Development mode (autoreload): ```npm run watch```
-* Unit tests: ```npm run test:dev```
-* Unit tests + development mode: ```npm run test:dev:host```
+* Development mode (autoreload): ```npm start```
+* Unit tests: ```npm run test```
 
 
 ## Production mode

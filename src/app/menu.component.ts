@@ -11,7 +11,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { By } from '@angular/platform-browser';
 
 @Component({
-    moduleId: module.id,
     selector: 'menu',
     templateUrl: 'menu.component.html',
     styleUrls: ['./menu.component.scss']

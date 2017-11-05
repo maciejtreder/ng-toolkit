@@ -9,8 +9,9 @@
     "emitDecoratorMetadata": true,
     "lib": [
       "es6",
-      "dom"
+      "dom",
+      "esnext"
     ],
-    "types": ["node", "hammerjs", "jasmine"]
+    "typeRoots": ["node_modules/@types"]
   }
 }

@@ -3,42 +3,44 @@ const commonPartial = require('./webpack/webpack.common');
 const clientPartial = require('./webpack/webpack.client');
 const serverPartial = require('./webpack/webpack.server');
 const prodPartial = require('./webpack/webpack.prod');
+const dllPartial = require('./webpack/webpack.dll');
 const { getAotPlugin } = require('./webpack/webpack.aot');
 
 module.exports = function (options, webpackOptions) {
   options = options || {};
 
-  if (options.aot) {
-    console.log(`Running build for ${options.client ? 'client' : 'server'} with AoT Compilation`)
-  }
+    const configs = [];
 
-  const serverConfig = webpackMerge({}, commonPartial, serverPartial, {
-    entry: options.aot ? './src/main.server.aot.ts' : serverPartial.entry, // Temporary
-    plugins: [
-      getAotPlugin('server', !!options.aot)
-    ]
-  });
 
-  var clientConfig = webpackMerge({}, commonPartial, clientPartial, {
-    plugins: [
-      getAotPlugin('client', !!options.aot)
-    ]
-  });
+      if (options.aot) {
+          console.log(`Running build for ${options.client ? 'client' : 'server'} with AoT Compilation`)
+      }
 
-  if (webpackOptions.p) {
-    clientConfig = webpackMerge({}, clientConfig, prodPartial);
-  }
+      const serverConfig = webpackMerge({}, commonPartial(options), serverPartial, {
+          entry: options.aot ? './src/main.server.aot.ts' : serverPartial.entry, // Temporary
+          plugins: [
+              getAotPlugin('server', !!options.aot)
+          ]
+      });
 
-  const configs = [];
-  if (!options.aot) {
-    configs.push(clientConfig, serverConfig);
+      var clientConfig = webpackMerge({}, commonPartial(options), clientPartial, {
+          plugins: [
+              getAotPlugin('client', (!!options.aot || !!options.dll))
+          ]
+      });
 
-  } else if (options.client) {
-    configs.push(clientConfig);
+      if (webpackOptions.p) {
+          clientConfig = webpackMerge({}, clientConfig, prodPartial);
+      }
 
-  } else if (options.server) {
-    configs.push(serverConfig);
-  }
-
+      if (options.dll) {
+          configs.push(webpackMerge({}, clientConfig, dllPartial));
+      }
+      if (options.server) {
+          configs.push(serverConfig);
+      }
+      if (options.client) {
+          configs.push(clientConfig);
+      }
   return configs;
 }
