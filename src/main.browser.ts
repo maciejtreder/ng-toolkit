@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAppModule } from './app/browser-app.module';
 import { ApplicationRef, enableProdMode } from '@angular/core';
-import { AppModule } from './app/app.module';
 import { enableDebugTools } from '@angular/platform-browser';
 import { bootloader } from '@angularclass/hmr';
 

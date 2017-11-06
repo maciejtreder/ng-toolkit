@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "commonjs",
     "target": "es5",
+    "module": "commonjs",
     "noImplicitAny": false,
     "sourceMap": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": [
-      "es6",
-      "dom",
-      "esnext"
-    ],
-    "typeRoots": ["node_modules/@types"]
-  }
+    "lib": ["dom", "es6", "es2015", "es2016", "es2017", "esnext"],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "files": [
+    "./node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
+  ]
 }
