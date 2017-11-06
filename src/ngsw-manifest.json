@@ -4,16 +4,7 @@
     "backgroundOnly": false
   },
   "static.ignore": [
-    "^\/worker-basic.min.js$",
-    ".*.xml$",
-    ".*.html$",
-    ".*.css$",
-    ".*.css.map$",
-    "\/assets\/icons\/.*.png$",
-    ".*.svg$",
-    ".*.ico$",
-    ".*.js.map$",
-    ".*.json$"
+    "^\/worker-basic.min.js$"
   ],
   "external": {
     "urls": [{
