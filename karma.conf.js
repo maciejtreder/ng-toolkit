@@ -10,13 +10,13 @@ module.exports = function (config) {
     preprocessors: {
       './spec-bundle.js': ['webpack', 'sourcemap']
     },
-    webpack: require('./webpack/webpack.test')({env: 'test'}),
+    webpack: require('./webpack.config')({test: true}),
     reporters: ['progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     singleRun: false,
     concurrency: Infinity
   })
