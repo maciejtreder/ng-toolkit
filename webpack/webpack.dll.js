@@ -1,8 +1,5 @@
 const {DllPlugin} = require('webpack');
 const { root } = require('./helpers');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const OptimizeJsPlugin = require('optimize-js-plugin');
 
 module.exports = {
     entry: {

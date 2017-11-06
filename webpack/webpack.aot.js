@@ -1,14 +1,14 @@
 const { root } = require('./helpers');
-const { AotPlugin } = require('@ngtools/webpack');
+const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 const tsconfigs = {
     client: root('./tsconfig.browser.json'),
-    server: root('./tsconfig.server.aot.json')
+    server: root('./tsconfig.server.json')
 };
 
 const aotTsconfigs = {
     client: root('./tsconfig.browser.json'),
-    server: root('./tsconfig.server.aot.json')
+    server: root('./tsconfig.server.json')
 };
 
 /**
@@ -19,9 +19,15 @@ const aotTsconfigs = {
  * @returns
  */
 function getAotPlugin(platform, aot) {
-    return new AotPlugin({
-        tsConfigPath: aot ? aotTsconfigs[platform] : tsconfigs[platform],
-        skipCodeGeneration: !aot
+    return new AngularCompilerPlugin({
+        tsConfigPath: tsconfigs[platform],
+        // tsConfigPath: aot ? aotTsconfigs[platform] : tsconfigs[platform],
+        // tsConfigPath: 'tsconfig.browser.json',
+        skipCodeGeneration: !aot,
+        compilerOptions: {
+            genDir: root("./src/ngfactory"),
+            entryModule: root("./src/app/server-app.module#ServerAppModule")
+        }
     });
 }
 

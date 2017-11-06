@@ -5,7 +5,7 @@ const { root } = require('./helpers');
  */
 
 module.exports =  {
-        // entry: root('./src/main.server.aot.ts'),
+        entry: './src/main.server.ts',
         output: {
             libraryTarget: 'commonjs2',
             filename: 'server.js'

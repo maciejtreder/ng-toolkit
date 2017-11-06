@@ -1,7 +1,7 @@
-let app = require('./dist/server.js');
-let port = process.env.PORT || 8000;
+let server = require('./dist/server');
+let port = process.env.PORT || 8080;
 
 // Server
- app.listen(port, () => {
+server.app.listen(port, () => {
     console.log(`Listening on: http://localhost:${port}`);
 });

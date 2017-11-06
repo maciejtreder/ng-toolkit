@@ -10,7 +10,6 @@
     "pretty": true,
     "sourceMap": true,
     "noImplicitAny": false
-
   },
   "angularCompilerOptions": {
     "entryModule": "./src/app/browser-app.module#BrowserAppModule"
@@ -24,7 +23,7 @@
     "useCache": true
   },
   "include": [
-    "./src/main.browser.ts",
+    "./src/main.server.ts",
     "./src/app/lazy/lazy.module.ts",
     "./src/app/httpProxy/http-proxy.module.ts"
   ]

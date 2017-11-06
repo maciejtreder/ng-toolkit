@@ -1,4 +1,4 @@
-# Angular Universal Progressive Web App - starter
+# Angular 5 Universal Progressive Web App - starter
 This repo is boilerplate of Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (pushes, content caching)!
 It is prepared to be easily deployed on serverless environment (like AWS Lambda).
@@ -36,8 +36,8 @@ cd angular-universal-serverless
 npm install
 npm start
 ```
-* Development mode (autoreload + unit tests): ```npm start```
-* Development mode (autoreload only): ```npm run build:dev```
+* Development mode (autoreload only): ```npm start```
+* Development mode (autoreload + unit tests): ```npm run start:dev```
 * Unit tests: ```npm run test```
 
 

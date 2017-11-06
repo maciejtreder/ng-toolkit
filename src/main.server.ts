@@ -7,12 +7,13 @@ import * as cors from 'cors';
 import * as compression from 'compression';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 
-import { ServerAppModuleNgFactory } from './ngfactory/src/app/server-app.module.ngfactory';
+import { ServerAppModule } from './app/server-app.module';
+// import { ServerAppModuleNgFactory } from './ngfactory/app/server.app.module.ngfactory';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { enableProdMode } from '@angular/core';
 
 enableProdMode();
-const app = express();
+export const app = express();
 
 app.use(compression());
 app.use(cors());
@@ -21,7 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 app.engine('html', ngExpressEngine({
-  bootstrap: ServerAppModuleNgFactory
+  bootstrap: ServerAppModule
+  // bootstrap: ServerAppModuleNgFactory
 }));
 
 app.set('view engine', 'html');
@@ -30,12 +32,12 @@ app.set('views', 'src');
 app.use('/', express.static('dist', { index: false }));
 
 app.get('/**', (req, res) => {
-    if (req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
-        res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
-        res.end();
-    } else {
+    // if (req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
+    //     res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
+    //     res.end();
+    // } else {
         res.render('../dist/index', {req, res});
-    }
+    // }
 });
 
 // redirection from safari notification to given external page
@@ -48,4 +50,4 @@ app.post('/testPost', (req, res) => {
   res.status(200).send({receivedValue: req.body.exampleKey});
 });
 
-export = app;
+// export const app;

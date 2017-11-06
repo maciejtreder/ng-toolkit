@@ -8,6 +8,7 @@ import { RequestOptions, RequestOptionsArgs, Headers, Http, Response } from '@an
 import { Subscriber } from 'rxjs/Subscriber';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class NotificationService {
@@ -21,13 +22,12 @@ export class NotificationService {
     private applicationServerKey: string =
         'BKxp6BwVzRWy1Qbe63rHNbG46uwPTrl1RoeTJuyVBm42kvlUk0RuSkYk8NKoO0QK2GNV7eRhOLyV1KfmZhwU9Sc';
     private subscription: NgPushRegistration;
-    private options: RequestOptionsArgs;
+    private headers: HttpHeaders;
 
-    constructor(private window: WindowRef, private serviceWorkerService: ServiceWorkerService, @Inject(PLATFORM_ID) private platformId: any, private serviceWorker: NgServiceWorker, private http: Http, private appRef: ApplicationRef) {
+    constructor(private window: WindowRef, private serviceWorkerService: ServiceWorkerService, @Inject(PLATFORM_ID) private platformId: any, private serviceWorker: NgServiceWorker, private http: HttpClient, private appRef: ApplicationRef) {
         this.checkSubscription();
-        const headers: Headers = new Headers();
-        headers.append('content-type', 'application/json');
-        this.options = new RequestOptions({headers});
+        this.headers = new HttpHeaders();
+        this.headers.append('content-type', 'application/json');
     }
 
     public isPushAvailable(): boolean {
@@ -56,7 +56,7 @@ export class NotificationService {
     public unregisterFromPush(): Observable<boolean> {
         if (this.serviceWorkerService.isServiceWorkerAvailable() && this._isSubscribed) {
             return Observable.create((subscriber: Subscriber<boolean>) => {
-                this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', JSON.stringify(this.subscription), this.options).subscribe(() => {
+                this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', JSON.stringify(this.subscription), {headers: this.headers}).subscribe(() => {
                     localStorage.removeItem('subscription');
                     this.checkSubscription();
                     subscriber.next(true);
@@ -86,7 +86,7 @@ export class NotificationService {
             this.serviceWorker
                 .registerForPush({applicationServerKey: this.applicationServerKey})
                 .subscribe((pushRegistration: NgPushRegistration) => {
-                    this.http.post(this.vapidSubscriptionEndpoint + '/subscribe', JSON.stringify(pushRegistration), this.options)
+                    this.http.post(this.vapidSubscriptionEndpoint + '/subscribe', JSON.stringify(pushRegistration), {headers: this.headers})
                         .subscribe((response: Response) => {
                             if (response.status === 202) {
                                 localStorage.setItem('subscription', JSON.stringify(pushRegistration));

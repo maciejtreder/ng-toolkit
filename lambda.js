@@ -1,6 +1,6 @@
 'use strict';
 const awsServerlessExpress = require('aws-serverless-express');
-const app = require('././dist/server');
+const server = require('./dist/server');
 const binaryMimeTypes = [
   'application/javascript',
   'application/json',
@@ -20,7 +20,7 @@ const binaryMimeTypes = [
   'image/svg+xml',
     'application/x-font-ttf'
 ]
-const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes)
+const server = awsServerlessExpress.createServer(server.app, null, binaryMimeTypes)
 
 
 module.exports.universal = (event, context) => awsServerlessExpress.proxy(server, event, context);

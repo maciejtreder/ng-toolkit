@@ -8,6 +8,12 @@ module.exports = {
             filename: 'client.js'
         },
         target: 'web',
+        devServer: {
+            port: 3000,
+            historyApiFallback: {
+                index: '/'
+            }
+        },
         plugins: [
             new HtmlWebpackPlugin({
                 template: root('./src/index.html'),

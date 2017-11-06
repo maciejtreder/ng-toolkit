@@ -8,7 +8,6 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { isPlatformBrowser } from '@angular/common';
-import { By } from '@angular/platform-browser';
 
 @Component({
     selector: 'menu',
@@ -23,7 +22,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
         {link: '/external', icon: 'call_merge', text: 'External module'},
-        {link: '/httpProxy', icon: 'merge_type', text: 'Http proxy demo'},
+        // {link: '/httpProxy', icon: 'merge_type', text: 'Http proxy demo'},
         {link: 'https://github.com/maciejtreder/angular-universal-serverless', icon: 'code', text: 'Fork on github'},
         ];
     @Input('vertical')

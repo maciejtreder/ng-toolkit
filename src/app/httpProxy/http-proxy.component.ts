@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'http-proxy',
@@ -12,9 +12,10 @@ export class HttpProxyComponent {
     public valueToSend: string;
     public response: Observable<any>;
 
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
     public sendPost(): void {
-        this.response = this.http.post('testPost', {exampleKey: this.valueToSend}).map((res) => res.json());
+        this.response = this.http.post('testPost', {exampleKey: this.valueToSend});
+        this.response.subscribe((res) => console.log(res));
     }
 }
