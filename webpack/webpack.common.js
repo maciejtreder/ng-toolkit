@@ -1,8 +1,8 @@
 const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJS = require("uglify-es");
 const {DllReferencePlugin} = require('webpack');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -10,13 +10,8 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = function(options) {
     const plugins = [];
-    if (!options.dll && !options.server) {
+    if (!options.dll && !options.aot && options.client) {
         plugins.push(
-            new CopyWebpackPlugin([
-                    { from: 'dll' }, //ignore system-specific files
-                    { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
-                ]
-            ),
             new DllReferencePlugin({
                 context: '.',
                 manifest: require('../dll/vendor-manifest.json')
@@ -24,12 +19,18 @@ module.exports = function(options) {
             new DllReferencePlugin({
                 context: '.',
                 manifest: require('../dll/polyfills-manifest.json')
-            })
+            }),
+            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/vendor.dll') }),
+            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/polyfills.dll') })
         )
     }
 
     plugins.push(
-        extractSass
+        extractSass,
+        new CopyWebpackPlugin([
+                { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
+            ]
+        )
     );
 
   return {

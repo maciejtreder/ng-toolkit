@@ -4,10 +4,12 @@ const clientPartial = require('./webpack/webpack.client');
 const serverPartial = require('./webpack/webpack.server');
 const prodPartial = require('./webpack/webpack.prod');
 const dllPartial = require('./webpack/webpack.dll');
+const testPartial = require('./webpack/webpack.test');
 const { getAotPlugin } = require('./webpack/webpack.aot');
 
 module.exports = function (options, webpackOptions) {
   options = options || {};
+    webpackOptions = webpackOptions || {};
 
     const configs = [];
 
@@ -41,6 +43,11 @@ module.exports = function (options, webpackOptions) {
       }
       if (options.client) {
           configs.push(clientConfig);
+      }
+      if (options.test) {
+          // configs.push(webpackMerge({}, clientConfig, testPartial));
+          configs.push(webpackMerge({}, testPartial));
+          // configs.push(webpackMerge({}, clientConfig));
       }
   return configs;
 }

@@ -36,7 +36,8 @@ cd angular-universal-serverless
 npm install
 npm start
 ```
-* Development mode (autoreload): ```npm start```
+* Development mode (autoreload + unit tests): ```npm start```
+* Development mode (autoreload only): ```npm run build:dev```
 * Unit tests: ```npm run test```
 
 

@@ -1,14 +1,12 @@
 const helpers = require('./helpers');
 
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 
-module.exports = function (options) {
-    return {
+module.exports =  {
         entry: helpers.root('./src/main.browser.ts'),
         devtool: 'inline-source-map',
         resolve: {
@@ -95,8 +93,6 @@ module.exports = function (options) {
 
             new LoaderOptionsPlugin({
                 debug: false,
-                options: {
-                }
             }),
 
         ],
@@ -113,6 +109,4 @@ module.exports = function (options) {
             clearImmediate: false,
             setImmediate: false
         }
-
-    };
 }
