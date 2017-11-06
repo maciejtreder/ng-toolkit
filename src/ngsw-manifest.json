@@ -9,7 +9,7 @@
     ".*.html$",
     ".*.css$",
     ".*.css.map$",
-    ".*.png$",
+    "\/assets\/icons\/.*.png$",
     ".*.svg$",
     ".*.ico$",
     ".*.js.map$",
