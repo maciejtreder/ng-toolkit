@@ -4,7 +4,16 @@
     "backgroundOnly": false
   },
   "static.ignore": [
-    "^\/worker-basic.min.js$"
+    "^\/worker-basic.min.js$",
+    ".*.xml$",
+    ".*.html$",
+    ".*.css$",
+    ".*.css.map$",
+    ".*.png$",
+    ".*.svg$",
+    ".*.ico$",
+    ".*.js.map$",
+    ".*.json$"
   ],
   "external": {
     "urls": [{
