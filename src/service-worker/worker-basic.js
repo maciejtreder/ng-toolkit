@@ -10,7 +10,7 @@ import {NotificationClick} from './notification-click';
 bootstrapServiceWorker({
     manifestUrl: 'ngsw-manifest.json',
     plugins: [
-        // StaticContentCache(),
+        StaticContentCache(),
         Dynamic([
             new FreshnessStrategy(),
             new PerformanceStrategy(),
