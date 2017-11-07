@@ -1,12 +1,6 @@
-/node_modules/
-/dist/
-/lib/
-/yarn.lock
-*.log
+node_modules/
+dist/
 .idea
 .serverless
 *.iml
 .DS_Store
-dll
-.awcache
-/src/styles/main.css

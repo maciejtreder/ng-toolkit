@@ -1,0 +1,18 @@
+body {
+   margin: 0 auto;
+   max-width: 1000px;
+   background: url('../../assets/img/sandbox.png') no-repeat center;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   font-family: 'Source Sans Pro', calibri, Arial, sans-serif !important;
+   min-height: 550px;
+}
+.content {
+   flex: 1 0 auto;
+}
+footer {
+   padding: 10px 0;
+   text-align: center;
+}
+
