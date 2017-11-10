@@ -1,6 +1,5 @@
 const { root } = require('./helpers');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {

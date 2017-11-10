@@ -56,5 +56,6 @@ npm run build:deploy
 ```
 
 
-##### Other info
-Built on top of [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
+## Credentials
+* Checkout my [home page](https://www.maciejtreder.com) and find out more about me
+* Built on top of [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)

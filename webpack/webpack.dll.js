@@ -1,10 +1,8 @@
 const {DllPlugin} = require('webpack');
 const { root } = require('./helpers');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-const extractSass = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
-});
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const OptimizeJsPlugin = require('optimize-js-plugin');
 
 module.exports = {
     entry: {
@@ -35,7 +33,6 @@ module.exports = {
             'url',
             'punycode',
             'events',
-            'webpack-dev-server/client/socket.js',
             'webpack/hot/emitter.js',
             'zone.js/dist/long-stack-trace-zone.js'
         ],
@@ -50,6 +47,6 @@ module.exports = {
         new DllPlugin({
             path: root('dll/[name]-manifest.json'),
             name: '[name]'
-        }),
+        })
     ]
 }

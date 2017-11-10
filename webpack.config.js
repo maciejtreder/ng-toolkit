@@ -8,11 +8,10 @@ const testPartial = require('./webpack/webpack.test');
 const { getAotPlugin } = require('./webpack/webpack.aot');
 
 module.exports = function (options, webpackOptions) {
-  options = options || {};
+     options = options || {};
     webpackOptions = webpackOptions || {};
 
     const configs = [];
-
 
       if (options.aot) {
           console.log(`Running build for ${options.client ? 'client' : 'server'} with AoT Compilation`)
@@ -27,7 +26,7 @@ module.exports = function (options, webpackOptions) {
 
       var clientConfig = webpackMerge({}, commonPartial(options), clientPartial, {
           plugins: [
-              getAotPlugin('client', (!!options.aot || !!options.dll))
+              getAotPlugin('client', (!!options.aot))
           ]
       });
 
@@ -36,7 +35,11 @@ module.exports = function (options, webpackOptions) {
       }
 
       if (options.dll) {
-          configs.push(webpackMerge({}, clientConfig, dllPartial));
+          configs.push(webpackMerge({}, commonPartial(options), dllPartial, {
+              plugins: [
+                  getAotPlugin('client', true)
+              ]
+          }));
       }
       if (options.server) {
           configs.push(serverConfig);
@@ -45,9 +48,7 @@ module.exports = function (options, webpackOptions) {
           configs.push(clientConfig);
       }
       if (options.test) {
-          // configs.push(webpackMerge({}, clientConfig, testPartial));
           configs.push(webpackMerge({}, testPartial));
-          // configs.push(webpackMerge({}, clientConfig));
       }
   return configs;
 }

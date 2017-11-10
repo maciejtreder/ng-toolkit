@@ -1,17 +1,14 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "es6", "es2015", "es2016", "es2017", "esnext"],
     "skipDefaultLibCheck": true,
     "pretty": true,
     "sourceMap": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "noImplicitAny": false,
     "rootDir": "./src",
     "baseUrl": "src"
@@ -32,8 +29,5 @@
     "./src/main.browser.ts",
     "./src/app/lazy/lazy.module.ts",
     "./src/app/httpProxy/http-proxy.module.ts"
-  ],
-    "files": [
-      "./node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
-    ]
+  ]
 }
