@@ -1,8 +1,9 @@
 const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const {DllReferencePlugin} = require('webpack');
+const {DllReferencePlugin, NormalModuleReplacementPlugin} = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const CreateFilePlugin = require('webpack-create-file-plugin');
 
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -21,7 +22,8 @@ module.exports = function(options) {
                 manifest: require('../dll/polyfills-manifest.json')
             }),
             new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/vendor.dll') }),
-            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/polyfills.dll') })
+            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/polyfills.dll') }),
+            new CopyWebpackPlugin( [{from: 'src/ngsw-worker.js', to: '.'}])
         )
     }
 

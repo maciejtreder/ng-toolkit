@@ -4,9 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-// import { HttpSwProxyModule } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
-import { ServiceWorkerService } from './services/service-worker.service';
 import { DeviceService } from './services/device.service';
 import { ReTree } from './services/retree.service';
 import { WindowRef } from './windowRef';
@@ -23,9 +21,9 @@ import { HttpClientModule } from '@angular/common/http';
       MatToolbarModule,
       MatSnackBarModule,
       MatSidenavModule,
-    CommonModule,
+      ServiceWorkerModule,
       HttpClientModule,
-    // HttpSwProxyModule,
+    CommonModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
@@ -39,7 +37,6 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     WindowRef,
     SnackBarService,
-    ServiceWorkerService,
     NotificationService,
     DeviceService,
     ReTree

@@ -2,9 +2,9 @@ import { Component, OnInit, PLATFORM_ID, Inject, ElementRef, AfterViewInit } fro
 import { isPlatformBrowser } from '@angular/common';
 // import { ConnectivityService } from 'ng-http-sw-proxy';
 
-import { ServiceWorkerService } from './services/service-worker.service';
 import { SnackBarNotification, SnackBarService } from './services/snack-bar.service';
 import { WindowRef } from './windowRef';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app',
@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,
         // private conn: ConnectivityService,
-        private sws: ServiceWorkerService,
         private snackBarService: SnackBarService,
-        private windowRef: WindowRef
+        private windowRef: WindowRef,
+        private swUpdate: SwUpdate
     ) {}
 
     public ngOnInit(): void {
@@ -26,15 +26,10 @@ export class AppComponent implements OnInit {
             return;
         }
 
-        this.sws.update().filter((response) => response).subscribe(() => {
+        this.swUpdate.available.subscribe(() => {
             this.snackBarService.displayNotification({message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {
                 this.windowRef.nativeWindow.location.reload(true);
             }} as SnackBarNotification);
-        });
-
-        this.sws.isCached().filter((response) => response && !localStorage.getItem('cached')).subscribe((response) => {
-            localStorage.setItem('cached', 'cached');
-            this.snackBarService.displayNotification({message: 'Content is cached, from now you can work offline.', action: 'Ok', duration: 5000} as SnackBarNotification);
         });
 
         // let isOnline: boolean = true;
