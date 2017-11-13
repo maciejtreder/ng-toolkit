@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpProxyComponent } from './http-proxy.component';
 
-describe('Lazy component -', () => {
+xdescribe('Http-proxy component -', () => {
     let component: HttpProxyComponent;
     let fixture: ComponentFixture<HttpProxyComponent>;
     let httpService: Http;

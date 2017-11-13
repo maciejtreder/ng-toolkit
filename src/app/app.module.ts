@@ -4,9 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { HttpSwProxyModule } from 'ng-http-sw-proxy';
 import { SnackBarService } from './services/snack-bar.service';
-import { ServiceWorkerService } from './services/service-worker.service';
 import { DeviceService } from './services/device.service';
 import { ReTree } from './services/retree.service';
 import { WindowRef } from './windowRef';
@@ -15,6 +13,7 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationService } from './services/notification.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -22,8 +21,9 @@ import { NotificationService } from './services/notification.service';
       MatToolbarModule,
       MatSnackBarModule,
       MatSidenavModule,
+      ServiceWorkerModule,
+      HttpClientModule,
     CommonModule,
-    HttpSwProxyModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
@@ -37,7 +37,6 @@ import { NotificationService } from './services/notification.service';
   providers: [
     WindowRef,
     SnackBarService,
-    ServiceWorkerService,
     NotificationService,
     DeviceService,
     ReTree

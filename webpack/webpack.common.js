@@ -1,8 +1,9 @@
 const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const {DllReferencePlugin} = require('webpack');
+const {DllReferencePlugin, NormalModuleReplacementPlugin} = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const CreateFilePlugin = require('webpack-create-file-plugin');
 
 const extractSass = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -21,7 +22,8 @@ module.exports = function(options) {
                 manifest: require('../dll/polyfills-manifest.json')
             }),
             new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/vendor.dll') }),
-            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/polyfills.dll') })
+            new AddAssetHtmlPlugin({ filepath: require.resolve('../dll/polyfills.dll') }),
+            new CopyWebpackPlugin( [{from: 'src/ngsw-worker.js', to: '.'}])
         )
     }
 
@@ -43,12 +45,13 @@ module.exports = function(options) {
         },
         module: {
             rules: [
-                { test: /\.ts$/, loaders: (!!options.aot || !!options.dll)?['@ngtools/webpack']: [
-                    '@angularclass/hmr-loader',
-                    'awesome-typescript-loader?{configFileName: "tsconfig.browser.json"}',
-                    'angular2-template-loader',
-                    'angular-router-loader?loader=system&genDir=compiled&aot=false'
-                ] },
+                {
+                    test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ngfactory|\.ts)$/, loaders: (!!options.aot || !!options.dll )?['@ngtools/webpack']:[
+                        '@angularclass/hmr-loader',
+                        options.server?'awesome-typescript-loader?{configFileName: "tsconfig.server.json"}': 'awesome-typescript-loader?{configFileName: "tsconfig.browser.json"}',
+                        'angular2-template-loader',
+                        'angular-router-loader?loader=system&genDir=compiled&aot=false'
+                    ]},
                 { test: /\.css$/, loader: 'raw-loader' },
                 { test: /\.html$/, loader: 'raw-loader' },
                 {

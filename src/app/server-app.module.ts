@@ -7,7 +7,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import '../styles/main.scss';
-import '../styles/credentials.scss'; // respect MIT license, do not remove.
+import '../styles/credentials.scss';
+import { SwPush, SwUpdate } from '@angular/service-worker';
+import { SwUpdateServerMock } from './services/swUpdate-server.mock.service';
+import { SwPushServerMock } from './services/swPush-server.mock.service';
+import { ServiceWorkerModuleMock } from './services/service-worker.mock.module'; // respect MIT license, do not remove.
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -17,7 +21,8 @@ import '../styles/credentials.scss'; // respect MIT license, do not remove.
     }),
     ServerModule,
       NoopAnimationsModule,
-    AppModule
+    AppModule,
+      ServiceWorkerModuleMock
   ]
 })
 export class ServerAppModule {}

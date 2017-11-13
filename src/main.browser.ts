@@ -2,11 +2,12 @@ import 'zone.js/dist/zone';
 import 'reflect-metadata';
 import 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BrowserAppModule } from './app/browser-app.module';
 import { ApplicationRef, enableProdMode } from '@angular/core';
 import { enableDebugTools } from '@angular/platform-browser';
 import { bootloader } from '@angularclass/hmr';
+import { BrowserAppModule } from './app/browser-app.module';
 
 if (process.env.NODE_ENV === 'production') {
     enableProdMode();
@@ -26,11 +27,7 @@ const decorateModuleRef = (modRef: any) => {
 export function main(): Promise<any> {
     return platformBrowserDynamic()
         .bootstrapModule(BrowserAppModule)
-        .then(decorateModuleRef).then(() => {
-            if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./worker-basic.min.js');
-            }
-        })
+        .then(decorateModuleRef)
         .catch((err) => console.error(err));
 }
 

@@ -14,11 +14,10 @@ module.exports = function (options, webpackOptions) {
     const configs = [];
 
       if (options.aot) {
-          console.log(`Running build for ${options.client ? 'client' : 'server'} with AoT Compilation`)
+          console.log(`Running build for ${options.client ? 'client' : 'server'}`)
       }
 
       const serverConfig = webpackMerge({}, commonPartial(options), serverPartial, {
-          entry: options.aot ? './src/main.server.aot.ts' : serverPartial.entry, // Temporary
           plugins: [
               getAotPlugin('server', !!options.aot)
           ]
@@ -52,3 +51,4 @@ module.exports = function (options, webpackOptions) {
       }
   return configs;
 }
+

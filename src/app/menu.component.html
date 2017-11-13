@@ -12,7 +12,6 @@
     </a>
 </ng-template>
 <ng-template #horizontal>
-    <span *ngIf="displayArrows | async" (click)="scrollRight()" id="left_arrow"><i class="material-icons">keyboard_arrow_left</i></span>
     <div>
         <ul>
             <li *ngFor="let element of menuElements">
@@ -28,10 +27,4 @@
             </a></li>
         </ul>
     </div>
-    <span *ngIf="displayArrows | async" (click)="scrollLeft()" id="right_arrow"><i class="material-icons">keyboard_arrow_right</i></span>
 </ng-template>
-<!--<ul>-->
-    <!--<li><a mat-raised-button routerLink="/">home</a></li>-->
-    <!--<li><a mat-raised-button routerLink="/link">link</a></li>-->
-    <!--<li><a mat-raised-button routerLink="/anotherLink">another link</a></li>-->
-<!--</ul>-->
