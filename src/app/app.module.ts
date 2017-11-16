@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatSidenavModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
+import {
+    MatButtonModule, MatMenuModule, MatSidenavModule, MatSnackBarModule,
+    MatToolbarModule
+} from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { SnackBarService } from './services/snack-bar.service';
@@ -20,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
       MatButtonModule,
       MatToolbarModule,
       MatSnackBarModule,
-      MatSidenavModule,
+      MatMenuModule,
       ServiceWorkerModule,
       HttpClientModule,
     CommonModule,
