@@ -8,7 +8,6 @@ import * as compression from 'compression';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 
 import { ServerAppModule } from './app/server-app.module';
-// import { ServerAppModuleNgFactory } from './ngfactory/app/server.app.module.ngfactory';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { enableProdMode } from '@angular/core';
 
