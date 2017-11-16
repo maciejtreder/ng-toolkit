@@ -31,7 +31,7 @@ const findSubscribeLink = () => {
 
 const setupTestBed = () => {
     nsServiceStub = sinon.createStubInstance(NotificationService);
-    nsServiceStub.isRegistered.returns(isRegistered);
+    nsServiceStub.isSubscribed.returns(isRegistered);
     nsServiceStub.isPushAvailable.returns(true);
 
     TestBed.configureTestingModule({

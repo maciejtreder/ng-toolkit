@@ -38,7 +38,7 @@ npm install
 npm start
 ```
 * Development mode (autoreload only): ```npm start```
-* Development mode (autoreload + unit tests): ```npm run start:dev```
+* Development mode (autoreload + unit tests): ```npm run build:dev```
 * Unit tests: ```npm run test```
 
 

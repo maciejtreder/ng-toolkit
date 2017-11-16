@@ -15,7 +15,7 @@ import { NotificationService } from './services/notification.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    public isRegistered: Observable<boolean> = this.ns.isRegistered();
+    public isRegistered: Observable<boolean> = this.ns.isSubscribed();
     public isSafari: boolean = false;
     public subscribeText: Subject<string> = new ReplaySubject();
     public menuElements: MenuElement[] = [
@@ -37,7 +37,7 @@ export class MenuComponent implements OnInit {
 
     public ngOnInit(): void {
         this.isSafari = !!this.window.nativeWindow['safari'];
-        this.ns.isRegistered().subscribe((registered: boolean) => {
+        this.ns.isSubscribed().subscribe((registered: boolean) => {
             registered ? this.subscribeText.next('Unsubscribe from push') : this.subscribeText.next('Subscribe to push');
             this._isRegistered = registered;
         });
@@ -45,7 +45,7 @@ export class MenuComponent implements OnInit {
 
     public isRegistrationAvailable(): Observable<boolean> {
         if (this.isSafari) {
-            return this.ns.isRegistered().map((registered) => !registered);
+            return this.ns.isSubscribed().map((registered) => !registered);
         } else if (this.ns.isPushAvailable()) {
             return Observable.of(true);
         }
