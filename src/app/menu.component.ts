@@ -54,9 +54,9 @@ export class MenuComponent implements OnInit {
 
     public toggleSubscription(): void {
         if (this._isRegistered) {
-            this.ns.unregisterFromPush().subscribe();
+            this.ns.unsubscribeFromPush().subscribe();
         } else {
-            this.ns.registerToPush().subscribe();
+            this.ns.subscribeToPush().subscribe();
         }
     }
 }

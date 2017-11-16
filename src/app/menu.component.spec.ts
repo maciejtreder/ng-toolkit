@@ -96,9 +96,9 @@ describe('Menu component.', () => {
     }));
 
     it('When subscribe link is clicked, then subscribe method should be called', async(() => {
-        nsServiceStub.registerToPush.returns(Observable.of(true));
+        nsServiceStub.subscribeToPush.returns(Observable.of(true));
         subscribeLink.nativeElement.click();
-        expect(nsServiceStub.registerToPush.calledOnce).toBe(true, 'Register to push method was not called.');
+        expect(nsServiceStub.subscribeToPush.calledOnce).toBe(true, 'Register to push method was not called.');
     }));
 
     it('Subscribe button value should be switch depending on isSubscribed observable', async(() => {

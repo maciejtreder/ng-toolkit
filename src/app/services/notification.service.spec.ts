@@ -67,7 +67,7 @@ describe('Notification service spec.', () => {
             const spy = sinon.spy(ns, 'isPushAvailable');
             let errorThrown: boolean = false;
             try {
-                ns.registerToPush().subscribe();
+                ns.subscribeToPush().subscribe();
             } catch (error) {
                 errorThrown = true;
             }
@@ -88,7 +88,7 @@ describe('Notification service spec.', () => {
 
         it('Should be able to register for push', fakeAsync(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {
             let subscribed = false;
-            ns.registerToPush().subscribe((response) => subscribed = response);
+            ns.subscribeToPush().subscribe((response) => subscribed = response);
 
             tick();
             backend.expectOne('https://api.angular-universal-pwa.maciejtreder.com/webpush/vapid/subscribe').flush('accepted', {status: 202, statusText: 'OK'});
@@ -99,7 +99,7 @@ describe('Notification service spec.', () => {
         it('Should be able to unregister from push', fakeAsync(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {
             swPushStub.subscription.next(pushSubscription2);
             let result = false;
-            ns.unregisterFromPush().subscribe((response) => result = response);
+            ns.unsubscribeFromPush().subscribe((response) => result = response);
 
             tick();
             backend.expectOne('https://api.angular-universal-pwa.maciejtreder.com/webpush/vapid/unsubscribe').flush('accepted', {status: 202, statusText: 'OK'});
@@ -111,7 +111,7 @@ describe('Notification service spec.', () => {
             swPushStub.subscription.next(pushSubscription2);
             let error: string;
 
-            ns.registerToPush().subscribe(null, (err) => error = err);
+            ns.subscribeToPush().subscribe(null, (err) => error = err);
             tick();
 
             expect(error).toBe('Already subscribed.', 'Observable did not emit proper error');
@@ -171,7 +171,7 @@ describe('Notification service spec.', () => {
             };
 
             let registerToPush;
-            ns.registerToPush().subscribe((result) => registerToPush = result);
+            ns.subscribeToPush().subscribe((result) => registerToPush = result);
             expect(registerToPush).toBe(true, 'Should respond with \'true\'.');
         })));
 
@@ -183,7 +183,7 @@ describe('Notification service spec.', () => {
             };
 
             let registerToPush;
-            ns.registerToPush().subscribe((result) => registerToPush = result);
+            ns.subscribeToPush().subscribe((result) => registerToPush = result);
             expect(registerToPush).toBe(false, 'Should respond with \'false\'.');
         })));
 
@@ -192,7 +192,7 @@ describe('Notification service spec.', () => {
             windowStub._window.safari.pushNotification.permission = () => permission;
             let error: string;
 
-            ns.registerToPush().subscribe(null, (err) => error = err);
+            ns.subscribeToPush().subscribe(null, (err) => error = err);
 
             expect(error).toBe('Already subscribed.', 'Observable did not emit proper error');
         })));

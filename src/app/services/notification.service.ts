@@ -42,7 +42,7 @@ export class NotificationService {
         }
     }
 
-    public registerToPush(): Observable<boolean> {
+    public subscribeToPush(): Observable<boolean> {
         if (!this.isPushAvailable()) {
             throw new Error('Push is not available for this browser!');
         }
@@ -57,7 +57,7 @@ export class NotificationService {
         });
     }
 
-    public unregisterFromPush(): Observable<boolean> {
+    public unsubscribeFromPush(): Observable<boolean> {
         if (!this.isVapidPushAvaialable()) {
             throw new Error('Only VAPID push support programaticaly!');
         }
@@ -75,7 +75,7 @@ export class NotificationService {
     private registerVapid(): Observable<boolean> {
         return Observable.create((subscriber: Subscriber<boolean>) => {
             this.swPush.requestSubscription({serverPublicKey: this.applicationServerKey}).then((pushSubscription: PushSubscription) => {
-            this.http.post(this.vapidSubscriptionEndpoint + '/subscribe', JSON.stringify(pushSubscription), {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'})
+                this.http.post(this.vapidSubscriptionEndpoint + '/subscribe', JSON.stringify(pushSubscription), {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'})
                 .subscribe((response) => {
                     if (response.status !== 202) {
                         pushSubscription.unsubscribe();

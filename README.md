@@ -1,5 +1,5 @@
 # Angular 5 Universal Progressive Web App - starter
-####_**Star it and share with others!**_
+#### _**Star it and share with others!**_
 This repo is boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the dvice)!
 It is prepared to be easily deployed on serverless environment (like AWS Lambda).
