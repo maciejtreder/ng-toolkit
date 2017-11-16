@@ -1,6 +1,7 @@
 # Angular 5 Universal Progressive Web App - starter
-This repo is boilerplate of Angular Universal (serverside rendering) applications.
-It is running as a **(PWA) progressive web app** with the whole goodness of it (pushes, content caching)!
+####_**Star it and share with others!**_
+This repo is boilerplate for Angular Universal (serverside rendering) applications.
+It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the dvice)!
 It is prepared to be easily deployed on serverless environment (like AWS Lambda).
 
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
@@ -10,7 +11,7 @@ This is a great starting point for **microservices application**! Because of sup
 
 
 ## What's inside?
-* PWA (thanks to service worker application content is cached for offline working, it can be also installed as native app on Android devices and Google Chrome)
+* PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
 * Push notifications:
     * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
