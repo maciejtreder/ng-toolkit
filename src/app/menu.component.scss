@@ -1,8 +1,13 @@
-:host(.side-nav) {
-  width: 220px;
-  margin-top: 64px;
-  display: block;
+:host(.contextual) {
+  button {
+    background-color: cornflowerblue;
+    color: white;
+    margin: -5px 0 0 -5px;
+  }
+}
 
+::ng-deep .mat-menu-content {
+  padding: 0!important;
   a {
     display: block;
     text-align: left;

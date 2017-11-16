@@ -11,6 +11,7 @@ h1 {
 
 mat-toolbar {
   position: fixed;
+  flex-direction: column;
   z-index: 1;
 }
 
@@ -28,13 +29,6 @@ mat-toolbar, mat-sidenav > div {
 h2 {
   color: cornflowerblue;
   font-size: 20px;
-}
-
-.menu-button {
-  background-color: cornflowerblue;
-  color: white;
-  float: left;
-  margin: -5px 0 0 -5px;
 }
 
 :host {
@@ -67,6 +61,10 @@ mat-sidenav > div button {
   text-align: center;
 }
 
+menu.contextual {
+  float: left;
+}
+
 @media (max-width: 768px) {
   h3 {
     top: 7px;
@@ -84,6 +82,10 @@ mat-sidenav > div button {
   #content-wrapper {
     padding-top: 64px;
   }
+
+  menu.contextual {
+    display: block !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -91,7 +93,7 @@ mat-sidenav > div button {
     display: block !important;
   }
 
-  mat-toolbar button {
+  menu.contextual {
     display: none;
   }
 

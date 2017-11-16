@@ -25,9 +25,9 @@ export class MenuComponent implements OnInit {
         // {link: '/httpProxy', icon: 'merge_type', text: 'Http proxy demo'},
         {link: 'https://github.com/maciejtreder/angular-universal-serverless', icon: 'code', text: 'Fork on github'},
         ];
-    @Input('vertical')
-    @HostBinding('class.side-nav')
-    public vertical: boolean = false;
+    @Input('contextual')
+    @HostBinding('class.contextual')
+    public contextual: boolean = false;
 
     private _isRegistered: boolean;
 
