@@ -16,15 +16,8 @@ export class NotificationService {
 
     private applicationServerKey: string =
         'BKxp6BwVzRWy1Qbe63rHNbG46uwPTrl1RoeTJuyVBm42kvlUk0RuSkYk8NKoO0QK2GNV7eRhOLyV1KfmZhwU9Sc';
-    private swPush: SwPush;
 
-    constructor(private window: WindowRef, @Inject(PLATFORM_ID) private platformId: any, private http: HttpClient, private appRef: ApplicationRef, private injector: Injector) {
-        try {
-            this.swPush = this.injector.get(SwPush);
-        } catch (error) {
-            // workaround for https://github.com/angular/angular/issues/20407
-        }
-    }
+    constructor(private window: WindowRef, @Inject(PLATFORM_ID) private platformId: any, private http: HttpClient, private appRef: ApplicationRef, private swPush: SwPush) {}
 
     public isPushAvailable(): boolean {
         return isPlatformBrowser(this.platformId) && (this.isVapidPushAvaialable() || this.isSafariPushAvailable());

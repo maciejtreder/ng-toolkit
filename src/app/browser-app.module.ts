@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import '../styles/main.scss';
 import '../styles/credentials.scss'; // respect MIT license, do not remove.
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModuleMock } from './services/service-worker.mock.module';
 
 @NgModule({
     bootstrap: [ AppComponent ],
@@ -17,7 +18,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
             appId: 'app'
         }),
         AppModule,
-        ServiceWorkerModule.register('./ngsw-worker.js')
+        'navigator' in window && 'serviceWorker' in navigator ? ServiceWorkerModule.register('./ngsw-worker.js') : ServiceWorkerModuleMock
     ]
 })
 export class BrowserAppModule {
