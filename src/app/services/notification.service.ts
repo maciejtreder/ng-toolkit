@@ -47,15 +47,15 @@ export class NotificationService {
         if (!this.isPushAvailable()) {
             throw new Error('Push is not available for this browser!');
         }
-        return this.isSubscribed().flatMap((registered: boolean) => {
-            if (registered) {
-                return Observable.create((subject: Subject<boolean>) => subject.error('Already subscribed.'));
-            } else if (this.isVapidPushAvaialable()) {
-                return this.registerVapid();
-            } else {
-                return this.registerSafari();
-            }
-        });
+        // return this.isSubscribed().flatMap((registered: boolean) => {
+        //     if (registered) {
+        //         return Observable.create((subject: Subject<boolean>) => subject.error('Already subscribed.'));
+        if (this.isVapidPushAvaialable()) {
+            return this.registerVapid();
+        } else {
+            return this.registerSafari();
+        }
+        // });
     }
 
     public unsubscribeFromPush(): Observable<boolean> {
@@ -69,7 +69,7 @@ export class NotificationService {
             subscription = result;
             return Observable.fromPromise(subscription.unsubscribe());
         }).flatMap(() => {
-            return this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', subscription, {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'}).map((resp) => resp.status == 202);
+            return this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', subscription, {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'}).map((resp) => resp.status === 202, (err) => err.status === 202);
         });
     }
 
