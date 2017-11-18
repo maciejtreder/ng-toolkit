@@ -1,7 +1,7 @@
 # Angular 5 Universal Progressive Web App - starter
-#### _**Star it and share with others!**_
-This repo is boilerplate for Angular Universal (serverside rendering) applications.
-It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the dvice)!
+### _**Star it and share with others!**_
+This repo is the boilerplate for Angular Universal (serverside rendering) applications.
+It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
 It is prepared to be easily deployed on serverless environment (like AWS Lambda).
 
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
@@ -15,10 +15,11 @@ This is a great starting point for **microservices application**! Because of sup
 * Push notifications:
     * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
+* Lazy loading modules
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
-* [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy)
 * Unit tests
+* [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests - in progress
 
 ### Used frameworks/technologies
@@ -45,14 +46,12 @@ npm start
 ## Production mode
 Includes AoT
 ```sh
-cp -r node_modules/ng-http-sw-proxy/service-worker .
 npm run build:prod
 npm run server
 ```
 
 ## Deploy on AWS Lambda
 ```sh
-cp -r node_modules/ng-http-sw-proxy/service-worker .
 npm run build:deploy
 ```
 
