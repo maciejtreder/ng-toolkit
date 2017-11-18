@@ -25,7 +25,8 @@
     "updateMode": "prefetch",
     "resources": {
       "files": [
-        "/assets/**"
+        "/assets/**",
+        "/styles/**"
       ]
     }
   }, {
