@@ -1,6 +1,6 @@
 {
-    "name": "Angular Universal Starter by Maciej Treder",
-    "short_name": "Angular Universal",
+    "name": "Angular Universal PWA Starter by Maciej Treder",
+    "short_name": "Angular PWA",
     "lang": "en-US",
     "start_url": "/index.html",
     "display": "standalone",
