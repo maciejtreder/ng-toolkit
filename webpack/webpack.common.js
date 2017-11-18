@@ -1,13 +1,7 @@
 const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const {DllReferencePlugin, NormalModuleReplacementPlugin} = require('webpack');
+const {DllReferencePlugin} = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
-const CreateFilePlugin = require('webpack-create-file-plugin');
-
-const extractSass = new ExtractTextPlugin({
-  filename: "[name].[contenthash].css",
-});
 
 module.exports = function(options) {
     const plugins = [];
@@ -28,9 +22,9 @@ module.exports = function(options) {
     }
 
     plugins.push(
-        extractSass,
         new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
+                { from: 'src/styles', to: 'styles', ignore: "*.scss" }, //ignore system-specific files
             ]
         )
     );
@@ -58,18 +52,6 @@ module.exports = function(options) {
                     test: /\.s[ca]ss$/,
                     exclude: [/node_modules/, /src\/styles/],
                     loaders: ['raw-loader', 'sass-loader']
-                },
-                {
-                    test: /\.s[ac]ss$/,
-                    use: extractSass.extract({
-                        use: [{
-                            loader: "css-loader"
-                        }, {
-                            loader: "sass-loader"
-                        }],
-                        fallback: "style-loader"
-                    }),
-                    include: [/src\/styles/]
                 },
                 {
                     test: /\.(jpg|png|gif|ttf)$/,

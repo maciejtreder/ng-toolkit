@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
-    MatButtonModule, MatMenuModule, MatSidenavModule, MatSnackBarModule,
+    MatButtonModule, MatMenuModule, MatSnackBarModule,
     MatToolbarModule
 } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
