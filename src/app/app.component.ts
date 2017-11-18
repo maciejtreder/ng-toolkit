@@ -23,10 +23,16 @@ export class AppComponent implements OnInit {
             return;
         }
 
-        this.swUpdate.available.subscribe(() => {
-            this.snackBarService.displayNotification({message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {
-                this.windowRef.nativeWindow.location.reload(true);
-            }} as SnackBarNotification);
-        });
+        try {
+            this.swUpdate.available.subscribe(() => {
+                this.snackBarService.displayNotification({
+                    message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {
+                        this.windowRef.nativeWindow.location.reload(true);
+                    }
+                } as SnackBarNotification);
+            });
+        } catch (err) {
+            // workaround for https://github.com/angular/angular/issues/20519
+        }
     }
 }
