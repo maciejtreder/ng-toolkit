@@ -28,7 +28,6 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
-      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy.module#HttpProxyModule'},
       { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule'}
     ]),
     ServiceWorkerModule
