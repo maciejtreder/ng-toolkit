@@ -8,8 +8,6 @@ import {
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { SnackBarService } from './services/snack-bar.service';
-import { DeviceService } from './services/device.service';
-import { ReTree } from './services/retree.service';
 import { WindowRef } from './windowRef';
 
 import { AppComponent } from './app.component';
@@ -40,9 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     WindowRef,
     SnackBarService,
-    NotificationService,
-    DeviceService,
-    ReTree
+    NotificationService
   ]
 })
 export class AppModule {
