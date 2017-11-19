@@ -24,6 +24,12 @@ export class AppComponent implements OnInit {
         }
 
         try {
+            this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
+                localStorage.setItem('cached', 'displayed');
+                this.snackBarService.displayNotification({
+                    message: 'Content is cached', action: 'Ok'
+                } as SnackBarNotification);
+            });
             this.swUpdate.available.subscribe(() => {
                 this.snackBarService.displayNotification({
                     message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {

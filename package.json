@@ -19,7 +19,7 @@
     "build:prod:client": "webpack --env.aot --env.client -p",
     "build:prod:server": "webpack --env.server",
     "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js dist/",
-    "build:prod": "npm-run-all build:prod:client build:sass service-worker build:prod:server ngsw-copy",
+    "build:prod": "npm-run-all test build:prod:client build:sass service-worker build:prod:server ngsw-copy",
     "service-worker": "ngsw-config dist src/ngsw-manifest.json",
     "build:deploy": "npm-run-all build:prod deploy",
     "build:sass": "node-sass  --include-path node_modules --importer node_modules/node-sass-import --output-style compressed -q src/styles/main.scss > src/styles/main.css",

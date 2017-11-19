@@ -47,15 +47,11 @@ export class NotificationService {
         if (!this.isPushAvailable()) {
             throw new Error('Push is not available for this browser!');
         }
-        // return this.isSubscribed().flatMap((registered: boolean) => {
-        //     if (registered) {
-        //         return Observable.create((subject: Subject<boolean>) => subject.error('Already subscribed.'));
         if (this.isVapidPushAvaialable()) {
             return this.registerVapid();
         } else {
             return this.registerSafari();
         }
-        // });
     }
 
     public unsubscribeFromPush(): Observable<boolean> {
