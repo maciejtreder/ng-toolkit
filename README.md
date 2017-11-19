@@ -1,4 +1,5 @@
 # Angular 5 Universal Progressive Web App - starter
+![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
@@ -54,10 +55,12 @@ npm run server
 npm run build:deploy
 ```
 ##To do
+* load static content from S3
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
 * AMP support (research + implementation)
-* microservices support - make module replacement eliglibe without recompiling whole app
+* microservices support - make replacement eligible external module without recompiling whole app
+* Google cloud support
 
 ## Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
