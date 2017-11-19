@@ -19,8 +19,7 @@ This is a great starting point for **microservices application**! Because of sup
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
 * Unit tests
-* [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
-* e2e tests - in progress
+
 
 ### Used frameworks/technologies
 * Webpack
@@ -54,7 +53,11 @@ npm run server
 ```sh
 npm run build:deploy
 ```
-
+##To do
+* [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
+* e2e tests
+* AMP support (research + implementation)
+* microservices support - make module replacement eliglibe without recompiling whole app
 
 ## Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
