@@ -25,9 +25,7 @@ describe('Notification service spec.', () => {
 
         windowStub._window = {navigator: {
             userAgent: 'test',
-            serviceWorker: {
-                getRegistrations: new Promise((resolve) => resolve())
-            }
+            serviceWorker: {}
         }};
     });
 
@@ -107,18 +105,6 @@ describe('Notification service spec.', () => {
             backend.verify();
         })));
 
-        it('Should not be able register twice', fakeAsync(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {
-            swPushStub.subscription.next(pushSubscription2);
-            let error: string;
-
-            ns.subscribeToPush().subscribe(null, (err) => error = err);
-            tick();
-
-            expect(error).toBe('Already subscribed.', 'Observable did not emit proper error');
-            backend.expectNone('https://api.angular-universal-pwa.maciejtreder.com/webpush/vapid/subscribe');
-            backend.verify();
-        })));
-
         it('Should respond as registered when there is subscription', fakeAsync(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {
             swPushStub.subscription.next(pushSubscription2);
             let registered: boolean;
@@ -185,16 +171,6 @@ describe('Notification service spec.', () => {
             let registerToPush;
             ns.subscribeToPush().subscribe((result) => registerToPush = result);
             expect(registerToPush).toBe(false, 'Should respond with \'false\'.');
-        })));
-
-        it('Should not be able register twice', async(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {
-            permission = {deviceToken: 'device_token', permission: 'granted'};
-            windowStub._window.safari.pushNotification.permission = () => permission;
-            let error: string;
-
-            ns.subscribeToPush().subscribe(null, (err) => error = err);
-
-            expect(error).toBe('Already subscribed.', 'Observable did not emit proper error');
         })));
 
         it('Should respond as registered when there is subscription', async(inject([NotificationService, HttpTestingController], (ns: NotificationService, backend: HttpTestingController) => {

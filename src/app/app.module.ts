@@ -8,8 +8,6 @@ import {
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { SnackBarService } from './services/snack-bar.service';
-import { DeviceService } from './services/device.service';
-import { ReTree } from './services/retree.service';
 import { WindowRef } from './windowRef';
 
 import { AppComponent } from './app.component';
@@ -30,7 +28,6 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot([
       { path: '', component: HomeComponent},
       { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
-      { path: 'httpProxy', loadChildren: './httpProxy/http-proxy.module#HttpProxyModule'},
       { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule'}
     ]),
     ServiceWorkerModule
@@ -40,9 +37,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     WindowRef,
     SnackBarService,
-    NotificationService,
-    DeviceService,
-    ReTree
+    NotificationService
   ]
 })
 export class AppModule {

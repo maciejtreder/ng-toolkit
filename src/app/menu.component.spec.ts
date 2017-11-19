@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MenuComponent } from './menu.component';
 import { By } from '@angular/platform-browser';
 import * as sinon from 'sinon';
@@ -8,9 +8,8 @@ import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { RouterModule } from '@angular/router';
-import { APP_BASE_HREF } from '@angular/common';
 import { RouterLinkStubDirective } from './testing/router-link-stub-directive';
+import { MatMenuModule } from '@angular/material';
 
 let fixture: ComponentFixture<MenuComponent>;
 let nsServiceStub;
@@ -35,6 +34,7 @@ const setupTestBed = () => {
     nsServiceStub.isPushAvailable.returns(true);
 
     TestBed.configureTestingModule({
+        imports: [MatMenuModule],
         declarations: [MenuComponent, RouterLinkStubDirective],
         providers: [
             {provide: NotificationService, useValue: nsServiceStub},
@@ -75,10 +75,6 @@ describe('Menu component.', () => {
 
     it('Lazy module link should be displayed', () => {
         expect(lazyLink).toBeTruthy();
-    });
-
-    xit('Http proxy demo link should be displayed', () => {
-        expect(proxyLink).toBeTruthy();
     });
 
     it('Should display fork link', () => {
