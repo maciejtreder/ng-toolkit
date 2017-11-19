@@ -77,10 +77,6 @@ describe('Menu component.', () => {
         expect(lazyLink).toBeTruthy();
     });
 
-    xit('Http proxy demo link should be displayed', () => {
-        expect(proxyLink).toBeTruthy();
-    });
-
     it('Should display fork link', () => {
         expect(forkLink).toBeTruthy();
     });

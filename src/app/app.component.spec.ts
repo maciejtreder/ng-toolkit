@@ -58,13 +58,13 @@ describe('App component', () => {
     });
 
     it('Should display notification when service worker update is available', async(() => {
-        updates.next({current: {hash: 'asdf'}, available: {hash: 'fdsa'}} as UpdateAvailableEvent)
+        updates.next({current: {hash: 'asdf'}, available: {hash: 'fdsa'}} as UpdateAvailableEvent);
         expect(snackBarServiceStub.displayNotification.called).toBe(true, 'Snack bar was not displayed');
         expect(snackBarServiceStub.displayNotification.calledOnce).toBe(true, 'Snack bar was displayed more then once');
     }));
 
     it('Update snackbar should contain page reload as a callback', async(() => {
-        updates.next({current: {hash: 'asdf'}, available: {hash: 'fdsa'}} as UpdateAvailableEvent)
+        updates.next({current: {hash: 'asdf'}, available: {hash: 'fdsa'}} as UpdateAvailableEvent);
         const spy = sinon.spy(windowStub._window.location, 'reload');
         snackBarServiceStub.displayNotification.getCall(0).args[0].callback();
         expect(spy.called).toBeTruthy('Reload method was not called');
