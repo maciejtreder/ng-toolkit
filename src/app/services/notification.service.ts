@@ -22,6 +22,7 @@ export class NotificationService {
     constructor(private window: WindowRef, @Inject(PLATFORM_ID) private platformId: any, private http: HttpClient, private appRef: ApplicationRef, private injector: Injector) {
         try {
             this.swPush = injector.get(SwPush);
+            this.swPush.messages.subscribe((message) => console.log(message));
         } catch (err) {
             // workaround for https://github.com/angular/angular/issues/20407
         }
