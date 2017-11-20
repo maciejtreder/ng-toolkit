@@ -24,18 +24,31 @@ export class AppComponent implements OnInit {
         }
 
         try {
-            this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
-                localStorage.setItem('cached', 'displayed');
-                this.snackBarService.displayNotification({
-                    message: 'Content is cached', action: 'Ok'
-                } as SnackBarNotification);
+            this.swUpdate.activated.subscribe(() => {
+                console.log('activated');
             });
+            // this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
+            //     localStorage.setItem('cached', 'displayed');
+            //     this.snackBarService.displayNotification({
+            //         message: 'Content is cached', action: 'Ok'
+            //     } as SnackBarNotification);
+            // });
+
             this.swUpdate.available.subscribe(() => {
                 this.snackBarService.displayNotification({
-                    message: 'New version of app is available!', action: 'Launch', force: true, callback: () => {
+                    message: 'New version of app is available!',
+                    action: 'Launch',
+                    force: true,
+                    callback: () => {
                         this.windowRef.nativeWindow.location.reload(true);
                     }
                 } as SnackBarNotification);
+            });
+
+            this.swUpdate.checkForUpdate().then(() => {
+                // noop
+            }).catch((err) => {
+                console.error('error when checking for update', err);
             });
         } catch (err) {
             // workaround for https://github.com/angular/angular/issues/20519
