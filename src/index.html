@@ -1,7 +1,8 @@
-<html lang="en">
+<html ⚡>
   <head>
 
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Progressive Web App created with Angular Universal, deployed on Amazon Lambda. Includes Angular Material, push notifications and external modules (for microservices purpose).">
@@ -72,8 +73,14 @@
     <title>Angular Universal PWA - Progressive Web App deployed on AWS Lambda - starter/boilerplate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/main.css" defer>
+    <script async custom-element="amp-install-serviceworker"
+            src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"></script>
   </head>
   <body>
+  <amp-install-serviceworker
+          src="ngsw-worker.js"
+          layout="nodisplay">
+  </amp-install-serviceworker>
       <app></app>
       <noscript>
         JavaScript is necessary to work with this application.

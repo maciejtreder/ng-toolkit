@@ -11,6 +11,7 @@
       "files": [
         "/assets/icons/favicon.ico",
         "/index.html",
+        "/ngsw-worker.js",
         "/*.client.js",
         "/client.js"
       ],
