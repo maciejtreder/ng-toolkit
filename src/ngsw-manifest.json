@@ -12,8 +12,7 @@
         "/assets/icons/favicon.ico",
         "/index.html",
         "/*.client.js",
-        "/client.js",
-        "/ngsw-worker.js"
+        "/client.js"
       ],
       "versionedFiles": [
         "/main.*.css"
@@ -25,7 +24,7 @@
     "updateMode": "prefetch",
     "resources": {
       "files": [
-        "/assets/**",
+        "/assets/img/**",
         "/styles/**"
       ]
     }
