@@ -1,5 +1,5 @@
 # Angular 5 Universal Progressive Web App - starter
-![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
+![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report_2.png)
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
@@ -13,7 +13,7 @@ This is a great starting point for **microservices application**! Because of sup
 
 ## What's inside?
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
-* AMP - Accelerated Mobile Pages - super fast initial load (~750ms)
+* AMP - Accelerated Mobile Pages - super fast initial load (down to ~650ms)
 * Push notifications:
     * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
@@ -57,15 +57,15 @@ npm run build:deploy
 ```
 ## To do
 * Google Cloud support
+* microservices support - make replacement eligible external module without recompiling whole app
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
-* microservices support - make replacement eligible external module without recompiling whole app
 
 
 ## Won't implement:
 * load static content from S3 (JavaScript, styles, images):
     * when serving all static content from S3 load speed up is not really visible (increase is around ~0,2 sec),
-    * problems with CORS and Chrome,
+    * problems with CORS on Chrome,
     * problems with compression of some files (.js files are not compressed in some cases)
     * needs a lot of manual setup (cloudfront setup etc.)
 
