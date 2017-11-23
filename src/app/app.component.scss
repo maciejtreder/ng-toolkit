@@ -2,11 +2,11 @@ h1,h2 {
   text-align: center;
 }
 
-h1 {
+.mat-toolbar h1 {
   color: orange;
-  font-size: 32px;
+  font-size: 32px !important;
   width: 100%;
-  margin: 16px 0 7px;
+  margin: 16px 0 7px !important;
 }
 
 mat-toolbar {
@@ -59,6 +59,7 @@ mat-sidenav > div button {
   position: relative;
   color: deepskyblue;
   text-align: center;
+  font-weight: lighter;
 }
 
 menu.contextual {

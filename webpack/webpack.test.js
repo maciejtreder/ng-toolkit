@@ -17,9 +17,6 @@ module.exports =  {
         module: {
             rules: [
                 {
-                    test: /.*/, loader: 'string-replace-loader', query: { search: 'moduleId: module.id,', replace: '' }
-                },
-                {
                     enforce: 'pre',
                     test: /\.js$/,
                     loader: 'source-map-loader',
@@ -50,7 +47,7 @@ module.exports =  {
 
                 {
                     test: /\.(s[ca]|c)ss$/,
-                    loader: ['raw-loader', 'sass-loader'],
+                    loader: ['to-string-loader', 'css-loader', 'sass-loader'],
                     exclude: [helpers.root('src/index.html')]
                 },
 
@@ -58,6 +55,10 @@ module.exports =  {
                     test: /\.html$/,
                     loader: 'raw-loader',
                     exclude: [helpers.root('src/index.html')]
+                },
+                {
+                    test: /\.(jpg|png|gif|ttf)$/,
+                    use: 'file-loader'
                 },
 
                 {
