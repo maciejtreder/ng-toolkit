@@ -16,7 +16,7 @@
         "/client.js"
       ],
       "versionedFiles": [
-        "/main.*.css"
+        "/main.css"
       ]
     }
   }, {
@@ -34,7 +34,8 @@
     "resources": {
       "urls": [
         "https://fonts.googleapis.com/**",
-        "https://fonts.gstatic.com/**"
+        "https://fonts.gstatic.com/**",
+        "https://cdn.ampproject.org/**"
       ]
     }
   }]
