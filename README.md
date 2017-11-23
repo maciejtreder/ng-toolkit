@@ -13,6 +13,7 @@ This is a great starting point for **microservices application**! Because of sup
 
 ## What's inside?
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
+* AMP - Accelerated Mobile Pages - super fast initial load (~750ms)
 * Push notifications:
     * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
@@ -54,13 +55,19 @@ npm run server
 ```sh
 npm run build:deploy
 ```
-##To do
-* load static content from S3
+## To do
+* Google Cloud support
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
-* AMP support (research + implementation)
 * microservices support - make replacement eligible external module without recompiling whole app
-* Google cloud support
+
+
+## Won't implement:
+* load static content from S3 (JavaScript, styles, images):
+    * when serving all static content from S3 load speed up is not really visible (increase is around ~0,2 sec),
+    * problems with CORS and Chrome,
+    * problems with compression of some files (.js files are not compressed in some cases)
+    * needs a lot of manual setup (cloudfront setup etc.)
 
 ## Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me

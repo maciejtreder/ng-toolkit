@@ -24,7 +24,7 @@ module.exports = function(options) {
     plugins.push(
         new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
-                { from: 'src/styles', to: 'styles', ignore: "*.scss" }, //ignore system-specific files
+                { from: 'src/styles', ignore: "*.scss" }, //ignore system-specific files
             ]
         )
     );

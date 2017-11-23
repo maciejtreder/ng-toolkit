@@ -1,7 +1,8 @@
-<html lang="en">
+<html ⚡ lang="en">
   <head>
 
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Progressive Web App created with Angular Universal, deployed on Amazon Lambda. Includes Angular Material, push notifications and external modules (for microservices purpose).">
@@ -64,20 +65,41 @@
     <meta name="twitter:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
     <meta name="twitter:image" content="assets/img/sandbox.png">
 
-
-
     <meta charset="UTF-8">
     <base href="/">
 
     <title>Angular Universal PWA - Progressive Web App deployed on AWS Lambda - starter/boilerplate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/main.css" defer>
+    <script async custom-element="amp-install-serviceworker"
+            src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"></script>
   </head>
   <body>
-      <app></app>
-      <noscript>
-        JavaScript is necessary to work with this application.
-      </noscript>
+  <amp-install-serviceworker
+          src="ngsw-worker.js"
+          layout="nodisplay">
+  </amp-install-serviceworker>
+  <app></app>
+  <noscript>
+    JavaScript is necessary to work with this application.
+  </noscript>
+  <noscript id="deferred-styles">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+    <link rel="stylesheet" href="main.css">
+  </noscript>
+  <script>
+      var loadDeferredStyles = function() {
+          var addStylesNode = document.getElementById("deferred-styles");
+          var replacement = document.createElement("div");
+          replacement.innerHTML = addStylesNode.textContent;
+          document.body.appendChild(replacement)
+          addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+          webkitRequestAnimationFrame || msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+  </script>
   </body>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109145893-2"></script>
