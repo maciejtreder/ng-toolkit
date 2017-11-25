@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModuleMock } from './services/service-worker.mock.module'; // respect MIT license, do not remove.
+import { ServiceWorkerModuleMock } from './services/service-worker.mock.module';
 
 @NgModule({
   bootstrap: [AppComponent],
