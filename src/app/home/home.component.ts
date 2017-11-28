@@ -5,5 +5,4 @@ import { Observable } from 'rxjs/Observable';
   selector: 'home-view',
   templateUrl: './home.component.html'
 })
-export class HomeComponent {
-}
+export class HomeComponent {}
