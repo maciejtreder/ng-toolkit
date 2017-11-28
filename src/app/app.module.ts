@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Inject, NgModule } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import {
     MatButtonModule, MatMenuModule, MatSnackBarModule,
@@ -44,13 +44,13 @@ const routes: any[] = [
   ]
 })
 export class AppModule {
-    private title: string = document.querySelector('title').text;
+    private title: string = this.doc.querySelector('title').text;
     private description: string = this.metaService.getTag('name=description').content;
 
-    constructor(private metaService: Meta, private route: ActivatedRoute, private router: Router) {
+    constructor(private metaService: Meta, private route: ActivatedRoute, private router: Router, @Inject(DOCUMENT) private doc) {
         this.router.events.filter((e) => e instanceof NavigationEnd).forEach((e) => {
-            this.metaService.getTag('name=description').content = this.description + ' ' + route.root.firstChild.snapshot.data['description'];
-            document.querySelector('title').text = this.title + ' | ' + route.root.firstChild.snapshot.data['title'];
+            this.metaService.updateTag({content: this.description + ' ' + route.root.firstChild.snapshot.data['description']}, 'name=description');
+            this.doc.querySelector('title').childNodes[0].nodeValue = this.title + ' | ' + route.root.firstChild.snapshot.data['title'];
         });
     }
 }
