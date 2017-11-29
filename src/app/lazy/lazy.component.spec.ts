@@ -16,9 +16,9 @@ describe('Lazy component -', () => {
         component = fixture.componentInstance;
     });
 
-    it('title is \'I am lazy!\'', () => {
+    it('title is \'Lazy loading\'', () => {
         fixture.detectChanges();
-        const de: DebugElement = fixture.debugElement.query(By.css('h3'));
-        expect(de.nativeElement.textContent).toBe('I am lazy!');
+        const de: DebugElement = fixture.debugElement.query(By.css('h1'));
+        expect(de.nativeElement.textContent).toBe('Lazy loading');
     });
 });

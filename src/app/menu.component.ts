@@ -1,12 +1,8 @@
-import {
-    AfterViewInit, Component, DebugElement, ElementRef, HostBinding, Inject, Input, OnInit,
-    PLATFORM_ID
-} from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { WindowRef } from './windowRef';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { isPlatformBrowser } from '@angular/common';
 import { NotificationService } from './services/notification.service';
 
 @Component({
@@ -22,7 +18,6 @@ export class MenuComponent implements OnInit {
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
         {link: '/external', icon: 'call_merge', text: 'External module'},
-        // {link: '/httpProxy', icon: 'merge_type', text: 'Http proxy demo'},
         {link: 'https://github.com/maciejtreder/angular-universal-serverless', icon: 'code', text: 'Fork on github'},
         ];
     @Input('contextual')
@@ -31,9 +26,7 @@ export class MenuComponent implements OnInit {
 
     private _isRegistered: boolean;
 
-    constructor(
-        private ns: NotificationService,
-        private window: WindowRef, @Inject(PLATFORM_ID) private platformId: any) {}
+    constructor(private ns: NotificationService, private window: WindowRef) {}
 
     public ngOnInit(): void {
         this.isSafari = !!this.window.nativeWindow['safari'];

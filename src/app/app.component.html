@@ -1,19 +1,10 @@
-<mat-toolbar>
+<header>
     <h1>
         <menu [contextual]="true"></menu>
         Angular PWA Serverless
     </h1>
     <menu [contextual]="false"></menu>
-
-</mat-toolbar>
-<div id="content-wrapper">
-    <div id="content">
-        <h2>Progressive Web App built in Angular, with server-side rendering (Angular Universal), deployed on AWS Lambda!</h2>
-        <router-outlet></router-outlet>
-    </div>
-    <footer class="credentials">
-        <!-- Please respect MIT License and don't remove this footer. --->
-        <p class="built">Built with</p>
-        <p><a href="https://github.com/maciejtreder/angular-universal-pwa">Angular Universal PWA Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
-    </footer>
+</header>
+<div class="content">
+    <router-outlet></router-outlet>
 </div>

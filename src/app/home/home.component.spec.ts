@@ -17,9 +17,9 @@ describe('Home component -', () => {
 
     });
 
-    it('title is \'Hello World!\'', () => {
+    it('title is \'Home\'', () => {
         fixture.detectChanges();
-        const de: DebugElement = fixture.debugElement.query(By.css('h3'));
-        expect(de.nativeElement.textContent).toBe('Hello World!');
+        const de: DebugElement = fixture.debugElement.query(By.css('h1'));
+        expect(de.nativeElement.textContent).toBe('Home');
     });
 });

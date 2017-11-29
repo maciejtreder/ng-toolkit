@@ -2,6 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'lazy-view',
-    template: `<div class="content"><h3>I am lazy!</h3></div>`
+    templateUrl: `./lazy.component.html`
 })
 export class LazyComponent {}

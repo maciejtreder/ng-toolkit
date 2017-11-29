@@ -1,15 +1,9 @@
 import { Inject, NgModule } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import {
-    MatButtonModule, MatMenuModule, MatSnackBarModule,
-    MatToolbarModule
-} from '@angular/material';
-import { ServiceWorkerModule } from '@angular/service-worker';
-
+import { MatButtonModule, MatMenuModule, MatSnackBarModule } from '@angular/material';
 import { SnackBarService } from './services/snack-bar.service';
 import { WindowRef } from './windowRef';
-
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { HomeComponent } from './home/home.component';
@@ -26,14 +20,11 @@ const routes: any[] = [
 @NgModule({
   imports: [
       MatButtonModule,
-      MatToolbarModule,
       MatSnackBarModule,
       MatMenuModule,
-      ServiceWorkerModule,
       HttpClientModule,
     CommonModule,
-      RouterModule.forRoot(routes),
-    ServiceWorkerModule
+      RouterModule.forRoot(routes)
   ],
   declarations: [ AppComponent, HomeComponent, MenuComponent ],
   exports: [ AppComponent ],
