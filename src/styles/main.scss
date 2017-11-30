@@ -13,7 +13,7 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  background: url('../assets/img/background.png') fixed;
+  background: url('../assets/img/background.png') fixed top center;
   background-size:cover;
   color: white;
 }
