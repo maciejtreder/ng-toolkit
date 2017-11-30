@@ -1,65 +1,24 @@
-h1,h2 {
-  text-align: center;
-}
-
-.mat-toolbar h1 {
-  color: orange;
+header h1 {
+  color: darkorange;
   font-size: 32px !important;
   width: 100%;
   margin: 16px 0 7px !important;
 }
 
-mat-toolbar {
+header {
+  background-color: #222837;
+  text-align: center;
   position: fixed;
-  flex-direction: column;
-  z-index: 1;
-}
-
-mat-toolbar div {
   width: 100%;
-  height: 100%;
-}
-
-mat-toolbar, mat-sidenav > div {
-  border-bottom: 1px solid #c2c2c2;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  background: #f8f8f8;
 }
 
 h2 {
-  color: cornflowerblue;
   font-size: 20px;
 }
 
 :host {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  text-align: center;
-}
-
-mat-sidenav > div {
-  width: 100%;
-  height: 64px;
-  position: absolute;
-  z-index: 2
-}
-
-mat-sidenav > div button {
-  float: right;
-  margin: 12px;
-}
-
-::ng-deep div.content {
-  position: relative;
-  text-align: center;
-}
-
-::ng-deep h3 {
-  position: relative;
-  color: deepskyblue;
-  text-align: center;
-  font-weight: lighter;
 }
 
 menu.contextual {
@@ -67,52 +26,17 @@ menu.contextual {
 }
 
 @media (max-width: 768px) {
-  h3 {
-    top: 7px;
-    left: -20px;
-  }
-
-  ::ng-deep div.content {
-    background: url('../assets/img/sandbox-mobile.png') no-repeat top center;
-    min-height: 175px;
-  }
-  mat-toolbar menu {
-    display: none;
-  }
-
-  #content-wrapper {
-    padding-top: 64px;
-  }
-
-  menu.contextual {
-    display: block !important;
+  .content {
+    padding-top: 100px;
   }
 }
 
 @media (min-width: 768px) {
-  ::ng-deep .mat-toolbar-row {
-    display: block !important;
-  }
-
-  menu.contextual {
-    display: none;
-  }
-
-  mat-toolbar {
+  header {
     height: 105px;
   }
 
-  h3 {
-    top: 20px;
-    left: -10px;
-  }
-
-  ::ng-deep div.content {
-    background: url('../assets/img/sandbox.png') no-repeat top center;
-    min-height: 350px;
-  }
-
-  #content-wrapper {
-    padding-top: 100px;
+  .content {
+    padding-top: 136px;
   }
 }

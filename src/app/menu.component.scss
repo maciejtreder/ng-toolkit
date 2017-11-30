@@ -1,8 +1,8 @@
 :host(.contextual) {
   button {
-    background-color: cornflowerblue;
-    color: white;
-    margin: -5px 0 0 -5px;
+    color: cornflowerblue;
+    background-color: #2a2f3e;
+    margin: -5px 0 0 8px;
   }
 }
 
@@ -12,39 +12,67 @@
     display: block;
     text-align: left;
     padding: 10px;
+    box-shadow: none !important;
   }
 }
 
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: inline;
+  position: relative;
+  left: 0px;
+}
+
+li {
+  display: inline-block;
+  a {
+    margin: 0 3px;
+  }
+}
+
+a:hover {
+  color: orange;
+  background-color: #222838 !important;
+}
+
+span:hover {
+  cursor: pointer;
+}
+
+::ng-deep .mat-menu-panel {
+  background: #2a2f3e !important;
+}
+
+.mat-raised-button {
+  color: inherit;
+  background: #2a2f3e !important;
+}
+
+@media (max-width: 768px) {
+  :host(.contextual) {
+    display: block !important;
+  }
+
   :host {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 0 6px;
-    padding: 0;
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  :host(.contextual) {
+    display: none;
   }
 
-  div {
-    overflow: auto;
-    padding: 3px;
+  :host {
+    display: block;
   }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: inline;
-    position: relative;
-    left: 0px;
-  }
-
-  li {
-    display: inline-block;
-    a {
-      background: white;
-      margin: 0 3px;
-    }
-  }
-
-  span:hover {
-    cursor: pointer;
-  }
+}
