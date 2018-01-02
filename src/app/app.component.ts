@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
+    	console.log('ergo web tools test');
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
