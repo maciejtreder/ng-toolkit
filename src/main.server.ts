@@ -47,4 +47,3 @@ app.get('/redirect/**', (req, res) => {
 app.post('/testPost', (req, res) => {
   res.status(200).send({receivedValue: req.body.exampleKey});
 });
-
