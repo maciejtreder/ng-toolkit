@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
         private windowRef: WindowRef,
         private swUpdate: SwUpdate
     ) {
-    	console.log('ergo web tools test2');
+        console.log('ergo web tools test2');
     }
 
     public ngOnInit(): void {
