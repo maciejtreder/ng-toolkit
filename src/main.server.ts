@@ -30,7 +30,7 @@ app.set('views', 'dist');
 app.use('/', express.static('dist', { index: false }));
 
 app.get('/**', (req, res) => {
-    if (req.headers.host.contains('angular-universal-pwa.maciejtreder.com') && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
+    if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
         res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
         res.end();
         return;
