@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { EchoService } from './services/echo.service';
+import { Observable } from 'rxjs/Observable';
+ 
 @Component({
  selector: 'my-app',
- template: '<h1>Hello world!</h1>',
+ templateUrl: `app.component.html`,
+ styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+   public response: Observable<any>;
+ 
+   constructor( private echoService: EchoService) {}
 
- constructor(){
-   console.log("I am Angular!")
- }
+   public ngOnInit(): void {
+       this.response = this.echoService.makeCall();
+   }
 }
 

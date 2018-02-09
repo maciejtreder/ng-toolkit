@@ -14,12 +14,14 @@ module.exports = function () {
         resolve: {
             extensions: ['.ts', '.js']
         },
+module: {
+   rules: [
+       {test: /\.ts$/, loaders: ['@ngtools/webpack']},
+       { test: /\.css$/, loader: 'raw-loader' },
+       { test: /\.html$/, loader: 'raw-loader' }
+   ]
+},
 
-        module: {
-            rules: [
-                {test: /\.ts$/, loader: '@ngtools/webpack'}
-            ]
-        },
         plugins: [
             new CopyWebpackPlugin([
                 { from: 'src/assets', to: 'assets'}
