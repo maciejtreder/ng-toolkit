@@ -16,16 +16,14 @@ export class AppComponent implements OnInit {
         private snackBarService: SnackBarService,
         private windowRef: WindowRef,
         private swUpdate: SwUpdate
-    ) {
-        console.log('ergo web tools test2');
-    }
+    ) {}
 
     public ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
 
-        try {
+        if (this.swUpdate.isEnabled) {
             this.swUpdate.activated.subscribe(() => {
                 console.log('activated');
             });
@@ -36,7 +34,7 @@ export class AppComponent implements OnInit {
             //     } as SnackBarNotification);
             // });
 
-            this.swUpdate.available.subscribe(() => {
+            this.swUpdate.available.subscribe((evt) => {
                 this.snackBarService.displayNotification({
                     message: 'New version of app is available!',
                     action: 'Launch',
@@ -52,8 +50,6 @@ export class AppComponent implements OnInit {
             }).catch((err) => {
                 console.error('error when checking for update', err);
             });
-        } catch (err) {
-            // workaround for https://github.com/angular/angular/issues/20519
         }
     }
 }

@@ -7,7 +7,7 @@ const tsconfigs = {
 };
 
 const aotTsconfigs = {
-    client: root('./tsconfig.browser.json'),
+    client: root('./tsconfig.browser-aot.json'),
     server: root('./tsconfig.server.json')
 };
 
@@ -20,9 +20,7 @@ const aotTsconfigs = {
  */
 function getAotPlugin(platform, aot) {
     return new AngularCompilerPlugin({
-        tsConfigPath: tsconfigs[platform],
-        // tsConfigPath: aot ? aotTsconfigs[platform] : tsconfigs[platform],
-        // tsConfigPath: 'tsconfig.browser.json',
+        tsConfigPath: aot ? aotTsconfigs[platform] : tsconfigs[platform],
         skipCodeGeneration: !aot,
         compilerOptions: {
             genDir: root("./src/ngfactory"),

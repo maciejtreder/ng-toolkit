@@ -13,7 +13,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
             appId: 'app'
         }),
         AppModule,
-        ServiceWorkerModule.register('./ngsw-worker.js')
+        ServiceWorkerModule.register('/ngsw-worker.js')
     ]
 })
 export class BrowserAppModule {}
