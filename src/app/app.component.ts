@@ -24,6 +24,10 @@ export class AppComponent implements OnInit {
         }
 
         try {
+            console.log('service worker enabled');
+            this.swUpdate.checkForUpdate().then((resp) => {
+                console.log('checked for update');
+            });
             this.swUpdate.activated.subscribe(() => {
                 console.log('activated');
             });
@@ -34,7 +38,7 @@ export class AppComponent implements OnInit {
             //     } as SnackBarNotification);
             // });
 
-            this.swUpdate.available.subscribe(() => {
+            this.swUpdate.available.subscribe((evt) => {
                 this.snackBarService.displayNotification({
                     message: 'New version of app is available!',
                     action: 'Launch',
@@ -51,7 +55,7 @@ export class AppComponent implements OnInit {
                 console.error('error when checking for update', err);
             });
         } catch (err) {
-            // workaround for https://github.com/angular/angular/issues/20519
+            // asdf
         }
     }
 }

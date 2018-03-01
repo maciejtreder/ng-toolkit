@@ -25,7 +25,6 @@
   },
   "include": [
     "./src/main.browser.ts",
-    "./src/main.browser-aot.ts",
     "./src/app/lazy/lazy.module.ts",
     "./src/app/httpProxy/http-proxy.module.ts"
   ]
