@@ -23,7 +23,7 @@ module.exports = function (options, webpackOptions) {
           ]
       });
 
-      var clientConfig = webpackMerge({}, commonPartial(options), clientPartial, {
+      var clientConfig = webpackMerge({}, commonPartial(options), clientPartial(options), {
           plugins: [
               getAotPlugin('client', (!!options.aot))
           ]

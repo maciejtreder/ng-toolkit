@@ -62,7 +62,7 @@
     "@angular/compiler": "^5.0.3",
     "@angular/compiler-cli": "^5.0.3",
     "@angularclass/hmr-loader": "^3.0.4",
-    "@ngtools/webpack": "^1.8.4",
+    "@ngtools/webpack": "^1.9.8",
     "@types/jasmine": "^2.8.2",
     "@types/node": "^8.0.53",
     "@types/systemjs": "^0.20.6",
