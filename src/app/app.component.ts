@@ -23,11 +23,7 @@ export class AppComponent implements OnInit {
             return;
         }
 
-        try {
-            console.log('service worker enabled');
-            this.swUpdate.checkForUpdate().then((resp) => {
-                console.log('checked for update');
-            });
+        if (this.swUpdate.isEnabled) {
             this.swUpdate.activated.subscribe(() => {
                 console.log('activated');
             });
@@ -54,8 +50,6 @@ export class AppComponent implements OnInit {
             }).catch((err) => {
                 console.error('error when checking for update', err);
             });
-        } catch (err) {
-            // asdf
         }
     }
 }
