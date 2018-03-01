@@ -16,9 +16,7 @@ export class AppComponent implements OnInit {
         private snackBarService: SnackBarService,
         private windowRef: WindowRef,
         private swUpdate: SwUpdate
-    ) {
-        console.log('ergo web tools test2');
-    }
+    ) {}
 
     public ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
