@@ -2,6 +2,7 @@ const { root } = require('./helpers');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {DllReferencePlugin} = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = function(options) {
     const plugins = [];
@@ -26,7 +27,10 @@ module.exports = function(options) {
                 { from: 'src/assets', to: 'assets', ignore: ".DS_Store" }, //ignore system-specific files
                 { from: 'src/styles', ignore: "*.scss" }, //ignore system-specific files
             ]
-        )
+        ),
+        new webpack.DefinePlugin({
+            FIREBUG: !!options.firebug
+        })
     );
 
   return {
