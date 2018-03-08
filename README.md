@@ -21,7 +21,7 @@ This is a great starting point for **microservices application**! Because of sup
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
 * Unit tests
-* Firebug Lite (great solution for touch-screen devices development - ie: iPad)
+* Firebug Lite (great solution for development on touch-screen devices, ie: iPad)
 
 
 ### Used frameworks/technologies
