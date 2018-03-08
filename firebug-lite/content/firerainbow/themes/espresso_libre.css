@@ -1,0 +1,67 @@
+/* Espresso Libre by Chris Thomas, converted from TextMate theme (Espresso Libre.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #2A211C;
+    font-family: Monaco, Courier New;
+    color: #BDAE9D;
+}
+
+.sourceRow.hovered {
+    background-color: #3A312C;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #C3DCFF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #0066FF;
+}
+
+.js-keyword {
+    font-weight: bold;
+    color: #43A8ED;
+}
+
+.js-atom {
+    color: #44AA43;
+}
+
+.js-atom {
+    font-weight: bold;
+    color: #C5656B;
+}
+
+.js-variable {
+    font-weight: bold;
+    color: #585CF6;
+}
+
+.js-variabledef {
+    color: #318495;
+}
+
+.js-string {
+    color: #049B0A;
+}
+
+.js-operator {
+    color: #687687;
+}
+
+.xml-processing {
+    color: #8F7E65;
+}
+
+.xml-processing {
+    color: #888888;
+}
+
+.xml-tagname {
+    color: #43A8ED;
+}
+
+.xml-tagname {
+    font-weight: bold;
+}

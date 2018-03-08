@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            
+            $(function () {
+                var success = false;
+            
+                $.ajax({
+                    url: "http://www.google.com",
+                    success: function() {
+                        success = true;
+                    },
+                    complete: function() {
+                        alert(success); //false
+                    }
+                });
+            });
+            
+            
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

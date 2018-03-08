@@ -1,0 +1,566 @@
+/* ============================================================================================== */
+/* ============================================================================================== */
+/*
+@font-face {
+    font-family: 'TitilliumMaps';
+    src: url('http://getfirebug.com/fonts/TitilliumMaps26L001.eot');
+    src: local('☺'), url('http://getfirebug.com/fonts/TitilliumMaps26L001.woff') format('woff'), url('http://getfirebug.com/fonts/TitilliumMaps26L001.ttf') format('truetype');
+    font-weight: bold;
+}
+*/
+/*
+TODO: xxxpedro
+* {
+   position: relative;
+}
+*/
+
+html, body {
+    /*width: 100%;
+    min-height: 100%;
+    min-height: calc(100% - 30px);
+    min-height: -moz-calc(100% - 30px);*/
+    margin: 0;
+    padding-bottom: 30px;
+}
+
+body {
+    background-color: #EAF1FB;
+    background: #FFFFFF linear-gradient(top, #EAF1FB, #FFFFFF 450px) no-repeat;
+    background: #FFFFFF -moz-linear-gradient(top, #EAF1FB, #FFFFFF 450px) no-repeat;
+    background: #FFFFFF -webkit-linear-gradient(top, #EAF1FB, #FFFFFF 450px) no-repeat;
+    background: #FFFFFF -o-linear-gradient(top, #EAF1FB, #FFFFFF 450px) no-repeat;
+    background: #FFFFFF -ms-linear-gradient(top, #EAF1FB, #FFFFFF 450px) no-repeat;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+#main {
+    margin: auto;
+    width: 870px;
+}
+
+#main {
+    margin-top: 20px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -o-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -o-border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -ms-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 15px;
+}
+
+#content {
+    background-color: #EAEAEA;
+    background-image: linear-gradient(bottom, #E6E6E6, #F0F0F0);
+    background-image: -moz-linear-gradient(bottom, #E6E6E6, #F0F0F0);
+    background-image: -webkit-linear-gradient(bottom, #E6E6E6, #F0F0F0);
+    background-image: -o-linear-gradient(bottom, #E6E6E6, #F0F0F0);
+    background-image: -ms-linear-gradient(bottom, #E6E6E6, #F0F0F0);
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -o-border-radius: 8px;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+#output {
+    background-color: #FAFAFA;
+    background-image: linear-gradient(bottom, #F5F5F5, #FFFFFF);
+    background-image: -moz-linear-gradient(bottom, #F5F5F5, #FFFFFF);
+    background-image: -webkit-linear-gradient(bottom, #F5F5F5, #FFFFFF);
+    background-image: -o-linear-gradient(bottom, #F5F5F5, #FFFFFF);
+    background-image: -ms-linear-gradient(bottom, #F5F5F5, #FFFFFF);
+    height: 50px;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+footer {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 75%;
+    font-style: italic;
+}
+
+h1, h2 {
+    font-family: /* TitilliumMaps, */ "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 130%;
+    font-weight: bold;
+}
+
+h1 {
+}
+
+h2 {
+    margin: 0.5em 0;
+    /*TODO: xxxpedro*/
+    /*border-bottom: 2px solid #9ACBE4;*/
+}
+
+h3 {
+    margin: 0.3em 0 0.2em 0;
+    font-size: 105%;
+}
+
+p, ol, ul {
+    margin: 0.2em 0;
+}
+
+p {
+    padding-left: 20px;
+}
+
+#description p {
+    font-style: italic;
+}
+
+ul {
+    list-style-type: square;
+    list-style-image: url(data:image/gif;base64,R0lGODlhBQAIAPcAAGOMnGOMnP///2OMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnGOMnP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////yH5BAEAAAIALAAAAAAFAAgABwgSAAEIHEiwoEGC/xImFMCwocOAADs=);
+}
+
+li.ok, li span.ok {
+    color: #00B400;
+}
+
+li.error, li span.error {
+    color: #DC0000;
+}
+
+code {
+    color: #008C00;
+}
+
+code.key {
+    color: #0000FF;
+}
+
+input[type="text"], button {
+    border: 1px solid #AAAAAA;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    padding: 3px 5px;
+}
+
+input[type="button"], button {
+    background-image: linear-gradient(bottom, #A0A0A0, #C8C8C8);
+    background-image: -moz-linear-gradient(bottom, #A0A0A0, #C8C8C8);
+    background-image: -webkit-linear-gradient(bottom, #A0A0A0, #C8C8C8);
+    background-image: -o-linear-gradient(bottom, #A0A0A0, #C8C8C8);
+    background-image: -ms-linear-gradient(bottom, #A0A0A0, #C8C8C8);
+    box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 2px 2px -1px #FFFFFF inset;
+    -moz-box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 2px 2px -1px #FFFFFF inset;
+    -webkit-box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 2px 2px -1px #FFFFFF inset;
+    -o-box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 2px 2px -1px #FFFFFF inset;
+    -ms-box-shadow: 0 -2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 2px 2px -1px #FFFFFF inset;
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+input[type="button"]:hover, button:hover {
+    background-image: linear-gradient(bottom, #B4B4B4, #DCDCDC);
+    background-image: -moz-linear-gradient(bottom, #B4B4B4, #DCDCDC);
+    background-image: -webkit-linear-gradient(bottom, #B4B4B4, #DCDCDC);
+    background-image: -o-linear-gradient(bottom, #B4B4B4, #DCDCDC);
+    background-image: -ms-linear-gradient(bottom, #B4B4B4, #DCDCDC);
+}
+
+input[type="button"]:active, button:active {
+    background-image: linear-gradient(top, #8C8C8C, #A0A0A0);
+    background-image: -moz-linear-gradient(top, #8C8C8C, #A0A0A0);
+    background-image: -webkit-linear-gradient(top, #8C8C8C, #A0A0A0);
+    background-image: -o-linear-gradient(top, #8C8C8C, #A0A0A0);
+    background-image: -ms-linear-gradient(top, #8C8C8C, #A0A0A0);
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 -2px 2px -1px #FFFFFF inset;
+    -moz-box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 -2px 2px -1px #FFFFFF inset;
+    -webkit-box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 -2px 2px -1px #FFFFFF inset;
+    -o-box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 -2px 2px -1px #FFFFFF inset;
+    -ms-box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.5) inset, 0 -2px 2px -1px #FFFFFF inset;
+}
+
+/* ============================================================================================== */
+/* ============================================================================================== */
+
+/**
+ * QUnit - A JavaScript Unit Testing Framework
+ *
+ * http://docs.jquery.com/QUnit
+ *
+ * Copyright (c) 2011 John Resig, Jörn Zaefferer
+ * Dual licensed under the MIT (MIT-LICENSE.txt)
+ * or GPL (GPL-LICENSE.txt) licenses.
+ */
+
+/** Font Family and Sizes */
+
+#qunit-tests, #qunit-header, #qunit-banner, #qunit-testrunner-toolbar, #qunit-userAgent, #qunit-testresult {
+	font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+}
+
+#qunit-testrunner-toolbar, #qunit-userAgent, #qunit-testresult, #qunit-tests li { font-size: small; }
+#qunit-tests { font-size: smaller; }
+
+
+/** Resets */
+
+#qunit-tests, #qunit-tests ol, #qunit-header, #qunit-banner, #qunit-userAgent, #qunit-testresult {
+	margin: 0;
+	padding: 0;
+}
+
+
+/** Header */
+
+#qunit-header {
+	padding: 0.5em 0 0.5em 1em;
+
+	color: #8699a4;
+	background-color: #0d3349;
+
+	font-size: 1.5em;
+	line-height: 1em;
+	font-weight: normal;
+
+	border-radius: 15px 15px 0 0;
+	-moz-border-radius: 15px 15px 0 0;
+	-webkit-border-top-right-radius: 15px;
+	-webkit-border-top-left-radius: 15px;
+}
+
+#qunit-header a {
+	text-decoration: none;
+	color: #c2ccd1;
+}
+
+#qunit-header a:hover,
+#qunit-header a:focus {
+	color: #fff;
+}
+
+#qunit-banner {
+	height: 5px;
+}
+
+#qunit-testrunner-toolbar {
+	padding: 0.5em 0 0.5em 2em;
+	color: #5E740B;
+	background-color: #eee;
+}
+
+#qunit-userAgent {
+	padding: 0.5em 0 0.5em 2.5em;
+	background-color: #2b81af;
+	color: #fff;
+	text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+}
+
+
+/** Tests: Pass/Fail */
+
+#qunit-tests {
+	list-style-position: inside;
+}
+
+#qunit-tests li {
+	padding: 0.4em 0.5em 0.4em 2.5em;
+	border-bottom: 1px solid #fff;
+	list-style-position: inside;
+}
+
+#qunit-tests.hidepass li.pass, #qunit-tests.hidepass li.running  {
+	display: none;
+}
+
+#qunit-tests li strong {
+	cursor: pointer;
+}
+
+#qunit-tests li a {
+	padding: 0.5em;
+	color: #c2ccd1;
+	text-decoration: none;
+}
+#qunit-tests li a:hover,
+#qunit-tests li a:focus {
+	color: #000;
+}
+
+#qunit-tests ol {
+	margin-top: 0.5em;
+	padding: 0.5em;
+
+	background-color: #fff;
+
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+
+	box-shadow: inset 0px 2px 13px #999;
+	-moz-box-shadow: inset 0px 2px 13px #999;
+	-webkit-box-shadow: inset 0px 2px 13px #999;
+}
+
+#qunit-tests table {
+	border-collapse: collapse;
+	margin-top: .2em;
+}
+
+#qunit-tests th {
+	text-align: right;
+	vertical-align: top;
+	padding: 0 .5em 0 0;
+}
+
+#qunit-tests td {
+	vertical-align: top;
+}
+
+#qunit-tests pre {
+	margin: 0;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+#qunit-tests del {
+	background-color: #e0f2be;
+	color: #374e0c;
+	text-decoration: none;
+}
+
+#qunit-tests ins {
+	background-color: #ffcaca;
+	color: #500;
+	text-decoration: none;
+}
+
+/*** Test Counts */
+
+#qunit-tests b.counts                       { color: black; }
+#qunit-tests b.passed                       { color: #5E740B; }
+#qunit-tests b.failed                       { color: #710909; }
+
+#qunit-tests li li {
+	margin: 0.5em;
+	padding: 0.4em 0.5em 0.4em 0.5em;
+	background-color: #fff;
+	border-bottom: none;
+	list-style-position: inside;
+}
+
+/*** Passing Styles */
+
+#qunit-tests li li.pass {
+	color: #5E740B;
+	background-color: #fff;
+	border-left: 26px solid #C6E746;
+}
+
+#qunit-tests .pass                          { color: #528CE0; background-color: #D2E0E6; }
+#qunit-tests .pass .test-name               { color: #366097; }
+
+#qunit-tests .pass .test-actual,
+#qunit-tests .pass .test-expected           { color: #999999; }
+
+#qunit-banner.qunit-pass                    { background-color: #C6E746; }
+
+/*** Failing Styles */
+
+#qunit-tests li li.fail {
+	color: #710909;
+	background-color: #fff;
+	border-left: 26px solid #EE5757;
+	white-space: pre;
+}
+
+#qunit-tests > li:last-child {
+	border-radius: 0 0 15px 15px;
+	-moz-border-radius: 0 0 15px 15px;
+	-webkit-border-bottom-right-radius: 15px;
+	-webkit-border-bottom-left-radius: 15px;
+}
+
+#qunit-tests .fail                          { color: #000000; background-color: #EE5757; }
+#qunit-tests .fail .test-name,
+#qunit-tests .fail .module-name             { color: #000000; }
+
+#qunit-tests .fail .test-actual             { color: #EE5757; }
+#qunit-tests .fail .test-expected           { color: green;   }
+
+#qunit-banner.qunit-fail                    { background-color: #EE5757; }
+
+
+/** Result */
+
+#qunit-testresult {
+	padding: 0.5em 0.5em 0.5em 2.5em;
+
+	color: #2b81af;
+	background-color: #D2E0E6;
+
+	border-bottom: 1px solid white;
+}
+
+/** Fixture */
+
+#qunit-fixture {
+	position: absolute;
+	top: -10000px;
+	left: -10000px;
+}
+
+/* ============================================================================================== */
+/* ============================================================================================== */
+
+/*
+// <copyright project "Salient.QualityControl" file="qunit.runner.css" company="Sky Sanders">
+// This source is a Public Domain Dedication.
+// http://salientqc.codeplex.com
+// Attribution is appreciated.
+// </copyright>
+*/
+
+/* this file can be added to qunit.css to simplify deployment */
+
+#qunit-runner-banner {
+	font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+	margin: 0;
+	padding: 0;
+	height: 5px;
+}
+#qunit-runner-banner.qunit-pass { background-color: #C6E746; }
+#qunit-runner-banner.qunit-fail { background-color: #EE5757; }
+.runner-test-page-counter
+{
+    font-size: 110%;
+}
+.runner-test-page-header
+{
+    position: relative;
+    font-family: "Helvetica Neue Light" , "HelveticaNeue-Light" , "Helvetica Neue" , Calibri, Helvetica, Arial;
+    list-style-position: inside;
+    font-size: small;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 1px;
+}
+.runner-test-page-header.failed, 
+.runner-test-page-header.failed a, 
+.runner-test-page-header.failed a:hover,
+.runner-test-page-header.failed a:visited
+{
+    background-color: #EE5757;
+    color: #000000;
+}
+.runner-test-page-header.passed,
+.runner-test-page-header.passed a, 
+.runner-test-page-header.passed a:hover,
+.runner-test-page-header.passed a:visited
+{
+    background-color: #D2E0E6;
+    color: #528CE0;
+}
+.runner-test-page-frame
+{
+    display: block;
+    margin: 0;
+    background-color: #F4F4F8;
+    visibility: hidden;
+    position: absolute;
+    border: 2px solid #0D3349;
+    width: 864px;
+    height: 480px;
+}
+.failed+.runner-test-page-frame {
+    border-color: #EE5757;
+}
+h2#qunit-runner-userAgent
+{
+    font-family: "Helvetica Neue Light" , "HelveticaNeue-Light" , "Helvetica Neue" , Calibri, Helvetica, Arial;
+    background-color: #2b81af;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: small;
+    padding: 0.5em 0 0.5em 2.5em;
+    text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+}
+#runner-test-page-container {
+    border: 1px solid #D2E0E6;
+    border-width: 0 1px;
+}
+.runner-test-page-header {
+    margin: 1px 0;
+    line-height: 19px;
+}
+
+#runner-test-page body {
+    background: #EAF0FF;
+}
+#runner-test-page #main {
+    width: 770px;
+}
+#runner-test-page #qunit-header {
+    margin: 0;
+    font-size: 16px;
+}
+#runner-test-page #qunit-userAgent {
+    display: none;
+}
+#runner-test-page #fbtest-toolbar {
+    display: none;
+}
+.fbtest-toolbar-separator {
+    font-family: serif;
+}
+#runner-result {
+    background-color: #D2E0E6;
+    color: #2B81AF;
+    padding: 0.5em 0.5em 0.5em 2.5em;
+    font-size: small;
+    margin: 0;
+    font-family: "Helvetica Neue Light","HelveticaNeue-Light","Helvetica Neue",Calibri,Helvetica,Arial;    
+}
+
+.runner-fullscreen-view body {
+    overflow: hidden;
+}
+
+.runner-fullscreen-view #runner-test-page-frame-fullscreen {
+    border-width: 0;
+    display: block !important;
+    position: fixed !important;
+    visibility: visible !important;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000000;
+}
+
+#runner-close-fullscreen-view {
+    background: none repeat scroll 0 0 #ff7;
+    border: 1px solid #dd9;
+    border-radius: 0 0 0 11px;
+    cursor: pointer;
+    display: none;
+    font-size: 16px;
+    padding: 4px 10px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000001;
+}
+
+.runner-fullscreen-view #runner-close-fullscreen-view {
+    display: block;
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css"?>
+<?xml-stylesheet href="chrome://firebug/content/firebug.css"?>
+<?xml-stylesheet href="chrome://firebug/skin/window.css"?>
+<?xml-stylesheet href="chrome://firerainbow/skin/rainbow.css"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://firerainbow/content/codemirror.js"/>
+    <script type="application/x-javascript" src="chrome://firerainbow/content/firerainbow.js"/>
+</overlay>

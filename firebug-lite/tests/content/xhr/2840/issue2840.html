@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 2840: [Firebug Lite] Synchronous XHR requests</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+            FBTest.runTestOnLoad(function()
+            {
+                FBTest.loadScript("../../includes/jquery-1.6.2.min.js", false);
+                
+                var callbackCalled = false;
+                var responseText = null;
+                
+                var console = FBTest.getConsoleObject();
+                console.clear();
+                
+                var consolePanelNode = FBTest.getPanel("Console").panelNode;
+                
+                $.ajax({
+                    url: "test.txt",
+                    complete: function(req, status) {
+                        if (status == "success") {
+                            responseText = req.responseText;
+                            callbackCalled = true;
+                        }
+                    }
+                });
+        
+                FBTest.wait(
+                    function()
+                    {
+                        // make sure the XHR has finished loading
+                        var xhrLogCompleted = Firebug.Selector(".loading", consolePanelNode).length == 0;
+                        
+                        return callbackCalled && xhrLogCompleted;
+                    },
+                    function()
+                    {
+                        FBTest.ok(callbackCalled, "callback function was properly called");
+                        FBTest.compare("OK", responseText, "responseText returns the proper value");
+                        
+                        var logEntries = Firebug.Selector(".logRow-spy", consolePanelNode);
+                        FBTest.compare(1, logEntries.length, "there is exactly one log entry");
+                        
+                    }
+                );
+
+            });
+
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=2840">Issue 2840</a>: [Firebug Lite] Synchronous XHR requests</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="description">
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite</li>
+                    <li>Load jQuery</li>
+                    <li>Execute the following code:</li>
+                </ol>
+                <pre>
+        $.ajax({
+            url: "test.txt",
+            complete: function(req, status) {
+                if (status == "success") {
+                    // this line should be executed
+                }
+            }
+        });
+                </pre>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>The marked line should be executed, that is, the "complete" callback 
+                    function should be called</li>
+                    <li>There should be one log entry in the Console Panel</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

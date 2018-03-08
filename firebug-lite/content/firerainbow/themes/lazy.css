@@ -1,0 +1,36 @@
+/* LAZY by Domenico Carbotta, converted from TextMate theme (LAZY.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #FFFFFF;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #EFFCA6;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #E3FC8D;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #8C868F;
+}
+
+.js-atom {
+    color: #3B5BB5;
+}
+
+.js-keyword {
+    color: #FF7800;
+}
+
+.js-string {
+    color: #409B1C;
+}
+
+.xml-tagname {
+    color: #3A4A64;
+}

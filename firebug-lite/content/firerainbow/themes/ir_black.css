@@ -1,0 +1,91 @@
+/* IR_Black, converted from TextMate theme (IR_Black.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #141414;
+    font-family: Monaco, Courier New;
+    color: #EDEDED;
+}
+
+.sourceRow.hovered {
+    background-color: #FFFFFF;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #333333;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #7C7C7C;
+}
+
+.js-keyword {
+    color: #96CBFE;
+}
+
+.js-atom {
+    color: #99CC99;
+}
+
+.js-string {
+    font-weight: bold;
+    color: #A8FF60;
+}
+
+.js-atom {
+    font-weight: bold;
+    color: #FF73FD;
+}
+
+.js-variable {
+    color: #C6C5FE;
+}
+
+.js-regexp {
+    color: #E9C062;
+}
+
+.xml-tagname {
+    font-weight: bold;
+    color: #96CBFE;
+}
+
+.xml-attname {
+    color: #96CBFE;
+}
+
+.xml-attname {
+    color: #FFD7B1;
+}
+
+.xml-attname {
+    color: #E18964;
+}
+
+.css-identifier {
+    color: #96CBFE;
+}
+
+.xml-attname {
+    color: #8F9D6A;
+}
+
+.xml-attname {
+    color: #8B98AB;
+}
+
+.xml-attname {
+    color: #62B1FE;
+}
+
+.css-colorcode {
+    color: #EDEDED;
+}
+
+.css-value {
+    color: #F9EE98;
+}
+
+.css-at {
+    color: #8693A5;
+}

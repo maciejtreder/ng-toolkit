@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 2846: [Firebug Lite] Offline XHR requests</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+            (function(){
+                
+            var callbackCalled = false;
+            var responseText = null;
+                
+            // this test will run before Firebug UI finish to load
+            FBTest.runTest(function()
+            {
+                FBTest.ok(typeof Firebug == "object", "Firebug object exists before page load");
+
+                // we are testing here "offline" XHR Info messages, that is,
+                // XHR Info messages logged before Firebug UI finish to load                
+                var xhr = FBL.Ajax.getXHRObject();
+                xhr.open("GET", "test.txt", true);
+                
+                xhr.onreadystatechange = function()
+                {
+                    if (xhr.readyState == 4 && xhr.status == 200)
+                    {
+                        responseText = xhr.responseText;
+                        callbackCalled = true;
+                    }
+                };
+
+                xhr.send();
+            });
+            
+            FBTest.runTestOnLoad(function()
+            {
+                var consolePanelNode = FBTest.getPanel("Console").panelNode;
+                
+                FBTest.wait(
+                    function()
+                    {
+                        // make sure the XHR has finished loading
+                        var xhrLogCompleted = Firebug.Selector(".loading", consolePanelNode).length == 0;
+                        
+                        return callbackCalled && xhrLogCompleted;
+                    },
+                    function()
+                    {
+                        FBTest.ok(callbackCalled, "callback function was properly called");
+                        FBTest.compare("OK", responseText, "responseText returns the proper value");
+                        
+                        var logEntries = Firebug.Selector(".logRow-spy", consolePanelNode);
+                        FBTest.compare(1, logEntries.length, "there is exactly one log entry");
+                        
+                    }
+                );
+
+            });
+
+            })();
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=2846">Issue 2846</a>: [Firebug Lite] Offline XHR requests</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="description">
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite at the &lt;head&gt; of a page</li>
+                    <li>Execute a XHR also at the &lt;head&gt; of a page</li>
+                </ol>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>The XHR callback should be properly called</li>
+                    <li>The XHR reponseText should be the same as expected</li>
+                    <li>There should be one log entry in the Console Panel</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

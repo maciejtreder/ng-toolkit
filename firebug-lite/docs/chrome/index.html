@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+<title>Firebug Lite for Google Chrome : Firebug</title>
+
+<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+
+<!--[if gte IE 7]>
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/styles/screen.css?v2">
+<![endif]-->
+
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/styles/ie.css?v1">
+<![endif]-->
+
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.mousewheel-3.0.2.js"></script>
+<script type="text/javascript" src="/js/fancybox.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+			$('a.view').fancybox({
+			 'transitionIn' : 'elastic',
+			 'transitionOut' : 'elastic',
+			 'autoScale' : false,
+			 'centerOnScroll' : true
+			});
+			$('a.lightbox').fancybox({
+			 'transitionIn' : 'elastic',
+			 'transitionOut' : 'elastic',
+			 'hideOnContentClick' : true
+			});
+			$('a#whatsnew-show').click(function() {
+                $('#whatsnew15').toggle('slow');
+                return false;
+            });
+});
+</script>
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/styles/screen.css?v2">
+<style>
+
+#install p {
+    margin: 15px 0 0 30px;
+    width: 250px;
+}
+
+#install p a {
+    width: 250px;
+}
+
+.moreinfo {
+    width: 100%;
+    font-size: 11px important!;
+}
+
+.intro {
+    margin: 2.5em 0;
+    font-size: 11px important!;
+    font-style: italic;
+}
+
+.postDate {
+    padding: 0;
+}
+
+.post h2 {
+    margin: 1em 0 0;
+}
+
+.post h3 {
+    font-size: 1.25em;
+    margin: 1em 0 0;
+}
+
+
+#links .sidebar-title {
+    margin: 2em 0 0;
+}
+
+#links a {
+    text-decoration: none;
+}
+
+#screencast a {
+    text-decoration: none !important;
+    display: block;
+}
+
+#screencast img {
+    margin: 0 !important;
+}
+
+textarea {
+    border: none;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+/************************************************************************************************/
+
+.spread {
+    float: left;
+    display: block;
+    width: 140px;
+    background: #F6F9FE;
+    padding: 5px 5px 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.spread a {
+    font-size: 1px;
+    color: #eee;
+}
+
+.spread .spreadText {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bottomSpacer {
+    height: 220px;
+}
+</style>
+
+
+</head>
+
+<body id="article">
+<div id="wrap" class="group">
+
+<div id="header" class="group">
+
+<ul id="nav">
+<li><a href="/whatisfirebug">What is Firebug?</a>
+<span>Introduction and Features</span></li>
+<li><a href="http://getfirebug.com/wiki/">Resources</a>
+<span>Documentation wiki, FAQ, and other Firebug lore</span></li>
+<li><a href="/community">Community</a><span>Discussion forums and lists</span></li>
+<li><a href="/getinvolved">Get Involved</a><span>Hack the code, create plugins</span></li>
+</ul>
+
+<div id="logo-install" class="group">
+
+<div id="logo">
+<a href="/"></a>
+<h1>Firebug</h1>
+<h2>Web Development Evolved.</h2>
+</div>
+
+<div id="install" class="group"> 
+<p>
+  <a href="https://chrome.google.com/extensions/detail/bmagokdooijbeehmkpknfglimnifench">Install Firebug Lite</a>
+  <span>100% free and open source</span>
+</p> 
+<ul>
+  <li><a href="/firebuglite">Cross-browser Version</a></li>
+  <li><a href="/releases/lite/">Other Versions</a></li>
+</ul>
+</div>
+
+
+</div> <!-- /END logo-install -->
+
+
+</div> <!-- /END header -->
+
+<div id="articleheader">
+<!-- Undefined content: article_img --></div>
+
+<div id="secondary" class="group">
+
+<div id="contentarea" class="group">
+
+<div id="content" class="group"> 
+<h2 class="heading">Firebug Lite for Google Chrome</h2> 
+<div id="blog">
+
+<div class="intro"> 
+    <p>
+    </p>
+</div> 
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Overview" rel="bookmark">Overview</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry"> 
+        <p>
+            Firebug Lite for Google Chrome is not a substitute for Firebug, 
+            or Chrome Developer Tools. It is a tool to be used in conjunction 
+            with these tools. Firebug Lite provides the rich visual representation 
+            we are used to see in Firebug when it comes to HTML elements, 
+            DOM elements, and Box Model shading. It provides also some cool 
+            features like inspecting HTML elemements with your mouse, 
+            and live editing CSS properties.
+        </p>
+        <p>
+            To get more information about 
+            <a href="http://getfirebug.com/firebuglite#WhatsNew">what's new</a> 
+            in Firebug Lite (which is compatible with all major browsers) please visit the
+            <a href="http://getfirebug.com/firebuglite">Firebug Lite page</a>.
+        </p>
+        
+        <h3 name="Benefits">Benefits over Firebug Lite</h3> 
+        <p>
+            Firebug Lite for Google Chrome is basically the same you'll see 
+            when using the bookmarklet, or including a <code>script</code> tag
+            in your page. There are, though, some benefits by using the extension 
+            for Google Chrome, including:
+        </p>
+        <ul>
+            <li>Browser toolbar integration, providing a quick access to Firebug Lite</li>
+            <li>It works without internet connection</li>
+            <li>Faster loading and no FOUC (Flash of Unstyled Content), once resources 
+            will be stored in the extension's directory on your machine</li>
+            <li>Firebug Lite will be loaded before all other scripts, allowing it
+            to capture all console calls and all XHR requests for that page</li>
+            <li>It is possible to activate the Firebug Lite for a particular domain, so next
+            time you visit a page in that domain it will be automatically active.</li>
+        </ul>
+        
+        <h3 name="Limitations">Limitations</h3> 
+        <p>
+            The main limitations of the Firebug Lite version are: 
+        </p>
+        <ul>
+            <li>Cannot read external resources</li>
+            <li>Won't work well on pages with frames</li>
+            <li>JavaScript debugger isn't available</li>
+            <li>Net Panel isn't available</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Activation" rel="bookmark">Activation</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry"> 
+        <p>
+            The Firebug Lite activation scheme is very simple. When you first visit
+            a web page Firebug Lite icon will be gray, indicating that it is deactivated.
+            Clicking on it will activate Firebug Lite for all pages in that domain and the
+            icon will become orange.
+        </p>
+        <p>
+            Next time you visit a page in that domain, Firebug Lite will be automatically
+            active, and the UI will be open or minimized according to the last time
+            you used it.
+        </p>
+        <p>
+            To deactivate Firebug Lite for a particular domain, go to a page in that domain 
+            and click on the "off" button. Since Firebug Lite uses localStorage to store
+            the activation info when you clear your browser's cache, Firebug Lite
+            will be deactivated for all pages.
+        </p>
+    </div> 
+</div>
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Contributing" rel="bookmark">Contributing</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        <p>
+            Your contribution is very important. 
+            If you have a specific issue, like a bug or feature request, please 
+            <a href="http://code.google.com/p/fbug/issues/list">post a detailed description</a> 
+            of the issue, and we will do our best to make it happen. 
+            If you have a more general issue or have something to say, 
+            <a href="http://groups.google.com/group/firebug">let us know</a>.
+            Found a fix for a particular issue? 
+            <a href="http://code.google.com/p/fbug/issues/list">Patches are welcome</a>.
+            If you would like to help with some code or would like to develop
+            an extension for Firebug Lite, don't hesitate: 
+            <a href="http://groups.google.com/group/firebug-working-group">join our team</a>.
+        </p>
+    </div>
+</div>
+
+
+</div> <!-- /END blog --> 
+ 
+</div> <!-- /END content --> 
+ 
+<div id="links"> 
+<h2 class="heading">Links and Stuff</h2> 
+
+<!-- Delicious --> 
+<h2 class="delicious-banner sidebar-title">Release notes content</h2> 
+<ul> 
+    <li><a href="#Overview">1. Overview</a></li> 
+    <li><a href="#Activation">2. Activation</a></li> 
+    <li><a href="#Contributing">3. Contributing</a></li> 
+</ul> 
+  
+<!-- Delicious --> 
+<div id="delicious-posts-firebug" class="delicious-posts"> 
+<h2 class="delicious-banner sidebar-title">Firebug around the web</h2> 
+<script type="text/javascript" src="http://feeds.delicious.com/v2/js/firebugnews?count=5&amp;title=&amp;sort=date&amp;extended"></script> 
+</div> 
+ 
+</div> <!-- /END links --> 
+ 
+</div> <!-- /END contentarea --> 
+ 
+</div> <!-- /END secondary --> 
+ 
+<div id="footer" class="group"> 
+ 
+<div class="nav"> 
+<h3>Firebug</h3> 
+<ul> 
+<li><a href="/">Home</a></li> 
+<li><a href="/downloads">Downloads</a></li> 
+<li><a href="http://getfirebug.com/wiki/">Resources</a></li> 
+<li><a href="/whatisfirebug">What is Firebug</a> 
+</li> 
+<li><a href="/community">Community</a></li> 
+<li><a href="/getinvolved">Get Involved</a></li> 
+<li><a href="http://blog.getfirebug.com/">Blog</a></li> 
+</ul> 
+</div> 
+ 
+<div id="legal"> 
+<div id="copyright"> 
+<img src="http://getfirebug.com/img/mozilla-logo.png" width="41" height="31" alt="Firefox Logo" /> 
+<p><span>Copyright &copy; 2005-2010 Mozilla.</span> All rights reserved.</p> 
+</div> 
+ 
+<ul> 
+<li><a href="http://www.mozilla.com/en-US/privacy-policy.html">Privacy Policy</a></li> 
+<li><a href="http://www.mozilla.com/en-US/about/legal.html">Legal Notices</a></li> 
+ 
+</ul> 
+</div> 
+<div class="bigfirebug"></div> 
+ 
+ 
+</div> <!-- /END footer --> 
+</div> <!-- /END wrap --> 
+ 
+</body> 
+</html>

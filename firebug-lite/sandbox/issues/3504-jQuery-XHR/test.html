@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <!-- Change the location of the Firebug Lite source below if needed -->
+        <script type="text/javascript" src="../../../content/firebug-lite-dev.js#startOpened"></script>
+        
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript">
+        
+            $(function () {
+                var success = false;
+            
+                $.ajax({
+                    url: "test.txt",
+                    success: function() {
+                        success = true;
+                    },
+                    complete: function() {
+                        alert(success); //false
+                    }
+                });
+            });
+        
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

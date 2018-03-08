@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!-- See license.txt for terms of usage -->
+
+<?xml-stylesheet href="chrome://firediff/skin/firediff.css"?>
+
+<!DOCTYPE window [
+  <!ENTITY % firebugDTD SYSTEM "chrome://firebug/locale/firebug.dtd">
+  %firebugDTD;
+  <!ENTITY % firediffDTD SYSTEM "chrome://firediff/locale/firediff.dtd">
+  %firediffDTD;
+]>
+
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="strings_firediff" src="chrome://firediff/locale/firediff.properties"/>
+  </stringbundleset>
+  
+  <script src="chrome://firediff/content/versionCompat.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/diff.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/path.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/cssModel.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/events.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/domEvents.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/cssEvents.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/domplate.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/search.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/pages.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/diffModule.js" type="application/x-javascript"/>
+  <script src="chrome://firediff/content/diffMonitor.js" type="application/x-javascript"/>
+  
+  <commandset id="mainCommandSet">
+    <command id="cmd_clearDiffMonitor" oncommand="Firebug.DiffModule.clearChanges(FirebugContext)"/>
+    <command id="cmd_prevChange" oncommand="Firebug.DiffModule.navPrevChange(FirebugContext)"/>
+    <command id="cmd_nextChange" oncommand="Firebug.DiffModule.navNextChange(FirebugContext)"/>
+  </commandset>
+  
+  <toolbar id="fbToolbar" align="center">
+    <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center">
+      <hbox id="fbDiffMonitorButtons" insertafter="fbNetButtons" collapsed="true">
+        <toolbarseparator/>
+        <toolbarbutton label="&firebug.Clear;" class="toolbar-text-button"
+                       tooltiptext="&firebug.ClearTooltip;" command="cmd_clearDiffMonitor"/>
+        <hbox id="fbDiffSnapshotNav" collapsed="true">
+          <toolbarseparator/>
+          <toolbarbutton label="&firediff.PrevChange;" command="cmd_prevChange" class="toolbar-text-button"/>
+          <toolbarbutton label="&firediff.NextChange;" command="cmd_nextChange" class="toolbar-text-button"/>
+        </hbox>
+      </hbox>
+    </hbox>
+  </toolbar>
+</overlay>

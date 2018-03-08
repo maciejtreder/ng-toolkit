@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html debug=true>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title></title>
+<script src="https://getfirebug.com/firebug-lite.js"></script>
+<script src="require.js"></script>
+<script>
+require.def("App", // module ID
+// ************************************************************************************************ 
+[
+    // list of dependencies
+    "require", 
+    "exports", 
+    "module", 
+    "a"
+],
+// ************************************************************************************************ 
+function(require, exports, module) {
+// ************************************************************************************************ 
+
+var a = require("a");
+
+// ************************************************************************************************ 
+});
+</script>
+  </head>
+  <body>
+    <h1>CommonJS module loader <code>WITH(scope)</code> handling</h1>
+    <p>See source code of <a href="Lib.js">Lib.js</a> and <a href="Firebug/Script.js">Firebug/Script.js</a> for more examples of usage.</p>
+    <p>The code used in this file is:</p>
+    <hr />
+<pre>
+require.def("App", // module ID
+// ************************************************************************************************ 
+[
+    // list of dependencies
+    "require", 
+    "exports", 
+    "module", 
+    "Firebug/Script"
+],
+// ************************************************************************************************ 
+function(require, exports, module) {
+// ************************************************************************************************ 
+
+var Script = require("Firebug/Script");
+Script.initialize();
+Script.show();
+
+// ************************************************************************************************ 
+});
+</pre>
+    <hr />
+  </body>
+</html>

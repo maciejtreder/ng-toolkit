@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FirebugLite 1.4 Testing</title>
+<script type="text/javascript" src="../../content/firebug-lite-dev.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+<script type="text/javascript" src="firequerylite.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("div").data("value", 10);
+    setTimeout(function(){
+        var console = window.firebug || window.console;
+        console.log('Executing $("div"):', $("div"));
+    },1000);
+});
+</script>
+<style type="text/css">
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: Lucida Grande, sans-serif;
+}
+h1 {
+  color: #123;
+  font-weight: bold;
+}
+h2 {
+  color: #456;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0;
+}
+#main {
+  padding: 1px 20px 10px 20px;
+}
+li { 
+  font-family: Monaco, monospace;
+}
+.block {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.block a:hover {
+  color: #5a0;
+}
+.note {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #456;
+  color: #fff;
+  font-family: Lucida Grande, sans-serif;
+}
+.note a, .note a:visited {
+  color: #fff;
+}
+.note a:hover {
+  color: #ff0;
+}
+#build {
+  background: #def;
+}
+#ui {
+  background: #efd;
+}
+</style>
+<style type="text/css">
+#dummy {
+    color: yellow;
+}
+</style>
+</head>
+<body>
+  <div id="main">
+    <h1>FirebugLite 1.4 Testing</h1>
+    <div id="build" class="block">
+      <h2>Development Functions</h2>
+      <ul style="padding-top:10px; padding-left:2px; padding-right:7px; padding-bottom: 20px; margin-top: 12px; margin-right: 22px; margin-left: 2px; margin-bottom: 7px; color: gray; overflow: auto;">
+        <li><a href="javascript:FBDev.build();">Build Project</a></li>
+        <li><a href="javascript:FBDev.compressSkinHTML();">Compress Chrome HTML</a></li>
+        <li><a href="javascript:FBDev.compressSkinCSS();">Compress Chrome CSS</a></li>
+      </ul>
+    </div>
+    <div class="note block">
+      Use the "build" function to generate the full uncompressed js file,
+      and the "compress" functions to compress the HTML and CSS of the
+      User Interface files, to be used in the <a href="../content/firebug/chrome.injected.js">injected.js</a>
+      file, when in bookmarlet mode. 
+    </div>
+    <div id="ui" class="block">
+      <h2>User interface files</h2>
+      <ul>
+        <li><a href="../skin/xp/firebug.html">HTML</a></li>
+        <li><a href="../skin/xp/firebug.css">CSS</a></li>
+        <li><a href="../skin/xp/sprite.png">Sprite</a></li>
+      </ul>
+    </div>
+    <div class="block">
+      <p>Lorem ipsum dolor sit amet consectetuer Lorem pretium molestie congue Curabitur. Et at augue at morbi at adipiscing condimentum wisi lorem In. Morbi porttitor nulla Praesent egestas lobortis nec Morbi nibh Curabitur tempor. Adipiscing Praesent Donec Vivamus condimentum sapien eget odio ac et urna. Ipsum egestas Nam laoreet amet magnis wisi Maecenas tincidunt faucibus sit. Lacinia dictumst lorem ac Aenean Nunc montes condimentum.</p>
+      <p>Amet pretium Nulla tempus ut tortor nibh dis Donec laoreet laoreet. Interdum velit consectetuer vitae nunc ut quis Nam ut neque cursus. Vitae vel orci id porta netus quis Pellentesque faucibus id congue. Elit semper libero auctor adipiscing lacus laoreet sit Maecenas vitae Nulla. Pede ipsum eu vitae dolor nisl nibh pellentesque Pellentesque at.</p>
+      <p>Quisque at aliquet dapibus laoreet at nunc magna ut Aenean id. Urna dictum Pellentesque semper in metus quis Curabitur est risus eget. Mauris semper leo id a augue lorem urna fames tellus magnis. In consequat magna gravida Nulla quam at Curabitur montes wisi malesuada. Leo Nam mollis laoreet odio felis euismod wisi ut iaculis eros. Quisque.</p>
+      <p>Mauris pellentesque ante quis pretium tempor consequat quis cursus tortor turpis. Quisque vel libero montes leo laoreet lobortis ante ligula auctor ornare. Vestibulum Phasellus et pellentesque porttitor orci vitae pharetra porta dolor a. Vivamus aliquam augue ut cursus id pretium ullamcorper neque pede sed. Quis eros Phasellus tellus elit dui ac Curabitur id ut leo. Urna nibh.</p>
+      <p>Nulla Pellentesque Aliquam ut vitae lacus vel et et vel ante. Ante dui a gravida urna urna semper consectetuer Lorem urna Ut. Pellentesque tempor parturient malesuada tempus fermentum congue sem massa metus Suspendisse. Enim semper senectus eget elit Morbi massa nunc dolor est tincidunt. A orci mi Aenean elit a eros.</p>
+      <p>In id Nam velit ut risus in tellus sapien nunc eros. Vitae pellentesque Pellentesque convallis tempus wisi nibh vitae porttitor pellentesque tristique. Et ridiculus turpis risus amet urna Aenean elit velit Nullam vitae. Lacus condimentum Aliquam elit justo lacinia commodo dolor facilisis Vestibulum porta. Urna enim tortor id dui Sed ultrices Lorem risus.</p>
+      <p>Pede cursus Ut Aenean tempor purus rhoncus Curabitur Sed et sapien. Et Duis Vivamus urna vel nunc rutrum Praesent Suspendisse eu nunc. Ligula wisi turpis nec quam Nullam tortor pede nisl hac et. Nulla et Morbi Pellentesque vel nec Integer porttitor lobortis nibh nascetur. At ac augue platea convallis eget vel Nullam pede dolor neque. Accumsan Sed Aenean porttitor tortor dolor Maecenas hendrerit sed Fusce.</p>
+      <p>Senectus tincidunt nec Morbi vitae mattis nonummy faucibus ipsum libero mauris. Risus lacus Nam orci velit interdum nec natoque Curabitur quis Duis. Tincidunt ornare Curabitur et Nam Sed interdum ut libero augue nulla. Enim porttitor in vitae Vestibulum scelerisque pretium In sapien velit lacus. Nam tellus elit ut dis tellus Morbi id nulla Proin quis. Pretium tortor Curabitur.</p>
+      <p>Eu id egestas nibh dis a consectetuer id sapien Nulla interdum. Semper ut sed justo adipiscing Suspendisse volutpat lacinia elit fringilla Praesent. Lacinia Phasellus sem felis Vestibulum eros pellentesque nibh fringilla venenatis metus. Et arcu quis Vestibulum condimentum fringilla a enim quis Nulla Sed. Feugiat Curabitur nibh ridiculus Curabitur ut porttitor nascetur pellentesque nisl magna. Phasellus mauris ut gravida Vestibulum turpis ac pretium.</p>
+      <p>A pretium dui euismod volutpat hendrerit consequat dis dolor Donec cursus. Et quis consequat tincidunt lacinia id elit commodo id condimentum habitant. Et nibh Mauris hac adipiscing sit a condimentum ac egestas orci. In adipiscing justo senectus nulla id Praesent Vivamus ligula orci nulla. Augue a Nam congue eget dui felis magna Duis neque vel. </p>
+    </div>
+  </div>
+
+</body>
+</html>

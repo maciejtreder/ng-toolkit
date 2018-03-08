@@ -1,0 +1,29 @@
+.panelNode-script {
+    font-family: Courier New;
+    font-size: 9pt;
+    overflow: hidden;
+}
+.js-keyword {
+    color: #770088;
+}
+.js-atom {
+    color: #228811;
+}
+.js-variable {
+    color: black;
+}
+.js-variabledef {
+    color: #0000FF;
+}
+.js-localvariable {
+    color: #004499;
+}
+.js-property {
+    color: black;
+}
+.js-comment {
+    color: #AA7700;
+}
+.js-string {
+    color: #AA2222;
+}

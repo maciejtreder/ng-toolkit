@@ -1,0 +1,32 @@
+/* Slush & Poppies by William D. Neumann, converted from TextMate theme (Slush & Poppies.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #F1F1F1;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #B0B0FF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #406040;
+}
+
+.js-string {
+    color: #C03030;
+}
+
+.js-atom {
+    color: #0080A0;
+}
+
+.js-keyword {
+    color: #2060A0;
+}

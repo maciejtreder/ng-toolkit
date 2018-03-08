@@ -1,0 +1,46 @@
+/* Amy by William D. Neumann, converted from TextMate theme (Amy.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #200020;
+    font-family: Monaco, Courier New;
+    color: #D0D0FF;
+}
+
+.sourceRow.hovered {
+    background-color: #800000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #800000;
+}
+
+.js-string {
+    color: #999999;
+}
+
+.js-variable {
+    color: #707090;
+}
+
+.js-atom {
+    color: #7090B0;
+}
+
+.js-variabledef {
+    color: #008080;
+}
+
+.js-keyword {
+    color: #A080FF;
+}
+
+.xml-tagname {
+    color: #009090;
+}
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #200020;
+    font-family: Monaco, Courier New;
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>~ improved sourceBox prototype #2</title>
+<script type="text/javascript" zsrc="../../../content/firebug-lite-dev.js"></script>
+<script type="text/javascript" src="TokenReader9b.js"></script>
+<script type="text/javascript">
+// *************************************************************************************************
+
+var sourceLocation = "../../../build/syntax-test1.js";
+var sourceText;
+
+window.onload = function()
+{
+    var runButton = document.getElementById("run");
+    var loading = document.getElementById("loading");
+    loading.innerHTML = "requesting file...";
+    loading.style.display = "block";
+    
+    setTimeout(function(){
+        var xhr = getXHRObject();
+        xhr.open("get", sourceLocation, true);
+        xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState == 4 && xhr.status == 200)
+            {
+                runButton.disabled = false;
+                loading.style.display = "none";
+                loading.innerHTML = "";
+                sourceText = xhr.responseText;
+            }
+        };
+        xhr.send();
+    },100);
+};
+
+var run = function()
+{
+    parseTricker=parseFile(sourceText);
+    parseTrick();
+    
+};
+
+var getResource = function(url)
+{
+    var xhr = getXHRObject();
+    xhr.open("get", url, false);
+    xhr.send(null);
+    
+    return xhr.responseText;
+};
+
+var getXHRObject = function()
+{
+    var xhrObj = false;
+    try
+    {
+        xhrObj = new XMLHttpRequest();
+    }
+    catch(e)
+    {
+        var progid = [
+                "MSXML2.XMLHTTP.5.0", "MSXML2.XMLHTTP.4.0", 
+                "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP"
+            ];
+          
+        for ( var i=0; i < progid.length; ++i ) {
+            try
+            {
+                xhrObj = new ActiveXObject(progid[i]);
+            }
+            catch(e)
+            {
+                continue;
+            }
+            break;
+        }
+    }
+    finally
+    {
+        return xhrObj;
+    }
+};
+
+
+</script>
+<style type="text/css">
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #eee;
+}
+
+.strn { color: #800; }
+.keyw { color: #008; }
+.comm { color: #080; }
+.punc { color: #660; }
+.regx { color: #606; }
+.numb { color: #606; }
+
+#source {
+    overflow: auto;
+    height: 300px;
+    background: #fff;
+}
+
+pre span {
+}
+
+pre {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+#progressBar {
+  background: #eee;
+  position: relative;
+  font-size: 11px;
+  height: 14px;
+}
+#progressFill {
+  background:#316AC5;
+  width:0; height:100%;
+  position: absolute;
+}
+#progressText {
+  text-align: center;
+  width:100%; height:100%;
+  position: absolute;
+}
+
+#loading {
+    position: absolute;
+    background: #ff0;
+    padding: 2px;
+    display: none;
+    z-index: 99;
+}
+</style>
+</head>
+<body>
+
+  <div id="loading">&nbsp;</div>
+  
+  <div id="progressBar">
+      <div id="progressFill">&nbsp;</div>
+      <div id="progressText"></div>
+  </div>
+  
+  <pre id="source">
+  </pre>
+  
+  <input disabled id="run" type="button" value="run" onclick="run()" /> <i>~ :O</i>
+
+</body>
+</html>

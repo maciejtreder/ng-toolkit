@@ -1,0 +1,15 @@
+.text-link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+}
+
+* {
+    font-size: 9pt;
+	font-family: Helvetica, Arial;
+}
+
+#code {
+    font-family: Courier New;
+    font-size: 9pt;
+}

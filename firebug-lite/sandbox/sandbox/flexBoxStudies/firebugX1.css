@@ -1,0 +1,90 @@
+/* *************************************************************************************************
+ Global styles 
+************************************************************************************************* */
+
+html, body {
+    font-family: Lucida Grande,Tahoma,sans-serif;
+    font-size: 11px;
+    
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+table {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    /*table-layout: fixed; /* IE SUCKS */ 
+}
+
+
+#fbTopRow {
+    height: 28px;
+}
+
+#fbTopRow div {
+    float: left;
+}
+
+
+#fbBottom {
+    height: 28px;
+}
+
+
+#fbContent, #fbPanelBox1, #fbPanelBox2, #fbPanel1, #fbPanel2 {
+    height: 100%;
+    width: 100%;
+}
+
+#fbPanelBox1, #fbPanelBox2 {
+    vertical-align: top;
+}
+
+#fbPanel1, #fbPanel2 {
+    height: 100%;
+    width: 100%;
+    zoverflow: auto;
+    position: relative;
+}
+
+#fbConsole {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    overflow: auto;
+    top: 0;
+    left: 0;
+}
+
+/************************************************************************************************
+ General
+*************************************************************************************************/
+.fbBody {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    
+    font-family: Lucida Grande, Tahoma, sans-serif;
+    font-size: 11px;
+    background: #fff;
+}
+
+.clear {
+    clear: both;
+}
+
+
+/************************************************************************************************
+ Master Layout
+*************************************************************************************************/
+#fbChrome {
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<!-- See license.txt for terms of usage -->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Firebug Lite</title>
+<link href="include/FlexBox.css" rel="stylesheet" type="text/css" />
+<link href="gui.css" rel="stylesheet" type="text/css" />
+<link href="firebug.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="../../../zcontent/firebug-lite-dev.js"></script>
+<script type="text/javascript" src="include/require.js"></script>
+<script>
+
+require({baseUrl: "include"},
+["FlexBox"], 
+function(FlexBox)
+{
+    var useIFrame = /\biframe\b/.test(document.location.hash);
+
+    if (useIFrame)
+    {
+        var panels = [
+                "fbPanelBar1-content",
+                "fbPanelBar2-content",
+                "fbCommandPopup"
+            ];
+        
+        for (var i=0, length = panels.length; i<length; i++)
+        {
+            var panelID = panels[i];
+            var panel = document.getElementById(panelID);
+            var iframe = document.createElement("iframe");
+            var id = panel.id;
+            var className = panel.className;
+            iframe.id = id;
+            iframe.className = className; 
+            iframe.setAttribute("src", "panel.html");
+            iframe.setAttribute("frameBorder", 0);
+            panel.parentNode.replaceChild(iframe, panel);
+        }
+    }
+    
+    var root = document.getElementById("fbContentBox");
+    var flexBox = window.flexBox = new FlexBox(root, true);
+    
+    // avoid FOUC
+    root.style.visibility = "visible";
+
+});
+</script>
+</head>
+<body>
+
+    <div id="fbContentBox" class="vbox xhideSidePanelBar xhideCommandPopup">
+
+        <div id="fbPanelBar1-tabBox" class="panelTabBox">
+        
+            <div class="boxContent">
+            
+                <div id="fbWindowLeftControls" class="fbWindowControls">
+                
+                    <div id="fbPanelBar1-innerToolbar" class="inlineBlockLeft">
+                        <a id="fbFirebugButton" class="fbIconButton inlineBlockLeft fbHover">&nbsp;</a>
+                        <a id="fbInspectButton" class="fbIconButton inlineBlockLeft fbHover">&nbsp;</a>
+                    </div>
+                    
+                    <div id="fbPanelBar1-panelTabs" class="panelTabs inlineBlockLeft">
+                        <span class="panelTab sel">Console<span class="panelOptions">▼</span></span>
+                        <span class="panelTab">HTML<span class="panelOptions">▼</span></span>
+                        <span class="panelTab">CSS<span class="panelOptions">▼</span></span>
+                        <span class="panelTab">Script<span class="panelOptions">▼</span></span>
+                        <span class="panelTab">Net<span class="panelOptions">▼</span></span>
+                    </div>
+                    
+                </div>
+                
+                <div id="fbWindowRightControls" class="fbWindowControls">
+                
+                    <div id="fbWindowButtons" class="inlineBlockRight">
+                        <a id="fbWindow_btDeactivate" class="fbSmallButton inlineBlockRight fbHover" title="Deactivate Firebug for this web page">&nbsp;</a>
+                        <a id="fbWindow_btDetach" class="fbSmallButton inlineBlockRight fbHover" title="Open Firebug in popup window">&nbsp;</a>
+                        <a id="fbWindow_btClose" class="fbSmallButton inlineBlockRight fbHover" title="Minimize Firebug">&nbsp;</a>
+                    </div>
+                    
+                    <div id="fbSearch" class="inlineBlockRight">
+                        <input />
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+
+        <div id="fbPanelPane" class="hbox boxFlex">
+        
+            <div id="fbPanelDeck" class="vbox boxFlex">
+            
+                <div id="fbToolbar">
+                	<div id="fbToolbarContent" class="boxContent">
+                    	<a id="fbConsole_btClear" class="fbButton fbHover" title="Clear the console">Clear</a>
+                    </div>
+                </div>
+                
+                <div id="fbPanelBar1-content" class="boxFlex boxScroll">
+                
+                    <div>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                        <p>left</p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <div id="fbPanelSplitter" class="fbSplitter" data-target="fbSidePanelDeck" data-spacer="fbPanelDeck">
+                <div id="fbPanelSplitterContent" class="boxContent">
+                    <div id="fbPanelSplitterHandler">&nbsp;</div>
+                    <div id="fbPanelSplitterTop">&nbsp;</div>
+                </div>
+            </div>
+            
+            <div id="fbSidePanelDeck" class="vbox">
+            
+                <div id="fbPanelBar2-panelTabsBox">
+                    <div id="fbPanelBar2-panelTabs" class="boxContent">
+                        <span class="panelTab sel">Style<span class="panelOptions">▼</span></span>
+                        <span class="panelTab">Layout<span class="panelOptions">▼</span></span>
+                    </div>
+                </div>
+                
+                <div id="fbPanelBar2-content" class="boxFlex boxScroll">
+                
+                    <div>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                        <p>right</p>
+                    </div>
+                
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <div id="fbCommandPopupSplitter" class="fbSplitter" data-target="fbCommandPopup" data-spacer="fbPanelPane">
+            <div id="fbCommandPopupSplitterContent" class="boxContent"></div>
+        </div>
+        
+        <div id="fbCommandPopup" class="boxScroll">
+            <div>
+                <p>command popup</p>
+                <p>command popup</p>
+                <p>command popup</p>
+                <p>command popup</p>
+                <p>command popup</p>
+            </div>
+        </div>
+        
+        <div id="fbCommandBox">
+            <span id="fbCommandArrow">&gt;&gt;&gt;</span>
+            <input id="fbCommandLine" />
+        </div>
+        
+    </div>
+    
+</body>
+</html>

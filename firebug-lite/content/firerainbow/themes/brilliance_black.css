@@ -1,0 +1,70 @@
+/* Brilliance Black by Thomas Aylott, converted from TextMate theme (Brilliance Black.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #0D0D0D;
+    font-family: Monaco, Courier New;
+    color: #EEEEEE;
+}
+
+.sourceRow.hovered {
+    background-color: #000080;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #0010B4;
+}
+
+.js-regexp {
+    background-color: #438000;
+    color: #FFF800;
+}
+
+.js-atom {
+    color: #C6FF00;
+}
+
+.js-variable {
+    color: #07FF00;
+}
+
+.js-variabledef {
+    color: #31A6FF;
+}
+
+.xml-tagname {
+    color: #333333;
+}
+
+.xml-tagname {
+    color: #FFFFFF;
+}
+
+.xml-attname {
+    color: #FFFFFF;
+}
+
+.xml-attname {
+    color: #4F00FF;
+}
+
+.xml-attname {
+    color: #7900FF;
+}
+
+.xml-attname {
+    color: #F800FF;
+}
+
+.xml-attname {
+    color: #FF0086;
+}
+
+.xml-attname {
+    font-weight: bold;
+    color: #FF7900;
+}
+
+.xml-attname {
+    color: #C25A00;
+}

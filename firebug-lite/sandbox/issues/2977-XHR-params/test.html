@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <!-- Change the location of the Firebug Lite source below if needed -->
+        <script type="text/javascript" src="../../../content/firebug-lite-dev.js#startOpened"></script>
+        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+        <script type="text/javascript">
+        setTimeout(function(){
+            
+            $.post("post.php?id=1", "name=hi", function(req, status) {
+                if (status == "success") {
+                    //consolex.log("hi there!");
+                }
+            });
+            
+        },1000);
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

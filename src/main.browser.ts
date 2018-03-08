@@ -30,15 +30,8 @@ if (process.env.NODE_ENV === 'production') {
 
     document.body.appendChild(scriptGA);
     document.body.appendChild(script);
-} else {
-
-    // const fb = document.createElement('script');
-    // fb.type = 'text/javascript'; fb.src = 'https://getfirebug.com/firebug-lite.js#startOpened';
-    // document.head.appendChild(fb)
-    // // document.getElementsByTagName('body')[0].appendChild(fb);
-    // setTimeout(() => console.log('test'), 1000);
-
 }
+
 const decorateModuleRef = (modRef: any) => {
     const appRef = modRef.injector.get(ApplicationRef);
     const cmpRef = appRef.components[0];
@@ -54,7 +47,7 @@ export function main(): Promise<any> {
     const fireBugPromise = new Promise((resolve) => {
         if (!!FIREBUG) {
             const fb = document.createElement('script');
-            fb.type = 'text/javascript'; fb.src = 'https://getfirebug.com/firebug-lite.js#startOpened';
+            fb.type = 'text/javascript'; fb.src = '../firebug-lite/build/firebug-lite.js#startOpened,overrideConsole=false';
             document.head.appendChild(fb);
             const interval = setInterval(() => {
                 if (!!document.getElementById('FirebugUI')) {

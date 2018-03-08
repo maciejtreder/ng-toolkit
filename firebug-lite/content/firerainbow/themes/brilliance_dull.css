@@ -1,0 +1,79 @@
+/* Brilliance Dull by Thomas Aylott, converted from TextMate theme (Brilliance Dull.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #050505;
+    font-family: Monaco, Courier New;
+    color: #CDCDCD;
+}
+
+.sourceRow.hovered {
+    background-color: #000080;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #2E2EE6;
+}
+
+.js-regexp {
+    background-color: #438000;
+    color: #A6A458;
+}
+
+.js-atom {
+    color: #95A658;
+}
+
+.js-variable {
+    color: #59A559;
+}
+
+.js-variabledef {
+    color: #5E6B6B;
+}
+
+.js-variabledef {
+    color: #5780A6;
+}
+
+.js-keyword {
+    color: #A459A5;
+}
+
+.xml-tagname {
+    color: #333333;
+}
+
+.xml-attname {
+    background-color: #800004;
+    color: #A7595A;
+}
+
+.xml-tagname {
+    color: #FFFFFF;
+}
+
+.xml-attname {
+    color: #FFFFFF;
+}
+
+.xml-attname {
+    color: #7C58A5;
+}
+
+.xml-attname {
+    color: #A459A5;
+}
+
+.xml-attname {
+    color: #A75980;
+}
+
+.xml-attname {
+    font-weight: bold;
+    color: #A77D58;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #333333;
+}

@@ -1,0 +1,68 @@
+/* Mac Classic by Chris Thomas, converted from TextMate theme (Mac Classic.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #FFFFFF;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #4D97FF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #808080;
+}
+
+.js-keyword {
+    color: #0000FF;
+}
+
+.js-atom {
+    color: #0000CD;
+}
+
+.js-atom {
+    color: #C5060B;
+}
+
+.js-variable {
+    color: #585CF6;
+}
+
+.js-variabledef {
+    color: #318495;
+}
+
+.js-string {
+    color: #036A07;
+}
+
+.js-operator {
+    color: #687687;
+}
+
+.xml-processing {
+    color: #68685B;
+}
+
+.xml-processing {
+    color: #888888;
+}
+
+.xml-tagname {
+    color: #0000FF;
+}
+
+.xml-tagname {
+    color: #0000FF;
+}
+
+.xml-attname {
+    color: #9C0202;
+}

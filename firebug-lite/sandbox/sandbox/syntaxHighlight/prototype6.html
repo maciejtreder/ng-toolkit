@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>~ improved sourceBox prototype #2</title>
+<script type="text/javascript">
+// *************************************************************************************************
+
+var sourceLocation = "../../../build/syntax-test1.js";
+var sourceText;
+
+window.onload = function()
+{
+    var runButton = document.getElementById("run");
+    var loading = document.getElementById("loading");
+    loading.innerHTML = "requesting file...";
+    loading.style.display = "block";
+    
+    setTimeout(function(){
+        var xhr = getXHRObject();
+        xhr.open("get", sourceLocation, true);
+        xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState == 4 && xhr.status == 200)
+            {
+                runButton.disabled = false;
+                loading.style.display = "none";
+                loading.innerHTML = "";
+                sourceText = xhr.responseText;
+            }
+        };
+        xhr.send();
+    },100);
+};
+
+var run = function()
+{
+    //process1();
+    //return;
+    
+    var ParserInterruption = {toString: function() {return "ParserInterruption"}};
+    
+    var onProgress = function(position, total)
+    {
+        var value = (position+1)/total;
+        progressFill.style.width = Math.round(value*progressBar.clientWidth) + "px";
+        progressText.innerHTML = Math.round(value*100) + "%";
+    };
+    
+    var onComplete = function(position, total)
+    {
+        progressText.innerHTML = new Date().getTime() - ts + " ms";
+    };
+    
+    var parse = function()
+    {
+        try
+        {
+            var ts = new Date().getTime();
+            
+            for(;;)
+            {
+                token = next();
+                
+                if (tokenizer.eof) break;
+                
+                if (new Date().getTime() - ts > 50) throw ParserInterruption;
+            }
+            
+            //console.log("FIM");
+            running = false;
+            
+            tokenizer.sync(onProgress);
+            tokenizer.sync(onComplete);
+        }
+        catch(e)
+        {
+            //if (e == ParserInterruption)
+            //{
+                //console.log("interruption parse");
+                
+                tokenizer.sync(onProgress);
+                
+                if (running)
+                {
+                    setTimeout(parse, 25);
+                }
+            //}
+        }
+    };
+    
+    var progressFill = document.getElementById("progressFill");
+    var progressBar = document.getElementById("progressBar");
+    var progressText = document.getElementById("progressText");
+    var runButton = document.getElementById("run");
+    
+    var tokenizer = createTokenizer(sourceText, onProgress, onComplete);
+    var next = tokenizer.next;
+    var hasTokens = tokenizer.hasTokens;
+    var token;
+    
+    runButton.value = "pause";
+    runButton.onclick = function()
+    {
+        if (running)
+        {
+            runButton.value = "resume";
+            tokenizer.pause();
+        }
+        else
+        {
+            runButton.value = "pause";
+            tokenizer.resume();
+            setTimeout(parse, 25);
+        }
+        
+        running = !running;
+    };
+    
+    var running = true;
+    var ts = new Date().getTime();
+    
+    parse();
+};
+
+var createTokenizer = function(sourceText, onProgress, onComplete)
+{
+    onProgress = onProgress || function(){};
+    onComplete = onComplete || function(){};
+    
+    var TokenizerInterruption = {toString: function() {return "TokenizerInterruption"}};
+    
+    var text = sourceText;
+    var i =  0;
+    var s =  "";
+    var length =  sourceText.length;
+    var count = 0;
+    var running = true;
+    
+    var tokenizer = {
+        next: function(){
+            
+            try
+            {
+                var ts = new Date().getTime();
+        
+                for(;i<length;i++)
+                {
+                    if (new Date().getTime() - ts > 50) throw TokenizerInterruption;
+                    
+                    s += text.charAt(i);
+                    
+                    if (++count % 1000 == 0)
+                    {
+                        var r = s;
+                        s = "";
+                        i++;
+                        return r;
+                    }
+                }
+                
+                tokenizer.eof = true;
+                
+                running = false;
+                
+                onProgress(i, length);
+                onComplete(i, length);
+            }
+            catch(e)
+            {
+                if (e == TokenizerInterruption)
+                {
+                    //console.log("interruption next");
+                    
+                    onProgress(i, length);
+                    
+                    if (running)
+                    {
+                        setTimeout(tokenizer.next, 25);
+                    }
+                    
+                    throw TokenizerInterruption;
+                }
+            }
+        },
+        
+        pause: function()
+        {
+            running = false;
+        },
+        
+        resume: function()
+        {
+            running = true;
+        },
+        
+        sync: function(callback)
+        {
+            callback(i, length);
+        },
+        
+        hasTokens: function()
+        {
+            return i < length;
+        }
+    };
+    
+    return tokenizer;
+};
+
+var getResource = function(url)
+{
+    var xhr = getXHRObject();
+    xhr.open("get", url, false);
+    xhr.send(null);
+    
+    return xhr.responseText;
+};
+
+var getXHRObject = function()
+{
+    var xhrObj = false;
+    try
+    {
+        xhrObj = new XMLHttpRequest();
+    }
+    catch(e)
+    {
+        var progid = [
+                "MSXML2.XMLHTTP.5.0", "MSXML2.XMLHTTP.4.0", 
+                "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP"
+            ];
+          
+        for ( var i=0; i < progid.length; ++i ) {
+            try
+            {
+                xhrObj = new ActiveXObject(progid[i]);
+            }
+            catch(e)
+            {
+                continue;
+            }
+            break;
+        }
+    }
+    finally
+    {
+        return xhrObj;
+    }
+};
+
+
+</script>
+<style type="text/css">
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #eee;
+}
+
+.strn { color: #800; }
+.keyw { color: #008; }
+.comm { color: #080; }
+.punc { color: #660; }
+.regx { color: #606; }
+.numb { color: #606; }
+
+#source {
+    overflow: auto;
+    height: 300px;
+    background: #fff;
+}
+
+pre span {
+}
+
+pre {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+#progressBar {
+  background: #eee;
+  position: relative;
+  font-size: 11px;
+  height: 14px;
+}
+#progressFill {
+  background:#316AC5;
+  width:0; height:100%;
+  position: absolute;
+}
+#progressText {
+  text-align: center;
+  width:100%; height:100%;
+  position: absolute;
+}
+
+#loading {
+    position: absolute;
+    background: #ff0;
+    padding: 2px;
+    display: none;
+    z-index: 99;
+}
+</style>
+</head>
+<body>
+
+  <div id="loading">&nbsp;</div>
+  
+  <div id="progressBar">
+      <div id="progressFill">&nbsp;</div>
+      <div id="progressText"></div>
+  </div>
+  
+  <pre id="source">
+  </pre>
+  
+  <input disabled id="run" type="button" value="run" onclick="run()" /> <i>~ :O</i>
+
+</body>
+</html>

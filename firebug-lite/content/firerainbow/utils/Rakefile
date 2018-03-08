@@ -1,0 +1,222 @@
+begin
+  require 'Plist'
+rescue LoadError
+  raise 'You must "gem install plist" to get plist parser'
+end
+
+ROOT = File.expand_path('..')
+SRC = ROOT
+DST = File.join(ROOT, 'build')
+DST_THEMES = File.join(DST, 'themes')
+TMP = File.join(ROOT, 'tmp')
+
+THEMES_DIR = File.expand_path("~/Library/Application\\ Support/TextMate/Themes")
+
+# http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
+begin
+  require 'Win32/Console/ANSI' if PLATFORM =~ /win32/
+rescue LoadError
+  raise 'You must "gem install win32console" to use terminal colors on Windows'
+end
+
+def colorize(text, color_code)
+  "#{color_code}#{text}\e[0m"
+end
+
+def red(text); colorize(text, "\e[31m"); end
+def green(text); colorize(text, "\e[32m"); end
+def yellow(text); colorize(text, "\e[33m"); end
+def blue(text); colorize(text, "\e[34m"); end
+def magenta(text); colorize(text, "\e[35m"); end
+def azure(text); colorize(text, "\e[36m"); end
+def white(text); colorize(text, "\e[37m"); end
+def black(text); colorize(text, "\e[30m"); end
+
+def file_color(text); yellow(text); end
+def dir_color(text); blue(text); end
+def cmd_color(text); azure(text); end
+
+def detect_selector_from_scope(scope)
+  return ".panelNode-script" unless scope
+  parts = scope.split(',')
+  parts.each do |part|
+    case part
+    when "comment"
+      return ".js-comment, .xml-comment, .css-comment"
+    when "keyword"
+      return ".js-keyword"
+    when "variable", "constant.language"
+      return ".js-variable"
+    when "variable.language", "variable.other"
+      return ".js-variabledef"
+    when "string", "css.string"
+      return ".js-string"
+    when "string.regexp"
+      return ".js-regexp"
+    when "constant", "constant.numeric"
+      return ".js-atom"
+    when "keyword.operator.js"
+      return ".js-operator"
+    when "string.quoted.docinfo.doctype.DTD", "meta.tag.preprocessor.xml", "meta.tag.sgml.doctype", "meta.tag.sgml.doctype entity", "meta.tag.sgml.doctype string", "meta.tag.preprocessor.xml", "meta.tag.preprocessor.xml entity", "meta.tag.preprocessor.xml string"
+      return ".xml-processing"
+    when "entity.name.tag", "meta.tag", "declaration.tag"
+      return ".xml-tagname"
+    when /attribute-name/
+      return ".xml-attname"
+    when "???"
+      return ".xml-text"
+    when "???"
+      return ".xml-entity"
+    when "???"
+      return ".xml-cdata"
+    when /property-value.css/
+      return ".css-value"
+    when "meta.selector.css entity.name.tag"
+      return ".css-identifier"
+    when /property-name.css/
+      return ".css-colorcode"
+    when "???"
+      return ".css-string"
+    when "???"
+      return ".css-unit"
+    when "???"
+      return ".css-important"
+    when "???"
+      return ".css-select-op"
+    when "???"
+      return ".css-punctuation"
+    when "???"
+      return ".css-compare"
+    when /at-rule/
+      return ".css-at"
+    end
+  end
+  
+  nil
+end
+
+def color(val)
+  return "???" unless val =~ /#([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])/
+  "\##{$1}"
+end
+
+def font_style(val)
+  return nil unless val=="italic"
+  "italic"
+end
+
+def font_weight(val)
+  return nil unless val=="bold"
+  "bold"
+end
+
+KNOWN_ATTRIBUTES = {
+  "foreground" => ["color", method(:color)],
+  "background" => ["background-color", method(:color)],
+  "fontStyle" => ["font-style", method(:font_style)],
+  "fontStyle" => ["font-weight", method(:font_weight)],
+}
+
+def gen_rule(dict)
+  scope = dict["scope"]
+  selector = detect_selector_from_scope(scope)
+  return "" unless selector
+  settings = dict["settings"]
+  return "" unless settings
+  
+  rule = {}
+  KNOWN_ATTRIBUTES.each do |attr, spec|
+    next unless settings[attr]
+    spec = [spec] unless spec.is_a?(Array)
+    
+    val = settings[attr]
+    val = spec[1].call(val) if spec[1]
+    rule[spec[0]] = val if val
+  end
+  
+  return "" unless rule.keys.size>0
+  
+  if (selector==".panelNode-script") then
+    rule["font-family"] = "Monaco, Courier New"
+    rule["font-size"] = "11px"
+    
+    additional = ""
+    highlight = color(settings["lineHighlight"]) if settings["lineHighlight"]
+    additional += ".sourceRow.hovered { background-color: #{highlight}; }\n\n" if highlight
+    selection = color(settings["selection"]) if settings["selection"]
+    additional += ".sourceRow[exeLine=\"true\"] { background-color: #{selection}; }\n\n" if selection
+  end
+  
+  res = "#{selector} {\n"
+  rule.each do |key, value| 
+    res += "  #{key}: #{value};\n"
+  end
+  res += "}\n\n"
+
+  res += additional if additional
+  res
+end
+
+def gen_css(data, source)
+  desc  = "#{data["name"]}"
+  desc += " by #{data["author"]}" if data["author"]
+  desc += ", converted from TextMate theme (#{source})"
+  
+  res = "/* #{desc} */\n\n"
+  
+  data["settings"].each do |dict|
+    res += gen_rule(dict)
+  end
+  
+  {
+    "css" => res,
+    "name" => data["name"],
+    "author" => data["author"],
+    "description" => desc
+  }
+end
+
+def my_mkdir(dir)
+  puts "#{cmd_color('creating directory')} #{dir_color(dir)}"
+  mkdir dir
+end
+
+def process(dir)
+  files = Dir.glob(File.join(dir, "**", "*.tmTheme"))
+  files.each do |filename|
+    basename = File.basename(filename)
+    puts "  Converting #{file_color(basename)}"
+    data = Plist::parse_xml(filename)
+    preset = gen_css(data, basename)
+    preset["basename"] = basename
+    yield preset
+  end
+end
+
+task :convert do 
+  my_mkdir(DST_THEMES) unless File.exist?(DST_THEMES)
+  puts "Scanning #{dir_color(THEMES_DIR)} ..."
+  process(THEMES_DIR) do |preset|
+    res = File.join(DST_THEMES, preset["basename"] + ".css")
+    File.open(res, "w") do |file|
+      file.write preset["css"]
+    end
+  end
+end
+
+task :sql do
+  puts "Generating sql ..."
+  
+  res = ""
+  process(THEMES_DIR) do |preset|
+    name = preset["name"].downcase.gsub(/[\(\)&]/, "").gsub(/[ \t]/, "_").gsub(/'/, "''")
+    title = preset["name"].gsub(/'/, "''")
+    desc = preset["description"].gsub(/'/, "''")
+    code = preset["css"].gsub(/\n/, "\\r\\n").gsub(/'/, "''").gsub(/"/, "&quot;")
+    res += "('#{name}', '#{title}', '#{desc}', '#{code}', '2008-06-14 18:19:36', '2008-06-14 18:24:04'),\n"
+  end
+  
+  puts res
+end
+
+task :default => :convert

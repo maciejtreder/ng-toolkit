@@ -1,0 +1,87 @@
+<html>
+ <head>
+   <script type="text/javascript" src="../../../content/firebug-lite-dev.js"></script>
+   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+   <script src="http://code.jquery.com/jquery-1.4.2.min.js"
+language="javascript" type="text/javascript"></script>
+   <script type="text/javascript">
+     var data;
+     google.load("visualization", "1", {packages:["linechart"]});
+     google.load('visualization', '1', {packages:['table']});
+     google.setOnLoadCallback(drawChart);
+
+     //google.setOnLoadCallback(drawTable);
+
+     function drawChart() {
+
+       var ccdata = getCData();
+       data = ccdata;
+       var chart = new
+google.visualization.LineChart(document.getElementById('chart_div'));
+
+       var options = new Object();
+               options.width = 500;
+               options.height = 250;
+               options.legend = 'none';
+               options.colors = ['#ff7f00', '#339999', '#cc9966'];
+               options.lineWidth=3;
+               options.pointSize = 5;
+
+       chart.draw(ccdata, options);
+
+       var table = new
+google.visualization.Table(document.getElementById('table_div'));
+       table.draw(ccdata, {showRowNumber: true});
+
+ }
+       function getCData(){
+               data = new google.visualization.DataTable();
+
+       data.addColumn('string', 'Log');
+       data.addColumn('number', 'Req');
+       data.addColumn('number', 'Ser');
+       data.addColumn('number', 'Loa');
+
+       data.addRows(5);
+
+
+       data.setValue(0, 0, '1 amn');
+       data.setValue(1, 0, '2 am');
+       data.setValue(2, 0, '3 am');
+       data.setValue(3, 0, '4 am');
+       data.setValue(4, 0, '5 am');
+
+       data.setValue(0, 1, 1000); // for req line
+       data.setValue(1, 1, 1170);
+       data.setValue(2, 1, 860);
+       data.setValue(3, 1, 1030);
+       data.setValue(4, 1, 1030);
+
+       data.setValue(0, 2, 400); // for served line
+       data.setValue(1, 2, 460);
+       data.setValue(2, 2, 580);
+       data.setValue(3, 2, 540);
+       data.setValue(4, 2, 540);
+
+       data.setValue(0, 3, 300); // for Loaded line
+       data.setValue(1, 3, 200);
+       data.setValue(2, 3, 400);
+       data.setValue(3, 3, 59);
+       data.setValue(4, 3, 600);
+
+       return data;
+       }
+</script>
+</head>
+<body>
+       <div id="chartselector" class="chartselector"
+style="position:relative;left:25px">
+               <form id='fform'>
+                       <input type="checkbox" value="1" checked onclick="call_me()"/>Req
+                       <input type="checkbox" value="2" checked onclick="call_me()"/>Ser
+                       <input type="checkbox" value="3" checked onclick="call_me()"/>Loa
+               </form>
+       </div>
+       <div id="chart_div" style="top:50px;position:absolute;"></div>
+</body>
+</html>

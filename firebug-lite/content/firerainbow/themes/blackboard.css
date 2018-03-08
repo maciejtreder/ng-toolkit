@@ -1,0 +1,36 @@
+/* Blackboard by Domenico Carbotta, converted from TextMate theme (Blackboard.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #0C1021;
+    font-family: Monaco, Courier New;
+    color: #F8F8F8;
+}
+
+.sourceRow.hovered {
+    background-color: #FFFFFF;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #253B76;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #AEAEAE;
+}
+
+.js-atom {
+    color: #D8FA3C;
+}
+
+.js-keyword {
+    color: #FBDE2D;
+}
+
+.js-string {
+    color: #61CE3C;
+}
+
+.xml-tagname {
+    color: #7F90AA;
+}

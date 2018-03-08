@@ -1,0 +1,60 @@
+/* iPlastic by Jeroen van der Ham, converted from TextMate theme (iPlastic.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #EEEEEE;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #BAD6FD;
+}
+
+.js-string {
+    color: #009933;
+}
+
+.js-atom {
+    color: #0066FF;
+}
+
+.js-regexp {
+    color: #FF0080;
+}
+
+.js-keyword {
+    color: #0000FF;
+}
+
+.js-variable {
+    color: #9700CC;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #0066FF;
+}
+
+.xml-tagname {
+    color: #0033CC;
+}
+
+.js-atom {
+    color: #6782D3;
+}
+
+.xml-processing {
+    color: #333333;
+}
+
+.xml-attname {
+    color: #3366CC;
+}
+
+.xml-tagname {
+    font-weight: bold;
+}

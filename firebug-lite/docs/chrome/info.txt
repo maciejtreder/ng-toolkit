@@ -1,0 +1,43 @@
+Overview
+-------------
+
+Firebug Lite is not a substitute for Firebug, or Chrome Developer Tools. It is a tool to be used in conjunction with these tools. Firebug Lite provides the rich visual representation we are used to see in Firebug when it comes to HTML elements, DOM elements, and Box Model shading. It provides also some cool features like inspecting HTML elemements with your mouse, and live editing CSS properties.
+
+For more detailed information, visit:
+http://getfirebug.com/releases/lite/chrome/
+
+
+Benefits over Firebug Lite bookmarlet
+-----------------------------------------------------
+
+  * Browser toolbar integration
+  * Able to activate Firebug Lite for a particular domain
+  * Firebug Lite will be loaded before all other scripts, allowing it to capture all console calls, and all XHR requests for that page
+  * It is faster to load, because all code and images will be store in the extension's directory in your machine
+  * Will be able to read external resources in the next version
+
+
+Limitations
+----------------
+
+ * Cannot read external resources
+ * Won't work well on pages with frames
+ * JavaScript debugger isn't available
+ * Net Panel isn't available
+
+
+Activation
+--------------
+
+The Firebug Lite activation scheme is very simple. When you first visit a web page, Firebug icon will be gray, indicating that it is deactivated. Clicking on it will activate Firebug for all pages in that domain, and the icon will become orange.
+
+To deactivate for a particular domain, go to a page in that domain, and click on the "off" button.
+
+
+Contributing
+-----------------
+
+Your contribution is very important. Found a bug? Have a suggestion? Please 
+report us: http://code.google.com/p/fbug/issues/list
+
+If you would like to help with some code, or would like to develop an extension for Firebug Lite, don't hesitate, join our team: http://groups.google.com/group/firebug-working-group

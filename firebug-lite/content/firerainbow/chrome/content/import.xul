@@ -1,0 +1,16 @@
+<?xml-stylesheet href="chrome://firerainbow/skin/import.css"?>
+<dialog
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="import-dialog"
+  title="Import Color Theme"
+  ondialogaccept="window.arguments[0].out = {code:document.getElementById('code').value}; return true;"
+  persist="screenX screenY width height"
+  windowtype="myDialogWindowType">
+    <script type="application/x-javascript" src="chrome://firerainbow/content/import.js"/>
+    <hbox>
+        <label value="Please visit "/>
+        <label value="FireRainbow Website" href="http://firerainbow.binaryage.com/#themes" class="text-link"/>
+        <label value=" and copy&amp;paste some color theme code here"/>
+    </hbox>
+    <textbox flex="1" id="code" multiline="true" emptytext="Paste CSS code here" cols="80" rows="30"/>
+</dialog>

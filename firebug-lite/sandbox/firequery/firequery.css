@@ -1,0 +1,34 @@
+.objectLink-jquery-data {
+    color: #4B0082;
+    padding-left: 2px;
+}
+
+.objectLink-jquery-sign {
+    color: #4B0082;
+}
+
+.nodeData {
+    font-size: 90%;
+    color: #4B0082;
+    background-color: #ddd;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 0px 4px;
+    -moz-border-radius-bottomleft: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-topleft: 2px;
+}
+
+.nodeData.mutated
+{
+    background-color: #EFFF79;
+    color: #FF0000 !important;
+}
+
+.nodeBox.selected > .nodeLabel > .nodeLabelBox > .nodeData.mutated > *,
+.nodeBox.selected > .nodeLabel > .nodeLabelBox > .nodeData > .nodeValue.mutated {
+    background-color: #EFFF79;
+    border-color: #EFFF79;
+    color: #FF0000 !important;
+}

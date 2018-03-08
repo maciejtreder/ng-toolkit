@@ -1,0 +1,66 @@
+/* Pretty printing styles. Used with prettify.js. */
+
+.str { color: #080; }
+.kwd { color: #008; }
+.com { color: #800; }
+.typ { color: #606; }
+.lit { color: #066; }
+.pun { color: #660; }
+.pln { color: #000; }
+.tag { color: #008; }
+.atn { color: #606; }
+.atv { color: #080; }
+.dec { color: #606; }
+pre.prettyprint { padding: 2px; border: 1px solid #888; }
+
+@media print {
+  .str { color: #060; }
+  .kwd { color: #006; font-weight: bold; }
+  .com { color: #600; font-style: italic; }
+  .typ { color: #404; font-weight: bold; }
+  .lit { color: #044; }
+  .pun { color: #440; }
+  .pln { color: #000; }
+  .tag { color: #006; font-weight: bold; }
+  .atn { color: #404; }
+  .atv { color: #060; }
+}
+
+/* xxxpedro */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+pre.prettyprint {
+  margin-left: 76px;
+  border: none;
+  font: 12px Monospace;
+  padding: 2px;
+}
+.lineNumbers {
+  font: 12px Monospace;
+  position: absolute;
+  width: 55px;
+  text-align: right;
+  top: 0;
+  left: 0;
+  
+  border-right: 2px solid #ccc; 
+  color: #fff; 
+  font-style: normal; 
+  /*font-weight: bold;*/ 
+  padding: 2px 7px; 
+  /*background: #6277AA;*/ 
+  background-image: -moz-linear-gradient(right, #ddd, #bbb); /* FF3.6 */
+  background-image: -webkit-gradient(linear,right top,left top,color-stop(0, #ddd),color-stop(1, #bbb)); /* Saf4+, Chrome */
+            filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#ddd', EndColorStr='#bbb', GradientType='1'); /* IE6,IE7 */
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ddd', EndColorStr='#bbb', GradientType='1')"; /* IE8 */
+}
+.lineNumbers a, .lineNumbers a:visited { 
+  color: #777; 
+  text-decoration: none;
+}
+#sourceSpacer {
+  height: 768px;
+  position: relative;
+}
