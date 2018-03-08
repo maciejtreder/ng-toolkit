@@ -8,8 +8,9 @@ import * as compression from 'compression';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 
 import { ServerAppModule } from './app/server-app.module';
-import { ngExpressEngine } from '@nguniversal/express-engine';
+import { ngExpressEngine, REQUEST } from '@nguniversal/express-engine';
 import { enableProdMode } from '@angular/core';
+import { USERAGENTTOKEN } from './app/windowRef';
 
 enableProdMode();
 export const app = express();
@@ -21,7 +22,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 app.engine('html', ngExpressEngine({
-  bootstrap: ServerAppModule
+  bootstrap: ServerAppModule,
+    providers: [
+        {provide: USERAGENTTOKEN, useValue: REQUEST }
+    ]
 }));
 
 app.set('view engine', 'html');
