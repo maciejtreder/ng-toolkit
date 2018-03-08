@@ -7,7 +7,6 @@ module.exports = function (options) {
     entryFile = options.aot? root('./src/main.browser-aot.ts') : root('./src/main.browser.ts');
     return {
         entry: entryFile,
-        node: { fs: 'empty' },
         output: {
             filename: 'client.js'
         },
