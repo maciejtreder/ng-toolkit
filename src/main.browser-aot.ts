@@ -14,6 +14,20 @@ import { BrowserAppModuleNgFactory } from './app/browser-app.module.ngfactory';
 
 if (process.env.NODE_ENV === 'production') {
     enableProdMode();
+
+    const script = document.createElement('script');
+    const scriptGA = document.createElement('script');
+    scriptGA.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=UA-109145893-2');
+    script.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-109145893-2');
+    `;
+
+    document.body.appendChild(scriptGA);
+    document.body.appendChild(script);
 }
 
 const decorateModuleRef = (modRef: any) => {
