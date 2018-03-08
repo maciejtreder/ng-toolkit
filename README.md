@@ -21,6 +21,7 @@ This is a great starting point for **microservices application**! Because of sup
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
 * Unit tests
+* Firebug Lite (great solution for touch-screen devices development - ie: iPad)
 
 
 ### Used frameworks/technologies
@@ -41,6 +42,8 @@ npm start
 ```
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + unit tests): ```npm run build:dev```
+* Development mode (autoreload + firebug lite): ```npm run build:firebug```
+* Development mode (autoreload + firebug lite + unit tests): ```npm run build:dev:firebug```
 * Unit tests: ```npm run test```
 
 
