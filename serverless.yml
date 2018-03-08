@@ -15,6 +15,7 @@ package:
   exclude:
    - src/**
    - node_modules/**
+   - firebug-lite/**
    - '!node_modules/aws-serverless-express/**'
    - '!node_modules/binary-case/**'
 
