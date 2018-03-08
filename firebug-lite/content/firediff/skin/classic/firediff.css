@@ -1,0 +1,154 @@
+/* See license.txt for terms of usage */
+
+.logEntry {
+    padding-left: 10px;
+}
+
+.diffMonitorElement {
+    display: none;
+    
+    position: relative;
+    margin: 0;
+    border-bottom: 1px solid #D7D7D7;
+    padding: 2px 4px 1px 6px;
+    background-color: #FFFFFF;
+}
+
+/* Removed Changes should not be displayed at all if the change source is filtered */
+.removedClass {
+  display: none;
+}
+
+.showFirebugChanges div.firebugDiff,
+.showFirebugChanges .firebugDiff div,
+.showAppChanges div.appDiff,
+.showAppChanges .appDiff div {
+  display: block;
+}
+.showFirebugChanges span.firebugDiff,
+.showFirebugChanges .firebugDiff span,
+.showFirebugChanges .firebugDiff a,
+.showAppChanges span.appDiff,
+.showAppChanges .appDiff span,
+.showAppChanges .appDiff a {
+  display: inline;
+}
+
+.firebugDiff div.nodeChildBox,
+.firebugDiff div.nodeCloseLabel,
+.appDiff div.nodeChildBox,
+.appDiff div.nodeCloseLabel {
+    display: none;
+}
+
+
+.showFirebugChanges .firebugDiff .addedClass,
+.showFirebugChanges .firebugDiff.addedClass,
+.showAppChanges .appDiff .addedClass,
+.showAppChanges .appDiff.addedClass {
+  background: green;
+  color: white;
+}
+.showFirebugChanges .firebugDiff .removedClass,
+.showFirebugChanges .firebugDiff.removedClass,
+.showAppChanges .appDiff .removedClass,
+.showAppChanges .appDiff.removedClass {
+  background: red;
+  color: black;
+}
+
+/* Ugh: There has to be a better way... */
+.showFirebugChanges .jumpHighlight.firebugDiff .addedClass,
+.showFirebugChanges .jumpHighlight.firebugDiff.addedClass,
+.showFirebugChanges .jumpHighlight .firebugDiff .addedClass,
+.showFirebugChanges .jumpHighlight .firebugDiff.addedClass,
+.showAppChanges .jumpHighlight.appDiff .addedClass,
+.showAppChanges .jumpHighlight.appDiff.addedClass,
+.showAppChanges .jumpHighlight .appDiff .addedClass,
+.showAppChanges .jumpHighlight .appDiff.addedClass {
+  background: #66FF66;
+}
+.showFirebugChanges .jumpHighlight.firebugDiff .removedClass,
+.showFirebugChanges .jumpHighlight.firebugDiff.removedClass,
+.showFirebugChanges .jumpHighlight .firebugDiff .removedClass,
+.showFirebugChanges .jumpHighlight .firebugDiff.removedClass,
+.showAppChanges .jumpHighlight.appDiff .removedClass,
+.showAppChanges .jumpHighlight.appDiff.removedClass,
+.showAppChanges .jumpHighlight .appDiff .removedClass,
+.showAppChanges .jumpHighlight .appDiff.removedClass {
+  background: salmon;
+}
+
+.addedClass *,
+.removedClass * {
+  color: inherit;
+}
+
+.nodeContainerLabel {
+  cursor: pointer;
+}
+
+.diffSep {
+    margin: 0 .5em;
+}
+.diffDate {
+    position: absolute;
+    right: 0px;
+}
+.diffSummary {
+    font-weight: bold;
+}
+.diffSource, .diffDate, .diffXPath {
+    color: gray;
+}
+.diffXPath {
+    padding-bottom: 1em;
+}
+
+.textDiff {
+  white-space: pre;
+}
+
+.nodeInternalSubset {
+  white-space: pre;
+}
+
+/* Customized Rules for CSS Display. All others reuse the standard CSS styles */
+.cssRuleDiff, .cssMediaRuleDiff {
+  position: relative;
+  margin: 0;
+  padding: 1em 0 0 6px;
+  font-family: Monaco, monospace;
+  color: #000000;
+}
+.cssRuleDiff:first-child, .cssMediaRuleDiff:first-child {
+    padding-top: 6px;
+ }
+.cssMediaRuleDiff .cssRuleDiff:first-child {
+    padding-top: 0px;
+ }
+.cssPropDiff, .cssMediaRuleContent {
+    padding-left: 2em;
+}
+
+.nodeBox.textNodeBox.open > .nodeChildBox {
+  display: inline;
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+
+/* Firebug Lite extension hacks */
+.diffMonitorElement {
+    display: block;
+}
+
+.addedClass {
+    color: #fff;
+    background: #080;
+}
+.removedClass {
+    background: red;
+    color: #000;
+    display: inline;
+}

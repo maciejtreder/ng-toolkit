@@ -3,7 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = function (options) {
+
     options = options || {};
+
     entryFile = options.aot? root('./src/main.browser-aot.ts') : root('./src/main.browser.ts');
     return {
         entry: entryFile,
@@ -25,6 +27,7 @@ module.exports = function (options) {
             }),
             new ScriptExtPlugin({
                 defaultAttribute: 'defer'
-            })]
+            })
+        ]
     }
 };

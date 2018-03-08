@@ -1,0 +1,80 @@
+/* Twilight by Michael Sheets, converted from TextMate theme (Twilight.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #141414;
+    font-family: Monaco, Courier New;
+    color: #F8F8F8;
+}
+
+.sourceRow.hovered {
+    background-color: #FFFFFF;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #DDF0FF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #5F5A60;
+}
+
+.js-atom {
+    color: #CF6A4C;
+}
+
+.js-keyword {
+    color: #CDA869;
+}
+
+.js-string {
+    color: #8F9D6A;
+}
+
+.js-variable {
+    color: #7587A6;
+}
+
+.js-regexp {
+    color: #E9C062;
+}
+
+.xml-processing {
+    color: #494949;
+}
+
+.xml-tagname {
+    color: #AC885B;
+}
+
+.xml-attname {
+    color: #E0C589;
+}
+
+.css-identifier {
+    color: #CDA869;
+}
+
+.xml-attname {
+    color: #8F9D6A;
+}
+
+.xml-attname {
+    color: #8B98AB;
+}
+
+.xml-attname {
+    color: #9B703F;
+}
+
+.css-colorcode {
+    color: #C5AF75;
+}
+
+.css-value {
+    color: #F9EE98;
+}
+
+.css-at {
+    color: #8693A5;
+}

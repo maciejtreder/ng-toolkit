@@ -1,0 +1,50 @@
+/* Active4D, converted from TextMate theme (Active4D.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #FFFFFF;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #BAD6FD;
+}
+
+.js-string {
+    color: #666666;
+}
+
+.js-atom {
+    color: #A8017E;
+}
+
+.js-variable {
+    color: #A535AE;
+}
+
+.js-variable {
+    font-weight: bold;
+    color: #0053FF;
+}
+
+.js-keyword {
+    font-weight: bold;
+    color: #006699;
+}
+
+.xml-tagname {
+    color: #7A7A7A;
+}
+
+.xml-tagname {
+    color: #016CFF;
+}
+
+.xml-attname {
+    color: #963DFF;
+}

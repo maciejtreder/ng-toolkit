@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 4472: [Firebug Lite] XHR.getAllResponseHeaders() doesn't work on IE</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+            FBTest.runTestOnLoad(function()
+            {
+                var callbackCalled = false;
+                var headers = "";
+                
+                var console = FBTest.getConsoleObject();
+                console.clear();
+
+                var consolePanelNode = FBTest.getPanel("Console").panelNode;
+
+                var xhr = FBL.Ajax.getXHRObject();
+                xhr.open("GET", "issue4472.html", true);
+                
+                xhr.onreadystatechange = function()
+                {
+                    if (xhr.readyState == 4 && xhr.status == 200)
+                    {
+                        headers = xhr.getAllResponseHeaders();
+                        callbackCalled = true;
+                    }
+                };
+                
+                xhr.send();
+    
+                FBTest.wait(
+                    function()
+                    {
+                        // make sure the XHR has finished loading
+                        var xhrLogCompleted = Firebug.Selector(".loading", consolePanelNode).length == 0;
+                        
+                        return callbackCalled && xhrLogCompleted;
+                    },
+                    function()
+                    {
+                        FBTest.ok(headers.length > 0, "getAllResponseHeaders() returns the headers string");
+    
+                        var logEntries = Firebug.Selector(".logRow-spy", consolePanelNode);
+                        FBTest.compare(1, logEntries.length, "there is exactly one log entry");
+                    }
+                );
+
+            });
+
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=4472">Issue 4472</a>: [Firebug Lite] XHR.getAllResponseHeaders() doesn't work on IE</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="description">
+                <!--
+                    The steps to reproduce the test case should be described here in detail.
+                 -->
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite</li>
+                    <li>Execute a XHR request</li>
+                    <li>When the request is completed, call getAllResponseHeaders()</li>
+                </ol>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>The getAllResponseHeaders() should return the proper headers string</li>
+                    <li>There should be one log entry in the Console Panel</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+/*  cowtown by psylux  */
+.panelNode-script {
+    background:#3F2B18 none repeat scroll 0 0;
+    color:#7C4B00;
+    font-family:consolas,Monospaced,Courier New;
+    font-size:12px;
+    overflow:hidden;
+}
+.js-keyword {
+    color:#FF9D00;
+}
+.js-atom {
+    color:#FFFF33;
+}
+.js-variable {
+    color:#B0B9F2;
+}
+.js-variabledef {
+    color:#FFFFFF;
+}
+.js-localvariable {
+    color:#DDD87B;
+}
+.js-property {
+    color:#44FFFF;
+}
+.js-comment {
+    color:#9A4690;
+}
+.js-string {
+    color:#7EDC0F;
+}
+.js-regexp {
+    color:#FFA1AC;
+}
+.js-punctuation {
+    color:#E1EFFF;
+}
+.js-operator {
+    color:#FF6633;
+}
+.js-whitespace {
+    color:#EEFFEE;
+}

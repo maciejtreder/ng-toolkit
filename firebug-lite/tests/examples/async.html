@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+    <head>
+        <script type="text/javascript" src="../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+
+        FBTest.runTestOnLoad(function()
+        {
+            var xhr = FBL.Ajax.getXHRObject();
+            xhr.open("GET", "test.txt", true);
+            xhr.send();
+
+            var consolePanelNode = FBTest.getPanel("Console").panelNode;
+
+            FBTest.wait(
+                function()
+                {
+                    // exists a XHR log entry
+                    return Firebug.Selector(".logRow-spy", consolePanelNode).length > 0;
+                },
+                function()
+                {
+                    var logEntries = Firebug.Selector(".logRow-spy", consolePanelNode);
+                    FBTest.compare(1, logEntries.length, "there is exactly one log entry");
+                }
+            );
+
+        });
+
+        </script>
+        <link rel="stylesheet" href="../fbtest/fbtest.css" type="text/css" media="screen">
+    </head>
+    <body>
+    	<h1 id="qunit-header">Async test example</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture">test markup</div>
+    </body>
+</html>

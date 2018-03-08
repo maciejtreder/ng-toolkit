@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+    <head>
+        <script type="text/javascript" src="../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+        // this test will run before Firebug UI finish to load
+        FBTest.runTest(function()
+        {
+            // we are testing here "offline" console messages, that is,
+            // console messages logged before Firebug UI finish to load
+            var console = FBTest.getConsoleObject();
+            console.log("Test");
+            
+            FBTest.ok(typeof Firebug == "object", "Firebug object exists before page load");
+        });
+        
+        // this test will run after Firebug UI finish to load
+        FBTest.runTestOnLoad(function()
+        {
+            // in order to check if the log was successful we need to wait for the
+            // UI to finish to load, so we can search for panelNode childs
+            var panel = FBTest.getPanel("Console").panelNode;
+            var elements = FBL.getElementsByClass(panel, "logRow-log");
+            FBTest.ok(elements.length == 1, "Exists a log entry for the XHR request");
+        });
+
+        </script>
+        <link rel="stylesheet" href="../fbtest/fbtest.css" type="text/css" media="screen">
+    </head>
+    <body>
+    	<h1 id="qunit-header">Sync test example</h1>
+    	<h2 id="qunit-banner"></h2>
+    	<div id="qunit-testrunner-toolbar"></div>
+    	<h2 id="qunit-userAgent"></h2>
+    	<ol id="qunit-tests"></ol>
+    	<div id="qunit-fixture">test markup</div>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FirebugLite 1.4 Cache Testing</title>
+
+<script type="text/javascript" src="../../../content/firebug-lite-dev.js"></script>
+<script type="text/javascript">
+
+function clone()
+{
+    var div = document.getElementsByTagName("div")[1];
+    var clone = div.cloneNode(true)
+    
+    clone.innerHTML += "<span>, I'm a <strong>clone</strong>!</span>"
+    div.parentNode.insertBefore(clone, div);
+    
+};
+
+</script>
+<style type="text/css">
+body {
+  margin: 0;
+  font-family: Lucida Grande, sans-serif;
+}
+
+</style>
+</head>
+<body>
+    <div>
+        <h1>Issue: Dynamic Cache problem with cloneNode in IE</h1>
+        
+        <input type="button" value="clone" onclick="clone();">
+        <div><strong>Hello</strong> <i>World</i></div>
+        
+        <ol>
+            <li>Open this page in IE</li>
+            <li>Inspect the "Hello" element</li>
+            <li>Click the "clone" button</li>
+            <li>You'll see a clone of the "Hello World" message with the additional ", I'm a clone!"</li>
+            <li>Inspect the <strong>"clone"</strong> element</li>
+            <li>Firebug Lite should update the HTML tree and select the proper 
+            cloned "Hello". If Firebug Lite does not show or select the proper
+            element, it means that this test has failed.</li>
+        </ol>
+    </div>
+</body>
+</html>

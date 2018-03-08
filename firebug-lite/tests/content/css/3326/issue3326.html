@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 3326: [Firebug lite] CSS Rule Line Number</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+        FBTest.runTestOnLoad(function()
+        {
+            function findLineNumber(sourceLinks, index)
+            {
+                var m = reLinerNumber.exec(sourceLinks[index].innerHTML); 
+                return m && m[1];
+            }
+            
+            var reLinerNumber = /\b(\d+)\)$/;
+            var Selector = Firebug.Selector;
+            
+            // Select HTML Panel
+            FBTest.selectPanel("HTML");
+            
+            // Select the test element in the HTML Panel
+            var htmlPanel = FBTest.getPanel("HTML");
+            htmlPanel.select( Selector("#test")[0] , true );
+            
+            // Reference to the Style Side Panel
+            var cssPanelNode = FBTest.getPanel("css").panelNode;
+
+            // Displayed CSS Rules
+            var cssRules;
+            
+            // Wait Style Side Panel to display the CSS Rules
+            FBTest.wait(function()
+            {
+                // Look for displayed CSS Rules
+                cssRules = Selector(".cssRule", cssPanelNode);
+                return cssRules.length > 0;
+            },
+            function()
+            {
+                FBTest.ok(cssRules.length > 0, cssRules.length + " CSS Rules were found");
+                
+                var sourceLinks = Selector(".objectLink-sourceLink", cssPanelNode);
+                
+                var firstRule = cssRules[0];
+                var firstSelector = Selector(".cssSelector", firstRule)[0].innerHTML;
+                
+                FBTest.compare("html #content div.big", firstSelector, "First rule's selector is 'html #content div.big'");
+                
+                FBTest.compare("83", findLineNumber(sourceLinks, 0), "First rule's line number is 83");
+                
+                var secondRule = cssRules[1];
+                var secondSelector = Selector(".cssSelector", secondRule)[0].innerHTML;
+                
+                FBTest.compare("html #content .green", secondSelector, "Second rule's selector is 'html #content .green'");
+                
+                FBTest.compare("1", findLineNumber(sourceLinks, 1), "Second rule's line number is 1");
+                
+                var thirdRule = cssRules[2];
+                var thirdSelector = Selector(".cssSelector", thirdRule)[0].innerHTML;
+                
+                FBTest.compare("#content .border", thirdSelector, "Third rule's selector is '#content .border'");
+                
+                FBTest.compare("2", findLineNumber(sourceLinks, 2), "Third rule's line number is 2");
+                
+                var fourthRule = cssRules[3];
+                var fourthSelector = Selector(".cssSelector", fourthRule)[0].innerHTML;
+                
+                FBTest.compare("#test", fourthSelector, "Fourth rule's selector is '#test'");
+                
+                FBTest.compare("85", findLineNumber(sourceLinks, 3), "Fourth rule's line number is 85");
+
+            });
+
+        });
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+        <style>
+        @import url("imported.css");
+        
+        html #content div.big {border-width: 10px;}
+        
+        #test {padding: 4px 8px;}
+        </style>
+        <link href="external.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=YYYY">Issue 3326</a>: [Firebug lite] CSS Rule Line Number</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="content">
+                <div id="test" class="big green border">inspect here</div>
+            </section>
+            <section id="description">
+                <p>
+                    In this test case we're actually testing three things: 
+                </p>
+                <ol>
+                    <li>Firebug Lite's ability of accessing three kinds of stylesheets: 
+                        internal (via &lt;style&gt;), external (via &lt;link&gt;, but from the 
+                        same domain) and imported (via @import)</li>
+                    <li>Firebug Lite's ability of parsing these kinds of stylesheets and
+                        retrieving the correct line number for the rules</li>
+                    <li>Firebug Lite's ability of reordering rules according to specificity</li>
+                </ol>
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite</li>
+                    <li>Inspect the element which says "inspect here" inside the content section 
+                        (it is a div with id "test")</li>
+                    <li>Observe the Style Side Panel</li>
+                </ol>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>The first rule should be "#test"</li>
+                    <li>The second rule should be ".green"</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

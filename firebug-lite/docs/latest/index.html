@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"> 
+ 
+<title>Firebug Lite : Firebug</title> 
+ 
+<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"> 
+
+<script src="/releases/lite/latest/firebug-lite.js">
+{
+    startOpened: true,
+    
+    disableWhenFirebugActive: false,
+    
+    onLoad: function()
+    {
+        var getXHRObject = function()
+        {
+            var xhrObj = false;
+            try
+            {
+                xhrObj = new XMLHttpRequest();
+            }
+            catch(e)
+            {
+                var progid = [
+                        "MSXML2.XMLHTTP.5.0", "MSXML2.XMLHTTP.4.0", 
+                        "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP"
+                    ];
+                  
+                for ( var i=0; i < progid.length; ++i ) {
+                    try
+                    {
+                        xhrObj = new ActiveXObject(progid[i]);
+                    }
+                    catch(e)
+                    {
+                        continue;
+                    }
+                    break;
+                }
+            }
+            finally
+            {
+                console.count("Counting the XHR calls with console.count(): ");
+                return xhrObj;
+            }
+        };
+
+        var extensionCode = document.getElementById("extension-code");
+        var extensionLoaded = false;
+        document.getElementById("run-extension").onclick = function()
+        {
+            if (!extensionLoaded)
+            {
+                extensionLoaded = true;
+                eval(extensionCode.innerHTML);
+            }
+        };
+        
+        var console = window.firebug || window.console;
+        
+        console.info("Hello World, I'm " + Firebug.version + "!");
+        
+        var els = $("div").toArray();
+        els = els.slice(0, 11);
+        console.log("Move your mouse over or click the following elements: ", els);
+        
+        var xhr = getXHRObject();
+        console.info("Don't forget to check the XHR requests, now supporting HTTP parameters:");
+        
+        xhr.open("POST", "/releases/lite/latest/changelog.txt", true);
+        xhr.send("param1=post&param2=data");
+        
+        var xhr2 = getXHRObject();
+        xhr2.open("GET", "error.txt?param1=hello&param2=world", true);
+        xhr2.send();
+        
+        console.log("Calling console.dir(Firebug)");
+        console.dir(Firebug);
+        
+        var random = function(i){return Math.floor(Math.random()*i)};
+        var randomPanel = ["Console", "HTML", "DOM"][random(3)];
+        
+        Firebug.chrome.selectPanel(randomPanel);
+        
+        if (randomPanel == "HTML")
+        {
+            var randomElement = ["h1", "h2", "p"][random(3)];
+            var element = document.getElementsByTagName(randomElement)[0];
+            
+            setTimeout(function(){
+                Firebug.HTML.select(element);
+                Firebug.Inspector.drawBoxModel(element);
+            },0);
+            
+            setTimeout(Firebug.Inspector.hideBoxModel, 2500);
+            
+        }
+        else if (randomPanel == "DOM")
+        {
+            var randomElement = [null, "Firebug", "console", "document"][random(4)];
+            var element = Firebug.browser.window[randomElement];
+            
+            setTimeout(function(){
+                Firebug.chrome.getPanel("DOM").select(element);
+            },0);
+        }
+    }
+}
+</script>
+<script type="text/javascript" src="http://getfirebug.com/js/main.js"></script> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script> 
+<script type="text/javascript" src="http://getfirebug.com/js/jquery.mousewheel-3.0.2.js"></script> 
+<script type="text/javascript" src="http://getfirebug.com/js/fancybox.js"></script> 
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $('a.view').fancybox({
+        autoScale: false,
+        centerOnScroll: true,
+        overlayShow: true,
+        overlayOpacity: 0.7,
+        overlayColor: '#EAF1FB',
+        
+        callbackOnStart: function()
+        {
+            alert(0);
+        },
+        
+        callbackOnClose: function()
+        {
+        alert(0);
+        }
+    });
+    
+    var firstScreenshot = $('.view').first();
+    $('.moreinfo').click(function(e){
+    
+        if (window.Firebug)
+            Firebug.chrome.close();
+
+        firstScreenshot.trigger('click');
+        
+        var ev = jQuery.Event(e);
+        ev.preventDefault();
+        ev.stopPropagation();
+        
+        return false;        
+    });
+    
+    firstScreenshot.click(function(){
+        if (window.Firebug)
+            Firebug.chrome.close();
+    });
+    
+});
+</script>
+
+<link rel="stylesheet" type="text/css" media="screen,projection" href="/styles/screen.css">
+<style>
+
+#install p {
+    margin: 15px 0 0 30px;
+    width: 250px;
+}
+
+#install p a {
+    width: 250px;
+}
+
+#install ul {
+    margin: 4px 0 0 26px;
+}
+
+.moreinfo {
+    width: 100%;
+    font-size: 11px important!;
+}
+
+.intro {
+    margin: 2.5em 0;
+    font-size: 11px important!;
+    font-style: italic;
+}
+
+.postDate {
+    padding: 0;
+}
+
+.post h2 {
+    margin: 2em 0 0;
+}
+
+.post h2 a {
+    font-size: 1em;
+}
+
+.post h3 {
+    font-size: 1.5em;
+    margin: 1.5em 0 0;
+}
+
+.post h4 {
+    font-size: 1.15em;
+    margin: 1.5em 0 0;
+}
+
+
+#links .sidebar-title {
+    margin: 2em 0 0;
+}
+
+#links a {
+    text-decoration: none;
+}
+
+#screencast a {
+    text-decoration: none !important;
+    display: block;
+}
+
+#screencast img {
+    margin: 0 !important;
+}
+
+textarea {
+    width: 100%;
+    overflow: hidden;
+}
+
+pre, textarea {
+    background: #fbfafa;
+    border: 1px solid #eee;
+}
+
+pre em, textarea em
+{
+    font-weight: bold;
+    font-style: normal;
+} 
+
+/************************************************************************************************/
+
+.spread {
+    float: left;
+    display: block;
+    width: 140px;
+    background: #F6F9FE;
+    padding: 5px 5px 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.spread a {
+    font-size: 1px;
+    color: #eee;
+}
+
+.spread .spreadText {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    position: absolute;
+    display: none;
+}
+
+
+.navlist li {
+    padding-top: 7px;
+}
+.navlistsub {
+    padding-left: 20px;
+    padding-top: 2px;
+    font-size: 88%;
+}
+.navlistsub li {
+    padding-top: 0;
+}
+
+</style>
+
+</head> 
+ 
+<body id="home"> 
+<div id="wrap" class="group"> 
+ 
+<div id="header" class="group"> 
+ 
+<ul id="nav"> 
+<li><a href="/whatisfirebug">What is Firebug?</a> 
+<span>Introduction and Features</span></li> 
+<li><a href="http://getfirebug.com/wiki/">Resources</a> 
+<span>Documentation wiki, FAQ, and other Firebug lore</span></li> 
+<li><a href="/community">Community</a><span>Discussion forums and lists</span></li> 
+<li><a href="/getinvolved">Get Involved</a><span>Hack the code, create plugins</span></li> 
+</ul> 
+ 
+<div id="logo-install" class="group"> 
+ 
+<div id="logo"> 
+<a href="/"></a> 
+<h1>Firebug</h1> 
+<h2>Web Development Evolved.</h2> 
+</div> 
+ 
+<div id="install" class="group"> 
+<p>
+  <a href="#Install">Install Firebug Lite</a>
+  <span>100% free and open source</span>
+</p> 
+<ul>
+  <li><a href="/releases/lite/">Other Versions</a></li>
+  <li><a href="/releases/lite/chrome/">Google Chrome Extension</a></li>
+</ul>
+</div>
+
+</div> <!-- /END logo-install --> 
+ 
+ 
+    <div id="promo" class="group"> 
+    
+    <div id="boasting"> 
+        <h2>Firebug Lite: doing the Firebug way, anywhere.</h2> 
+        <ul> 
+            <li>Compatible with all major browsers: IE6+, Firefox, Opera, Safari and Chrome</li> 
+            <li>Same look and feel as Firebug</li> 
+            <li>Inspect <span class="caps">HTML</span> and modify style in real-time</li> 
+            <li>Powerful console logging functions</li> 
+            <li>Rich representation of DOM elements</li> 
+            <li>Extend Firebug Lite and add features to make it even more powerful</li> 
+        </ul>
+        <p class="moreinfo"><a href="javascript:void(0)" title="Click here to take a tour of Firebug Lite features">Tour &raquo;</a></p>
+    </div> 
+    
+    <div id="screencast">
+        <a class="view group" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img01.png" title="Powerful console logging functions"><img src="/releases/lite/latest/screenshots/firebug1.3-small.png" width="275" height="155" alt="Firebug Lite 1.3 screenshots" title="Firebug Lite 1.3 screenshots"  /></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img02.png" title="Don't forget to click the Firebug menu for options"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img03.png" title="Large command line"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img04.png" title="Easy inspect elements in your page"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img05.png" title="Visualize box model shading"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img06.png" title="Edit css properties in real-time"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img07.png" title="Autocomplete as you type feature"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img08.png" title="Computed styles divided in categories"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img09.png" title="Explore the DOM of the inspected element"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img10.png" title="Visualize and edit CSS rules"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img11.png" title="Visualize scripts"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img12.png" title="Rich representation of DOM elements"></a>
+        <a class="view group hidden" rel="group" href="/releases/lite/latest/screenshots/firebug1.3-img13.png" title="Nested selection of DOM elements"></a>
+    </div> 
+    
+    </div> <!-- END promo --> 
+ 
+    <div class="bigfirebug"></div> 
+    
+ 
+</div> <!-- /END header --> 
+ 
+<div id="secondary" class="group"> 
+ 
+<div id="contentarea" class="group"> 
+ 
+<div id="content" class="group"> 
+<h2 class="heading">Firebug Lite 1.3.0 release notes</h2> 
+<div id="blog">
+
+<div class="intro"> 
+    <p>
+        The next generation of Firebug Lite is out!
+    </p>
+</div> 
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Overview" rel="bookmark">Overview</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry"> 
+        <p>
+            This version was conceived to put the Firebug Lite in a new level,
+            by allowing code reuse from Firebug's original source. A new core
+            was created to accomplish the following goals:
+        </p>
+        <p>
+            <b>Performance</b> - the core of Firebug Lite 1.3 was rewritten from scratch
+            taking the performance into account in the first place.
+        </p>
+        <p>
+            <b>Modularity</b> - the code is now more modular, making it easier to add
+            new features and UI components such as panels, buttons, menus etc.
+            The modularity also helps the development process. Once the modules can
+            be isolated it is easier to detect the cause of complicated problems like 
+            memory leaks.
+        </p>
+        <p>
+            <b>Shared code</b> - the core was designed to make it possible 
+            to port some code directly from the Firebug source with as few as possible 
+            modifications. As a result some features and UI elements behave exactly
+            as in Firebug.
+        </p>
+        <p>
+            <b>Compatibility</b> - the new core is compatible with XHTML and XML+XSLT 
+            documents. Thanks to the new context-independent approach it supports 
+            now the experimental persistent popups feature (popups that "live" across 
+            different page loads of the same domain).
+        </p>
+    </div> 
+</div>
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="WhatsNew" rel="bookmark">What's New?</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        <p>
+            <b>User Interface</b>
+        </p>
+        <ul>
+            <li>Port of Firebug's Visual Object Representation (aka Reps)</li>
+            <li>Recreation of Firebug 1.3 User Interface with pixel precision</li>
+            <li>Menu options</li>
+            <li>Resizable Side Panel</li>
+            <li>Skinnable Interface</li>
+        </ul>
+        <p>
+            <b>CSS</b>
+        </p>
+        <ul>
+            <li>CSS cascading view</li>
+            <li>CSS inheritance view</li>
+            <li>Live editing CSS rules and properties</li>
+            <li>Autocomplete as you type feature, with smart suggestions (you'll get only the suggestions you need for each property)</li>
+            <li>Increment/decrement with UP/DOWN and PAGE UP/PAGE DOWN keys</li>
+        </ul>
+        <p>
+            <b>Inspector</b>
+        </p>
+        <ul>
+            <li>Full BoxModel Highlight including margin, border, padding and content boxes</li>
+            <li>The BoxModel is highlighted when you move your mouse over a representation
+            of a HTML element, in any of the place of the User Interface</li>
+            <li>Elements are selected on-the-fly while using the Inspect tool</li>
+        </ul>
+        <p>
+            <b>Console</b>
+        </p>
+        <ul>
+            <li><code>console.group()</code>, console.groupCollapsed() and console.groupEnd()</li>
+            <li><code>console.trace()</code> (now with file name and line numbers for some browsers)</li>
+            <li>Command line API functions <code>$()</code>, <code>$$()</code>, and <code>dir()</code></li>
+            <li>Command line shortcuts <code>$0</code> and <code>$1</code> for recent selected elements</li>
+            <li>Autocomplete (tab, shift+tab)</li>
+            <li>can capture console messages before DOM document creation 
+            (when installed at the HTML header)</li>
+        </ul>
+        <p>
+            <b>Core</b>
+        </p>
+        <ul>
+            <li>XHR watcher (with Headers, Response, Post and Params tabs)</li>
+            <li>Port of Firebug Library (aka Lib, FBL)</li>
+            <li>Port of Firebug DOM Templates Engine (aka Domplate), the magic behind Reps</li>
+            <li>Plugin system like Firebug</li>
+            <li>Context-independent (will allow cross-iframe debugging, and persistent popups)</li>
+            <li>Persistent popups</li>
+            <li>Synchronization across different windows (iframe, popup)</li>
+        </ul>
+        <p>
+            <b>And more...</b>
+        </p>
+        <ul>
+            <li>
+                For a complete list of changes, check the 
+                <a href="/releases/lite/latest/changelog.txt">changelog</a>.
+            </li>
+        </ul>
+        
+        <h3><a name="WhatsNot"></a>1.3. What's Not in Lite?</h3>
+        <p>
+            Some features are not included in Firebug Lite 1.3, but due the new core that
+            supports code sharing from Firebug, are likely to be included in the 
+            Firebug Lite 1.4 version:
+        </p>
+        <ul>
+            <li>Live editing for all panels</li>
+            <li>Layout Side Panel</li>
+            <li>Context menu options</li>
+            <li>Tooltips (to show colors and images)</li>
+            <li>Search feature</li>
+        </ul>
+        <p>
+            Other features though are too dependent in browser internals and will not be
+            supported (at least in a near future*), such as:
+        </p>
+        <ul>
+            <li>Javascript debugger / Javascript profiler</li>
+            <li>Net panel / HTTP and XHR monitor</li>
+            <li>Access to restricted URI resources</li>
+            <li>Highlight HTML changes</li>
+        </ul>
+        <p>
+            <i>*<a href="http://groups.google.com/group/webdebugprotocol?hl=en">Discussions about remote debugging</a>
+            indicates that should be possible to support JavaScript debugging in browsers 
+            like Google Chrome and Opera in the future.
+            </i>
+        </p>
+    </div>
+</div>
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Install" rel="bookmark">Install</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        <h3><a name="Bookmarklet" rel="bookmark"></a>Bookmarklet</h3>
+        <p>
+            Bookmark the following links:
+        </p>
+        <h4>Stable channel</h3>
+        <ul>
+            <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');">Firebug Lite</a></li>
+            <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite-debug.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#debug');">Firebug Lite debug</a></li>
+        </ul>
+        <h4>Beta channel</h3>
+        <ul>
+            <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite-beta.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');">Firebug Lite beta</a></li>
+        </ul>
+        
+        <h3><a name="LiveLink" rel="bookmark"></a>Live link</h3>
+        
+        <p>
+            You can also link directly to the hosted version at getfirebug.com. Copy the
+            following code, and paste it in the TOP of the HEAD of your document:
+        </p>
+        
+        <h4>Stable channel</h3>
+        <p>
+            Firebug Lite:
+<textarea rows="2">
+&lt;script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"&gt;&lt;/script&gt;
+</textarea>
+        </p>
+        <p>
+            Firebug Lite debug:
+<textarea rows="2">
+&lt;script type="text/javascript" src="https://getfirebug.com/firebug-lite-debug.js"&gt;&lt;/script&gt;
+</textarea>
+        </p>
+
+        <h4>Beta channel</h3>
+        <p>
+            Firebug Lite beta:
+<textarea rows="2">
+&lt;script type="text/javascript" src="https://getfirebug.com/firebug-lite-beta.js"&gt;&lt;/script&gt;
+</textarea>
+        </p>
+        
+        <h3><a name="LocalLink" rel="bookmark"></a>Local link (offline)</h3>
+        <p>
+            If you need using Firebug Lite while offline, 
+            <a href="/releases/lite/latest/firebug-lite.tar.tgz">download the code</a>, 
+            copy it to a local destination, and link the <code>firebug-lite.js</code> in the TOP
+            of the HEAD of your document:
+        </p>
+        <p>
+<textarea rows="2">
+&lt;script type="text/javascript" src="/local/path/to/firebug-lite.js"&gt;&lt;/script&gt;
+</textarea>
+        </p>
+        <p>
+            If you want to debug the local installation, use the  
+            <code>firebug-lite-debug.js</code> file instead:
+        </p>
+        <p>
+<textarea rows="2">
+&lt;script type="text/javascript" src="/local/path/to/firebug-lite-debug.js"&gt;&lt;/script&gt;
+</textarea>
+        </p>
+
+    </div>
+</div>
+
+ 
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Options" rel="bookmark">Options</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry"> 
+        <p>
+            The properties you can change include (with respective default values):
+        </p>
+        <ul>
+            <li><code>saveCookies</code> - false</li>
+            <li><code>startOpened</code> - false</li>
+            <li><code>startInNewWindow</code> - false</li>
+            <li><code>showIconWhenHidden</code> - true</li>
+            <li><code>overrideConsole</code> - true</li>
+            <li><code>ignoreFirebugElements</code> - true</li>
+            <li><code>disableWhenFirebugActive</code> - true</li>
+            <li><code>enableTrace</code> - false</li>
+            <li><code>enablePersistent</code> - false</li>
+        </ul>
+        <p>
+            Here is the list of methods you can use to change the options,  
+            in ascendant order of priority, that is, a particular method
+            will override the options of preceding methods:
+        </p>
+        <h3><a name="DebugTrue" rel="bookmark"></a>&lt;html debug="true"&gt;</h3>
+        <p>
+            For backwards compatibility you can still use the debug="true" attribute
+            in the &lt;html&gt; tag to make Firebug Lite starts opened, like:
+        </p>
+        <pre>&lt;html <em>debug="true"</em>&gt;</pre>
+        
+        <h3><a name="ScriptURLOptions" rel="bookmark"></a>Script URL options</h3>
+        <p>
+            You can also set the options using URL fragments, specially handy to tweak 
+            options in your bookmarklet.
+        </p>
+<pre>
+https://getfirebug.com/firebug-lite.js<em>#enableTrace</em>
+</pre>
+        <p>
+            Options are separated by commas (<code>,</code>), and values are informed using
+            the equals to (<code>=</code>) symbol. If no value is informed, 
+            "<code>true</code>" is assumed.
+        </p>
+<pre>
+path/to/firebug-lite.js<em>#enableTrace,overrideConsole=false</em>
+</pre>
+        <p>is equivalent to:</p>
+<pre>
+path/to/firebug-lite.js<em>#enableTrace=true,overrideConsole=false</em>
+</pre>
+        <h3><a name="ScriptJSONOptions" rel="bookmark"></a>Script JSON options</h3>
+        <p>
+            It is possible to set options using a JSON object inside
+            the linked script:
+        </p>
+<pre>
+&lt;script type="text/javascript" 
+src="https://getfirebug.com/firebug-lite.js"&gt;
+<em>{
+    overrideConsole: false,
+    startInNewWindow: true,
+    startOpened: true,
+    enableTrace: true
+}</em>
+&lt;/script&gt;
+</pre>
+        <h3><a name="Cookies" rel="bookmark"></a>Cookies</h3>
+        <p>
+            Finally, you can override the options using cookies, via User 
+            Interface, by clicking in the Firebug icon in the upper-left corner.
+        </p>
+    </div>
+</div>
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Extensions" rel="bookmark">Extensions</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        <p>
+            If you are familiar with Firebug extension development, you will
+            see that developing an extension for Firebug Lite is very similar.
+            In a Firebug extension all code is encapsulated in a strange at 
+            first glance but very clever way: 
+        </p>
+<pre>
+FBL.ns(function() { with (FBL) {
+
+// extension code
+
+}});
+</pre>
+        <p>
+            In a Firebug Lite extension the code is encapsulated in a 
+            similar way but using <code>Firebug.extend</code> instead, once
+            the <code>FBL</code> module (Firebug internal's library) is not
+            exposed to the global namespace:
+        </p>
+<pre>
+<em>Firebug.extend(function(FBL)</em> { with (FBL) {
+
+// extension code
+
+}});
+</pre>
+        <p>
+            If you are not familiar with Firebug extension development,
+            I suggest looking at Honza's series of tutorials, including 
+            <a href="http://www.softwareishard.com/blog/firebug-tutorial/extending-firebug-hello-world-part-i/">Firebug Tutorial</a> 
+            and <a href="http://www.softwareishard.com/blog/planet-mozilla/domplate-examples-part-i/">Domplate Tutorial</a>.
+        </p>
+        <p>
+            Here's a sample of how to create a new panel in Firebug Lite:
+            <input id="run-extension" type="button" value="Run the extension">
+        </p>
+<pre id="extension-code">
+Firebug.extend(function(FBL) { with (FBL) {
+// ***********************************************************************
+
+function PluginPanel(){};
+
+PluginPanel.prototype = extend(Firebug.Panel,
+{
+    name: "Plugin",
+    title: "Plugin",
+    
+    initialize: function(){
+        Firebug.Panel.initialize.apply(this, arguments);
+        
+        this.panelNode.innerHTML = "Hello World!";
+    }
+});
+
+Firebug.registerPanel(PluginPanel);
+
+// ***********************************************************************
+}});
+</pre>
+
+    </div>
+</div>
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="DebugMode" rel="bookmark">Debug mode</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        
+        <p>
+            The debug mode helps detecting errors in Firebug Lite. When in 
+            debug mode, Firebug Lite will behave as explained below:
+        </p>
+        
+        <ul>
+            <li>Firebug Lite starts opened.</li>
+            <li>The internal library used by Firebug Lite (aka <code>FBL</code>) 
+            is exposed to the global namespace allowing the inspection of its content.</li>
+            <li>Firebug Lite will be forced to open even when Firebug is active 
+            (which is not the default behavior), so you can use Firebug to debug it.</li>
+            <li>The "Trace Panel" is enabled (in which internal log messages of 
+            Firebug Lite are printed).</li>
+        </ul>
+        
+        <p>
+            The debug mode will be activated when you run the 
+            <a href="#Bookmarklet">Firebug Lite debug</a> bookmarklet, and
+            when you the load the <code>"firebug-lite-debug.js"</code> or 
+            <code>"firebug-lite-dev.js"</code> files. You can also activate 
+            it manually by setting a special option <code>"debug"</code> 
+            to <code>"true"</code>, using the 
+            <a href="#ScriptURLOptions">Script URL</a> or 
+            <a href="#ScriptJSONOptions">Script JSON</a> methods.
+        </p>
+        
+    </div>
+</div>
+
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="DevelopmentMode" rel="bookmark">Development mode</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        
+        <p>
+            If you want to debug Firebug Lite, fix a bug or add a new feature, you will want
+            to run Firebug Lite in development mode. To do so, first
+            <a href="http://fbug.googlecode.com/svn/lite/branches/firebug1.3/">checkout the latest version</a>
+            in our repository, and then insert a script at the TOP of the HEAD of your document.
+        </p>
+<textarea rows="2">
+&lt;script type="text/javascript" src="/local/path/to/firebug-lite-dev.js"&gt;&lt;/script&gt;
+</textarea>
+        <p>
+            When in development mode, some things behave quite differently to make the
+            development process easier, such as:
+        </p>
+        <ul>
+            <li>All script files are loaded separately, without compression.</li>
+            <li>The internal library used by Firebug Lite (aka <code>FBL</code>) is exposed to the 
+            global namespace allowing you to inspect its content. It is also exposed
+            the <code>domplate</code> and its classes, and the <code>FBTrace</code> object</li>
+            <li>The skin is loaded in a separated file allowing you to rapidly change
+            the style and/or markup of the User Interface.</li>
+            <li>Firebug Lite will be forced to open even when Firebug is active 
+            (which is not the default behavior), so you can use Firebug to debug it.</li>
+            <li>The "Trace Panel" is enabled (in which internal log messages of 
+            Firebug Lite are printed).</li>
+            <li>A new "Dev Panel" will be available with tools to compress the skin
+            and the source code of the application in a single file.</li>
+        </ul>
+
+        
+    </div>
+</div>
+
+<!-- ========================================================================================== --> 
+<div class="post"> 
+    <h2><a name="Contributing" rel="bookmark">Contributing</a></h2> 
+    <div class="postDate"></div> 
+    <div class="entry">
+        <p>
+            Your contribution is very important. Found a bug? Have a suggestion? Please
+            <a href="http://code.google.com/p/fbug/issues/list">report us</a>. 
+        </p>
+        <p>
+            Found a fix for a particular issue? 
+            <a href="http://code.google.com/p/fbug/issues/list">Patches are welcome</a>.
+            Also, if you are willing to help more deeply with coding,
+            <a href="http://groups.google.com/group/firebug-working-group">join our team</a>.
+        </p>
+    </div>
+</div>
+
+
+</div> <!-- /END blog --> 
+ 
+</div> <!-- /END content --> 
+ 
+<div id="links"> 
+<h2 class="heading">Links and Stuff</h2> 
+
+<!-- Delicious --> 
+<h2 class="delicious-banner sidebar-title">Release notes content</h2> 
+<ul class="navlist">
+    <li><a href="#Overview">1. Overview</a></li> 
+    <li><a href="#WhatsNew">2. What's New?</a></li> 
+    <ul class="navlistsub"> 
+        <li><a href="#WhatsNot">What's Not in Lite?</a></li> 
+    </ul> 
+    <li><a href="#Install">3. Install</a></li> 
+    <ul class="navlistsub"> 
+        <li><a href="#Bookmarklet">Bookmarklet</a></li> 
+        <li><a href="#LiveLink">Live Link</a></li> 
+        <li><a href="#LocalLink">Local Link</a></li> 
+    </ul> 
+    <li><a href="#Options">4. Options</a></li> 
+    <ul class="navlistsub"> 
+        <li><a href="#DebugTrue">&lt;html debug="true"&gt;</a></li> 
+        <li><a href="#ScriptURLOptions">Script URL options</a></li> 
+        <li><a href="#ScriptJSONOptions">Script JSON options</a></li> 
+        <li><a href="#Cookies">Cookies</a></li> 
+    </ul> 
+    <li><a href="#Extensions">5. Extensions</a></li> 
+    <li><a href="#DebugMode">6. Debug mode</a></li> 
+    <li><a href="#DevelopmentMode">7. Development mode</a></li> 
+    <li><a href="#Contributing">8. Contributing</a></li> 
+</ul> 
+
+<!-- Delicious --> 
+<h2 class="delicious-banner sidebar-title">Bookmarklets</h2> 
+<ul>
+    <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');">Firebug Lite</a></li>
+    <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite-debug.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#debug');">Firebug Lite debug</a></li>
+    <li><a href="javascript:(function(F,i,r,e,b,u,g,L,I,T,E){if(F.getElementById(b))return;E=F.documentElement.namespaceURI;E=E?F[i+'NS'](E,'script'):F[i]('script');E=F[i]('script');E[r]('id',b);E[r]('src',I+g+T);E[r](b,u);(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);E=new%20Image;E[r]('src',I+L);})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','1.3.0.3','firebug-lite-beta.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');">Firebug Lite beta</a></li>
+</ul>
+
+
+<!-- Delicious --> 
+<!--[!IE]>
+<div id="delicious-posts-firebug" class="delicious-posts"> 
+<h2 class="delicious-banner sidebar-title">Firebug around the web</h2> 
+<script type="text/javascript" src="http://feeds.delicious.com/v2/js/firebugnews?count=5&amp;title=&amp;sort=date&amp;extended"></script> 
+</div>
+<![endif]-->
+ 
+</div> <!-- /END links --> 
+ 
+</div> <!-- /END contentarea --> 
+ 
+</div> <!-- /END secondary --> 
+ 
+<div id="footer" class="group"> 
+ 
+<div class="nav"> 
+<h3>Firebug</h3> 
+<ul> 
+<li><a href="/">Home</a></li> 
+<li><a href="/downloads">Downloads</a></li> 
+<li><a href="http://getfirebug.com/wiki/">Resources</a></li> 
+<li><a href="/whatisfirebug">What is Firebug</a> 
+</li> 
+<li><a href="/community">Community</a></li> 
+<li><a href="/getinvolved">Get Involved</a></li> 
+<li><a href="http://blog.getfirebug.com/">Blog</a></li> 
+</ul> 
+</div> 
+ 
+<div id="legal"> 
+<div id="copyright"> 
+<img src="http://getfirebug.com/img/mozilla-logo.png" width="41" height="31" alt="Firefox Logo" /> 
+<p><span>Copyright &copy; 2005-2010 Mozilla.</span> All rights reserved.</p> 
+</div> 
+ 
+<ul> 
+<li><a href="http://www.mozilla.com/en-US/privacy-policy.html">Privacy Policy</a></li> 
+<li><a href="http://www.mozilla.com/en-US/about/legal.html">Legal Notices</a></li> 
+ 
+</ul> 
+</div> 
+<div class="bigfirebug"></div> 
+ 
+ 
+</div> <!-- /END footer --> 
+</div> <!-- /END wrap --> 
+ 
+</body> 
+</html>

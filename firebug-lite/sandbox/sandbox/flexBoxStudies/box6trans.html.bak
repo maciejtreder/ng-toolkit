@@ -1,0 +1,769 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Firebug Lite</title>
+<style>
+/* *************************************************************************************************
+ Global styles 
+************************************************************************************************* */
+
+html, body {
+    font-family: Lucida Grande,Tahoma,sans-serif;
+    font-size: 11px;
+    
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* *************************************************************************************************
+ Flexible Box
+************************************************************************************************* */
+/*
+.vbox {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+}
+
+.hbox {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+    
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-align: stretch;
+    
+    display: box;
+    box-orient: horizontal;
+    box-align: stretch;
+}
+
+.boxFlex, .boxFlex1 {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+.boxFlex2 {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    box-flex: 2;
+}
+/**/
+
+.boxScroll {
+    overflow: auto;
+    min-height: 1px; /* Firefox needs min-height and min-width to show scrollbars */
+    min-width: 1px;
+    height: 100%; /* IE6 needs height and width properties */
+    width: 100%;
+}
+
+
+/* *************************************************************************************************
+ Flexible Box fixes
+************************************************************************************************* */
+
+.boxFix,
+.boxFix .vbox,
+.boxFix .hbox {
+    position: relative;
+}
+
+.boxFix .boxFixPos {
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.boxFixHideContents * {
+    display: none;
+}
+
+/* *************************************************************************************************
+ Flexible Box fixes for style translation
+************************************************************************************************* */
+/*
+.boxFix .boxFixRight {
+    float: right;
+    display: block;
+    height: 100%;
+    position: absolute;
+}
+
+.boxFix .boxFixFlex {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+/**/
+
+/* *************************************************************************************************
+ Styling
+************************************************************************************************* */
+
+#main {
+    width: 50%;
+    height: 50%;
+    zmargin: 10px;
+    padding: 2px;
+    border: 5px solid green;
+    zvisibility: hidden; /* avoid FOUC */
+}
+
+#top {
+    background: #ccc;
+    height: 30px;
+    zmargin: 10px;
+    padding: 20px;
+    border: 5px solid red;
+}
+
+#content {
+    zmargin: 10px;
+    background: #ffe;
+}
+
+#left {
+    background: #ffe;
+}
+
+#splitter {
+    width: 4px;
+    background: #ddd;
+}
+
+#right {
+    background: #efe;
+    width: 300px;
+    zdisplay: none;
+}
+
+#command {
+    border-top: 1px solid #ddd;
+}
+
+</style>
+
+<script type="text/javascript" src="../../test/measure.js"></script>
+<script>
+/**
+ * OK: unify loops
+ * OK: IE optimization (use margin trick) 
+ * OK: problem with borders (Firebug Lite will use) 
+ * OK: problem with padding/margin
+ * TODO: remove margin support 
+ * 
+ *   
+ * TODO: Change margin trick to top,left,bottom,right trick? 
+ */  
+window.onload = function()
+{
+    var timer;
+    
+    window.onresize = function()
+    {
+        /*
+        if (!timer)
+        {
+            timer = setTimeout(function(){
+            
+                if (timer)
+                {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                
+                draw();
+                
+            }, 50);
+        }
+        /**/
+        
+        draw();
+    }
+    
+    draw();
+    
+    // avoid FOUC
+    $("main").style.visibility = "visible";
+}
+
+function draw()
+{
+    layout($("main"));
+}
+
+function layout(root)
+{
+    // TODO: better browser detection
+    //if (!document.all) return;
+    
+    setClass(root, "boxFix");
+    
+    var objects =
+        [
+            {
+                element: root,
+                flex: null
+            }
+        ];
+    
+    var object;
+    var result;
+    
+    while (object = objects.shift())
+    {
+        result = layoutBox(root, object);
+        
+        if (result.length > 0)
+        {
+            objects = objects.concat(result);
+        }
+    }
+}
+
+function layoutBox(root, boxObject)
+{
+    var win = window;
+    var doc = document;
+    var isIE6 = win.navigator.userAgent.indexOf("MSIE 6") != -1;
+    
+    var measure = new Measure(win);
+    
+    var result = [];
+    
+    var isVertical;
+    var isHorizontal;
+    
+    var measureProperty;
+    var dimensionProperty;
+    
+    var objects = [];
+    var object;
+    
+    var element;
+    var boxSpace;
+    var space;
+    var flex;
+    var flexSum = 0;
+    
+    var totalSpace;
+    var freeSpace;
+    var fixedSpace = 0;
+    var computedSpace = 0;
+    var remainingPixels = 0;
+    
+    var flexRendered = false;
+    
+    var className;
+    var reFlex = /\sboxFlex(\d?)\s/;
+    var reBox = /\s(v|h)box\s/;
+    var match;
+    
+    var box = boxObject.element;
+    
+    var isSafeToUseTranslation = true;
+    
+    var postFlexClassName;
+    var preFlexMeasure;
+    var postFlexMeasure;
+    
+    if (isHorizontal)
+    {
+        preFlexMeasure = "left";
+        postFlexMeasure = "right";
+        postFlexClassName = "boxFixRight";
+    }
+    else
+    {
+        preFlexMeasure = "top";
+        postFlexMeasure = "bottom";
+        postFlexClassName = "boxFixPos";
+    }
+
+    if (hasClass(box, "vbox"))
+    {
+        isVertical = true;
+        
+        measureProperty = "offsetHeight";
+        dimensionProperty = "height";
+    }
+    else if (hasClass(box, "hbox"))
+    {
+        isHorizontal = true;
+        
+        measureProperty = "offsetWidth";
+        dimensionProperty = "width";
+    }
+    else
+    {
+        return result;
+    }
+
+    for (var i = 0, childs = box.childNodes, length = childs.length; i < length; i++)
+    {
+        element = childs[i];
+        
+        // ignore non-element nodes
+        if (element.nodeType != 1) continue;
+        
+        className = " " + element.className + " ";
+        
+        if (match = reFlex.exec(className))
+        {
+            flex = match[1]-0 || 1;
+            space = null;
+        
+            flexSum += flex;
+        }
+        else
+        {
+            var padding = measure.getMeasureBox(element, "padding");
+            var border = measure.getMeasureBox(element, "border");
+            var margin = measure.getMeasureBox(element, "margin");
+            
+            var measureBeforeProperty = "top";
+            var measureAfterProperty = "bottom";
+            
+            space = element[measureProperty] -
+                    padding[measureBeforeProperty] - padding[measureAfterProperty] -
+                    border[measureBeforeProperty] - border[measureAfterProperty];
+            
+            space = Math.max(space, 0);
+            
+            boxSpace = element[measureProperty] +
+                    margin[measureBeforeProperty] + margin[measureAfterProperty];
+                    /**/
+            
+            flex = null;
+            
+            fixedSpace += boxSpace;
+        }
+        
+        object =
+        {
+            element: element,
+            flex: flex,
+            box: {}
+        };
+        
+        object[dimensionProperty] = space;
+        object.box[dimensionProperty] = boxSpace;
+        
+        objects.push(object);
+        
+        // it is a box, so we need to layout it
+        if (reBox.test(className))
+        {
+            result.push(object);
+        }
+    }
+    /*
+    if (isIE6)
+    {
+        // TODO: move the window piece to outside this function
+        totalSpace = box == root &&  // if we are adjusting the layout of the root and the root
+            root.parentNode == doc.getElementsByTagName("body")[0] && // is a <body> child 
+            root.currentStyle[measureProperty] == "100%" // with a 100% measure property
+            ?
+            getWindowSize(window)[measureProperty] // then we'll use the window measure 
+            :
+            boxObject[measureProperty] // otherwise look if we already computed the parent measure
+            ?
+            boxObject[measureProperty] // if so, use the parent box measure
+            :
+            null; // otherwise let it be calculated above like in other browsers
+    }
+    /**/
+    
+    if (!totalSpace)
+    {
+        var padding = measure.getMeasureBox(box, "padding");
+        var border = measure.getMeasureBox(box, "border");
+        
+        var measureBeforeProperty = "top";
+        var measureAfterProperty = "bottom";
+        
+        // IE6 will take into account the
+        if (isIE6)
+        {
+            setClass(box, "boxFixHideContents");
+        }
+        
+        totalSpace = box[measureProperty] -
+                padding[measureBeforeProperty] - padding[measureAfterProperty] -
+                border[measureBeforeProperty] - border[measureAfterProperty];
+        
+        if (isIE6)
+        {
+            removeClass(box, "boxFixHideContents");
+        }
+    }
+    
+    freeSpace = totalSpace - fixedSpace;
+    
+    for (var i = 0, length = objects.length; i < length; i++)
+    {
+        object = objects[i];
+        
+        element = object.element;
+        flex = object.flex;
+        
+        if (isVertical && !flex && !isSafeToUseTranslation) continue;
+        
+        if (flex)
+        {
+            space = Math.floor(freeSpace * flex / flexSum);
+            space = Math.max(space, 0);
+            
+            // distribute remaining pixels
+            remainingPixels = freeSpace * flex % flexSum;
+            if (remainingPixels > 0 && computedSpace + space + remainingPixels <= totalSpace)
+            {
+                space++;
+            }
+            
+            object[dimensionProperty] = space;
+            flexRendered = true;
+        }
+        else
+        {
+            space = object[dimensionProperty];
+        }
+
+        
+        if (isSafeToUseTranslation)
+        {
+            if (flex)
+            {
+                setClass(element, "boxFixFlex");
+            
+                if (isHorizontal)
+                {
+                    element.style.margin = "0 " + (totalSpace - computedSpace - space) + 
+                                        "px  0 " + computedSpace + "px";
+                }
+                else
+                {
+                    element.style.margin = computedSpace + "px 0 " + 
+                                        (totalSpace - computedSpace - space) + "px 0";
+                }
+            }
+            else if (flexRendered)
+            {
+                setClass(element, postFlexClassName);
+                
+                element.style[postFlexMeasure] = totalSpace - computedSpace - space + "px";
+                element.style[dimensionProperty] = space + "px";
+            }
+            else
+            {
+                setClass(element, "boxFixPos");
+                
+                element.style[preFlexMeasure] = computedSpace + "px";
+                element.style[dimensionProperty] = space + "px";
+            }
+        }
+        else
+        {
+        
+            if (isVertical)
+            {
+                element.style.height = space + "px";
+            }
+            else
+            {
+                setClass(element, "boxFixPos")
+                
+                element.style.left = computedSpace + "px";
+                element.style.width = space + "px";
+                
+                // boxObject.height IE6 only
+                if (isIE6)
+                {
+                    object.height = boxObject.height || box.offsetHeight;
+                    element.style.height = object.height + "px";
+                }
+            }
+            
+        }
+        
+        computedSpace += (object.box[dimensionProperty] || space);
+    }
+    
+    return result;
+}
+
+
+function isSafeToUseTranslation(root)
+{
+    // look for a particular box in the context chain
+    var lookAncestor = function(element, type, options)
+    {
+        for(var i = options.index, parent; i >= 0; i++)
+        {
+            parent = contexts[i].element;
+            
+            if (type == "box" && hasClass(parent, options.boxClass) || 
+                reFlex.test(" " + parent.className + " "))
+            {
+                options.index = i;
+                options.element = parent;
+                
+                return true;
+            }
+        }
+        return null;
+    };
+    
+    var reFlex = /\sboxFlex(\d?)\s/;
+    var reBox = /\s(v|h)box\s/;
+    
+    var className = " " + root.className + " ";
+    var match = reBox.exec(className);
+    var flex = reFlex.test(className);
+    
+    if (!match) return true;
+    
+    // initializes the first context
+    var contexts = [{
+            element: root, 
+            index: 0, 
+            orient: match[1], 
+            flex: flex, 
+            flexBoxCount:0, 
+            nonFlexCount:0,
+            interrupted: false,
+            deepFlex: false
+        }];
+    
+    while (contexts.length > 0)
+    {
+        var context = contexts[contexts.length-1];
+        var element = context.element;
+        var index = context.index;
+         
+        var childs = element.childNodes;
+        var child;
+        
+        context.interrupted = false;
+        
+        // examine the box container's child nodes
+        for (var l = childs.length; context.index < l; context.index++)
+        {
+            child = childs[context.index];
+            
+            // ignore non-element nodes
+            if (child.nodeType != 1) continue;
+            
+            className = " " + child.className + " ";
+            
+            // flexible box
+            if (flex = reFlex.test(className))
+            {
+                context.flexBoxCount++;
+                
+                if (contexts.length > 1)
+                {
+                    var orient = context.orient;
+                    var options = {index: contexts.length-2, boxClass: orient + "box"};
+                    
+                    var found = lookAncestor(child, "flex", options);
+                    if (found && lookAncestor(child, "box", options))
+                    {
+                        context.deepFlex = true;
+                    }
+                }
+            }
+            // non-flexible box
+            else
+            {
+                context.nonFlexCount++;
+            }
+            
+            // more than one flexible box per container
+            if (context.flexBoxCount > 1)
+            {
+                return false;
+            }
+            
+            // we can't use the translation with a nested flex elements with the same orientation
+            // when the deepest one has one or more non flexible siblings (box container's child)
+            if (context.deepFlex && context.nonFlexCount > 0)
+            {
+                return false;
+            }
+            
+            // container box
+            if (match = reBox.exec(className))
+            {
+                contexts.push({
+                        element: child, 
+                        index: 0, 
+                        orient: match[1], 
+                        flex: flex, 
+                        flexBoxCount: 0, 
+                        nonFlexCount: 0,
+                        interrupted: false,
+                        deepFlex: false
+                    });
+                
+                // advance the index once the current child has been examined
+                context.index++;
+                
+                // flag the context interruption
+                context.interrupted = true;
+                
+                break;
+            }
+        }
+        
+        // we have finished examined all child nodes so the context must be removed from the chain
+        if (!context.interrupted)
+        {
+            contexts.pop();
+        }
+    }
+    
+    // no restrictions found, therefore we can safely use the style translation
+    return true;
+}
+
+function $(id)
+{
+    return document.getElementById(id);
+}
+
+function getWindowSize(win)
+{
+    var width=0, height=0, el;
+    
+    if (typeof win.innerWidth == "number")
+    {
+        width = win.innerWidth;
+        height = win.innerHeight;
+    }
+    else if ((el=win.document.documentElement) && (el.clientHeight || el.clientWidth))
+    {
+        width = el.clientWidth;
+        height = el.clientHeight;
+    }
+    else if ((el=win.document.body) && (el.clientHeight || el.clientWidth))
+    {
+        width = el.clientWidth;
+        height = el.clientHeight;
+    }
+    
+    return {width: width, height: height};
+}
+
+var hasClass = function(node, name)
+{
+    return (' '+node.className+' ').indexOf(' '+name+' ') != -1;
+};
+
+var setClass = function(node, name)
+{
+    if (node && (' '+node.className+' ').indexOf(' '+name+' ') == -1)
+        node.className += " " + name;
+};
+
+var removeClass = function(node, name)
+{
+    if (node && node.className)
+    {
+        var index = node.className.indexOf(name);
+        if (index >= 0)
+        {
+            var size = name.length;
+            node.className = node.className.substr(0,index-1) + node.className.substr(index+size);
+        }
+    }
+};
+
+/*
+// from jquery
+var makeArray = function(array, results) {
+	array = Array.prototype.slice.call( array, 0 );
+
+	if ( results ) {
+		results.push.apply( results, array );
+		return results;
+	}
+	
+	return array;
+};
+
+// Perform a simple check to determine if the browser is capable of
+// converting a NodeList to an array using builtin methods.
+// Also verifies that the returned array holds DOM nodes
+// (which is not the case in the Blackberry browser)
+try {
+	Array.prototype.slice.call( document.documentElement.childNodes, 0 )[0].nodeType;
+
+// Provide a fallback method if it does not work
+} catch(e){
+	makeArray = function(array, results) {
+		var ret = results || [];
+
+		if ( toString.call(array) === "[object Array]" ) {
+			Array.prototype.push.apply( ret, array );
+		} else {
+			if ( typeof array.length === "number" ) {
+				for ( var i = 0, l = array.length; i < l; i++ ) {
+					ret.push( array[i] );
+				}
+			} else {
+				for ( var i = 0; array[i]; i++ ) {
+					ret.push( array[i] );
+				}
+			}
+		}
+
+		return ret;
+	};
+}
+/**/
+
+</script>
+</head>
+<body>
+
+    <div id="main" class="vbox">
+        <div id="top">
+            top
+        </div>
+        <div id="content" class="hbox boxFlex">
+            <div id="left" class="boxFlex">
+                left (I'm a div)
+            </div>
+            <div id="splitter">
+            </div>
+            <div id="right" class="vbox">
+                right (I'm a div)
+            </div>
+        </div>
+        <div id="command">
+            cmd
+        </div>
+    </div>
+</body>
+</html>

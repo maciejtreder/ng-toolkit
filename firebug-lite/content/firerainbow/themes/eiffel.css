@@ -1,0 +1,57 @@
+/* Eiffel by Ian Joyner, converted from TextMate theme (Eiffel.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #FFFFFF;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #C3DCFF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #00B418;
+}
+
+.js-variable {
+    color: #0206FF;
+}
+
+.js-keyword {
+    font-weight: bold;
+    color: #0100B6;
+}
+
+.js-atom {
+    color: #CD0000;
+}
+
+.js-atom {
+    color: #C5060B;
+}
+
+.js-variable {
+    color: #585CF6;
+}
+
+.js-string {
+    color: #D80800;
+}
+
+.js-operator {
+    color: #687687;
+}
+
+.xml-tagname {
+    color: #1C02FF;
+}
+
+.xml-tagname {
+    font-weight: bold;
+}

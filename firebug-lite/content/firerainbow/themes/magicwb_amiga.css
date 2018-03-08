@@ -1,0 +1,46 @@
+/* MagicWB (Amiga) by Allan Odgaard, converted from TextMate theme (MagicWB (Amiga).tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #969696;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #B1B1B1;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #8D2E75;
+}
+
+.js-string {
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
+.js-atom {
+    color: #FFFFFF;
+}
+
+.js-variable {
+    font-weight: bold;
+    color: #FFA995;
+}
+
+.js-variabledef {
+    color: #FFA995;
+}
+
+.js-keyword {
+    font-weight: bold;
+}
+
+.xml-attname {
+    color: #3A68A3;
+}

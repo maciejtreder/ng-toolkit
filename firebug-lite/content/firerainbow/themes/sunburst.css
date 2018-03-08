@@ -1,0 +1,80 @@
+/* Sunburst by Stanley Rost, converted from TextMate theme (Sunburst.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #000000;
+    font-family: Monaco, Courier New;
+    color: #F8F8F8;
+}
+
+.sourceRow.hovered {
+    background-color: #FFFFFF;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #DDF0FF;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #AEAEAE;
+}
+
+.js-atom {
+    color: #3387CC;
+}
+
+.js-keyword {
+    color: #E28964;
+}
+
+.js-string {
+    color: #65B042;
+}
+
+.js-variable {
+    color: #3E87E3;
+}
+
+.js-regexp {
+    color: #E9C062;
+}
+
+.xml-tagname {
+    color: #89BDFF;
+}
+
+.xml-attname {
+    color: #E0C589;
+}
+
+.xml-attname {
+    color: #E18964;
+}
+
+.css-identifier {
+    color: #CDA869;
+}
+
+.xml-attname {
+    color: #8F9D6A;
+}
+
+.xml-attname {
+    color: #8B98AB;
+}
+
+.xml-attname {
+    color: #9B703F;
+}
+
+.css-colorcode {
+    color: #C5AF75;
+}
+
+.css-value {
+    color: #F9EE98;
+}
+
+.css-at {
+    color: #8693A5;
+}

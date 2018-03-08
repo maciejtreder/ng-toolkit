@@ -1,0 +1,5 @@
+use table-fixed
+
+set height of both row and row's div spacer
+
+td > div.relative > div.absolute.overflow

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 2756: [Firebug Lite] Local XHR request not listed in console</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+            FBTest.runTestOnLoad(function()
+            {
+                var console = FBTest.getConsoleObject();
+                console.clear();
+
+                var xhr1 = FBL.Ajax.getXHRObject();
+                xhr1.open("GET", "test.txt", false);
+                xhr1.send();
+                
+                FBTest.ok(xhr1.responseText == "OK", "responseText returns the proper value with Sync XHR");
+                
+                var callbackCalled = false;
+
+                var xhr2 = FBL.Ajax.getXHRObject();
+                xhr2.open("GET", "test.txt", true);
+                
+                xhr2.onreadystatechange = function()
+                {
+                    if (xhr2.readyState == 4 && xhr2.status == 200)
+                    {
+                        callbackCalled = true;
+                    }
+                };
+                
+                xhr2.send();
+                
+    
+                FBTest.wait(
+                    function()
+                    {
+                        return callbackCalled;
+                    },
+                    function()
+                    {
+                        FBTest.ok(xhr2.responseText == "OK", "responseText returns the proper value with Async XHR");
+                        
+                        var consolePanelNode = FBTest.getPanel("Console").panelNode;
+                        var logEntries = Firebug.Selector(".logRow-spy", consolePanelNode);
+                        FBTest.compare(2, logEntries.length, "there are 2 log entries");
+                    }
+                );
+
+            });
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=2756">Issue 2756</a>: [Firebug Lite] Local XHR request not listed in console</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="description">
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite</li>
+                    <li>Make a Synchronous XHR GET "test.txt"</li>
+                    <li>Make an Asynchronous XHR GET "test.txt"</li>
+                </ol>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>There should be 2 entries in the Console Panel</li>
+                    <li>The responseText should be "OK" for both XHR requests</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

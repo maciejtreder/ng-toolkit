@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  <script type="text/javascript">
+    window.FBL = {};
+    window.onload = function()
+    {
+        with(FBL)
+        {
+            var parentNode = document.getElementById("out");
+            
+            // --------------------------------------------------------------
+            // DomPlate test goes here
+            // --------------------------------------------------------------
+            
+            var tableData = {
+              rows: [
+                {values: [1,2,3,4]},
+                {values: [11,22,33,44]},
+                {values: [111,222,333,444]}
+              ]
+            };
+            
+            var template = domplate(
+            {
+              table:
+                  TABLE({border: "1"},
+                      FOR("row", "$data.rows",
+                          TR(
+                              FOR("value", "$row.values",
+                                  TD({"class": "myTableCell"},
+                                      "$value")
+                              )
+                          )
+                      )
+                  )
+            });
+            
+            template.table.replace({data: tableData}, parentNode, template);
+
+            // --------------------------------------------------------------
+        }    
+    }    
+  </script>
+  <script src="../../content/firebug/domplate.js" type="text/javascript"></script>
+  <style type="text/css">
+    .myTableCell {
+        padding: 5px;
+        text-align: center;
+    }
+  </style>
+  </head>
+  <body>
+  
+  <h1 id="header">DomPlate Test</h1>
+  <div id="comment"><i>This is just a test file</i><hr/></div>
+  <div id="out"></div>
+
+  </body>
+</html>

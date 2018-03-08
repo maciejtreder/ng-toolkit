@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FirebugLite 1.4 Testing</title>
+<script type="text/javascript" src="../build/firebug-lite.js"></script>
+<script type="text/javascript">
+(function(){
+var console = Firebug.Console;
+
+console.log("This is a test call to console.log()");
+console.info("This is a test call to console.info()");
+console.warn("This is a test call to console.warn()");
+console.error("This is a test call to console.error()");
+
+})();
+</script>
+<style type="text/css">
+body {
+  font-size: 16px;
+  font-family: Lucida Grande, sans-serif;
+}
+h1 {
+  color: #123;
+  font-weight: bold;
+}
+h2 {
+  color: #456;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0;
+}
+#main {
+  padding: 1px 20px 10px 20px;
+}
+li { 
+  font-family: Monaco, monospace;
+}
+#build {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #def;
+}
+.block a:hover {
+  color: #5a0;
+}
+.note {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #456;
+  color: #fff;
+  font-family: Lucida Grande, sans-serif;
+}
+.note a, .note a:visited {
+  color: #fff;
+}
+.note a:hover {
+  color: #ff0;
+}
+#ui {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #efd;
+}
+</style>
+</head>
+<body>
+  <div id="main">
+    <h1>FirebugLite 1.4 Testing</h1>
+    <div id="build" class="block">
+      <h2>Bookmarlets</h2>
+      <ul>
+        <li><a href="javascript:(function(F,B,L){L=F.createElement('script');L.id='FirebugLite';L.src=B;F.getElementsByTagName('head')[0].appendChild(L);})(document,'http://fbug.googlecode.com/svn/lite/branches/firebug1.3/build/firebug.min.js#remote');">Normal application</a></li>
+        <li><a href="javascript:(function(F,B,L){L=F.createElement('script');L.id='FirebugLite';L.src=B;F.getElementsByTagName('head')[0].appendChild(L);})(document,'http://fbug.googlecode.com/svn/lite/branches/firebug1.3/build/firebug.min.js#remote,trace');">Application with trace enabled</a></li>
+      </ul>
+    </div>
+    <div class="note">
+      Copy the bookmarlets above to test the Firebug Lite in remote pages.
+    </div>
+    <div id="ui" class="block">
+      <h2>User interface files</h2>
+      <ul>
+        <li><a href="../skin/xp/firebug.html">HTML</a></li>
+        <li><a href="../skin/xp/firebug.css">CSS</a></li>
+        <li><a href="../skin/xp/sprite.png">Sprite</a></li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

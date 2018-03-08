@@ -1,0 +1,115 @@
+/* See license.txt for terms of usage */
+
+/* *************************************************************************************************
+ Flexible Box
+************************************************************************************************* */
+
+.vbox {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+}
+
+.hbox {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+    
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-align: stretch;
+    
+    display: box;
+    box-orient: horizontal;
+    box-align: stretch;
+}
+
+.boxFlex, .boxFlex1 {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+.boxFlex2 {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    box-flex: 2;
+}
+
+/* *************************************************************************************************
+ Flexible Helpers
+************************************************************************************************* */
+
+.boxScroll {
+    overflow: auto;
+    display: block;  /* Google Chrome needs this in case of an iframe element. */
+    min-height: 1px; /* Firefox needs min-height and min-width to avoid problems */
+    min-width: 1px;  /* with the minimum dimensions of flexible elements. */
+}
+
+
+/* *************************************************************************************************
+ Flexible Box fixes
+************************************************************************************************* */
+
+.boxFix,
+.boxFix .vbox,
+.boxFix .hbox {
+    position: relative;
+    display: block;
+}
+
+.boxFix .boxFixPos,
+.boxFix .boxContent {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.boxFixIgnoreContents .boxFlex,
+.boxFixIgnoreContents .boxFlex1,
+.boxFixIgnoreContents .boxFlex2 {
+    position: absolute;
+}
+
+/* *************************************************************************************************
+ splitter frame
+************************************************************************************************* */
+
+.splitterFrame {
+    position: absolute;
+    display: block;
+	top: 0;
+	left: 0;
+    z-index: 2147483550;
+    
+    /* IE needs a transparent background otherwise it won't capture mouse events properly */
+    background-image: url(transparentPixel.gif);
+}
+
+/* *************************************************************************************************
+ iframe box fix
+************************************************************************************************* */
+
+.boxFix iframe.boxScroll {
+    /* IE need this to properly resize the iframe using flexBox */
+    display: block;
+    
+    /* IE needs height and width properties to fix iframe dimension, otherwise 
+    the the iframe won't fit the proper space and the horizontal scrollbar 
+    will be visible when not needed */
+    height: 100%; width: 100%;
+    
+    /*
+    border-left: 0 !important;
+    border-right: 0 !important;/**/
+}

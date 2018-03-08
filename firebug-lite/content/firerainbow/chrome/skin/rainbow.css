@@ -1,0 +1,369 @@
+/*****************************************************************************************/
+#fbFirebugLightMenu {
+    margin: 0 4px 0 0;
+    padding: 0 0 0 4px;
+    list-style-image: url(chrome://firebuglight/skin/firebuglight.png);
+    -moz-opacity: 0.8;
+}
+
+#fbFirebugLightMenu:hover,
+#fbFirebugLightMenu[open="true"] {
+    -moz-opacity: 1.0;
+}
+
+#fbFirebugLightMenu > .toolbarbutton-text,
+#fbFirebugLightMenu > .toolbarbutton-menu-dropmarker {
+    display: none;
+}
+
+.toolbar-text-label {
+    padding: 3px 8px 3px 4px;
+    background-color: #f00;
+}
+
+.toolbar-text-button > .toolbarbutton-icon {
+    display: block !important;
+}
+
+#fbFirebugLightExtensionRecorderStatusLabel 
+{
+    padding-left: 20px;
+}
+
+#fbFirebugLightExtensionRecorderStart,
+#fbFirebugLightExtensionRecorderStop,
+#fbFirebugLightExtensionRecorderPause,
+#fbFirebugLightExtensionRecorderReplay 
+{
+    -moz-image-region: rect(auto,auto,auto,auto) !important;
+}
+
+#fbFirebugLightExtensionRecorderStart 
+{
+    list-style-image: url(control_rec.png);
+}
+
+#fbFirebugLightExtensionRecorderStop
+{
+    list-style-image: url(control_stop.png);
+}
+
+#fbFirebugLightExtensionRecorderPause
+{
+    list-style-image: url(control_pause.png);
+}
+
+#fbFirebugLightExtensionRecorderPause.paused
+{
+    list-style-image: url(control_play.png) !important;
+}
+
+#fbFirebugLightExtensionRecorderReplay
+{
+    list-style-image: url(control_repeat.png);
+}
+
+.toolbar-recorder-status 
+{
+    margin-top: 6px;
+}
+
+.toolbar-recorder-invalid 
+{
+    background: url(status-gray.png) no-repeat;
+}
+
+.toolbar-recorder-recording {
+    background: url(status-red.png) no-repeat;
+}
+
+.toolbar-recorder-stopped {
+    background: url(status-gray.png) no-repeat;
+}
+
+.toolbar-recorder-paused {
+    background: url(status-green.png) no-repeat;
+}
+
+.toolbar-recorder-replaying {
+    background: url(status-blue.png) no-repeat;
+}
+
+#fbFirebugLightExtensionConnectionStatusLabel 
+{
+    padding-left: 20px;
+}
+
+.toolbar-status-connected {
+    background: url(connect.png) no-repeat;
+}
+
+.toolbar-status-disconnected {
+    background: url(disconnect.png) no-repeat;
+}
+
+.toolbar-connection-status 
+{
+    margin-top: 6px;
+}
+
+#fbFirebugLightExtensionButtonConnect
+{
+    list-style-image: url(connect_btn.png);
+}
+
+#fbFirebugLightExtensionButtonDisconnect
+{
+    list-style-image: url(disconnect_btn.png);
+}
+
+#fbFirebugLightExtensionRefresh
+{
+    list-style-image: url(refresh.png);
+}
+
+.logRow-blink > .blinkHead > .blinkTitle
+{
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+}
+
+.logRow-blink > .blinkHead.closed > .blinkTitle
+{
+    background-image: url(twistyClosed.png);
+}
+
+.logRow-blink > .blinkHead.opened > .blinkTitle
+{
+    background-image: url(twistyOpen.png);
+}
+
+.logRow-blink > .blinkHead > .blinkTitle {
+    padding-left: 18px;
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+}
+
+.logRow-blink 
+{
+    cursor:default;
+}
+
+.refresh > .blinkTitle {
+    cursor: pointer;
+}
+
+.logRow-blink {
+    padding: 2px 0 1px 0;
+}
+
+.logRow-blink,
+.logRow-blink .objectLink-sourceLink {
+    background: url(group.gif) repeat-x #FFFFFF;
+}
+
+.logRow-blink.opened {
+    padding-bottom: 4px;
+    border-bottom: none;    
+}
+
+.blinkTitle {
+    padding-top: 1px;
+    color: #000000;
+}
+
+.refresh > .blinkTitle {
+    font-weight: bold;
+}
+
+.refresh > .blinkTitle:hover {
+    color: blue;
+    text-decoration: none !important;
+}
+
+.refresh > .blinkTitle:hover > .blinkURI {
+    text-decoration: underline !important;
+}
+
+.blinkDate {
+    font-family: Tahoma;
+    font-size: 8pt;
+    color: gray;
+    font-weight: normal;
+    margin-right: 6px;
+}
+
+.blinkInfo {
+    padding-left: 6px;
+    font-family: Tahoma;
+    font-size: 8pt;
+    color: black;
+    font-weight: normal;
+}
+
+.blinkIcon {
+    margin-right: 2px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    background: transparent no-repeat 0 0;
+}
+
+.blinkProgress {
+    margin-right: 6px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    background: transparent no-repeat 0 0;
+}
+
+.logRow-blink > .blinkHead.refresh > .blinkTitle > .blinkIcon {
+    background-image: url(refresh.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.fastcss > .blinkTitle > .blinkIcon {
+    background-image: url(fastcss.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.info > .blinkTitle > .blinkIcon {
+    background-image: url(info.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.error > .blinkTitle > .blinkIcon {
+    background-image: url(error.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.connect > .blinkTitle > .blinkIcon {
+    background-image: url(connect.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.disconnect > .blinkTitle > .blinkIcon {
+    background-image: url(disconnect.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.connect_btn > .blinkTitle > .blinkIcon {
+    background-image: url(connect_btn.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.disconnect_btn > .blinkTitle > .blinkIcon {
+    background-image: url(disconnect_btn.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.connect > .blinkTitle > .blinkIcon {
+    background-image: url(connect.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.rreq > .blinkTitle > .blinkIcon {
+    background-image: url(refresh.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.rstop > .blinkTitle > .blinkIcon {
+    background-image: url(control_stop.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.rstart > .blinkTitle > .blinkIcon {
+    background-image: url(control_rec.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.rpause > .blinkTitle > .blinkIcon {
+    background-image: url(control_pause.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.rreplay > .blinkTitle > .blinkIcon {
+    background-image: url(control_repeat.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.warn > .blinkTitle > .blinkIcon {
+    background-image: url(warn.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead.bulb > .blinkTitle > .blinkIcon {
+    background-image: url(lightbulb.png);
+    background-position: right;
+}
+
+.logRow-blink > .blinkHead > .details {
+    display: none;
+}
+
+.logRow-blink > .blinkHead.opened > .details {
+    margin-top: 10px;
+    display: block;
+}
+
+.ftable {
+    margin: -10px 0 0 40px;
+    padding: 0px 0px 3px 0px;
+}
+
+.ftable td {
+    font-family: tahoma;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+.froot {
+    color: black;
+    padding-bottom: 3px;
+    padding-left: 20px;
+    font-weight: bold;
+    color: #008800;
+    background-image: url(folder_activity.png);
+    background-repeat:no-repeat;
+    background-position: left;
+}
+
+.froot b {
+    color: black;
+}
+
+.ffa1, .ffb1 {
+    font-weight: bold;
+    color: #888;
+}
+
+.ffa2, .ffb2 {
+    font-weight: bold;
+    color: #444;
+}
+
+.faction {
+    width: 36px;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.faction.changed {
+    background-image: url(mini_changed.png);
+}
+
+.faction.created {
+    background-image: url(mini_created.png);
+}
+
+.faction.deleted {
+    background-image: url(mini_deleted.png);
+}
+
+.faction.renamed {
+    background-image: url(mini_renamed.png);
+}
+
+.twisty {
+    background-position: 2px 0;
+}

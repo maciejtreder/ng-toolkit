@@ -1,0 +1,32 @@
+/* IDLE by Domenico Carbotta, converted from TextMate theme (IDLE.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #FFFFFF;
+    font-family: Monaco, Courier New;
+    color: #000000;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #BAD6FD;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #919191;
+}
+
+.js-string {
+    color: #00A33F;
+}
+
+.js-variable {
+    color: #A535AE;
+}
+
+.js-keyword {
+    color: #FF5600;
+}

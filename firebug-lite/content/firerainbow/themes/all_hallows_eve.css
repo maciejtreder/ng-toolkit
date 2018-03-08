@@ -1,0 +1,36 @@
+/* All Hallows Eve by David Heinemeier Hansson, converted from TextMate theme (All Hallows Eve.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #000000;
+    font-family: Monaco, Courier New;
+    color: #FFFFFF;
+}
+
+.sourceRow.hovered {
+    background-color: #333300;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #73597E;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #9933CC;
+}
+
+.js-atom {
+    color: #3387CC;
+}
+
+.js-keyword {
+    color: #CC7833;
+}
+
+.js-string {
+    color: #66CC33;
+}
+
+.js-regexp {
+    color: #CCCC33;
+}

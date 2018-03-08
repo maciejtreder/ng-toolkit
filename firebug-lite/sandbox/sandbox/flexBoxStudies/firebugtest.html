@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Firebug Lite</title>
+<style>
+/* *************************************************************************************************
+ Global styles 
+************************************************************************************************* */
+
+html, body {
+    font-family: Lucida Grande,Tahoma,sans-serif;
+    font-size: 11px;
+    
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+table {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    table-layout: fixed; /* IE SUCKS */ 
+}
+
+
+/* *************************************************************************************************
+ Master Layout
+************************************************************************************************* */
+
+#fbChrome, #inner {
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#top {
+    background: #eee;
+}
+
+#topRow , #topCell {
+    height: 22px;
+    max-height: 22px;
+}
+
+#top, #topCell, #topRow {
+    height: 22px;
+}
+
+#middle {
+    zheight: 200px;
+    height: 100%;
+    width: 100%;
+    display: table;
+    background: #cde;
+}
+
+#leftcontent, #rightcontent {
+    zheight: 200px;
+}
+
+#res {
+    width: 2px;
+    background: red;
+}
+#resCell {
+    width: 2px;
+    vertical-align: top;
+}
+</style>
+</head>
+<body>
+    <table id="fbChrome" cellpadding="0" cellspacing="0" border="1">
+        <tr id="topRow">
+            <td id="topCell">
+                <div id="top">Top</div>
+            </td>
+        </tr>
+        <tr id="xops" height="*">
+            <td>
+                <div id="middle">
+                
+                
+                    <table id="inner" cellpadding="0" cellspacing="0" border="2">
+                        <tr>
+                            <td>
+                                
+                                <div id="left">
+                                
+                                    <table id="inner" cellpadding="0" cellspacing="0" border="3">
+                                        <tr id="lefttool">
+                                            <td>
+                                                left tools
+                                            </td>
+                                        </tr>
+                                        <tr id="leftcontent">
+                                            <td>
+                                                left
+                                            </td>
+                                        </tr>
+                                    </table>
+                                
+                                </div>
+                                
+                            </td>
+                            <td id="resCell">
+                                <div id="res">&nbsp;</div>
+                            </td>
+                            <td>
+                                
+                                <div id="right">
+                                
+                                    <table id="inner" cellpadding="0" cellspacing="0" border="3">
+                                        <tr id="righttool">
+                                            <td>
+                                                right tools
+                                            </td>
+                                        </tr>
+                                        <tr id="rightcontent">
+                                            <td>
+                                                right
+                                            </td>
+                                        </tr>
+                                    </table>
+                                
+                                </div>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                
+                
+                </div>
+            </td>
+        </tr>
+        <tr height="1">
+            <td>
+                Command
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

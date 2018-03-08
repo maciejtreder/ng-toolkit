@@ -1,0 +1,96 @@
+/* Pastels on Dark by Mats Persson, converted from TextMate theme (Pastels on Dark.tmTheme) */
+
+/* 
+CHANGELOG
+
+1) 2010-06-18 cbalz Fixed issue where stopped line on breakpoint has background color that makes text almost invisible. 
+
+*/
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #211E1E;
+    font-family: Monaco, Courier New;
+    color: #DADADA;
+}
+
+.sourceRow.hovered {
+    background-color: #353030;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #73597E;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #555555;
+}
+
+.js-string {
+    color: #AD9361;
+}
+
+.js-atom {
+    color: #CCCCCC;
+}
+
+.js-keyword {
+    color: #A1A1FF;
+}
+
+.js-regexp {
+    color: #666666;
+}
+
+.js-variable {
+    color: #C1C144;
+}
+
+.js-atom {
+    color: #6782D3;
+}
+
+.js-variable {
+    font-weight: bold;
+    color: #DE8E30;
+}
+
+.xml-attname {
+    color: #9B456F;
+}
+
+.xml-processing {
+    color: #68685B;
+}
+
+.xml-processing {
+    color: #888888;
+}
+
+.xml-attname {
+    color: #9B456F;
+}
+
+.xml-attname {
+    color: #EC9E00;
+}
+
+.xml-attname {
+    color: #EDCA06;
+}
+
+.xml-attname {
+    color: #2E759C;
+}
+
+.css-value {
+    color: #9B2E4D;
+}
+
+.css-colorcode {
+    color: #E1C96B;
+}
+
+.sourceRow[exe_line="true"] {  
+    outline: 1px solid #D9D9B6; margin-right: 1px; background-color: purple; 
+} 

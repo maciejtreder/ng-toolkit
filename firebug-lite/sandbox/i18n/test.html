@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+<meta name="generator" content="PSPad editor, www.pspad.com">
+<title></title>
+<script>
+window.onload = function()
+{
+    process();
+};
+
+function process()
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("get", "firebug.properties", false);
+    xhr.send();
+    
+    var text = xhr.responseText;
+    text = text.replace(/\r\n/g, "\n");
+    
+    var lines = text.split("\n");
+    var length = lines.length;
+    
+    var i18n = {};
+    
+    for (var i=0; i<length; i++)
+    {
+        var line = lines[i];
+        
+        // comment
+        if (line.charAt(0) == "#") continue;
+        
+        var pos = line.indexOf("=");
+        
+        if (pos == -1) continue;
+        
+        var name = line.substr(0,pos);
+        var value = line.substr(pos+1);
+        
+        i18n[name] = value;
+        
+        //console.log("name: %s  value: %s", name, value);
+    }
+    
+    console.log(i18n);
+}
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

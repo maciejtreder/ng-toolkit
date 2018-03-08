@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Issue 4776: [Firebug lite] CSS Media Types</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../../../fbtest/fbtest.js"></script>
+        <script type="text/javascript">
+        
+        FBTest.runTestOnLoad(function()
+        {
+            var Selector = Firebug.Selector;
+            
+            // Select HTML Panel
+            FBTest.selectPanel("HTML");
+            
+            // Select the test element in the HTML Panel
+            var htmlPanel = FBTest.getPanel("HTML");
+            htmlPanel.select( Selector("#test")[0] , true );
+            
+            // Reference to the Style Side Panel
+            var cssPanelNode = FBTest.getPanel("css").panelNode;
+
+            // Displayed CSS Rules
+            var cssRules;
+            
+            // Wait Style Side Panel to display the CSS Rules
+            FBTest.wait(function()
+            {
+                // Look for displayed CSS Rules
+                cssRules = Selector(".cssRule", cssPanelNode);
+                return cssRules.length > 0;
+            },
+            function()
+            {
+                FBTest.ok(cssRules.length > 0, cssRules.length + " CSS Rules were found");
+                
+                var firstRule = cssRules[0];
+                var firstSelector = Selector(".cssSelector", firstRule)[0].innerHTML;
+                
+                FBTest.compare("#test", firstSelector, "First rule's selector is #test");
+                
+                var secondRule = cssRules[1];
+                var secondSelector = Selector(".cssSelector", secondRule)[0].innerHTML;
+                
+                FBTest.compare(".green", secondSelector, "Second rule's selector is .green");
+            });
+
+        });
+        
+        </script>        
+        <link href="../../../fbtest/fbtest.css" type="text/css" rel="stylesheet"/>
+        <style>
+        @page {margin: 10px;}
+        
+        .green {color: green;}
+        
+        @media screen { * { font-family: sans-serif } }
+        
+        #test {text-decoration: underline}
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <header>
+                <h1 id="qunit-header"><a href="http://code.google.com/p/fbug/issues/detail?id=4776">Issue 4776</a>: [Firebug lite] CSS Media Types</h1>
+                <h2 id="qunit-banner"></h2>
+                <div id="qunit-testrunner-toolbar"></div>
+                <h2 id="qunit-userAgent"></h2>
+                <ol id="qunit-tests"></ol>
+                <div id="qunit-fixture">test markup</div>
+            </header>
+            <section id="content">
+                <div id="test" class="green">inspect here</div>
+            </section>
+            <section id="description">
+                <h3>Steps to reproduce</h3>
+                <ol>
+                    <li>Load Firebug Lite</li>
+                    <li>Inspect the element which says "inspect here" inside the content section 
+                        (it is a div with id "test")</li>
+                    <li>Observe the Style Side Panel</li>
+                </ol>
+                <h3>Expected Result</h3>
+                <ul>
+                    <li>The first rule should be "#test"</li>
+                    <li>The second rule should be ".green"</li>
+                </ul>
+            </section>
+            <footer>
+                &lt;Pedro Simonetti&gt;, &lt;pedrosimonetti@gmail.com&gt;
+            </footer>
+        </div>
+    </body>
+</html>

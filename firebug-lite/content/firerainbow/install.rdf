@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+    <Description about="urn:mozilla:install-manifest">
+        <em:id>firerainbow@hildebrand.cz</em:id>
+        <em:version>1.2</em:version>
+        <em:type>2</em:type>
+        <!-- Firefox -->
+        <em:targetApplication>
+            <Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>2.0</em:minVersion>
+                <em:maxVersion>4.0b8pre</em:maxVersion>
+            </Description>
+        </em:targetApplication>
+        <!-- Firebug extension -->
+        <em:requires>
+          <Description>
+            <em:id>firebug@software.joehewitt.com</em:id>
+            <em:minVersion>1.3</em:minVersion>
+            <em:maxVersion>1.7</em:maxVersion>
+          </Description>
+        </em:requires>
+        <em:name>FireRainbow</em:name>
+        <em:description>Javascript syntax highlighting for Firebug</em:description>
+        <em:creator>Antonin Hildebrand</em:creator>
+        <em:contributor>Marijn Haverbeke</em:contributor>
+        <em:homepageURL>http://firerainbow.binaryage.com</em:homepageURL>
+        <em:iconURL>chrome://firerainbow/skin/rainbow.png</em:iconURL>
+    </Description>
+</RDF>

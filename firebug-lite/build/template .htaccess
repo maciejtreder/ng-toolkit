@@ -1,0 +1,41 @@
+<IfModule rewrite_module>
+    RewriteEngine on
+    RewriteCond %{HTTP_USER_AGENT} ".*Safari.*" [OR]
+    RewriteCond %{HTTP:Accept-Encoding} !gzip
+    RewriteRule (.*)\.jgz$ $1 [L]
+</IfModule>
+
+#<ifModule mod_headers>
+#  Header unset ETag
+#</ifModule>
+#FileETag None
+
+#<ifModule mod_headers>
+#  Header unset Last-Modified
+#  Header set Cache-Control "private, x-gzip-ok=''"
+#</ifModule>
+
+#<FilesMatch "\.(js|jgz)$">
+#</FilesMatch>
+
+#ExpiresActive on
+#ExpiresDefault "access plus 0 seconds"
+
+#<IfModule mod_expires>
+#ExpiresActive On
+#ExpiresDefault A300
+#ExpiresByType image/x-icon A2592000
+#ExpiresByType application/x-javascript A3600
+#ExpiresByType text/css A3600
+#ExpiresByType image/gif A604800
+#ExpiresByType image/png A604800
+#ExpiresByType image/jpeg A604800
+#ExpiresByType text/plain A300
+#ExpiresByType application/x-shockwave-flash A604800
+#ExpiresByType video/x-flv A604800
+#ExpiresByType application/pdf A604800
+#ExpiresByType text/html A300
+#</IfModule>
+
+AddType "text/javascript;charset=UTF-8" .jgz
+AddEncoding gzip .jgz

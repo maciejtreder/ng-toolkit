@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Example for mixed HTML/JS/CSS coloring</title>
+    <script type="text/javascript">
+      /* javascript comment */
+      function foo(bar, baz) {
+        alert("codemirror rulez!");
+        return bar + baz + 1; // returns magic number
+      }
+    </script>
+    <style type="text/css">
+      /* css comment */
+      div.border {
+        border: 1px solid black;
+        padding: 3px;
+      }
+      #foo code {
+        font-family: courier, monospace;
+        font-size: 80%;
+        color: #448888;
+      }
+    </style>
+  </head>
+  <body id="page1">
+    <div class="center">
+      <!-- HTML comment -->
+      <p>I'll tell you a secret ...</p>
+    </div>
+  </body>
+</html>

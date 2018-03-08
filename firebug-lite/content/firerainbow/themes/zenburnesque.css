@@ -1,0 +1,32 @@
+/* Zenburnesque by William D. Neumann, converted from TextMate theme (Zenburnesque.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #404040;
+    font-family: Monaco, Courier New;
+    color: #DEDEDE;
+}
+
+.sourceRow.hovered {
+    background-color: #A08040;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #A0A0C0;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #709070;
+}
+
+.js-string {
+    color: #FF2020;
+}
+
+.js-atom {
+    color: #22C0FF;
+}
+
+.js-keyword {
+    color: #FFFFA0;
+}

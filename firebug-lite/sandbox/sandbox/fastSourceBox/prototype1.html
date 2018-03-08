@@ -1,0 +1,598 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/DTD/strict.dtd">
+<html debug="true">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>~ improved sourceBox prototype #1</title>
+<script type="text/javascript">
+// **********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************hi
+
+/**
+ * TODO: allow multiple sourceBoxes instances
+ *      - use CSS classes instead of ID
+ *      - link the node and metadata via UID
+ *
+ * DONE: calculate automatically the character width and height
+ * DONE: cut and paste friendly (line numbers ouside the line divs)
+ */
+
+// *************************************************************************************************
+// Options
+
+var viewFirebugSource = true;
+var sourceLocation = "../../../build/firebug-lite-beta.js";
+var sourceText;
+
+// If "viewFirebugSource" is true and "numberOfLinesRendered" is zero it will show
+// all lines of the "sourceLocation" file. If "viewFirebugSource" is true and
+// "numberOfLinesRendered" is greater than zero it will show the specified
+// number of lines of the "sourceLocation" file. If "viewFirebugSource" is false
+// it will show "numberOfLinesRendered" lines of this file itself repeatedly
+var numberOfLinesRendered = 0;
+var buffer = 24; // number of rendered lines after/before the viewable lines
+
+// *************************************************************************************************
+
+var isIE = document.all; // yeah browser detection sucks, but IE sucks way more...
+
+var lineNumberHorizontalPadding;
+var charHeight;
+var charWidth;
+
+var spacerHeight = numberOfLinesRendered * charHeight;
+var spacerWidth;
+var lineNumberWidth;
+
+var sourceBox;
+var sourceSpacer;
+var sourceBuffer;
+var lineCache;
+var maximumLineLength;
+
+var viewRange;
+var sourceBoxData;
+
+window.onload = function()
+{
+    var runButton = document.getElementById("run");
+
+    if (viewFirebugSource)
+    {
+        var loading = document.getElementById("loading");
+        loading.innerHTML = "requesting file...";
+        loading.style.display = "block";
+
+        setTimeout(function(){
+            var xhr = getXHRObject();
+            xhr.open("get", sourceLocation, true);
+            xhr.onreadystatechange = function()
+            {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                {
+                    runButton.disabled = false;
+                    loading.style.display = "none";
+                    loading.innerHTML = "";
+                    sourceText = xhr.responseText;
+                }
+            };
+            xhr.send();
+        },100);
+    }
+    else
+    {
+        runButton.disabled = false;
+    }
+};
+
+var run = function()
+{
+    sourceBox = document.getElementById("sourceBox");
+    sourceSpacer = document.getElementById("sourceSpacer");
+    sourceBuffer = document.getElementById("sourceBuffer");
+
+    calculateSizes();
+
+    generateLines();
+
+    var maximumLineNumberDigits = (""+numberOfLinesRendered).length;
+
+    lineNumberWidth = maximumLineNumberDigits * charWidth + lineNumberHorizontalPadding;
+
+    spacerWidth = maximumLineLength * charWidth + lineNumberHorizontalPadding;
+
+    sourceSpacer.style.borderLeftWidth = lineNumberWidth + "px";
+    sourceSpacer.style.height = spacerHeight + "px";
+    sourceSpacer.style.width = spacerWidth + "px";
+
+    // TODO: resize also the sourceBuffer
+    sourceBuffer.style.width = spacerWidth + "px";
+    //sourceBuffer.style.paddingLeft = lineNumberWidth + "px";
+
+    var scrollTop = sourceBox.scrollTop;
+    var firstLine = Math.floor(scrollTop/charHeight) + 1;
+
+    sourceBoxData =
+    {
+        viewport: sourceBuffer,
+        firstRenderedLine: firstLine,
+        lastRenderedLine: -1
+    };
+
+    sourceBox.onscroll = onScroll;
+
+    onScroll();
+}
+
+var calculateSizes = function()
+{
+    var doc = sourceBuffer.ownerDocument;
+    var lineNode = doc.createElement("div");
+    var charNode;
+    var lineNumberNode;
+
+    lineNode.style.visibility = "hidden";
+    lineNode.className = "sourceRow";
+
+    lineNode.innerHTML = "<div class='sourceLine'><span>0</span></div>";
+
+    sourceBuffer.appendChild(lineNode);
+
+    lineNumberNode = lineNode.firstChild;
+    charNode = lineNumberNode.firstChild;
+    charWidth = charNode.offsetWidth;
+    charHeight = charNode.offsetHeight;
+
+    lineNumberHorizontalPadding = lineNumberNode.offsetWidth - charWidth;
+
+    sourceBuffer.removeChild(lineNode);
+}
+
+var generateLines = function(source)
+{
+    lineCache = [];
+    maximumLineLength = 0;
+
+    if (viewFirebugSource)
+    {
+        var html = sourceText;
+    }
+    else
+    {
+        var html = document.documentElement.innerHTML;
+    }
+
+    html = html.replace(/\r\n/g, "\n");
+    var lines = ("\n"+html).split("\n");
+
+    var numberOfLinesAvailable = lines.length;
+
+    if (viewFirebugSource)
+    {
+        numberOfLinesRendered = numberOfLinesRendered || numberOfLinesAvailable-1;
+        spacerHeight = numberOfLinesRendered * charHeight;
+    }
+
+    var maximumLineNumberDigits = (""+numberOfLinesRendered).length;
+
+    for (var i = 0; i <= numberOfLinesRendered; i++)
+    {
+        var lineDigits = (""+i).length;
+        var numberOfSpaces = maximumLineNumberDigits - lineDigits;
+        var padding = new Array(numberOfSpaces+1).join(" ");
+
+        var strNumber = padding + i;
+
+        var line = lines[i % numberOfLinesAvailable];
+
+        var sourceRowText = line ? line.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "<br/>";
+        var lineHTML = '<div class="sourceRow" id="L'+i+'"><pre class="sourceLine">'+strNumber+'</pre><pre class="sourceRowText">'+sourceRowText+'</pre></div>';
+
+        if (line.length > maximumLineLength)
+            maximumLineLength = line.length;
+
+        lineCache.push(lineHTML);
+    }
+
+    return lineCache.join("");
+};
+
+var getXHRObject = function()
+{
+    var xhrObj = false;
+    try
+    {
+        xhrObj = new XMLHttpRequest();
+    }
+    catch(e)
+    {
+        var progid = [
+                "MSXML2.XMLHTTP.5.0", "MSXML2.XMLHTTP.4.0",
+                "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP", "Microsoft.XMLHTTP"
+            ];
+
+        for ( var i=0; i < progid.length; ++i ) {
+            try
+            {
+                xhrObj = new ActiveXObject(progid[i]);
+            }
+            catch(e)
+            {
+                continue;
+            }
+            break;
+        }
+    }
+    finally
+    {
+        return xhrObj;
+    }
+};
+
+/*
+var lastScroll = 0;
+var scrollTimer = 0;
+var delay = 300;
+
+var handleScroll = function()
+{
+    if (new Date().getTime() - lastScroll > delay)
+    {
+        if (scrollTimer)
+            clearTimeout(scrollTimer);
+
+        onScroll();
+        lastScroll = new Date().getTime();
+    }
+    else
+    {
+        if (scrollTimer)
+            clearTimeout(scrollTimer);
+
+        scrollTimer = setTimeout(onScroll, delay);
+    }
+};
+/**/
+
+var onScroll = function(event)
+{
+    var scrollTop = sourceBox.scrollTop;
+    var viewportHeight = sourceBox.offsetHeight;
+
+    var numberOfVisibleLines = Math.floor(viewportHeight/charHeight);
+
+    var firstLine = Math.floor(scrollTop/charHeight) + 1;
+    var lastLine = firstLine + numberOfVisibleLines - 1;
+
+    firstLine = Math.max(firstLine - buffer, 1);
+    lastLine = Math.min(lastLine + buffer, numberOfLinesRendered);
+
+    viewRange =
+    {
+        firstLine: firstLine,
+        lastLine: lastLine
+    };
+
+    var bufferHit = insertedLinesOverlapCache(sourceBoxData, viewRange);
+
+    if (bufferHit)
+    {
+        sourceBoxData.firstRenderedLine = Math.min(firstLine, sourceBoxData.firstRenderedLine);
+        sourceBoxData.lastRenderedLine = Math.max(lastLine, sourceBoxData.lastRenderedLine);
+    }
+    else
+    {
+        sourceBoxData.firstRenderedLine = firstLine;
+        sourceBoxData.lastRenderedLine = lastLine;
+    }
+
+    var offset = (sourceBoxData.firstRenderedLine-1) * charHeight;
+    sourceBuffer.style.top = offset + "px";
+}
+
+
+var getSourceLineHTML = function(line)
+{
+    return lineCache[line];
+};
+
+var getLineNode = function(no)
+{
+    return document.getElementById("L"+no);
+};
+
+var getLineNumberNode = function(no)
+{
+    return document.getElementById("LNO"+no);
+};
+
+var insertedLinesOverlapCache = function(sourceBoxData, viewRange)
+{
+    var bufferHit = false;
+
+    var linesBefore = []; // lines to be prepended
+    var linesAfter = []; // lines to be appended
+
+
+    if ( sourceBoxData.lastRenderedLine > 0 && // there is something in the buffer
+            ( viewRange.lastLine < sourceBoxData.firstRenderedLine || // whole range before the buffer
+              viewRange.firstLine > sourceBoxData.lastRenderedLine)) // whole range after the buffer
+    {
+        // if we are here there is no intersection between the range and the buffer,
+        // so the buffer must be cleared
+        if (sourceBuffer.parentNode)
+        {
+            ////var timeStart = new Date().getTime();
+
+            // fast way to clear the buffer. first, we create a non-recursive copy of the buffer
+            var newSourceLineBuffer = sourceBuffer.cloneNode(false);
+            // then replace the old buffer with the new one, removing all buffered lines at once
+            sourceBuffer.parentNode.replaceChild(newSourceLineBuffer, sourceBuffer);
+            // update the references
+            sourceBuffer = newSourceLineBuffer;
+            // TODO: xxxpedro remove this extra reference
+            sourceBoxData.viewport = newSourceLineBuffer;
+
+            ////var totalTime = new Date().getTime() - timeStart;
+            ////if (totalTime > 0)
+            ////alert(totalTime);
+
+            // IE will loose the focus of the element when replacing the childs,
+            // canceling the keyboard navigability. To work around this problem,
+            // we're forcing the scrollable element (sourceBox) to be focused.
+            // Focusing the element will cause an undesirable border to be rendered
+            // around the element in other browsers, so we're only doing it for IE.
+            if (isIE)
+            {
+                setTimeout(function(){
+                    sourceBox.focus()
+                },0);
+            }
+        }
+    }
+    else
+        // there is an intersection between the range and the buffer
+        bufferHit = true;
+
+    for (var line = viewRange.firstLine; line <= viewRange.lastLine; line++)
+    {
+        // if the line is inside the buffer
+        if (line >= sourceBoxData.firstRenderedLine && line <= sourceBoxData.lastRenderedLine )
+        {
+            // skip, because it is already rendered
+            continue;
+        }
+
+        // if we are here, the line is not buffered therefore it must be rendered
+
+        // get the pre-rendered line and line number markup
+        var lineHTML = lineCache[line];
+
+        if (line < sourceBoxData.firstRenderedLine)
+        {
+            // if we are before the buffer, queue lines to be prepended
+            linesBefore.push(lineHTML);
+        }
+        else
+        {
+            // if we are after the buffer, queue lines to be appended
+            linesAfter.push(lineHTML);
+        }
+    }
+
+    // there are lines to be prepended
+    if (linesBefore.length > 0)
+    {
+        var topCacheLine = getLineNode(sourceBoxData.firstRenderedLine);
+
+        // prepend all lines at once
+        appendInnerHTML(sourceBoxData.viewport, linesBefore.join(""), topCacheLine);
+    }
+
+    // there are lines to be appended
+    if (linesAfter.length > 0)
+    {
+        // append all lines at once
+        appendInnerHTML(sourceBoxData.viewport, linesAfter.join(""), null);
+    }
+
+    /*
+    if (lookForCorruption())
+    {
+        debugger;
+    }
+    /**/
+
+    return bufferHit;
+};
+
+var lookForCorruption = function()
+{
+    var childs = sourceBuffer.childNodes;
+    var length = childs.length;
+    var lineNumber;
+    var lastLineNumber;
+    var corrupted = false;
+
+    for (var i=0; i<length; i++)
+    {
+        lastLineNumber = lineNumber;
+
+        var child = childs[i];
+
+        lineNumber = child.id.substr(1)-0;
+
+        console.log(lineNumber);
+
+        if (lastLineNumber && lastLineNumber != (lineNumber - 1))
+        {
+            corrupted = true;
+            break;
+        }
+    }
+    return corrupted;
+};
+
+
+// TODO: xxxpedro use doc fragments in Context API
+var appendFragment = null;
+
+var appendInnerHTML = function(element, html, referenceElement)
+{
+    // if undefined, we must convert it to null otherwise it will throw an error in IE
+    // when executing element.insertBefore(firstChild, referenceElement)
+    referenceElement = referenceElement || null;
+
+    //console.log("appendInnerHTML ", !!referenceElement);
+
+    var doc = element.ownerDocument;
+
+    // doc.createRange not available in IE
+    if (doc.createRange)
+    {
+        var range = doc.createRange();  // a helper object
+        range.selectNodeContents(element); // the environment to interpret the html
+
+        var fragment = range.createContextualFragment(html);  // parse
+
+        //console.log("Appending "+fragment.childNodes.length);
+
+        var firstChild = fragment.firstChild;
+        element.insertBefore(fragment, referenceElement);
+    }
+    else
+    {
+        if (!appendFragment || appendFragment.ownerDocument != doc)
+            appendFragment = doc.createDocumentFragment();
+
+        var div = doc.createElement("div");
+        div.innerHTML = html;
+
+        //console.log("Appending "+div.childNodes.length);
+
+        var firstChild = div.firstChild;
+        while (div.firstChild)
+            appendFragment.appendChild(div.firstChild);
+
+        element.insertBefore(appendFragment, referenceElement);
+
+        div = null;
+    }
+
+    return firstChild;
+};
+
+
+</script>
+<style type="text/css">
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#sourceBox {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+
+    font-family: monospace;
+    font-size: 12px;
+}
+
+#sourceBuffer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.sourceRow {
+    -moz-user-select: text;
+}
+
+
+.sourceRowText {
+    margin: 0;
+    padding: 0 0 0 70px;
+}
+
+
+.sourceLine {
+    position: absolute;
+    background: #eee;
+
+    color: #777;
+
+    margin: 0;
+    padding: 0 4px 0 15px;
+    border-right: 1px solid #ccc;
+}
+
+lineNo-effects {
+
+    /*
+    border-right: 2px solid #ccc;
+    font-style: normal;
+    padding: 2px 5px;
+    color: #777;
+    /**/
+
+    background-image: -moz-linear-gradient(right, #ddd, #bbb); /* FF3.6 */
+    background-image: -webkit-gradient(linear,right top,left top,color-stop(0, #ddd),color-stop(1, #bbb)); /* Saf4+, Chrome */
+            filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#bbbbbb', EndColorStr='#dddddd', GradientType='1'); /* IE6,IE7 */
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bbbbbb', EndColorStr='#dddddd', GradientType='1')"; /* IE8 */
+
+}
+
+
+#sourceSpacer {
+    position: relative;
+    border-left: 1px solid #eee; /* reduces perceived flickering */
+}
+
+#loading {
+    position: absolute;
+    background: #ff0;
+    padding: 2px;
+    display: none;
+}
+
+</style>
+</head>
+<body>
+
+  <div id="loading">&nbsp;</div>
+
+  <div id="sourceBox">
+      <div id="sourceBuffer">
+      </div>
+      <div id="sourceSpacer">
+      </div>
+  </div>
+
+  <input disabled id="run" type="button" value="run" onclick="run()" /> <i>~ improved sourceBox prototype #1</i>
+
+  <ul>
+    <li>Buffered viewport (reduces flickering when scrolling to near locations)</li>
+    <li>Viewport spacer (eliminitates scrollbar flickering, allows scrolling horizontally)</li>
+    <li>Fast line insertion/deletion (documentFragment and element.replaceChild)</li>
+    <li>Faster rendering</li>
+    <ul>
+      <li>
+          Now we are repositioning/resizing elements much less frequently.
+          Only the sourceBuffer needs to be positioned (there are no padding
+          elements), and it needs to be repositioned only when scrolling up.
+      </li>
+      <li>
+          Elements are resized only when the size of the viewport changes (when
+          Firebug's UI is resized), but not when it is scrolling.
+      </li>
+      <li>
+          The width of the "line number bar" (the gray stuff) is being computed
+          via CSS which reduces a lot the reflow when scrolling.
+      </li>
+    </ul>
+  </ul>
+
+</body>
+</html>

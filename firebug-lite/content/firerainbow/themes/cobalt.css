@@ -1,0 +1,68 @@
+/* Cobalt by Jacob Rus, converted from TextMate theme (Cobalt.tmTheme) */
+
+.panelNode-script {
+    font-size: 11px;
+    background-color: #002240;
+    font-family: Monaco, Courier New;
+    color: #FFFFFF;
+}
+
+.sourceRow.hovered {
+    background-color: #000000;
+}
+
+.sourceRow[exeLine="true"] {
+    background-color: #B36539;
+}
+
+.js-atom {
+    color: #FF628C;
+}
+
+.js-keyword {
+    color: #FF9D00;
+}
+
+.js-comment, .xml-comment, .css-comment {
+    color: #0088FF;
+}
+
+.js-variable {
+    color: #CCCCCC;
+}
+
+.js-variabledef {
+    color: #FF80E1;
+}
+
+.js-regexp {
+    color: #80FFC2;
+}
+
+.xml-tagname {
+    color: #9EFFFF;
+}
+
+.css-identifier {
+    color: #9EFFFF;
+}
+
+.xml-attname {
+    color: #FFB454;
+}
+
+.xml-attname {
+    color: #5FE461;
+}
+
+.css-colorcode {
+    color: #9DF39F;
+}
+
+.css-value {
+    color: #F6F080;
+}
+
+.css-at {
+    color: #F6AA11;
+}

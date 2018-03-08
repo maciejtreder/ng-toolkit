@@ -1,0 +1,897 @@
+/* *************************************************************************************************
+ Global styles 
+************************************************************************************************* */
+
+body {
+    font-family: Lucida Grande,Tahoma,sans-serif;
+    font-size: 11px;
+    
+    height: 100%;
+    width: 100%;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+table {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    /*table-layout: fixed; /* IE SUCKS */ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/************************************************************************************************
+ General
+*************************************************************************************************/
+.fbBody {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    
+    font-family: Lucida Grande, Tahoma, sans-serif;
+    font-size: 11px;
+    background: #fff;
+}
+
+.clear {
+    clear: both;
+}
+
+
+/************************************************************************************************
+ Master Layout
+*************************************************************************************************/
+#fbChrome {
+    font-family: Lucida Grande, Tahoma, sans-serif;
+    font-size: 11px;
+    position: absolute;
+    _position: static;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    overflow: hidden;
+}
+
+#fbTop {
+    height: 49px;
+}
+
+#fbToolbar {
+    background: url(sprite.png) #f1f2ee 0 0;
+    height: 27px;
+    font-size: 11px;
+}
+
+#fbWindowButtons {
+    position: absolute;
+    white-space: nowrap;
+    right: 0;
+    top: 0;
+    height: 17px;
+    width: 48px;
+    padding: 5px;
+    z-index: 6;
+    background: url(sprite.png) #f1f2ee 0 0;
+}
+
+#fbPanelBarBox {
+    background: url(sprite.png) #dbd9c9 0 -27px;
+    height: 22px;
+}
+
+#fbContent {
+    height: 100%;
+    vertical-align: top;
+}
+
+#fbBottom {
+    height: 18px;
+    background: #fff;
+}
+
+
+/************************************************************************************************
+ Sub-Layout 
+*************************************************************************************************/
+
+/* fbToolbar 
+*************************************************************************************************/
+
+.fbToolbarButtons {
+    zdisplay: none;
+}
+
+
+#fbToolbarContent {
+    display: block;
+    position: absolute;
+    _position: absolute;
+    top: 0;
+    padding-top: 4px;
+    height: 23px;
+    clip: rect(0, 2048px, 27px, 0);
+}
+
+#fbToolbarIcon {
+    float: left;
+    padding: 0 5px 0;
+}
+
+#fbToolbarIcon a {
+    background: url(sprite.png) 0 -135px;
+}
+
+#fbToolbarButtons {
+    padding: 0 2px 0 5px;
+}
+
+#fbToolbarButtons {
+    padding: 0 2px 0 5px;
+}
+
+
+
+/* fbPanelBarBox
+*************************************************************************************************/
+
+#fbPanelBar1 {
+    width: 1024px; /* fixed width to avoid tabs breaking line */
+    z-index: 8;
+    left: 0;
+    white-space: nowrap;
+    background: url(sprite.png) #dbd9c9 0 -27px;
+    position: absolute;
+    left: 4px;
+}
+
+#fbPanelBar2Box {
+    background: url(sprite.png) #dbd9c9 0 -27px;
+    position: absolute;
+    height: 22px;
+    width: 300px; /* fixed width to avoid tabs breaking line */
+    z-index: 9;
+    right: 0;
+}
+
+#fbPanelBar2 {
+    position: absolute;
+    width: 290px; /* fixed width to avoid tabs breaking line */
+    height: 22px;
+    padding-left: 4px;
+}
+
+/* body 
+*************************************************************************************************/
+.fbPanel {
+    display: none;
+}
+
+#fbPanelBox1, #fbPanelBox2 {
+    max-height: inherit;
+    height: 100%;
+    font-size: 1em;
+}
+
+#fbPanelBox2 {
+    background: #fff;
+}
+
+#fbPanelBox2 {
+    width: 300px;
+    background: #fff;
+}
+
+#fbPanel2 {
+    margin-left: 6px;
+    background: #fff;
+}
+
+#fbLargeCommandLine {
+    display: none;
+    position: absolute;
+    z-index: 9;
+    top: 27px;
+    right: 0;
+    width: 294px;
+    height: 201px;
+    border-width: 0;
+    margin: 0;
+    padding: 2px 0 0 2px;
+    resize: none;
+    outline: none;
+    font-size: 11px;
+    overflow: auto;
+    border-top: 1px solid #B9B7AF;
+    _right: -1px;
+    _border-left: 1px solid #fff;
+}
+
+#fbLargeCommandButtons {
+    display: none;
+    background: #ECE9D8;
+    bottom: 0;
+    right: 0;
+    width: 294px;
+    height: 21px;
+    padding-top: 1px;
+    position: fixed;
+    border-top: 1px solid #ACA899;
+    z-index: 9;
+}
+
+#fbSmallCommandLineIcon {
+    background: url(down.png) no-repeat;
+    position: absolute;
+    right: 2px;
+    bottom: 3px;
+    
+    z-index: 99;
+}
+
+#fbSmallCommandLineIcon:hover {
+    background: url(downHover.png) no-repeat;
+}
+
+.hide {
+    overflow: hidden !important;
+    position: fixed !important;
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* fbBottom 
+*************************************************************************************************/
+
+#fbCommand {
+    height: 18px;
+}
+
+#fbCommandBox {
+    position: fixed;
+    _position: absolute;
+    width: 100%;
+    height: 18px;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 9;
+    background: #fff;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+#fbCommandIcon {
+    position: absolute;
+    color: #00f;
+    top: 2px;
+    left: 6px;
+    display: inline;
+    font: 11px Monaco, monospace;
+    z-index: 10;
+}
+
+#fbCommandLine {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border: 0;
+    margin: 0;
+    padding: 2px 0 2px 32px;
+    font: 11px Monaco, monospace;
+    z-index: 9;
+    outline: none;
+}
+
+#fbLargeCommandLineIcon {
+    background: url(up.png) no-repeat;
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    z-index: 10;
+}
+
+#fbLargeCommandLineIcon:hover {
+    background: url(upHover.png) no-repeat;
+}
+
+div.fbFitHeight {
+    overflow: auto;
+    position: relative;
+}
+
+
+/************************************************************************************************
+ Layout Controls
+*************************************************************************************************/
+
+/* fbToolbar buttons 
+*************************************************************************************************/
+.fbSmallButton {
+    overflow: hidden;
+    width: 16px;
+    height: 16px;
+    display: block;
+    text-decoration: none;
+    cursor: default;
+}
+
+#fbWindowButtons .fbSmallButton {
+    float: right;
+}
+
+#fbWindow_btClose {
+    background: url(min.png);
+}
+
+#fbWindow_btClose:hover {
+    background: url(minHover.png);
+}
+
+#fbWindow_btDetach {
+    background: url(detach.png);
+}
+
+#fbWindow_btDetach:hover {
+    background: url(detachHover.png);
+}
+
+#fbWindow_btDeactivate {
+    background: url(off.png);
+}
+
+#fbWindow_btDeactivate:hover {
+    background: url(offHover.png);
+}
+
+
+/* fbPanelBarBox tabs 
+*************************************************************************************************/
+.fbTab {
+    text-decoration: none;
+    zdisplay: none;
+    float: left;
+    width: auto;
+    float: left;
+    cursor: default;
+    font-family: Lucida Grande, Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 22px;
+    color: #565656;
+}
+
+.fbPanelBar span {
+    /*display: block; TODO: safe to remove this? */
+    float: left;
+}
+
+.fbPanelBar .fbTabL,.fbPanelBar .fbTabR {
+    height: 22px;
+    width: 8px;
+}
+
+.fbPanelBar .fbTabText {
+    padding: 4px 1px 0;
+}
+
+a.fbTab:hover {
+    background: url(sprite.png) 0 -73px;
+}
+
+a.fbTab:hover .fbTabL {
+    background: url(sprite.png) -16px -96px;
+}
+
+a.fbTab:hover .fbTabR {
+    background: url(sprite.png) -24px -96px;
+}
+
+.fbSelectedTab {
+    background: url(sprite.png) #f1f2ee 0 -50px !important;
+    color: #000;
+}
+
+.fbSelectedTab .fbTabL {
+    background: url(sprite.png) 0 -96px !important;
+}
+
+.fbSelectedTab .fbTabR {
+    background: url(sprite.png) -8px -96px !important;
+}
+
+/* splitters 
+*************************************************************************************************/
+#fbHSplitter {
+    position: fixed;
+    _position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    cursor: n-resize !important;
+    background: url(pixel_transparent.gif);
+    z-index: 9;
+}
+
+#fbHSplitter.fbOnMovingHSplitter {
+    height: 100%;
+    z-index: 100;
+}
+
+.fbVSplitter {
+    background: #ece9d8;
+    color: #000;
+    border: 1px solid #716f64;
+    border-width: 0 1px;
+    border-left-color: #aca899;
+    width: 4px;
+    cursor: e-resize;
+    overflow: hidden;
+    right: 294px;
+    text-decoration: none;
+    z-index: 10;
+    position: absolute;
+    height: 100%;
+    top: 27px;
+}
+
+
+/************************************************************************************************
+ Mini Chrome
+*************************************************************************************************/
+
+#fbMiniChrome {
+    display: none;
+    right: 0;
+    height: 27px;
+    background: url(sprite.png) #f1f2ee 0 0;
+    margin-left: 1px;
+}
+
+#fbMiniContent {
+    display: block;
+    position: relative;
+    left: -1px;
+    right: 0;
+    top: 1px;
+    height: 25px;
+    border-left: 1px solid #aca899;
+}
+
+#fbToolbarSearch {
+    float: right;
+    border: 1px solid #ccc;
+    margin: 0 5px 0 0;
+    background: #fff url(search.png) no-repeat 4px 2px !important;
+    background: #fff url(search.gif) no-repeat 4px 2px;
+    padding-left: 20px;    
+    font-size: 11px;
+}
+
+#fbToolbarErrors {
+    float: right;
+    margin: 1px 4px 0 0;
+    font-size: 11px;
+}
+
+#fbLeftToolbarErrors {
+    float: left;
+    margin: 7px 0px 0 5px;
+    font-size: 11px;
+}
+
+.fbErrors {
+    padding-left: 20px;
+    height: 14px;
+    background: url(errorIcon.png) no-repeat !important;
+    background: url(errorIcon.gif) no-repeat;
+    color: #f00;
+    font-weight: bold;    
+}
+
+#fbMiniErrors {
+    display: inline;
+    display: none;
+    float: right;
+    margin: 5px 2px 0 5px;
+}
+
+#fbMiniIcon {
+    float: right;
+    margin: 3px 4px 0;
+    height: 20px;
+    width: 20px;
+    float: right;    
+    background: url(sprite.png) 0 -135px;
+    cursor: pointer;
+}
+
+
+/************************************************************************************************
+ External Window
+*************************************************************************************************/
+
+/*
+.FirebugPopup {
+    height: 100% !important;
+}
+
+.FirebugPopup #fbWindowButtons {
+    display: none !important;
+}
+
+.FirebugPopup #fbHSplitter {
+    display: none !important;
+}
+
+/**/
+
+
+
+
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+
+/* Components */
+
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+
+
+/************************************************************************************************
+ Button
+*************************************************************************************************/
+
+.fbButton {
+    text-decoration: none;
+    display: block;
+    float: left;
+    color: #000;
+    padding: 4px 6px 4px 7px;
+    cursor: default;
+}
+
+.fbButton:hover {
+    color: #333;
+    background: #f5f5ef url(buttonBg.png);
+    padding: 3px 5px 3px 6px;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+}
+
+.fbBtnPressed {
+    background: #e3e3db url(buttonBgHover.png) !important;
+    padding: 3px 4px 2px 6px !important;
+    margin: 1px 0 0 1px !important;
+    border: 1px solid #ACA899 !important;
+    border-color: #ACA899 #ECEBE3 #ECEBE3 #ACA899 !important;
+}
+
+#fbStatusBarBox {
+    top: 4px;
+    cursor: default;    
+}
+
+.fbToolbarSeparator {
+    overflow: hidden;
+    border: 1px solid;
+    border-color: transparent #fff transparent #777;
+    _border-color: #eee #fff #eee #777;
+    height: 7px;
+    margin: 6px 3px;
+    float: left;
+}
+
+.fbBtnSelected {
+    font-weight: bold;
+}
+
+
+
+/************************************************************************************************
+ Icon Button
+*************************************************************************************************/
+
+.fbIconButton {
+    display: block;
+}
+
+.fbIconButton {
+    display: block;
+}
+
+.fbIconButton {
+    display: block;
+    float: left;
+    height: 20px;
+    width: 20px;
+    color: #000;
+    margin-right: 2px;
+    text-decoration: none;
+    cursor: default;
+}
+
+.fbIconButton:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    margin-right: 0;
+    _margin-right: 1px;
+    color: #333;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+}
+
+.fbIconPressed {
+    position: relative;
+    margin-right: 0;
+    _margin-right: 1px;
+    top: 0 !important;
+    left: 0 !important;
+    height: 19px;
+    color: #333 !important;
+    border: 1px solid #bbb !important;
+    border-bottom: 1px solid #cfcfcf !important;
+    border-right: 1px solid #ddd !important;
+}
+
+.fbBtnInspectActive {
+    background: #aaa;
+    color: #fff !important;
+}
+
+
+/************************************************************************************************
+ Menu
+*************************************************************************************************/
+
+.fbTabMenuTarget {
+    display: none !important;
+    float: left;
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    background: url(tabMenuTarget.png);   
+}
+
+.fbTabMenuTarget:hover {
+    background: url(tabMenuTargetHover.png);   
+}
+
+.fbShadow {
+    float: left;
+    background: url(shadowAlpha.png) no-repeat bottom right !important;
+    background: url(shadow2.gif) no-repeat bottom right;
+    margin: 10px 0 0 10px !important;
+    margin: 10px 0 0 5px;
+}
+
+.fbShadowContent {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #a9a9a9;
+    top: -6px;
+    left: -6px;
+}
+
+.fbMenu {
+    display: none;
+    position: absolute;
+    font-size: 11px;
+    z-index: 2147483647;
+}
+
+.fbMenuContent {
+    padding: 2px;
+}
+
+.fbMenuSeparator {
+    display: block;
+    position: relative;
+    padding: 1px 18px 0;
+    text-decoration: none;
+    color: #000;
+    cursor: default;    
+    background: #ACA899;
+    margin: 4px 0;
+}
+
+.fbMenuOption
+{
+    display: block;
+    position: relative;
+    padding: 2px 18px;
+    text-decoration: none;
+    color: #000;
+    cursor: default;
+}
+
+.fbMenuOption:hover
+{
+    color: #fff;
+    background: #316AC5;
+}
+
+.fbMenuGroup {
+    background: transparent url(tabMenuPin.png) no-repeat right 0;
+}
+
+.fbMenuGroup:hover {
+    background: #316AC5 url(tabMenuPin.png) no-repeat right -17px;
+}
+
+.fbMenuGroupSelected {
+    color: #fff;
+    background: #316AC5 url(tabMenuPin.png) no-repeat right -17px;
+}
+
+.fbMenuChecked  {
+    background: transparent url(tabMenuCheckbox.png) no-repeat 4px 0;
+}
+
+.fbMenuChecked:hover {
+    background: #316AC5 url(tabMenuCheckbox.png) no-repeat 4px -17px;
+}
+
+.fbMenuRadioSelected {
+    background: transparent url(tabMenuRadio.png) no-repeat 4px 0;
+}
+
+.fbMenuRadioSelected:hover {
+    background: #316AC5 url(tabMenuRadio.png) no-repeat 4px -17px;
+}
+
+.fbMenuShortcut {
+    padding-right: 85px; 
+}
+
+.fbMenuShortcutKey {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 77px;
+}
+
+#fbFirebugMenu {
+    top: 22px;
+    left: 0;
+}
+
+.fbMenuDisabled {
+    color: #ACA899 !important;
+}
+
+#fbFirebugSettingsMenu {
+    left: 245px;
+    top: 99px;
+}
+
+#fbConsoleMenu {
+    top: 42px;
+    left: 48px;
+}
+
+
+/************************************************************************************************
+ Status Bar
+*************************************************************************************************/
+
+#fbHTMLStatusBar {
+    display: inline;
+}
+
+.fbStatusSeparator{
+    display: block;
+    float: left;
+    padding-top: 4px;
+}
+
+#fbStatusBarBox {
+    display: none;
+}
+
+.fbStatusBar {
+    color: #aca899;
+}
+
+.fbStatusBar a {
+    text-decoration: none;
+    color: black;
+}
+
+.fbStatusBar a:hover {
+    color: blue;
+    cursor: pointer;    
+}
+
+
+/************************************************************************************************
+ Status Bar (previously commented)
+*************************************************************************************************/
+
+/*
+#fbStatusBarBox a {
+    text-decoration: none;
+    display: block;
+    float: left;
+    color: #000;
+    padding: 4px 5px;
+    margin: 0 0 0 1px;
+    cursor: default;
+}
+
+#fbStatusBarBox a:hover {
+    color: #333;
+    padding: 3px 4px;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+}
+/**/
+
+
+/************************************************************************************************
+ Error Popup
+*************************************************************************************************/
+#fbErrorPopup {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 19px;
+    width: 75px;
+    background: url(sprite.png) #f1f2ee 0 0;
+    z-index: 999;
+}
+
+#fbErrorPopupContent {
+    position: absolute;
+    right: 0;
+    top: 1px;
+    height: 18px;
+    width: 75px;
+    _width: 74px;
+    border-left: 1px solid #aca899;
+}
+
+#fbErrorIndicator {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+}
