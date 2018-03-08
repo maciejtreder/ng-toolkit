@@ -108,7 +108,6 @@ module.exports =  {
             crypto: 'empty',
             module: false,
             clearImmediate: false,
-            setImmediate: false,
-            fs: 'empty'
+            setImmediate: false
         }
 }
