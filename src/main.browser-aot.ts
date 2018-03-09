@@ -7,44 +7,20 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromPromise';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { ApplicationRef, enableProdMode } from '@angular/core';
-import { enableDebugTools } from '@angular/platform-browser';
+import { enableProdMode } from '@angular/core';
 import { bootloader } from '@angularclass/hmr';
 import { BrowserAppModuleNgFactory } from './app/browser-app.module.ngfactory';
+import { decorateModuleRef, googleAnalytics } from './main.browser.shared';
 
 if (process.env.NODE_ENV === 'production') {
     enableProdMode();
-
-    const script = document.createElement('script');
-    const scriptGA = document.createElement('script');
-    scriptGA.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=UA-109145893-2');
-    script.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-109145893-2');
-    `;
-
-    document.body.appendChild(scriptGA);
-    document.body.appendChild(script);
 }
-
-const decorateModuleRef = (modRef: any) => {
-    const appRef = modRef.injector.get(ApplicationRef);
-    const cmpRef = appRef.components[0];
-
-    const _ng = (window as any).ng;
-    enableDebugTools(cmpRef);
-    (window as any).ng.probe = _ng.probe;
-    (window as any).ng.coreTokens = _ng.coreTokens;
-    return modRef;
-};
 
 export function main(): Promise<any> {
     return platformBrowserDynamic()
         .bootstrapModuleFactory(BrowserAppModuleNgFactory)
         .then(decorateModuleRef)
+        .then(googleAnalytics)
         .catch((err) => console.error(err));
 }
 
