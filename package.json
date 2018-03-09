@@ -25,12 +25,14 @@
     "ngsw-copy": "cpx node_modules/@angular/service-worker/ngsw-worker.js dist/",
     "build:prod": "npm-run-all test build:prod:client build:sass ngsw-copy service-worker build:prod:server",
     "service-worker": "ngsw-config dist src/ngsw-config.json",
-    "build:deploy": "npm-run-all build:prod deploy",
+    "build:deploy:aws": "npm-run-all build:prod deploy:aws",
+    "build:deploy:gcloud": "npm-run-all build:prod deploy:gcloud",
     "build:sass": "node-sass  --include-path node_modules --importer node_modules/node-sass-import --output-style compressed -q src/styles/main.scss -o src/styles",
     "build:sass:watch": "npm run build:sass && node-sass -w --include-path node_modules --importer node_modules/node-sass-import --output-style compressed -q src/styles/main.scss -o src/styles",
     "prebuild:prod": "rimraf dist",
     "server": "node local.js",
-    "deploy": "serverless deploy"
+    "deploy:aws": "cpx serverless-aws.yml serverless.yml && serverless deploy",
+    "deploy:gcloud": "cpx serverless-gcloud.yml serverless.yml && serverless deploy"
   },
   "engines": {
     "node": ">=6.0.0"
