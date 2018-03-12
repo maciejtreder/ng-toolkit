@@ -12,9 +12,10 @@ plugins:
 
 package:
   exclude:
-    - node_modules/**
+    #- node_modules/**
     - .gitignore
     - .git/**
+    #- '!node_modules/firebase-functions/**'
 
 functions:
   helloWorld:
