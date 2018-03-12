@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
     public isSafari: boolean = false;
     public subscribeText: Subject<string> = new ReplaySubject();
     public menuElements: MenuElement[] = [
+        {link: 'https://donorbox.org/angular-universal-pwa', icon: 'attach_money', text: 'Donate'},
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
         {link: '/external', icon: 'call_merge', text: 'External module'},

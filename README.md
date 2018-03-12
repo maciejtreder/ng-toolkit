@@ -1,5 +1,8 @@
 # Angular 5 Universal Progressive Web App - starter
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
+If you like it, use the link below :)
+[![Donate this project](https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png)](https://donorbox.org/angular-universal-pwa)
+
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
