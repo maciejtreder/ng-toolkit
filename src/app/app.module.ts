@@ -8,10 +8,8 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationService } from './services/notification.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Meta } from '@angular/platform-browser';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule } from '@ngx-translate/core';
 
 const routes: any[] = [
     { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
@@ -19,21 +17,14 @@ const routes: any[] = [
     { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}
 ];
 
-export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http);
-}
-
 @NgModule({
   imports: [
       MatButtonModule,
       MatSnackBarModule,
       MatMenuModule,
-      HttpClientModule,
     CommonModule,
       RouterModule.forRoot(routes),
-      TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]}
-      })
+      TranslateModule.forChild()
   ],
   declarations: [ AppComponent, HomeComponent, MenuComponent ],
   exports: [ AppComponent ],
