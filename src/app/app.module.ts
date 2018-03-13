@@ -8,14 +8,20 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu.component';
 import { HomeComponent } from './home/home.component';
 import { NotificationService } from './services/notification.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Meta } from '@angular/platform-browser';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 const routes: any[] = [
     { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
     { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
     { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}
 ];
+
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   imports: [
@@ -24,7 +30,10 @@ const routes: any[] = [
       MatMenuModule,
       HttpClientModule,
     CommonModule,
-      RouterModule.forRoot(routes)
+      RouterModule.forRoot(routes),
+      TranslateModule.forRoot({
+          loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]}
+      })
   ],
   declarations: [ AppComponent, HomeComponent, MenuComponent ],
   exports: [ AppComponent ],

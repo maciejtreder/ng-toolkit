@@ -52,6 +52,8 @@
     "@angular/service-worker": "5.2.0",
     "@angularclass/hmr": "^2.1.3",
     "@nguniversal/express-engine": "~5.0.0-beta.6",
+    "@ngx-translate/core": "^9.1.1",
+    "@ngx-translate/http-loader": "^2.0.1",
     "aws-serverless-express": "3.0.0",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
