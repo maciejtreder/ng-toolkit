@@ -12,3 +12,4 @@ dll
 /src/styles/main.css
 /firebug-lite
 firebug-lite.tar.tgz
+serverless.yml

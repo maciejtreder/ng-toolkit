@@ -1,0 +1,24 @@
+service: another-my-service
+
+provider:
+  name: google
+  runtime: nodejs
+  project: another-project-197513
+  # the path to the credentials file needs to be absolute
+  credentials: ~/.gcloud/key.json
+
+plugins:
+  - serverless-google-cloudfunctions
+
+package:
+  exclude:
+    #- node_modules/**
+    - .gitignore
+    - .git/**
+    #- '!node_modules/firebase-functions/**'
+
+functions:
+  helloWorld:
+    handler: http
+    events:
+      - http: path

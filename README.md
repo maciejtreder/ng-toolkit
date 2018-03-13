@@ -8,7 +8,7 @@ If you like it, use the link below :)
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
-It is prepared to be easily deployed on serverless environment (like AWS Lambda).
+It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
 
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
@@ -61,10 +61,15 @@ npm run server
 
 ## Deploy on AWS Lambda
 ```sh
-npm run build:deploy
+npm run build:deploy:aws
 ```
+
+## Deploy on Google Cloud Functions
+```sh
+npm run build:deploy:gcloud
+```
+
 ## To do
-* Google Cloud support
 * microservices support - make replacement eligible external module without recompiling whole app
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
