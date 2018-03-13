@@ -19,6 +19,7 @@ export class MenuComponent implements OnInit {
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
         {link: '/external', icon: 'call_merge', text: 'External module'},
+        {link: '/ngxTranslate', icon: 'language', text: 'Ngx Translate'},
         {link: 'https://github.com/maciejtreder/angular-universal-pwa', icon: 'code', text: 'Fork on github'},
         ];
     @Input('contextual')

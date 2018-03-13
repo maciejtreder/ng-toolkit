@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { SnackBarNotification, SnackBarService } from './services/snack-bar.service';
 import { WindowRef } from './windowRef';
 import { SwUpdate } from '@angular/service-worker';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app',
@@ -15,8 +16,11 @@ export class AppComponent implements OnInit {
         @Inject(PLATFORM_ID) private platformId: any,
         private snackBarService: SnackBarService,
         private windowRef: WindowRef,
-        private swUpdate: SwUpdate
-    ) {}
+        private swUpdate: SwUpdate,
+        private translate: TranslateService
+    ) {
+        this.translate.setDefaultLang(this.translate.getBrowserLang());
+    }
 
     public ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
