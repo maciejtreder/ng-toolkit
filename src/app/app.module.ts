@@ -10,9 +10,11 @@ import { HomeComponent } from './home/home.component';
 import { NotificationService } from './services/notification.service';
 import { Meta } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
+import { DonorsComponent } from './donors/donors.component';
 
 const routes: any[] = [
     { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
+    { path: 'donors', component: DonorsComponent, data: {title: 'Donors', description: 'List of donations.'}},
     { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
     { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}
 ];
@@ -26,7 +28,7 @@ const routes: any[] = [
       RouterModule.forRoot(routes),
       TranslateModule.forChild()
   ],
-  declarations: [ AppComponent, HomeComponent, MenuComponent ],
+  declarations: [ AppComponent, HomeComponent, MenuComponent, DonorsComponent ],
   exports: [ AppComponent ],
   providers: [
     WindowRef,
