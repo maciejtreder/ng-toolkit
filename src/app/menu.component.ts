@@ -11,11 +11,10 @@ import { NotificationService } from './services/notification.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-    public isRegistered: Observable<boolean> = this.ns.isSubscribed();
     public isSafari: boolean = false;
     public subscribeText: Subject<string> = new ReplaySubject();
     public menuElements: MenuElement[] = [
-        {link: 'https://donorbox.org/angular-universal-pwa', icon: 'attach_money', text: 'Donate'},
+        {link: '/donors', icon: 'attach_money', text: 'Donors'},
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
         {link: '/external', icon: 'call_merge', text: 'External module'},
