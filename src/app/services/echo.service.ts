@@ -10,4 +10,9 @@ export class EchoService {
 	public getPosts(): Observable<IPost[]> {
 		return this.httpClient.get<IPost[]>('https://jsonplaceholder.typicode.com/posts');
 	}
+
+    public getPost(id: number): Observable<IPost> {
+        return this.httpClient.get<IPost>('https://jsonplaceholder.typicode.com/posts/' + id);
+    }
+
 } 
