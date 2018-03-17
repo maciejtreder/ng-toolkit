@@ -31,6 +31,7 @@
     "@angular/core": "^5.2.4",
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
+    "@angular/router": "^5.2.9",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "rxjs": "^5.5.6",
