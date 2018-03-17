@@ -1,18 +1,17 @@
-import { Observable } from 'rxjs';
 import { IPost } from '../model/ipost';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EchoService } from '../services/echo.service';
 
 @Component({
-    template: '<h1>{{(post | async)?.title}}</h1><p>{{(post | async)?.body}}</p>'
+   template: '<h1>{{post.title}}</h1><p>{{post.body}}</p>'
 })
 export class PostComponent implements OnInit {
-    public post: Observable<IPost>;
+   public post: IPost;
 
-    constructor(private route: ActivatedRoute, private echoService: EchoService){}
+   constructor(private route: ActivatedRoute){}
 
-    ngOnInit() {
-        this.post = this.echoService.getPost(this.route.snapshot.params['id']);
-    }
+   ngOnInit() {
+       this.post = this.route.snapshot.data.post;
+   }
 }
+
