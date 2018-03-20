@@ -13,11 +13,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DonorsComponent } from './donors/donors.component';
 import { ExampleApiService } from './services/exampleApi.service';
 import { WithTransferStateComponent } from './transferState/withTransferState.component';
-import { PingWithTransferStateResolver } from './services/resolvers/pingWithTransferState.resolver';
+import { HitWithTransferStateResolver } from './services/resolvers/hitWithTransferState.resolver';
 import { TransferStateComponent } from './transferState/transferState.component';
 import { WithoutTransferStateComponent } from './transferState/withoutTransferState.component';
-import { PingWithoutTransferStateResolver } from './services/resolvers/pingWithoutTransferState.resolver';
-import { CountResolver } from './services/resolvers/count.resolver';
+import { HitWithoutTransferStateResolver } from './services/resolvers/hitWithoutTransferState.resolver';
 
 const routes: any[] = [
     { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
@@ -26,8 +25,8 @@ const routes: any[] = [
     { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}},
     { path: 'transferState', children: [
         { path: '', component: TransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}},
-        { path: 'with', component: WithTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {ping: PingWithTransferStateResolver, count: CountResolver}},
-        { path: 'without', component: WithoutTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {ping: PingWithoutTransferStateResolver, count: CountResolver}}
+        { path: 'with', component: WithTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {hits: HitWithTransferStateResolver}},
+        { path: 'without', component: WithoutTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {hits: HitWithoutTransferStateResolver}}
     ]}
 ];
 
@@ -47,9 +46,8 @@ const routes: any[] = [
     SnackBarService,
     NotificationService,
     ExampleApiService,
-    PingWithTransferStateResolver,
-    PingWithoutTransferStateResolver,
-      CountResolver
+    HitWithTransferStateResolver,
+    HitWithoutTransferStateResolver
   ]
 })
 export class AppModule {

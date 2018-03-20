@@ -7,14 +7,14 @@ import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser
 import { isPlatformServer } from '@angular/common';
 
 @Injectable()
-export class PingWithTransferStateResolver implements Resolve<string> {
+export class HitWithTransferStateResolver implements Resolve<string> {
     private key: StateKey<string> = makeStateKey<string>('response');
 
     constructor(private api: ExampleApiService, private transferState: TransferState, @Inject(PLATFORM_ID) private platformId: any) {}
 
     public resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
         if (!this.transferState.hasKey(this.key)) {
-            return this.api.ping().do((response: string) => {
+            return this.api.hit().do((response: string) => {
                 if (isPlatformServer(this.platformId)) {
                     this.transferState.set(this.key, response);
                 }

@@ -5,6 +5,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./transferState.component.css']
 })
 export class TransferStateComponent {
-    public responsePing: string;
-    public responseCount: number;
+    public hits: string;
 }
