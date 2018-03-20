@@ -4,10 +4,10 @@ import { ExampleApiService } from '../exampleApi.service';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class CountResolver implements Resolve<string> {
+export class HitWithoutTransferStateResolver implements Resolve<string> {
     constructor(private api: ExampleApiService) {}
 
     public resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
-        return this.api.count();
+        return this.api.hit();
     }
 }

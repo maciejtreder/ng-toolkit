@@ -25,9 +25,9 @@
 </p>
 
 <div>
-    <p>Response from /ping: <strong>{{responsePing}}</strong></p>
-    <p>Response from /requestCount: <strong>{{responseCount}}</strong></p>
-    <i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality - hard refresh this page (ctrl + shift + f5) or disable Service Worker in developer tools.</i>
+    <p>Number of hits: <strong>{{hits}}</strong></p>
+    <p><i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality - hard refresh this page (ctrl + shift + f5) or disable Service Worker in developer tools.</i></p>
+    <p><u>Note:</u> if multiple users uses this page in the same time, hitCount may be increasing by more then 1 or 2.</p>
     <div>
         <a mat-raised-button routerLink="/transferState/with">Try with TransferState</a>
         <a mat-raised-button routerLink="/transferState/without">Try without TransferState</a>

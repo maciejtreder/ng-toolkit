@@ -8,11 +8,7 @@ export class ExampleApiService {
 
     constructor(private http: HttpClient) {}
 
-    public ping(): Observable<string> {
-        return this.http.get(this.host + '/ping', {responseType: 'text'});
-    }
-
-    public count(): Observable<string> {
-        return this.http.get(this.host + '/count', {responseType: 'text'});
+    public hit(): Observable<string> {
+        return this.http.get(this.host + '/hit', {responseType: 'text'});
     }
 }

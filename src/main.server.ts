@@ -33,14 +33,10 @@ app.set('views', 'dist');
 
 app.use('/', express.static('dist', { index: false }));
 
-let pingCount = 0;
-app.get('/ping', (req, res) => {
-    pingCount++;
-    res.send('pong');
-});
-
-app.get('/count', (req, res) => {
-    res.send(pingCount.toString());
+let hitCount = 0;
+app.get('/hit', (req, res) => {
+    hitCount++;
+    res.send(hitCount.toString());
 });
 
 app.get('/**', (req, res) => {

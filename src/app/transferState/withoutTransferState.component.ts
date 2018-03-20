@@ -6,13 +6,11 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./transferState.component.css']
 })
 export class WithoutTransferStateComponent implements OnInit {
-    public responsePing: string;
-    public responseCount: number;
+    public hits: string;
 
     constructor(private route: ActivatedRoute) {}
 
     public ngOnInit() {
-        this.responsePing = this.route.snapshot.data.ping;
-        this.responseCount = this.route.snapshot.data.count;
+        this.hits = this.route.snapshot.data.hits;
     }
 }
