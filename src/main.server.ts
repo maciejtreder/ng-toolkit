@@ -39,7 +39,16 @@ app.get('/**', (req, res) => {
         res.end();
         return;
     }
-    res.render('index', {req, res});
+    res.render('index', {req, res}, (err, html) => {
+        if (html) {
+            if (req.headers.host.indexOf('amazonaws.com') > 0) {
+                html = html.replace('<base href="/', '<base href="/production/');
+            }
+            res.send(html);
+        } else {
+            res.send(err);
+        }
+    });
 });
 
 // redirection from safari notification to given external page
