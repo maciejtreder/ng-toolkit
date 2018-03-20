@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,7 +33,8 @@ export function universalLoader(): TranslateLoader {
       ServiceWorkerModuleMock,
       TranslateModule.forRoot({
           loader: {provide: TranslateLoader, useFactory: universalLoader}
-      })
+      }),
+      ServerTransferStateModule
   ]
 })
 export class ServerAppModule {}

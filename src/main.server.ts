@@ -33,6 +33,16 @@ app.set('views', 'dist');
 
 app.use('/', express.static('dist', { index: false }));
 
+let pingCount = 0;
+app.get('/ping', (req, res) => {
+    pingCount++;
+    res.send('pong');
+});
+
+app.get('/count', (req, res) => {
+    res.send(pingCount.toString());
+});
+
 app.get('/**', (req, res) => {
     if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
         res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
