@@ -1,0 +1,35 @@
+<h1>TransferState</h1>
+
+<p>Most of server-side rendered sites have one big problem. Back-end is requested twice in case of initial load. Why? This is how user action flow looks like:</p>
+    <ol>
+    <li>Request page; ie: https://www.angular-universal-pwa.maciejtreder.com/transferState</li>
+    <li>Request reach back-end:
+        <ol>
+            <li>Back-end launches Angular and starts rendering the view</li>
+            <li><strong>Back-end performs request to the API to fetch data for component (https://www.angular-universal-pwa.maciejtreder.com/ping)</strong></li>
+        </ol>
+    </li>
+    <li>HTML is send back to the user</li>
+    <li>User browser renders view from the given html and css
+        <ol>
+            <li>User browser launches JavaScript -> Angular comes into the game</li>
+            <li><strong>Browser performs request to the API to fetch data for component (https://www.angular-universal-pwa.maciejtreder.com/ping)</strong></li>
+        </ol>
+    </li>
+</ol>
+
+<p>
+    To avoid such repetitive requests, Angular 5 comes with <strong>TransferState</strong>.
+    This mechanism give front-end and back-end a possiblity to "communicate".
+    In other words, front-end retrieves from the back-end collection of key -> value sets with the data which back-end already retrieved from external services.
+</p>
+
+<div>
+    <p>Response from /ping: <strong>{{responsePing}}</strong></p>
+    <p>Response from /requestCount: <strong>{{responseCount}}</strong></p>
+    <i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality - hard refresh this page (ctrl + shift + f5) or disable Service Worker in developer tools.</i>
+    <div>
+        <a mat-raised-button routerLink="/transferState/with">Try with TransferState</a>
+        <a mat-raised-button routerLink="/transferState/without">Try without TransferState</a>
+    </div>
+</div>

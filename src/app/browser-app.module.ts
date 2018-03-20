@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +24,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         HttpClientModule,
         TranslateModule.forRoot({
             loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]}
-        })
+        }),
+        BrowserTransferStateModule
     ]
 })
 export class BrowserAppModule {}

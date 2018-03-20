@@ -1,0 +1,13 @@
+div {
+    padding: 10px 5px;
+    border: 1px dashed gray;
+}
+div div {
+    border: 0;
+    justify-content: center;
+    display: flex;
+}
+
+div a {
+    margin: 0 10px;
+}
