@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ExampleApiService {
-    private host: string = 'https://www.angular-universal-pwa.maciejtreder.com';
+    private host: string = 'https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production';
 
     constructor(private http: HttpClient) {}
 

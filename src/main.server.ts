@@ -33,13 +33,13 @@ app.set('views', 'dist');
 
 app.use('/', express.static('dist', { index: false }));
 
-let hitCount = 0;
-app.get('/hit', (req, res) => {
-    hitCount++;
-    res.send(hitCount.toString());
+// redirection from safari notification to given external page
+app.get('/redirect/**', (req, res) => {
+    const location = req.url.substring(10);
+    res.redirect(301, location);
 });
 
-app.get('/**', (req, res) => {
+app.get('/*', (req, res) => {
     if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
         res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
         res.end();
@@ -55,12 +55,6 @@ app.get('/**', (req, res) => {
             res.send(err);
         }
     });
-});
-
-// redirection from safari notification to given external page
-app.get('/redirect/**', (req, res) => {
-  const location = req.url.substring(10);
-  res.redirect(301, location);
 });
 
 app.post('/testPost', (req, res) => {
