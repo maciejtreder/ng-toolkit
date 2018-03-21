@@ -1,4 +1,5 @@
-# Angular 5 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
+
+# Angular 5 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
@@ -8,11 +9,20 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
+
+ - [What's inside?](#wi)
+ - [Question, Problem or Feature Request?](#question)
+ - [Used Technologies](#tech)
+ - [Getting started](#start)
+ - [To do](#todo)
+ - [Funding](#funding)
+ - [Credentials](#credentials)
+
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 
-## What's inside?
+## <a name="wi"></a> What's inside?
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
 * AMP - Accelerated Mobile Pages - super fast initial load (down to ~650ms)
 * Push notifications:
@@ -26,10 +36,10 @@ This is a great starting point for **microservices application**! Because of sup
 * Unit tests
 * Firebug Lite (great solution for development on touch-screen devices, ie: iPad)
 
-## Looking for something more?
+## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
 
-### Used frameworks/technologies
+### <a name="tech"></a> Used frameworks/technologies
 * Angular 5.x
 * Webpack
 * UglifyJS
@@ -39,7 +49,7 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 * Serverless framework
 
 
-## Get Started
+## <a name="start"></a> Get Started
 ```sh
 git clone https://github.com/maciejtreder/angular-universal-pwa.git
 cd angular-universal-serverless
@@ -70,7 +80,7 @@ npm run build:deploy:aws
 npm run build:deploy:gcloud
 ```
 
-## To do
+## <a name="todo"></a> To do
 * microservices support - make replacement eligible external module without recompiling whole app
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
@@ -83,7 +93,7 @@ npm run build:deploy:gcloud
     * problems with compression of some files (.js files are not compressed in some cases)
     * needs a lot of manual setup (cloudfront setup etc.)
 
-## Funding
+## <a name="funding"></a> Funding
 
 You can support development of this project via
 [Open Collective](https://opencollective.com/angular-universal-pwa),
@@ -165,6 +175,6 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 
 
-## Credentials
+## <a name="credentials"></a> Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
 * Built on top of [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
