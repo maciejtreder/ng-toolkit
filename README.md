@@ -1,4 +1,4 @@
-# Angular 5 Universal Progressive Web App - starter
+# Angular 5 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
@@ -18,12 +18,16 @@ This is a great starting point for **microservices application**! Because of sup
 * Push notifications:
     * Vapid webpush (Chrome and Firefox) - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
     * Safari push - Using [aws-sns-webpush](https://github.com/maciejtreder/aws-sns-webpush) as back-end
+* Server-side rendering with Angular Universal
+* TransferState
 * Lazy loading modules
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
 * Angular Material
 * Unit tests
 * Firebug Lite (great solution for development on touch-screen devices, ie: iPad)
 
+## Looking for something more?
+Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
 
 ### Used frameworks/technologies
 * Angular 5.x
