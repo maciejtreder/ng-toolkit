@@ -1,10 +1,6 @@
 # Angular 5 Universal Progressive Web App - starter
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
 
-If you like it, use the link below :)
-
-[![Donate this project](https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png)](https://donorbox.org/angular-universal-pwa)
-
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
@@ -30,6 +26,7 @@ This is a great starting point for **microservices application**! Because of sup
 
 
 ### Used frameworks/technologies
+* Angular 5.x
 * Webpack
 * UglifyJS
 * OptimizeJS
@@ -81,6 +78,88 @@ npm run build:deploy:gcloud
     * problems with CORS on Chrome,
     * problems with compression of some files (.js files are not compressed in some cases)
     * needs a lot of manual setup (cloudfront setup etc.)
+
+## Funding
+
+You can support development of this project via
+[Open Collective](https://opencollective.com/angular-universal-pwa),
+[Donorbox](https://donorbox.org/angular-universal-pwa),
+[Liberapay](https://liberapay.com/maciejtreder/donate),
+
+
+### Open Collective Backers
+
+Support this project with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/angular-universal-pwa#backer)]
+
+<a href="https://opencollective.com/angular-universal-pwa/backer/0/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/1/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/2/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/2/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/3/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/3/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/4/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/4/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/5/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/5/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/6/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/6/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/7/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/7/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/8/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/8/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/9/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/9/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/10/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/10/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/11/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/11/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/12/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/12/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/13/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/13/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/14/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/14/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/15/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/15/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/16/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/16/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/17/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/17/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/18/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/18/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/19/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/19/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/20/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/20/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/21/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/21/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/22/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/22/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/23/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/23/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/24/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/24/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/25/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/25/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/26/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/26/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/27/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/27/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/28/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/28/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/backer/29/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backer/29/avatar.svg"></a>
+
+### Open Collective Sponsors
+
+Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor](https://opencollective.com/angular-universal-pwa#sponsor)]
+
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/0/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/1/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/2/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/3/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/4/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/5/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/6/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/7/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/8/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/9/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/10/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/10/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/11/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/11/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/12/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/12/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/13/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/13/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/14/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/14/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/15/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/15/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/16/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/16/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/17/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/17/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/18/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/18/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/19/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/19/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/20/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/20/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/21/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/21/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/22/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/22/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/23/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/23/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/24/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/24/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/25/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/25/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/26/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/26/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/27/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/27/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/28/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/28/avatar.svg"></a>
+<a href="https://opencollective.com/angular-universal-pwa/sponsor/29/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/29/avatar.svg"></a>
+
+
+
+
 
 ## Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
