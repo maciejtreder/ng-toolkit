@@ -11,26 +11,24 @@
     </div>
 </div>
 
-<p>Most of server-side rendered sites have one big problem. Back-end is requested twice in case of initial load. Why? This is how user action flow looks like:</p>
+<p>MMost of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
     <ol>
-    <li>Request page; ie: https://www.angular-universal-pwa.maciejtreder.com/transferState</li>
-    <li>Request reach back-end:
+    <li>Request page; i.e.: https://www.angular-universal-pwa.maciejtreder.com/transferState/without</li>
+    <li>Request reaches back-end:
         <ol>
             <li>Back-end launches Angular and starts rendering the view</li>
-            <li><strong>Back-end performs request to the API to fetch data for component (https://www.angular-universal-pwa.maciejtreder.com/ping)</strong></li>
+            <li><strong>Back-end performs the request to the API to fetch data for component (https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production/hit)</strong></li>
         </ol>
     </li>
-    <li>HTML is send back to the user</li>
-    <li>User browser renders view from the given html and css
+    <li>HTML is sent back to the user</li>
+    <li>The browser renders the view from the given HTML and CSS
         <ol>
-            <li>User browser launches JavaScript -> Angular comes into the game</li>
-            <li><strong>Browser performs request to the API to fetch data for component (https://www.angular-universal-pwa.maciejtreder.com/ping)</strong></li>
+            <li>The browser launches JavaScript -> Angular comes into the game</li>
+            <li><strong>The browser performs the request to the API to fetch data for component (https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production/hit)</strong></li>
         </ol>
     </li>
 </ol>
 
 <p>
-    To avoid such repetitive requests, Angular 5 comes with <strong>TransferState</strong>.
-    This mechanism gives front-end and back-end a possibility to "communicate".
-    In other words, front-end retrieves from the back-end collection of key -> value sets with the data which back-end already retrieved from external services.
+    To avoid such repetitive requests, Angular 5 comes with <a href="https://angular.io/api/platform-browser/TransferState" target="_blank">TransferState</a>. This mechanism gives front-end and back-end a possibility to "communicate". In other words, front-end retrieves from the back-end collection of key -> value sets with the data which back-end already retrieved from external services.
 </p>
