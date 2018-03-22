@@ -81,6 +81,7 @@ npm run build:deploy:gcloud
 ```
 
 ## <a name="todo"></a> To do
+* CLI support [tracked in #144](https://github.com/maciejtreder/angular-universal-pwa/issues/144)
 * microservices support - make replacement eligible external module without recompiling whole app
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
