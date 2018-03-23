@@ -11,7 +11,9 @@
     </div>
 </div>
 
-<p>MMost of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
+<h2>Code example can be found here: <a href="https://github.com/maciejtreder/angular-universal-pwa/pull/136/files#diff-da58e2cab6a926f6d564978cdffb83a4">TransferState example in Angular Universal</a></h2>
+
+<p>Most of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
     <ol>
     <li>Request page; i.e.: https://www.angular-universal-pwa.maciejtreder.com/transferState/without</li>
     <li>Request reaches back-end:
