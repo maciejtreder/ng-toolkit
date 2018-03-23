@@ -2,16 +2,21 @@
 
 <div>
     <h3>Choose one of the buttons below and start refreshing the page.</h3>
-    <p>Number of hits to the external API: <strong>{{hits}}</strong></p>
-    <p><i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality. To do that hard refresh this page (ctrl + shift + f5) or unregister Service Worker in developer tools.</i></p>
-    <p><u>Note:</u> if multiple users uses this page in the same time, hitCount may be increasing by more then 1 or 2.</p>
-    <div>
+    <div [ngClass]="{'shake': shake}">
         <a mat-raised-button routerLink="/transferState/with">Try with TransferState</a>
         <a mat-raised-button routerLink="/transferState/without">Try without TransferState</a>
     </div>
+    <p>Number of hits to the external API: <strong>{{hits}}</strong></p>
+    <a (click)="performRequest()" mat-raised-button>Refresh page (perform request)</a>
+    <p><i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality. To do that hard refresh this page (ctrl + shift + f5) or unregister Service Worker in developer tools.</i></p>
+    <p><u>Note:</u> if multiple users uses this page in the same time, hitCount may be increasing by more then 1 or 2.</p>
+
+
 </div>
 
-<p>MMost of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
+<h2>Code example can be found here: <a href="https://github.com/maciejtreder/angular-universal-pwa/pull/136/files#diff-da58e2cab6a926f6d564978cdffb83a4">TransferState example in Angular Universal</a></h2>
+
+<p>Most of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
     <ol>
     <li>Request page; i.e.: https://www.angular-universal-pwa.maciejtreder.com/transferState/without</li>
     <li>Request reaches back-end:

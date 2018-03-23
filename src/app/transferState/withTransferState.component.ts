@@ -7,10 +7,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WithTransferStateComponent implements OnInit {
     public hits: string;
+    public shake: boolean = false;
 
     constructor(private route: ActivatedRoute) {}
 
     public ngOnInit() {
         this.hits = this.route.snapshot.data.hits;
+    }
+
+    public performRequest(): void {
+        window.location.reload();
     }
 }
