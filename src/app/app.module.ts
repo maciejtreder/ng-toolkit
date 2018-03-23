@@ -23,10 +23,10 @@ const routes: any[] = [
     { path: 'donors', component: DonorsComponent, data: {title: 'Donors', description: 'List of donations.'}},
     { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
     { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}},
-    { path: 'transferState', children: [
-        { path: '', component: TransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}},
-        { path: 'with', component: WithTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {hits: HitWithTransferStateResolver}},
-        { path: 'without', component: WithoutTransferStateComponent, data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, resolve: {hits: HitWithoutTransferStateResolver}}
+    { path: 'transferState', data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, children: [
+        { path: '', component: TransferStateComponent, },
+        { path: 'with', component: WithTransferStateComponent, resolve: {hits: HitWithTransferStateResolver}},
+        { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
     ]}
 ];
 
