@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class ExampleApiService {
+export class ExampleApi {
     private host: string = 'https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production';
 
     constructor(private http: HttpClient) {}

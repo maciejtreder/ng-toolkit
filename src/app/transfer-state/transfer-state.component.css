@@ -9,6 +9,7 @@ div div {
 }
 
 div a {
+    color: black;
     margin: 0 10px;
 }
 
@@ -16,7 +17,7 @@ div a {
     /* Start the shake animation and make the animation last for 0.5 seconds */
     animation: shake 0.5s;
     /* When the animation is finished, start again */
-    animation-iteration-count: 4;
+    animation-iteration-count: 1;
 }
 
 a.active {

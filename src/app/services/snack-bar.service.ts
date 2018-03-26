@@ -3,7 +3,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import Queue from 'typescript-collections/dist/lib/Queue';
 
 @Injectable()
-export class SnackBarService {
+export class SnackBar {
 
     private snackBarNotificationsQueue: Queue<SnackBarNotification> = new Queue<SnackBarNotification>();
     private snackBarNotificationsForceQueue: Queue<SnackBarNotification> = new Queue<SnackBarNotification>();

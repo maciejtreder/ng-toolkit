@@ -1,63 +1,57 @@
-import { Inject, NgModule } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import { MatButtonModule, MatMenuModule, MatSnackBarModule } from '@angular/material';
-import { SnackBarService } from './services/snack-bar.service';
-import { WindowRef } from './windowRef';
-import { AppComponent } from './app.component';
-import { MenuComponent } from './menu.component';
-import { HomeComponent } from './home/home.component';
-import { NotificationService } from './services/notification.service';
-import { Meta } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
-import { DonorsComponent } from './donors/donors.component';
-import { ExampleApiService } from './services/exampleApi.service';
-import { WithTransferStateComponent } from './transferState/withTransferState.component';
-import { HitWithTransferStateResolver } from './services/resolvers/hitWithTransferState.resolver';
-import { TransferStateComponent } from './transferState/transferState.component';
-import { WithoutTransferStateComponent } from './transferState/withoutTransferState.component';
-import { HitWithoutTransferStateResolver } from './services/resolvers/hitWithoutTransferState.resolver';
+import 'rxjs/Rx';
 
-const routes: any[] = [
-    { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
-    { path: 'donors', component: DonorsComponent, data: {title: 'Donors', description: 'List of donations.'}},
-    { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
-    { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}},
-    { path: 'transferState', data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, children: [
-        { path: '', component: TransferStateComponent, },
-        { path: 'with', component: WithTransferStateComponent, resolve: {hits: HitWithTransferStateResolver}},
-        { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
-    ]}
-];
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { TransferHttpCacheModule } from '@nguniversal/common';
+import { TransferStateComponent } from './transfer-state/transfer-state.component';
+import { SnackBar } from './services/snack-bar.service';
+import { WindowRef } from './window-ref.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule, MatSnackBarModule } from '@angular/material';
+import { MenuComponent } from './menu/menu.component';
+import { Notifications } from './services/notifications.service';
+import { DonorsComponent } from './donors/donors.component';
+import { WithTransferStateComponent } from './transfer-state/with-transfer-state.component';
+import { WithoutTransferStateComponent } from './transfer-state/without-transfer-state.component';
+import { HitWithTransferStateResolver } from './services/resolvers/hitWithTransferState.resolver';
+import { HitWithoutTransferStateResolver } from './services/resolvers/hitWithoutTransferState.resolver';
+import { ExampleApi } from './services/exampleApi.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [
-      MatButtonModule,
-      MatSnackBarModule,
-      MatMenuModule,
-    CommonModule,
-      RouterModule.forRoot(routes),
-      TranslateModule.forChild()
-  ],
-  declarations: [ AppComponent, HomeComponent, MenuComponent, DonorsComponent, WithTransferStateComponent, WithoutTransferStateComponent, TransferStateComponent ],
-  exports: [ AppComponent ],
-  providers: [
-    WindowRef,
-    SnackBarService,
-    NotificationService,
-    ExampleApiService,
-    HitWithTransferStateResolver,
-    HitWithoutTransferStateResolver
-  ]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        TransferStateComponent,
+        MenuComponent,
+        DonorsComponent,
+        WithTransferStateComponent,
+        WithoutTransferStateComponent
+    ],
+    imports: [
+        MatButtonModule,
+        MatSnackBarModule,
+        MatMenuModule,
+        TranslateModule.forChild(),
+        CommonModule,
+        RouterModule.forRoot([
+            { path: '', component: HomeComponent, data: {title: 'Home', description: 'Home.'}},
+            { path: 'donors', component: DonorsComponent, data: {title: 'Donors', description: 'List of donations.'}},
+            { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
+            // { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}, not works because of https://github.com/angular/angular-cli/issues/8284
+            { path: 'transferState', data: {title: 'Transfer state (API)', description: 'Angular TransferState example'}, children: [
+                { path: '', component: TransferStateComponent, },
+                { path: 'with', component: WithTransferStateComponent, resolve: {hits: HitWithTransferStateResolver}},
+                { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
+            ]}
+        ]),
+        TransferHttpCacheModule,
+      ],
+      providers: [SnackBar, WindowRef, Notifications, HitWithTransferStateResolver, HitWithoutTransferStateResolver, ExampleApi],
+      bootstrap: [AppComponent]
 })
-export class AppModule {
-    private title: string = this.doc.querySelector('title').text;
-    private description: string = this.metaService.getTag('name=description').content;
-
-    constructor(private metaService: Meta, private route: ActivatedRoute, private router: Router, @Inject(DOCUMENT) private doc) {
-        this.router.events.filter((e) => e instanceof NavigationEnd).forEach((e) => {
-            this.metaService.updateTag({content: this.description + ' ' + route.root.firstChild.snapshot.data['description']}, 'name=description');
-            this.doc.querySelector('title').childNodes[0].nodeValue = this.title + ' | ' + route.root.firstChild.snapshot.data['title'];
-        });
-    }
-}
+export class AppModule { }
