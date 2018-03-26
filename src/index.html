@@ -1,111 +1,110 @@
 <html ⚡ lang="en">
-  <head>
+<head>
 
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Progressive Web App created with Angular Universal, deployed on Amazon Lambda. Includes Angular Material, push notifications and external modules (for microservices purpose).">
-    
-
-    <link rel="manifest" href="manifest.json">
-
-    <meta name="theme-color" content="#000000">
-
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Angular Universal - Serverless Demo by @maciejtreder">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Progressive Web App created with Angular Universal, deployed on Amazon Lambda. Includes Angular Material, push notifications and external modules (for microservices purpose).">
 
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Angular Universal">
+  <link rel="manifest" href="manifest.json">
 
-    <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
-    <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <meta name="theme-color" content="#000000">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Angular Universal - Serverless Demo by @maciejtreder">
 
 
-    <meta name="msapplication-navbutton-color" content="#ffffff">
-    <meta name="msapplication-TileImage" content="assets/mstile-150x150.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="msapplication-starturl" content="/">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Angular Universal">
+
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
-    <link rel="icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
-    <link rel="icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <meta name="msapplication-navbutton-color" content="#ffffff">
+  <meta name="msapplication-TileImage" content="assets/mstile-150x150.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="msapplication-starturl" content="/">
 
 
-    <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="assets/icons/favicon.ico">
-    <meta name="msapplication-config" content="assets/browserconfig.xml">
-    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="144x144" href="assets/icons/favicon-144.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/icons/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="72x72" href="assets/icons/favicon-72.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
 
 
-    <meta property="og:title" content="Angular Universal Serverless Demo">
-    <meta property="og:site_name" content="Angular Universal Serverless Demo by Maciej Treder">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.angular-universal-serverless.maciejtreder.com/">
-    <meta property="og:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
+  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="assets/icons/favicon.ico">
+  <meta name="msapplication-config" content="assets/browserconfig.xml">
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
 
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="@maciejtreder">
-    <meta name="twitter:title" content="Angular Universal Serverless Demo by Maciej Treder">
-    <meta name="twitter:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
+  <meta property="og:title" content="Angular Universal Serverless Demo">
+  <meta property="og:site_name" content="Angular Universal Serverless Demo by Maciej Treder">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.angular-universal-serverless.maciejtreder.com/">
+  <meta property="og:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
 
-    <meta charset="UTF-8">
 
-    <base href="/" >
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@maciejtreder">
+  <meta name="twitter:title" content="Angular Universal Serverless Demo by Maciej Treder">
+  <meta name="twitter:description" content="Progressive Web App created with Angular Universal technology, deployed on Amazon Lambda and API gateway. Includes Angular Material and push notifications.">
 
-    <title>Angular Universal PWA - Progressive Web App deployed on AWS Lambda - starter/boilerplate</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script async custom-element="amp-install-serviceworker"
-            src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"></script>
-  </head>
-  <body>
-  <amp-install-serviceworker
-          src="ngsw-worker.js"
-          layout="nodisplay">
-  </amp-install-serviceworker>
-  <div id="content-wrapper">
-    <app></app>
-  </div>
-  <footer class="credentials">
-    <!-- Please respect MIT License and don't remove this footer. --->
-    <p class="built">Built with</p>
-    <p><a href="https://github.com/maciejtreder/angular-universal-pwa">Angular Universal PWA Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
-  </footer>
-  <noscript>
-    JavaScript is necessary to work with this application.
-  </noscript>
-  <noscript id="deferred-styles">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
-    <link rel="stylesheet" href="main.css">
-  </noscript>
-  <script>
-      var loadDeferredStyles = function() {
-          var addStylesNode = document.getElementById("deferred-styles");
-          var replacement = document.createElement("div");
-          replacement.innerHTML = addStylesNode.textContent;
-          document.body.appendChild(replacement)
-          addStylesNode.parentElement.removeChild(addStylesNode);
-      };
-      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-          webkitRequestAnimationFrame || msRequestAnimationFrame;
-      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-      else window.addEventListener('load', loadDeferredStyles);
-  </script>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  </body>
+  <meta charset="UTF-8">
+
+  <base href="/" >
+
+  <title>Angular Universal PWA - Progressive Web App deployed on AWS Lambda - starter/boilerplate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async custom-element="amp-install-serviceworker"
+          src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"></script>
+</head>
+<body>
+<amp-install-serviceworker
+        src="ngsw-worker.js"
+        layout="nodisplay">
+</amp-install-serviceworker>
+<div id="content-wrapper">
+  <app-root></app-root>
+</div>
+<footer class="credentials">
+  <!-- Please respect MIT License and don't remove this footer. --->
+  <p class="built">Built with</p>
+  <p><a href="https://github.com/maciejtreder/angular-universal-pwa">Angular Universal PWA Starter</a> by <a href="https://www.maciejtreder.com">Maciej Treder</a></p>
+</footer>
+<noscript>
+  JavaScript is necessary to work with this application.
+</noscript>
+<noscript id="deferred-styles">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+</noscript>
+<script>
+    var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+</script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
 </html>

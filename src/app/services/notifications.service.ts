@@ -1,15 +1,14 @@
 import { ApplicationRef, Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
-import { WindowRef } from '../windowRef';
+import { WindowRef } from '../window-ref.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
-import { Subject } from 'rxjs/Subject';
 import { Observer } from 'rxjs/Observer';
 
 @Injectable()
-export class NotificationService {
+export class Notifications {
     public endpoint: string = 'https://api.angular-universal-pwa.maciejtreder.com/webpush';
     public vapidSubscriptionEndpoint: string = this.endpoint + '/vapid';
     public safariSubscriptionEndpoint: string = this.endpoint + '/safari';
@@ -74,21 +73,21 @@ export class NotificationService {
         return Observable.create((subscriber: Subscriber<boolean>) => {
             this.swPush.requestSubscription({serverPublicKey: this.applicationServerKey}).then((pushSubscription: PushSubscription) => {
                 this.http.post(this.vapidSubscriptionEndpoint + '/subscribe', JSON.stringify(pushSubscription), {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'})
-                .subscribe((response) => {
-                    if (response.status !== 202) {
-                        pushSubscription.unsubscribe();
-                        subscriber.next(false);
-                    } else {
-                        subscriber.next(true);
-                    }
-                }, (err) => {
-                    if (err.status !== 202) { // workaround for  https://github.com/angular/angular/issues/19555
-                        pushSubscription.unsubscribe();
-                        subscriber.next(false);
-                    } else {
-                        subscriber.next(true);
-                    }
-                });
+                    .subscribe((response) => {
+                        if (response.status !== 202) {
+                            pushSubscription.unsubscribe();
+                            subscriber.next(false);
+                        } else {
+                            subscriber.next(true);
+                        }
+                    }, (err) => {
+                        if (err.status !== 202) { // workaround for  https://github.com/angular/angular/issues/19555
+                            pushSubscription.unsubscribe();
+                            subscriber.next(false);
+                        } else {
+                            subscriber.next(true);
+                        }
+                    });
             });
         });
     }
