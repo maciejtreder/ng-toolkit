@@ -1,20 +1,20 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { SnackBarNotification, SnackBarService } from './services/snack-bar.service';
-import { WindowRef } from './windowRef';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { isPlatformBrowser } from '@angular/common';
+import { SnackBar, SnackBarNotification } from './services/snack-bar.service';
+import { WindowRef } from './window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app',
-  templateUrl: './app.component.html',
+  selector: 'app-root',
+    templateUrl: './app.component.html',
     styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,
-        private snackBarService: SnackBarService,
+        private snackBarService: SnackBar,
         private windowRef: WindowRef,
         private swUpdate: SwUpdate,
         private translate: TranslateService

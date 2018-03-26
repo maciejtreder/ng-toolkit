@@ -14,17 +14,19 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
+## Live demo
+[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
+## Content
  - [What's inside?](#wi)
- - [Question, Problem or Feature Request?](#question)
- - [Used Technologies](#tech)
  - [Getting started](#start)
+ - [Deployment](#deploy)
  - [To do](#todo)
+ - [Question, Problem, Feature Request](#question)
  - [Funding](#funding)
  - [Credentials](#credentials)
 
-## Live demo
-[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
+
 
 
 ## <a name="wi"></a> What's inside?
@@ -36,23 +38,16 @@ This is a great starting point for **microservices application**! Because of sup
 * Server-side rendering with Angular Universal
 * TransferState
 * Lazy loading modules
-* External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module))
+* External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module)) [TBD after CLI merge - [#150](https://github.com/maciejtreder/angular-universal-pwa/issues/150)]
 * Angular Material
-* Unit tests
+* Unit tests - [TBD after CLI merge - [#149](https://github.com/maciejtreder/angular-universal-pwa/issues/149)]
 * Firebug Lite (great solution for development on touch-screen devices, ie: iPad)
 
-## <a name="question"></a> Looking for something more?
-Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
-
-### <a name="tech"></a> Used frameworks/technologies
+### Used frameworks/technologies
 * Angular 5.x
+* Angular CLI
 * Webpack
-* UglifyJS
-* OptimizeJS
-* DllPlugin (super fast reloading in development mode)
-* Sass loader
 * Serverless framework
-
 
 ## <a name="start"></a> Get Started
 ```sh
@@ -64,26 +59,25 @@ npm start
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + firebug lite): ```npm run firebug```
 
-
-## Production mode
-Includes AoT
+## <a name="deploy"></a> Deployment
+### Production mode with Node.JS
 ```sh
 npm run build:prod
 npm run server
 ```
-
-## Deploy on AWS Lambda
+### Serverless environments
+#### AWS Lambda
 ```sh
 npm run build:deploy:aws
 ```
 
-## Deploy on Google Cloud Functions
+#### Google Cloud Functions
 ```sh
 npm run build:deploy:gcloud
 ```
 
 ## <a name="todo"></a> To do
-* CLI support [tracked in #144](https://github.com/maciejtreder/angular-universal-pwa/issues/144)
+* prerender app for 'no-backend' hosting
 * microservices support - make replacement eligible external module without recompiling whole app
 * [ng-http-sw-proxy (all requests done offline, are synced when app comes back online)](https://github.com/maciejtreder/ng-http-sw-proxy) - not working since Angular 5.x (more info can be found in [this issue](https://github.com/webmaxru/pwatter/issues/2))
 * e2e tests
@@ -95,6 +89,10 @@ npm run build:deploy:gcloud
     * problems with CORS on Chrome,
     * problems with compression of some files (.js files are not compressed in some cases)
     * needs a lot of manual setup (cloudfront setup etc.)
+
+
+## <a name="question"></a> Looking for something more?
+Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
 
 ## <a name="funding"></a> Funding
 
@@ -180,4 +178,4 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 ## <a name="credentials"></a> Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
-* Built on top of [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
+* Inspired by [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)

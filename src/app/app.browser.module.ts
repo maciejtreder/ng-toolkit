@@ -7,6 +7,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { environment } from '../environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -17,7 +18,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     imports: [
         BrowserAnimationsModule,
         BrowserModule.withServerTransition({
-            appId: 'app'
+            appId: 'app-root'
         }),
         AppModule,
         ServiceWorkerModule.register('/ngsw-worker.js'),
@@ -28,4 +29,4 @@ export function HttpLoaderFactory(http: HttpClient) {
         BrowserTransferStateModule
     ]
 })
-export class BrowserAppModule {}
+export class AppBrowserModule {}

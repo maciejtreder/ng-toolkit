@@ -1,17 +1,23 @@
 {
+  "compileOnSave": false,
+//  "files": [
+//    "./node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
+//  ],
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "noImplicitAny": false,
-    "sourceMap": false,
-    "experimentalDecorators": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "lib": ["dom", "es6", "es2015", "es2016", "es2017", "esnext"],
+    "experimentalDecorators": true,
+    "target": "es5",
     "typeRoots": [
       "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext"
     ]
-  },
-  "files": [
-    "./node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
-  ]
+  }
 }
