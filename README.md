@@ -57,15 +57,12 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 ## <a name="start"></a> Get Started
 ```sh
 git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-serverless
+cd angular-universal-pwa
 npm install
 npm start
 ```
 * Development mode (autoreload only): ```npm start```
-* Development mode (autoreload + unit tests): ```npm run build:dev```
-* Development mode (autoreload + firebug lite): ```npm run build:firebug```
-* Development mode (autoreload + firebug lite + unit tests): ```npm run build:dev:firebug```
-* Unit tests: ```npm run test```
+* Development mode (autoreload + firebug lite): ```npm run firebug```
 
 
 ## Production mode
