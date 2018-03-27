@@ -22,7 +22,6 @@ export const fireBug = () =>  new Promise((resolve) => {
         fb.innerHTML = `
         {
             overrideConsole: true,
-            startInNewWindow: true,
             startOpened: true,
             enableTrace: false
         }
