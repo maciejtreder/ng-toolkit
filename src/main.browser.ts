@@ -10,8 +10,6 @@ if (environment.production) {
   googleAnalytics();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    fireBug().then(() => {
-        platformBrowserDynamic().bootstrapModule(AppBrowserModule);
-    });
+fireBug().then(() => {
+    platformBrowserDynamic().bootstrapModule(AppBrowserModule);
 });

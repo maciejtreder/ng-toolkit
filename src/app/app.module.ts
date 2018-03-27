@@ -21,6 +21,7 @@ import { HitWithTransferStateResolver } from './services/resolvers/hitWithTransf
 import { HitWithoutTransferStateResolver } from './services/resolvers/hitWithoutTransferState.resolver';
 import { ExampleApi } from './services/exampleApi.service';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,7 @@ import { CommonModule } from '@angular/common';
                 { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
             ]}
         ]),
-        TransferHttpCacheModule,
+        HttpClientModule
       ],
       providers: [SnackBar, WindowRef, Notifications, HitWithTransferStateResolver, HitWithoutTransferStateResolver, ExampleApi],
       bootstrap: [AppComponent]
