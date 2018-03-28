@@ -4,6 +4,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { SnackBar, SnackBarNotification } from './services/snack-bar.service';
 import { WindowRef } from './window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Meta, Title } from '@angular/platform-browser';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,17 +14,33 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit {
 
+    private title: string = this.titleService.getTitle();
+    private metaDescription: string = this.metaService.getTag('name=description').content;
+
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,
         private snackBarService: SnackBar,
         private windowRef: WindowRef,
         private swUpdate: SwUpdate,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private titleService: Title,
+        private metaService: Meta,
+        private router: Router
     ) {
         this.translate.setDefaultLang(this.translate.getBrowserLang());
     }
 
     public ngOnInit(): void {
+        this.router.events.filter((event) => event instanceof NavigationEnd).subscribe((event) => {
+            const snapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root.firstChild;
+
+            const title: string = snapshot.data['title'];
+            this.titleService.setTitle(this.title + ' | ' + title);
+
+            const description: string = snapshot.data['description'];
+            this.metaService.updateTag({ name: 'description', content: this.metaDescription + ' ' + description}, 'name=description');
+        });
+
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
