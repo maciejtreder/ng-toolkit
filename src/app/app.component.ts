@@ -46,9 +46,6 @@ export class AppComponent implements OnInit {
         }
 
         if (this.swUpdate.isEnabled) {
-            this.swUpdate.activated.subscribe(() => {
-                console.log('activated');
-            });
             // this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
             //     localStorage.setItem('cached', 'displayed');
             //     this.snackBarService.displayNotification({

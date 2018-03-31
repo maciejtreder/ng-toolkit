@@ -40,8 +40,8 @@ This is a great starting point for **microservices application**! Because of sup
 * Lazy loading modules
 * External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module)) [TBD after CLI merge - [#150](https://github.com/maciejtreder/angular-universal-pwa/issues/150)]
 * Angular Material
-* Unit tests - [TBD after CLI merge - [#149](https://github.com/maciejtreder/angular-universal-pwa/issues/149)]
-* Firebug Lite (great solution for development on touch-screen devices, ie: iPad)
+* Unit tests
+* Firebug Lite (great solution for development on touch-screen devices, ie: tablets)
 
 ### Used frameworks/technologies
 * Angular 5.x
@@ -58,6 +58,14 @@ npm start
 ```
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + firebug lite): ```npm run firebug```
+
+
+* Development mode (autoreload only): ```npm start```
+* Development mode (autoreload + unit tests): ```npm run build:dev```
+* Development mode (autoreload + firebug lite): ```npm run build:firebug```
+* Development mode (autoreload + firebug lite + unit tests): ```npm run build:dev:firebug```
+* Unit tests: ```npm run test```
+
 
 ## <a name="deploy"></a> Deployment
 ### Production mode with Node.JS

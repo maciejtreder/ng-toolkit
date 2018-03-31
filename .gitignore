@@ -13,3 +13,4 @@ dll
 /firebug-lite
 firebug-lite.tar.tgz
 serverless.yml
+/coverage

@@ -1,23 +1,31 @@
 module.exports = function (config) {
-  config.set({
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      { pattern: './spec-bundle.js', watched: false }
-    ],
-    exclude: [
-    ],
-    preprocessors: {
-      './spec-bundle.js': ['webpack', 'sourcemap']
-    },
-    webpack: require('./webpack.config')({test: true}),
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['PhantomJS'],
-    singleRun: false,
-    concurrency: Infinity
-  })
-}
+    config.set({
+        basePath: '',
+        frameworks: ['jasmine', '@angular/cli'],
+        plugins: [
+            require('karma-jasmine'),
+            require('karma-chrome-launcher'),
+            require('karma-phantomjs-launcher'),
+            require('karma-jasmine-html-reporter'),
+            require('karma-coverage-istanbul-reporter'),
+            require('@angular/cli/plugins/karma')
+        ],
+        client:{
+            clearContext: false // leave Jasmine Spec Runner output visible in browser
+        },
+        coverageIstanbulReporter: {
+            reports: [ 'html', 'lcovonly' ],
+            fixWebpackSourcePaths: true
+        },
+        angularCli: {
+            environment: 'dev'
+        },
+        reporters: ['progress', 'kjhtml'],
+        port: 9876,
+        colors: true,
+        logLevel: config.LOG_INFO,
+        autoWatch: true,
+        browsers: ['PhantomJS'],
+        singleRun: false
+    });
+};
