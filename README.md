@@ -57,10 +57,6 @@ npm install
 npm start
 ```
 * Development mode (autoreload only): ```npm start```
-* Development mode (autoreload + firebug lite): ```npm run firebug```
-
-
-* Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + unit tests): ```npm run build:dev```
 * Development mode (autoreload + firebug lite): ```npm run build:firebug```
 * Development mode (autoreload + firebug lite + unit tests): ```npm run build:dev:firebug```
