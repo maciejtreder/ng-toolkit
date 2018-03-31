@@ -130,7 +130,7 @@ describe('Notification service spec.', () => {
                     pushNotification: {
                         requestPermission: (param1, param2, param3, callback) => callback(permission),
                         permission: (param: string) => {
-                            return {deviceToken: 'device_token', permission: 'default'};
+                            return permission;
                         }
                     }
                 }
@@ -151,7 +151,6 @@ describe('Notification service spec.', () => {
 
         it( 'Should be able to subscribe', async(inject([Notifications], (ns: Notifications) => {
             permission = {deviceToken: 'device_token', permission: 'default'};
-            windowStub._window.safari.pushNotification.permission = () => permission;
             windowStub._window.safari.pushNotification.requestPermission = (var1, var2, var3, var4) => {
                 var4({deviceToken: 'device_token', permission: 'granted'});
             };
@@ -163,7 +162,6 @@ describe('Notification service spec.', () => {
 
         it( 'Should respond as not subscribed when permission is denied', async(inject([Notifications], (ns: Notifications) => {
             permission = {deviceToken: 'device_token', permission: 'default'};
-            windowStub._window.safari.pushNotification.permission = () => permission;
             windowStub._window.safari.pushNotification.requestPermission = (var1, var2, var3, var4) => {
                 var4({deviceToken: 'device_token', permission: 'denied'});
             };
@@ -175,7 +173,6 @@ describe('Notification service spec.', () => {
 
         it('Should respond as registered when there is subscription', async(inject([Notifications, HttpTestingController], (ns: Notifications, backend: HttpTestingController) => {
             permission = {deviceToken: 'device_token', permission: 'granted'};
-            windowStub._window.safari.pushNotification.permission = () => permission;
             let registered: boolean;
             ns.isSubscribed().subscribe((result) => registered = result);
 
@@ -184,7 +181,6 @@ describe('Notification service spec.', () => {
 
         it('Should respond as not registered when there is no subscription', async(inject([Notifications, HttpTestingController], (ns: Notifications, backend: HttpTestingController) => {
             permission = {deviceToken: 'device_token', permission: 'denied'};
-            windowStub._window.safari.pushNotification.permission = () => permission;
             let registered: boolean;
             ns.isSubscribed().subscribe((result) => registered = result);
 
