@@ -23,6 +23,7 @@ import { ExampleApi } from './services/exampleApi.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
+import { PrebootModule } from 'preboot';
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import { Meta, Title } from '@angular/platform-browser';
                 { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
             ]}
         ]),
-        HttpClientModule
+        HttpClientModule,
+        PrebootModule.withConfig({appRoot: 'app-root'})
       ],
       providers: [SnackBar, WindowRef, Notifications, HitWithTransferStateResolver, HitWithoutTransferStateResolver, ExampleApi, Title, Meta],
       bootstrap: [AppComponent]
