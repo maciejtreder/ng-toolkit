@@ -9,7 +9,7 @@
   },
   "scripts": {
     "install_firebug": "wget https://getfirebug.com/releases/lite/latest/firebug-lite.tar.tgz && node decompressFirebug.js",
-    "postinstall": "npm run install_firebug",
+    "postinstall": "npm run install_firebug && node postinstall.js",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --single-run --code-coverage",
