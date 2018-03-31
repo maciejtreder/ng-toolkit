@@ -155,9 +155,9 @@ describe('Notification service spec.', () => {
                 var4({deviceToken: 'device_token', permission: 'granted'});
             };
 
-            let registerToPush;
-            ns.subscribeToPush().subscribe((result) => registerToPush = result);
-            expect(registerToPush).toBe(true, 'Should respond with \'true\'.');
+            ns.subscribeToPush().subscribe((result) => {
+                expect(result).toBe(true, 'Should respond with \'true\'.');
+            });
         })));
 
         it( 'Should respond as not subscribed when permission is denied', async(inject([Notifications], (ns: Notifications) => {
@@ -166,25 +166,23 @@ describe('Notification service spec.', () => {
                 var4({deviceToken: 'device_token', permission: 'denied'});
             };
 
-            let registerToPush;
-            ns.subscribeToPush().subscribe((result) => registerToPush = result);
-            expect(registerToPush).toBe(false, 'Should respond with \'false\'.');
+            ns.subscribeToPush().subscribe((result) => {
+                expect(result).toBe(false, 'Should respond with \'false\'.');
+            });
         })));
 
         it('Should respond as registered when there is subscription', async(inject([Notifications, HttpTestingController], (ns: Notifications, backend: HttpTestingController) => {
             permission = {deviceToken: 'device_token', permission: 'granted'};
-            let registered: boolean;
-            ns.isSubscribed().subscribe((result) => registered = result);
-
-            expect(registered).toBe(true, 'Responded as not registered, when customer is subscribed to push');
+            ns.isSubscribed().subscribe((result) => {
+                expect(result).toBe(true, 'Responded as not registered, when customer is subscribed to push');
+            });
         })));
 
         it('Should respond as not registered when there is no subscription', async(inject([Notifications, HttpTestingController], (ns: Notifications, backend: HttpTestingController) => {
             permission = {deviceToken: 'device_token', permission: 'denied'};
-            let registered: boolean;
-            ns.isSubscribed().subscribe((result) => registered = result);
-
-            expect(registered).toBe(false, 'Responded as registered, when customer isn\'t subscribed.');
+            ns.isSubscribed().subscribe((result) => {
+                expect(result).toBe(false, 'Responded as registered, when customer isn\'t subscribed.');
+            });
         })));
     });
 });
