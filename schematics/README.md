@@ -8,7 +8,7 @@
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
-This repo is the boilerplate for Angular Universal (serverside rendering) applications.
+This schematics are the boilerplate for Angular Universal (serverside rendering) applications.
 It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
 It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
 
@@ -61,13 +61,6 @@ npm install
 npm start
 ```
 
-### Cloning the repo 
-```bash
-git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-pwa/generated_app
-npm install
-npm start
-```
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + unit tests): ```npm run build:dev```
 * Development mode (autoreload + firebug lite): ```npm run build:firebug```

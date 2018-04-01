@@ -6,16 +6,24 @@ before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - npm install
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - if [ "$TRAVIS_BRANCH" != "master" ]; then npm test; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then npm test && npm run build:deploy:aws && curl -I https://www.angular-universal-pwa.maciejtreder.com && aws sns publish --subject "New version available" --message "Check out newest version of PWA with Angular Universal by Maciej Treder! " --topic-arn arn:aws:sns:eu-central-1:$ACC_ID:sns-webpush-angular-universal; fi
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then npm install -g @angular/cli && rm -rf generatedApp && cd schematics && npm install && npm run build && npm link && cd .. && ng new --collection angular-universal-pwa generatedApp && cd generatedApp && npm run build:prod; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then npm install -g @angular/cli && rm -rf generatedApp && cd schematics && npm install && npm run build && cd .. && ng new --collection angular-universal-pwa generatedApp && cd generatedApp && npm run build:deploy:aws && curl -I https://www.angular-universal-pwa.maciejtreder.com && aws sns publish --subject "New version available" --message "Check out newest version of PWA with Angular Universal by Maciej Treder! " --topic-arn arn:aws:sns:eu-central-1:$ACC_ID:sns-webpush-angular-universal; fi
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+deploy:
+  provider: npm
+  email: contact@maciejtreder.com
+  api_key:
+    secure: YDnX7OcESI0tqeRh0WRJNJz58zDvnI7vGStgQXTgOjMb+XTG82lS53pIWo6xVEOPG8neGLI3D28nbRvK5/qPOw4DcP360BcLc/eAZWF6aFQGexeMo+R0U0AdHCNTdobFnCh8dx4YAa+FAKAKHL+Rb9xdKkLq+TgJ18w5eD93XcegFwC+PmeXqr0E3GPQgx7Ms1ugW/BXzxqQ6rnb2dynjecWX1gcowVHlhLJNT499sSlxrcFp5DgJeLnfpIt3j1esEMfA4jhGIAgQ8lGOZpqvlLKKbd5nizDH1r9kWIs+UY85WDlvaq7sgCTVCAWCVRgHZ/M0LInBcd1qlNYQHwMSAPodXP4cZM3kAuuiu8wVMj9PQHkJNhkhzapSeV9CYOF3T1cqyVF3FIg7J9eYRecafAfTw0Abgf2JvF+Pm4AmGP4heK17Mkxl4CB4yftME5QgdB/fOEiYg8iPJmfynLhmyOpKoRIl3e0+GjfEfB7BfP+lxRipTCfNipODBCFrrZjdZ+XZJtrWbdlbAwoTIZBvUxZBOnKCvGnqHbQyGy9Yc0tAvu2qKg8mgLhrGXqVl8unoIsSWUmPv6pwt8OH/ZlGaMfcNB878k6ZLHCoHnNXMOew0jD9xgK3/r1+f8ipzFtFMriDNkTGnWuZtv85S+lpKtr3hfptgzlcxQaG9057gc=
+  on:
+    tags: true
+    repo: maciejtreder/angular-universal-pwa
 
 env:
   global:

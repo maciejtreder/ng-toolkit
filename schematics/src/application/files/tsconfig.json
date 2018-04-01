@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+//  "files": [
+//    "./node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
+//  ],
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext"
+    ]
+  }
+}
