@@ -1,0 +1,45 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "credentials";
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.content {
+  padding: 0 25px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: #222837 url('../assets/img/background.png') fixed top center;
+  background-size:cover;
+  color: white;
+}
+
+*:not(.material-icons) {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', calibri, Arial, sans-serif !important;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: 600 !important;
+}
+h3 {
+  color: orange;
+}
+a {
+  color: orange;
+  text-decoration: none;
+}
+
+.service_worker_snack { // can be removed when https://github.com/angular/material2/pull/4045 will be merged
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}

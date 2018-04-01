@@ -1,0 +1,11 @@
+<header>
+    <h1>
+        <menu [contextual]="true"></menu>
+        {{'Welcome to' | translate}} Angular Universal PWA starter
+        <a class="github-button" href="https://github.com/maciejtreder/angular-universal-pwa" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star maciejtreder/angular-universal-pwa on GitHub">Star</a>
+    </h1>
+    <menu [contextual]="false"></menu>
+</header>
+<div class="content">
+    <router-outlet></router-outlet>
+</div>

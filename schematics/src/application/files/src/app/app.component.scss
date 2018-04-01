@@ -1,0 +1,43 @@
+header h1 {
+  color: darkorange;
+  font-size: 32px !important;
+  width: 100%;
+  margin: 16px 0 7px !important;
+}
+
+header {
+  background-color: #222837;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+menu.contextual {
+  float: left;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding-top: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  header {
+    height: 105px;
+  }
+
+  .content {
+    padding-top: 136px;
+  }
+}

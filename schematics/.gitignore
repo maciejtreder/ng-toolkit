@@ -1,0 +1,16 @@
+/node_modules/
+/dist/
+/lib/
+/yarn.lock
+*.log
+.idea
+.serverless
+*.iml
+.DS_Store
+dll
+.awcache
+/src/styles/main.css
+/firebug-lite
+firebug-lite.tar.tgz
+serverless.yml
+/coverage

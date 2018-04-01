@@ -1,0 +1,39 @@
+<h1>TransferState</h1>
+
+<div>
+    <h3>Choose one of the buttons below and start refreshing the page.</h3>
+    <div [ngClass]="{'shake': shake}">
+        <a mat-raised-button routerLinkActive="active" routerLink="/transferState/with">Try with TransferState</a>
+        <a mat-raised-button routerLinkActive="active" routerLink="/transferState/without">Try without TransferState</a>
+    </div>
+    <p>Number of hits to the external API: <strong>{{hits}}</strong></p>
+    <a (click)="performRequest()" mat-raised-button>Refresh page (perform request)</a>
+    <p><i>To see <strong>factual</strong> number of requests, you need to get rid of PWA functionality. To do that hard refresh this page (ctrl + shift + f5) or unregister Service Worker in developer tools.</i></p>
+    <p><u>Note:</u> if multiple users uses this page in the same time, hitCount may be increasing by more then 1 or 2.</p>
+
+
+</div>
+
+<h2>Code example can be found here: <a target="_blank" href="https://github.com/maciejtreder/angular-universal-pwa/pull/136/files#diff-da58e2cab6a926f6d564978cdffb83a4">TransferState example in Angular Universal</a></h2>
+
+<p>Most of the server-side rendered sites have one big problem. APIs are requested twice during initial load. Why? This is how user action flow looks like:</p>
+    <ol>
+    <li>Request page; i.e.: https://www.angular-universal-pwa.maciejtreder.com/transferState/without</li>
+    <li>Request reaches back-end:
+        <ol>
+            <li>Back-end launches Angular and starts rendering the view</li>
+            <li><strong>Back-end performs the request to the API to fetch data for component (https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production/hit)</strong></li>
+        </ol>
+    </li>
+    <li>HTML is sent back to the user</li>
+    <li>The browser renders the view from the given HTML and CSS
+        <ol>
+            <li>The browser launches JavaScript -> Angular comes into the game</li>
+            <li><strong>The browser performs the request to the API to fetch data for component (https://2tvdln9i91.execute-api.eu-central-1.amazonaws.com/production/hit)</strong></li>
+        </ol>
+    </li>
+</ol>
+
+<p>
+    To avoid such repetitive requests, Angular 5 comes with <a href="https://angular.io/api/platform-browser/TransferState" target="_blank">TransferState</a>. This mechanism gives front-end and back-end a possibility to "communicate". In other words, front-end retrieves from the back-end collection of key -> value sets with the data which back-end already retrieved from external services.
+</p>
