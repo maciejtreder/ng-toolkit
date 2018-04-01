@@ -12,7 +12,7 @@
     "postinstall": "npm run install_firebug && node credentials.js",
     "ng": "ng",
     "start": "run-p build:watch credentials",
-    "build:watch" : "ng serve",
+    "build:watch": "ng serve",
     "credentials": "node credentials.js",
     "test": "ng test --single-run --code-coverage",
     "test:watch": "ng test --code-coverage",
