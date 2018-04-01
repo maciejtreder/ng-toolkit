@@ -5,7 +5,7 @@
 
 
 # Angular 5 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
-![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/src/assets/img/lighthouse_report.png)
+![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/app/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
 This repo is the boilerplate for Angular Universal (serverside rendering) applications.

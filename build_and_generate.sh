@@ -1,8 +1,8 @@
 npm install -g @angular/cli;
-rm -rf generatedApp;
+rm -rf application;
 cd schematics;
 npm install;
 npm run build;
 npm link;
 cd ..;
-ng new --collection angular-universal-pwa generatedApp;
+ng new --collection angular-universal-pwa application;
