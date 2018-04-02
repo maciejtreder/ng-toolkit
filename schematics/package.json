@@ -1,7 +1,7 @@
 {
   "author": "",
   "name": "angular-universal-pwa",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
     "postinstall": "node postinstall.js"
   },
   "keywords": [
-    "schematics"
+    "schematics", "angular", "serverless", "server side rendering", "pwa", "progressive web app", "lambda", "amazon web services", "google cloud functions"
   ],
   "license": "MIT",
   "schematics": "./src/collection.json",
