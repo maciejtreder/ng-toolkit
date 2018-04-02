@@ -57,7 +57,6 @@ This is a great starting point for **microservices application**! Because of sup
 npm install -g angular-universal-pwa
 ng new --collection angular-universal-pwa <app_name>
 cd <app_name>
-npm install
 npm start
 ```
 
