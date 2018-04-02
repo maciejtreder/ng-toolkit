@@ -25,6 +25,7 @@ deploy:
   on:
     tags: true
     repo: maciejtreder/angular-universal-pwa
+    branch: master
 
 env:
   global:
