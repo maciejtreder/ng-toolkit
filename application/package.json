@@ -33,6 +33,9 @@
   "pre-commit": [
     "lint"
   ],
+  "keywords": [
+    "schematics", "angular", "serverless", "server side rendering", "pwa", "progressive web app", "lambda", "amazon web services", "google cloud functions"
+  ],
   "dependencies": {
     "@angular-universal-serverless/external-module": "git+https://github.com/maciejtreder/angular-external-module.git",
     "@angular/animations": "5.2.9",
