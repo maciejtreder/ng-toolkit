@@ -12,8 +12,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - if [ "$TRAVIS_BRANCH" != "master" ]; then ./build_and_generate.sh && cd application && npm run build:prod; fi
-  - if [ "$TRAVIS_BRANCH" != "master" && "$TRAVIS_PULL_REQUEST" != "false" ]; then ./build_and_generate.sh && cd application && npm run build:prod; fi
-  - if [ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" ]; then ./build_and_deploy.sh; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./build_and_deploy.sh; fi
 
 after_script:
    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
