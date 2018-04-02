@@ -9,7 +9,7 @@
   },
   "scripts": {
     "install_firebug": "wget https://getfirebug.com/releases/lite/latest/firebug-lite.tar.tgz && node decompressFirebug.js",
-    "postinstall": "npm run install_firebug && node postinstall.js && opencollective postinstall",
+    "postinstall": "npm run install_firebug && node credentials.js && opencollective postinstall",
     "ng": "ng",
     "start": "run-p build:watch credentials",
     "build:watch": "ng serve",
