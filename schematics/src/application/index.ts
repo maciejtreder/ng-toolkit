@@ -9,6 +9,7 @@ export function application(options: any): Rule {
         template({...options}),
         move(options.directory)
     ])
+
   return chain([
         externalSchematic('@schematics/angular', 'application', options),
           mergeWith(templateSource, MergeStrategy.Overwrite)
