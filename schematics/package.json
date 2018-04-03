@@ -1,7 +1,7 @@
 {
-  "author": "",
+  "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "angular-universal-pwa",
-  "version": "1.0.8",
+  "version": "1.0.15",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -13,18 +13,28 @@
     "postinstall": "node postinstall.js && opencollective postinstall"
   },
   "keywords": [
-    "schematics", "angular", "serverless", "server side rendering", "pwa", "progressive web app", "lambda", "amazon web services", "google cloud functions"
+    "schematics",
+    "angular",
+    "serverless",
+    "server side rendering",
+    "pwa",
+    "progressive web app",
+    "lambda",
+    "amazon web services",
+    "google cloud functions"
   ],
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
     "opencollective": "^1.0.3",
-    "@angular-devkit/core": "^0.4.7",
     "@angular-devkit/schematics": "^0.4.7",
-    "@types/jasmine": "^2.6.0",
-    "@types/node": "^8.0.31",
+    "@schematics/angular": "^0.4.8",
+    "@angular-devkit/core": "^0.4.7"
+  },
+  "devDependencies": {
     "jasmine": "^2.8.0",
     "typescript": "^2.5.2",
-    "@schematics/angular": "^0.4.8"
+    "@types/jasmine": "^2.6.0",
+    "@types/node": "^8.0.31"
   }
 }
