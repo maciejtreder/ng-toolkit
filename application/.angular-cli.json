@@ -35,8 +35,7 @@
         "root": "src",
         "outDir": "dist/browser",
         "assets": [
-          "assets",
-          {"glob": "**/*", "input": "../firebug-lite", "output": "./firebug-lite"}
+          "assets"
         ],
         "index": "index.html",
         "main": "main.browser.ts",
