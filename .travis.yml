@@ -20,7 +20,7 @@ after_script:
 before_deploy:
   - ls
   - pwd
-  - cd schematics
+  - cd ../schematics
 
 deploy:
   provider: npm
