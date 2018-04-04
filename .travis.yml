@@ -1,41 +1,39 @@
 language: node_js
 node_js: node
 before_install:
-  - pip install --user awscli
-  - export PATH=$PATH:$HOME/.local/bin
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- pip install --user awscli
+- export PATH=$PATH:$HOME/.local/bin
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
 script:
-  - if [ "$TRAVIS_BRANCH" != "master" ]; then ./build_and_generate.sh && cd application && npm run build:prod; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./build_and_deploy.sh; fi
-
+- if [ "$TRAVIS_BRANCH" != "master" ]; then ./build_and_generate.sh && cd application
+  && npm run build:prod; fi
+- if [ "$TRAVIS_BRANCH" = "master" ]; then ./build_and_deploy.sh; fi
 after_script:
-   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 before_deploy:
-  - ls
-  - pwd
-  - cd ../schematics
-
+- ls
+- pwd
+- cd ../schematics
 deploy:
   provider: npm
   email: contact@maciejtreder.com
-  api_key:
-    secure: YDnX7OcESI0tqeRh0WRJNJz58zDvnI7vGStgQXTgOjMb+XTG82lS53pIWo6xVEOPG8neGLI3D28nbRvK5/qPOw4DcP360BcLc/eAZWF6aFQGexeMo+R0U0AdHCNTdobFnCh8dx4YAa+FAKAKHL+Rb9xdKkLq+TgJ18w5eD93XcegFwC+PmeXqr0E3GPQgx7Ms1ugW/BXzxqQ6rnb2dynjecWX1gcowVHlhLJNT499sSlxrcFp5DgJeLnfpIt3j1esEMfA4jhGIAgQ8lGOZpqvlLKKbd5nizDH1r9kWIs+UY85WDlvaq7sgCTVCAWCVRgHZ/M0LInBcd1qlNYQHwMSAPodXP4cZM3kAuuiu8wVMj9PQHkJNhkhzapSeV9CYOF3T1cqyVF3FIg7J9eYRecafAfTw0Abgf2JvF+Pm4AmGP4heK17Mkxl4CB4yftME5QgdB/fOEiYg8iPJmfynLhmyOpKoRIl3e0+GjfEfB7BfP+lxRipTCfNipODBCFrrZjdZ+XZJtrWbdlbAwoTIZBvUxZBOnKCvGnqHbQyGy9Yc0tAvu2qKg8mgLhrGXqVl8unoIsSWUmPv6pwt8OH/ZlGaMfcNB878k6ZLHCoHnNXMOew0jD9xgK3/r1+f8ipzFtFMriDNkTGnWuZtv85S+lpKtr3hfptgzlcxQaG9057gc=
   on:
     tags: true
     repo: maciejtreder/angular-universal-pwa
     branch: master
-
+  api_key:
+    secure: rkhQGqIjGE6JYl+iU6XON+CyHmiTO3sG/B0qLicFWsvF4UcdDk0otyTdS8xiQIpjwomLs3iNBPoYLmAyfbrbPnqkUK/jb1ceGp6/vUeWGIOJajEHRXYhGGGHesacu/BUjfkGZK0y0ku66YQhNvYSEmzCgOBMWZqwuF4W+I2eyoWP4UCxAgUldtMcjfXvDEW8NPbCAASMf694Kar/4TLP9K61+xmyp5BKNlBjE3CgLW7PT+g24Bi8HU3Hwfm8DQ/hV7IxcJ5P/XIzojVg8BgyaSTr4xvSKTLTLgsjjM7Y2xne0RQ0vMxBxcmOCnduuwqNJlqDf1KV/hg2wwkP0InKnmBFZm/Sdezl0S7O7KTYlzNuaObTW8wvTspwM+W0K38WuSRbtHS26ItgnVr/YidLLd/B9pqcXosc7KQ3hTd+R5bqHmXxItyBX2Qf8m/IgnZY19bZi/r7qd6SOAwsvff5OVUbYgCiveoTuZooGf5XbO8o7ot6xgbyC8nwtgM2ycu0cXxH0FuOWXrRb0jQJwr2s5qZTLYYEaW5ylT4QFAeiNFHgJdf0/DwhLaYEehwMTD5yvc+NBDHc+jawQQ8Qvf0F9OfkbRFe2tWfnsF59BcDqXyXogb94wNJTeqXGcCDipVpXBtcOLY9QpBuGVSvOIbYJnQuAR54GdLH1fOnsukDTU=
 env:
   global:
-    - secure: y2UtS63ap/3SpDbB8UkjcO9R0tRLnR/727ljgNKH96AfEAh9d3Jzu+eh4gNKkEvPDORJOELxd64dnZNiPd8VglzBV5sjeP+lbXBcZ/x0Id4hFgaewlAZRqpfw0aSUU6/FjEK6UTrpg/tf7c3U/sixf0LdBUtwUZZUw01wX3s8ISIxJZRPIgtrfyT4ULOU6cROv4e3OcjVHsf+N0h4hikfiVywc3m0H0g67mnTR7JzRTgT5CSkgRlW5RLUmICneVMoSs/jsDjoSKM2ukT3Abl+iVb0f3LYIN8KvdKusX8G5cLS8Mzn/MaD30KpBAFjJ/oILRxGdytzMc2YZyLsAJckPDRCaupuGRRABZdmpf8RbxYN3InbRB8mfgZvbIqb54nyMy+Ok4oOf3gWT9O/VmrYmWY0cPMUwo9CyUPUt/BDXWKjs4j70A8vSQCATCaqOhZdjyi7dFKsRTuzbQ0cvy1Y3Up8ezJXNNXzGiFlts7/94SDwEDbMT/TFpOqcgrmVSePoeFM0+/aLOaaa01X8cgA3GAi1k23HdvU+rAV07WeW1d9Cqd3jjkm4qYo/VYk2m7RB//wt9lVUgDocp+pDrzyvDB0hwy5h0g0RFJ3uJUpc666epThD276rurBGt6UdcsrSrsiLT7xOpdjNhhy8/al+Uzily1XVKiboFbv6IL/Ws=
-    - secure: h7gMxUo4EIu59965k6tCziO+lHls1ZSWUIQdoW13xwCIa0+I1HuB8houj9stPrCKCpOXXNPrgHsxF10d+HdQs+8MtXEuR4Sc4isbHN/koOfhgz2Bk1n4n+TuVL8MKbhwDlVaPPcAdAHVw7Jr1yf9eFBg6pOmnM//qtGOj+1WbKxQ35uJEPQzYALqrMbT9vl8pNK0f7IrXSU9Fi4fNmcojDjl5UCTA7jtsOw3zY0QIogedpulnPQp+K2/3ZgZXiNO9YjfJ5e0OUwUUj/7AMRsOCok2thBIPDJjkD4erhUAjNP5ks6k9YwuPefpGtTqmbovx9i8Dupdm47uFFogf2WvhLDiNbz+HphMzGkNPltMCOQbX9G2nZg8k1yOgyThFuPiwhkTeh1nixTNxWVrGqYfpj7trH4wPZbccbgzvROkvxxmPtkkh2PH8V0IBCASShdLh2oDPe9ocyGDZpvBbHl17Z8OpLWQKLmjpN39YdfxIH/S/XUhmT+IzhKTLJj4ZCFwenDqodSq8N9sx7/PoMfQv4SEvuBlvM1hKQpkRKz2rEoVlb/s2RdVgx+u0hPlwkrUwvi6loOtkymtFPnn2r5Qgd15QjWZjatTbrX/uYuduMqHRKbaJLVmRFHQFBFylZmN2VB0Ta2wJPn9ZKVeZYsmdt7WFyRhLtc2I6L8X1hrmA=
-    - secure: wqNW/ETWynfp090wNSYpTb5l6x9e73+zfEDX28yyF3xnpgnkVlIkZkD4LAw5RFOM0DdZAUe/cxNzlOKujsZg21oeFfpc4m9TNVjAzdvnsuPqngI8F390YOmzbQm08AEt6mjJL+DvI3ivvmEl9TkqcFW6IOvI8KUSIY9ShY100g/EPNKp6NvGKJt/Ia5nyaVpCSKRGSA/1TW1QPyyH6KocN7PorfT+JfW+B71+nDPMAkt8eTsXIb9uCzp2PHumVKyyMFvSNmJ5eQWjODfSx5L5YEhVqibEj5e20Gi1Nvm6NoxHvdBalrUBIUVG/isMvhsP89KxVj0JpIA5wIOmYxma3JZ6+Z63XhoU9g80k2zXKxTa31CbVqpuxxRmWX2heSpGFEyuJ1KO+eIziBxdEzr1PsTCiE5J+T/ceGWJ+UXVPLty+nKcF/Lf+b3zy47RNFZEIubZ8deunu22SRx0jDrkdM9JZ/e84u0RmvoBcUi+3Q3b1sQE89eTpZSiRrs3ec7mZOwhXVlcwnWpa35IivNOWxzqijv0ovm5baRrEPmksHtKStSw/cv1b8EQ7zyJOY3V32TX+TAMJvK3w2ScEgRHEZtMYElMaofHB/NfrKcF3CywE/pIOOm2DJGIBOwfbDW6B3llYTcB6qSl1MPTQDjHjcfhK+0l+UDvnlYM5894E4=
-    - AWS_DEFAULT_REGION: eu-central-1
-    - CC_TEST_REPORTER_ID: ca6823464513158c9fb1cd8da6d248bae5fdf38c6ea580835671b1af661aeff3
+  - secure: y2UtS63ap/3SpDbB8UkjcO9R0tRLnR/727ljgNKH96AfEAh9d3Jzu+eh4gNKkEvPDORJOELxd64dnZNiPd8VglzBV5sjeP+lbXBcZ/x0Id4hFgaewlAZRqpfw0aSUU6/FjEK6UTrpg/tf7c3U/sixf0LdBUtwUZZUw01wX3s8ISIxJZRPIgtrfyT4ULOU6cROv4e3OcjVHsf+N0h4hikfiVywc3m0H0g67mnTR7JzRTgT5CSkgRlW5RLUmICneVMoSs/jsDjoSKM2ukT3Abl+iVb0f3LYIN8KvdKusX8G5cLS8Mzn/MaD30KpBAFjJ/oILRxGdytzMc2YZyLsAJckPDRCaupuGRRABZdmpf8RbxYN3InbRB8mfgZvbIqb54nyMy+Ok4oOf3gWT9O/VmrYmWY0cPMUwo9CyUPUt/BDXWKjs4j70A8vSQCATCaqOhZdjyi7dFKsRTuzbQ0cvy1Y3Up8ezJXNNXzGiFlts7/94SDwEDbMT/TFpOqcgrmVSePoeFM0+/aLOaaa01X8cgA3GAi1k23HdvU+rAV07WeW1d9Cqd3jjkm4qYo/VYk2m7RB//wt9lVUgDocp+pDrzyvDB0hwy5h0g0RFJ3uJUpc666epThD276rurBGt6UdcsrSrsiLT7xOpdjNhhy8/al+Uzily1XVKiboFbv6IL/Ws=
+  - secure: h7gMxUo4EIu59965k6tCziO+lHls1ZSWUIQdoW13xwCIa0+I1HuB8houj9stPrCKCpOXXNPrgHsxF10d+HdQs+8MtXEuR4Sc4isbHN/koOfhgz2Bk1n4n+TuVL8MKbhwDlVaPPcAdAHVw7Jr1yf9eFBg6pOmnM//qtGOj+1WbKxQ35uJEPQzYALqrMbT9vl8pNK0f7IrXSU9Fi4fNmcojDjl5UCTA7jtsOw3zY0QIogedpulnPQp+K2/3ZgZXiNO9YjfJ5e0OUwUUj/7AMRsOCok2thBIPDJjkD4erhUAjNP5ks6k9YwuPefpGtTqmbovx9i8Dupdm47uFFogf2WvhLDiNbz+HphMzGkNPltMCOQbX9G2nZg8k1yOgyThFuPiwhkTeh1nixTNxWVrGqYfpj7trH4wPZbccbgzvROkvxxmPtkkh2PH8V0IBCASShdLh2oDPe9ocyGDZpvBbHl17Z8OpLWQKLmjpN39YdfxIH/S/XUhmT+IzhKTLJj4ZCFwenDqodSq8N9sx7/PoMfQv4SEvuBlvM1hKQpkRKz2rEoVlb/s2RdVgx+u0hPlwkrUwvi6loOtkymtFPnn2r5Qgd15QjWZjatTbrX/uYuduMqHRKbaJLVmRFHQFBFylZmN2VB0Ta2wJPn9ZKVeZYsmdt7WFyRhLtc2I6L8X1hrmA=
+  - secure: wqNW/ETWynfp090wNSYpTb5l6x9e73+zfEDX28yyF3xnpgnkVlIkZkD4LAw5RFOM0DdZAUe/cxNzlOKujsZg21oeFfpc4m9TNVjAzdvnsuPqngI8F390YOmzbQm08AEt6mjJL+DvI3ivvmEl9TkqcFW6IOvI8KUSIY9ShY100g/EPNKp6NvGKJt/Ia5nyaVpCSKRGSA/1TW1QPyyH6KocN7PorfT+JfW+B71+nDPMAkt8eTsXIb9uCzp2PHumVKyyMFvSNmJ5eQWjODfSx5L5YEhVqibEj5e20Gi1Nvm6NoxHvdBalrUBIUVG/isMvhsP89KxVj0JpIA5wIOmYxma3JZ6+Z63XhoU9g80k2zXKxTa31CbVqpuxxRmWX2heSpGFEyuJ1KO+eIziBxdEzr1PsTCiE5J+T/ceGWJ+UXVPLty+nKcF/Lf+b3zy47RNFZEIubZ8deunu22SRx0jDrkdM9JZ/e84u0RmvoBcUi+3Q3b1sQE89eTpZSiRrs3ec7mZOwhXVlcwnWpa35IivNOWxzqijv0ovm5baRrEPmksHtKStSw/cv1b8EQ7zyJOY3V32TX+TAMJvK3w2ScEgRHEZtMYElMaofHB/NfrKcF3CywE/pIOOm2DJGIBOwfbDW6B3llYTcB6qSl1MPTQDjHjcfhK+0l+UDvnlYM5894E4=
+  - AWS_DEFAULT_REGION: eu-central-1
+  - CC_TEST_REPORTER_ID: ca6823464513158c9fb1cd8da6d248bae5fdf38c6ea580835671b1af661aeff3
