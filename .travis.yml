@@ -21,6 +21,7 @@ before_deploy:
 - ls
 - pwd
 - cd ../schematics
+- npm run build
 deploy:
   provider: npm
   email: contact@maciejtreder.com
