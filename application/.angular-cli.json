@@ -35,6 +35,7 @@
         "root": "src",
         "outDir": "dist/browser",
         "assets": [
+          "manifest.json",
           "assets"
         ],
         "index": "index.html",
@@ -60,6 +61,7 @@
         "root": "src",
         "outDir": "dist/server",
         "assets": [
+          "manifest.json",
           "assets"
         ],
         "index": "index.html",
