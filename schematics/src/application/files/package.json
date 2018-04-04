@@ -74,7 +74,6 @@
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "opencollective": "^1.0.3",
     "@angular/cli": "^1.7.3",
     "@angular/compiler-cli": "5.2.9",
     "@angular/language-service": "5.2.9",
@@ -97,6 +96,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "node-wget": "^0.4.2",
     "npm-run-all": "^4.1.2",
+    "opencollective": "^1.0.3",
     "pre-commit": "^1.2.2",
     "protractor": "~5.1.2",
     "reflect-metadata": "^0.1.10",
@@ -105,6 +105,7 @@
     "serverless-google-cloudfunctions": "^1.1.1",
     "sinon": "^4.5.0",
     "ts-loader": "^2.3.7",
+    "tsickle": "0.27.2",
     "tslint": "^5.7.0",
     "typescript": "~2.4.2"
   },
