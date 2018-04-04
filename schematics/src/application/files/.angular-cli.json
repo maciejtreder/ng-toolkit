@@ -35,8 +35,8 @@
         "root": "src",
         "outDir": "dist/browser",
         "assets": [
-          "assets",
-          {"glob": "**/*", "input": "../firebug-lite", "output": "./firebug-lite"}
+          "manifest.json",
+          "assets"
         ],
         "index": "index.html",
         "main": "main.browser.ts",
@@ -61,6 +61,7 @@
         "root": "src",
         "outDir": "dist/server",
         "assets": [
+          "manifest.json",
           "assets"
         ],
         "index": "index.html",

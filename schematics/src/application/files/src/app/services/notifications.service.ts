@@ -111,7 +111,7 @@ export class Notifications {
     }
 
     private isVapidPushAvaialable(): boolean {
-        return !!this.window.nativeWindow['navigator'] && !!this.window.nativeWindow.navigator['serviceWorker'];
+        return !this.window.nativeWindow['safari'] && !!this.window.nativeWindow['navigator'] && !!this.window.nativeWindow.navigator['serviceWorker'];
     }
 
     private isSafariPushAvailable(): boolean {
