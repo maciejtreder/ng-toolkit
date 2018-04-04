@@ -18,6 +18,8 @@ after_script:
    - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 before_deploy:
+  - ls
+  - pwd
   - cd schematics
 
 deploy:
