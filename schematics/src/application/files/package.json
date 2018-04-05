@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "name": "angular-universal-pwa",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maciejtreder/angular-universal-serverless.git"
