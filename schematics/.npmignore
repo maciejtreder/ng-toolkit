@@ -1,4 +1,4 @@
-src/index.ts
-src/index_spec.ts
-.gitignore
-tsconfig.json
+./src/index.ts
+./src/index_spec.ts
+./utils/index.ts
+./tsconfig.json
