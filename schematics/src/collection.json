@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "application": {
-      "description": "A blank schematic.",
+      "description": "Creates boilerplate app.",
       "factory": "./application/index#application"
     }
   }
