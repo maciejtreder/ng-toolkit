@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "angular-universal-pwa",
-  "version": "1.0.22",
+  "version": "1.0.24",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine **/*_spec.js",
-    "postinstall": "node postinstall.js && opencollective postinstall"
+    "postinstall": "node postinstall.js && opencollective postinstall",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "schematics",
