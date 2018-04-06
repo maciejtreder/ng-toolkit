@@ -12,9 +12,6 @@
     "test.ts",
     "**/*.spec.ts"
   ],
-  "angularCompilerOptions": {
-    "entryModule": "app/app.server.module#AppServerModule"
-  },
   "include": [
     "main.server.ts",
     "./app/lazy/lazy.module.ts"

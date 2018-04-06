@@ -17,7 +17,7 @@ export class MenuComponent implements OnInit {
         {link: '/donors', icon: 'attach_money', text: 'Donors'},
         {link: '/', icon: 'home', text: 'Home'},
         {link: '/lazy', icon: 'free_breakfast', text: 'Lazy module'},
-        // {link: '/external', icon: 'call_merge', text: 'External module'}, //not works because of https://github.com/angular/angular-cli/issues/8284
+        {link: '/external', icon: 'call_merge', text: 'External module'}, //not works because of https://github.com/angular/angular-cli/issues/8284
         {link: '/transferState', icon: 'call_merge', text: 'TransferState (API calls)'},
         {link: 'https://github.com/maciejtreder/angular-universal-pwa', icon: 'code', text: 'Fork on github'},
     ];

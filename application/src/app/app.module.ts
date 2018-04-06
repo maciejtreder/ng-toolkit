@@ -45,7 +45,7 @@ import { PrebootModule } from 'preboot';
             { path: '', component: HomeComponent, data: {title: 'Home', description: 'Homepage - quick overview.'}},
             { path: 'donors', component: DonorsComponent, data: {title: 'Donors', description: 'List of donations. Became a donor!'}},
             { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule', data: {title: 'Lazy module', description: 'Lazy module example.'}},
-            // { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}, not works because of https://github.com/angular/angular-cli/issues/8284
+            { path: 'external', loadChildren: '@angular-universal-serverless/external-module/release#ExternalModule', data: {title: 'External module', description: 'External module example.'}}, // not works because of https://github.com/angular/angular-cli/issues/8284
             { path: 'transferState', data: {title: 'Transfer state (API)', description: 'Angular TransferState example.'}, children: [
                 { path: '', component: TransferStateComponent, },
                 { path: 'with', component: WithTransferStateComponent, resolve: {hits: HitWithTransferStateResolver}},
