@@ -30,7 +30,7 @@ app.engine('html', ngExpressEngine({
     bootstrap: AppServerModuleNgFactory,
     providers: [
         provideModuleMap(LAZY_MODULE_MAP),
-        // {provide: USERAGENTTOKEN, useValue: REQUEST }
+        {provide: USERAGENTTOKEN, useValue: REQUEST }
     ]
 }));
 
@@ -63,10 +63,3 @@ app.get('/*', (req, res) => {
         }
     });
 });
-
-// export default app;
-
-// export = {
-//     dupa: 'MACIEJKO',
-//     app: app
-// };
