@@ -10,8 +10,6 @@ import * as cors from 'cors';
 import * as compression from 'compression';
 
 import {join} from 'path';
-import { USERAGENTTOKEN } from './src/app/window-ref.service';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
 
 enableProdMode();
 
@@ -29,8 +27,7 @@ const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main.
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
   providers: [
-    provideModuleMap(LAZY_MODULE_MAP),
-    {provide: USERAGENTTOKEN, useValue: REQUEST }
+    provideModuleMap(LAZY_MODULE_MAP)
   ]
 }));
 
