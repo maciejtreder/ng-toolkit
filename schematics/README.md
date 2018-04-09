@@ -9,11 +9,8 @@
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
-This schematics are the boilerplate for Angular Universal (serverside rendering) applications.
-It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
+This repo is the boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
 It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
-
-This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
