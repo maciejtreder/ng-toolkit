@@ -65,7 +65,7 @@ npm start
 ### Cloning the repo 
 ```bash
 git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-pwa/generated_app
+cd angular-universal-pwa/application
 npm install
 npm start
 ```
