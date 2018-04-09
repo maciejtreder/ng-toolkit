@@ -19,4 +19,3 @@ export class WindowRef {
         return this._window;
     }
 }
-
