@@ -7,8 +7,8 @@ import {
 import { Observable, Subscriber } from '@angular-devkit/schematics/node_modules/rxjs';
 import { getSource } from '../utils/index';
 
-export function application(options: any): Rule {
-    const templateSource = apply(url('./files'), [
+export default function (options: any): Rule {
+    const templateSource = apply(url('../application/files'), [
         template({...options}),
         move(options.directory)
     ])
@@ -25,7 +25,7 @@ function updateCLI(options: any): Rule {
     return (tree: Tree, _context: SchematicContext) => {
         return Observable.create((subscriber: Subscriber<Tree>) => {
 
-        const defaultRule: Rule = externalSchematic('@schematics/angular', 'application', options);
+        const defaultRule: Rule = externalSchematic('@schematics/angular', 'ng-new', options);
 
             (defaultRule(tree, _context) as Observable<Tree>).subscribe(tree => {
 

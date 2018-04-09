@@ -3,12 +3,10 @@ import { MenuComponent } from './menu.component';
 import { By } from '@angular/platform-browser';
 import * as sinon from 'sinon';
 import { DebugElement, Directive, HostListener, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatMenuModule } from '@angular/material';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from '../services/notifications.service';
+import { Observable, Observer, Subject, BehaviorSubject } from 'rxjs/index';
 
 @Directive({
     selector: '[routerLink]'
@@ -106,7 +104,7 @@ describe('Menu component.', () => {
     }));
 
     it('When subscribe link is clicked, then subscribe method should be called', async(() => {
-        nsServiceStub.subscribeToPush.returns(Observable.of(true));
+        nsServiceStub.subscribeToPush.returns(Observable.create((observer: Observer<boolean>) => observer.next(true)));
         subscribeLink.nativeElement.click();
         expect(nsServiceStub.subscribeToPush.calledOnce).toBe(true, 'Register to push method was not called.');
     }));

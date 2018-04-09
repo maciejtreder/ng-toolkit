@@ -4,13 +4,8 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
-    "types": [
-      "node"
-    ]
+    "types": []
   },
-//  "angularCompilerOptions": {
-//    "entryModule": "app/app.browser.module#AppBrowserModule"
-//  },
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
@@ -20,7 +15,4 @@
     "polyfills.ts",
     "./app/lazy/lazy.module.ts"
   ]
-//  "files": [
-//    "../node_modules/@angular-universal-serverless/external-module/release/src/externalComponent/external.module.d.ts"
-//  ]
 }

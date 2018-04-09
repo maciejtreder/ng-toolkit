@@ -1,9 +1,8 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from '../services/notifications.service';
+import { Observable, Observer, ReplaySubject, Subject } from 'rxjs/index';
+import { map } from 'rxjs/internal/operators';
 
 @Component({
     selector: 'menu',
@@ -39,11 +38,15 @@ export class MenuComponent implements OnInit {
 
     public isRegistrationAvailable(): Observable<boolean> {
         if (this.isSafari) {
-            return this.ns.isSubscribed().map((registered) => !registered);
+            return this.ns.isSubscribed().pipe(map((registered) => !registered));
         } else if (this.ns.isPushAvailable()) {
-            return Observable.of(true);
+          return Observable.create((observer: Observer<boolean>) => {
+            observer.next(true);
+          });
         }
-        return Observable.of(false);
+      return Observable.create((observer: Observer<boolean>) => {
+        observer.next(false);
+      });
     }
 
     public toggleSubscription(): void {

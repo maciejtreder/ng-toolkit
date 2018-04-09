@@ -2,8 +2,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material';
 import * as sinon from 'sinon';
 import { SnackBarNotification, SnackBar } from './snack-bar.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Observer, Subject } from 'rxjs/index';
 
 let snackbarStub;
 let snackbarRefStub;
@@ -14,7 +13,7 @@ describe('Snack bar service', () => {
         snackbarRefStub = sinon.createStubInstance(MatSnackBarRef);
 
         snackbarStub.open.returns(snackbarRefStub);
-        snackbarRefStub.afterDismissed.returns(Observable.of(true));
+        snackbarRefStub.afterDismissed.returns(Observable.create((observer:Observer<boolean>) => observer.next(true)));
 
         TestBed.configureTestingModule({
             providers: [

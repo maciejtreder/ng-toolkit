@@ -7,11 +7,10 @@ import { SnackBar } from './services/snack-bar.service';
 import * as sinon from 'sinon';
 import { SwUpdate } from '@angular/service-worker';
 import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker/src/low_level';
-import { Subject } from 'rxjs/Subject';
 import { WindowRef } from './window-ref.service';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { SwUpdateServerMock } from './services/swUpdate-server.mock.service';
+import { Observable, Subject } from 'rxjs/index';
 
 let fixture: ComponentFixture<AppComponent>;
 let windowStub;
@@ -25,7 +24,7 @@ const activated: Subject<UpdateActivatedEvent> = new Subject();
 
 class FakeLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
-        return Observable.of({HELLO: 'This is a MACIEJKO'});
+        return Observable.create(observer => observer.next({HELLO: 'This is a translation'}));
     }
 }
 

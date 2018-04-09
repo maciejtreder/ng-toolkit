@@ -6,6 +6,7 @@ import { WindowRef } from './window-ref.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.router.events.filter((event) => event instanceof NavigationEnd).subscribe((event) => {
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
             const snapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root.firstChild;
 
             const title: string = snapshot.data['title'];

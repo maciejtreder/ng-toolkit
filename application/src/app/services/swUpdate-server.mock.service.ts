@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/index';
 import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker/src/low_level';
-import { Subject } from 'rxjs/Subject';
 
 export class SwUpdateServerMock {
     public available: Observable<UpdateAvailableEvent> = new Subject();

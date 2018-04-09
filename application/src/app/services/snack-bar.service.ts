@@ -49,7 +49,6 @@ export class SnackBar {
 
         const config: MatSnackBarConfig = new MatSnackBarConfig();
         config.duration = 1000 * this.actuallyDisplayedNotification.duration;
-        config.extraClasses = ['service_worker_snack'];
         const callback = this.actuallyDisplayedNotification.callback;
 
         this.snackBar.open(this.actuallyDisplayedNotification.message, this.actuallyDisplayedNotification.action, config).afterDismissed().subscribe(() => {
