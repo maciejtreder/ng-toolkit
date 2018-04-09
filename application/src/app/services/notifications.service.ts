@@ -3,9 +3,8 @@ import { WindowRef } from '../window-ref.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Subscriber';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, Subscriber } from 'rxjs/index';
+import { map } from 'rxjs/internal/operators';
 
 @Injectable()
 export class Notifications {
@@ -33,13 +32,15 @@ export class Notifications {
 
     public isSubscribed(): Observable<boolean> {
         if (this.isVapidPushAvaialable()) {
-            return this.swPush.subscription.map((subscription) => !!subscription);
+            return this.swPush.subscription.pipe(map((subscription) => !!subscription));
         } else if (this.isSafariPushAvailable()) {
             return Observable.create((observer: Observer<boolean>) => {
                 observer.next(this.window.nativeWindow['safari'].pushNotification.permission('web.com.maciejtreder.angular-universal-pwa').permission === 'granted');
             });
         } else {
-            return Observable.of(false);
+          return Observable.create((observer: Observer<boolean>) => {
+            observer.next(false);
+          });
         }
     }
 
@@ -61,11 +62,12 @@ export class Notifications {
 
         let subscription: PushSubscription;
 
-        return this.swPush.subscription.flatMap((result: PushSubscription) => {
-            subscription = result;
-            return Observable.fromPromise(subscription.unsubscribe());
-        }).flatMap(() => {
-            return this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', subscription, {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'}).map((resp) => resp.status === 202, (err) => err.status === 202);
+        return this.swPush.subscription.pipe(map((result: PushSubscription) => {
+          return Observable.create((observer: Observer<boolean>) => {
+            subscription.unsubscribe().then(() => observer.next(true)).catch( (error) => observer.error(error));
+          })
+        })).pipe(() => {
+          return this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', subscription, {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'}).pipe(map((resp) => resp.status === 202, (err) => err.status === 202));
         });
     }
 

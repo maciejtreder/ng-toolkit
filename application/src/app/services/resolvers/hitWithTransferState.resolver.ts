@@ -1,10 +1,9 @@
-import 'rxjs/add/operator/do';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ExampleApi } from '../exampleApi.service';
-import { Observable } from 'rxjs/Observable';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer } from '@angular/common';
+import { Observable, Observer } from 'rxjs/index';
 
 @Injectable()
 export class HitWithTransferStateResolver implements Resolve<string> {
@@ -14,15 +13,18 @@ export class HitWithTransferStateResolver implements Resolve<string> {
 
     public resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
         if (!this.transferState.hasKey(this.key)) {
-            return this.api.hit().do((response: string) => {
-                if (isPlatformServer(this.platformId)) {
-                    this.transferState.set(this.key, response);
-                }
-            });
+          return this.api.hit().pipe((response: Observable<string>) => {
+            response.subscribe((resp: string) => {
+              if (isPlatformServer(this.platformId)) {
+                this.transferState.set(this.key, resp);
+              }
+            })
+            return response;
+          });
         } else {
             const value: string = this.transferState.get(this.key, 'error');
             this.transferState.remove(this.key);
-            return Observable.of(value);
+            return Observable.create((observer: Observer<string>) => observer.next(value));
         }
     }
 }

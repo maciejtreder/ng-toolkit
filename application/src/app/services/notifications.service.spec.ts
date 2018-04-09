@@ -1,12 +1,11 @@
 import { async, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { Observable } from 'rxjs';
 import * as sinon from 'sinon';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from './notifications.service';
+import { BehaviorSubject, Observable, Observer } from 'rxjs/index';
 
 describe('Notification service spec.', () => {
     let httpStub;
@@ -76,7 +75,7 @@ describe('Notification service spec.', () => {
 
     describe('VAPID -', () => {
         beforeEach(() => {
-            httpStub.post.returns(Observable.of({status: 202}));
+            httpStub.post.returns(Observable.create((observer: Observer<any>) => observer.next({status: 202})));
             setUpTestBed();
         });
 

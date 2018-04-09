@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main.bundle');
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
 
 app.engine('html', ngExpressEngine({
     bootstrap: AppServerModuleNgFactory,

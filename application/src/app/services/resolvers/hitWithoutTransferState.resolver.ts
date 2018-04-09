@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ExampleApi } from '../exampleApi.service';
+import { Observable } from 'rxjs/index';
 
 @Injectable()
 export class HitWithoutTransferStateResolver implements Resolve<string> {
