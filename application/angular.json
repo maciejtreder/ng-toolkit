@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": ".",
   "projects": {
-    "angular-universal-pwa-e2e": {
+    "browser-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -25,7 +25,7 @@
         }
       }
     },
-    "angular-universal-pwa": {
+    "browser": {
       "root": "",
       "projectType": "application",
       "architect": {
