@@ -1,8 +1,8 @@
 {
-  "index": "/index.html",
+  "index": "/",
   "appData": {
     "name": "Angular Universal PWA",
-    "description": "Angular PWA with Server side rendering - starter"
+    "description": "Angular PWA with Server Side Rendering - starter"
   },
   "assetGroups": [{
     "name": "app",
@@ -10,13 +10,13 @@
     "resources": {
       "files": [
         "/assets/icons/favicon.ico",
-        "/index.html",
-        "/ngsw-worker.js",
-        "/*.client.js",
-        "/client.js"
+        "/index.html"
       ],
       "versionedFiles": [
-        "/main.css"
+        "/main.*.js",
+        "/polyfills.*.js",
+        "/runtime.*.js",
+        "/styles.*.css"
       ]
     }
   }, {

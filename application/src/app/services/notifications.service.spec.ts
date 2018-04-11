@@ -5,7 +5,7 @@ import { SwPush } from '@angular/service-worker';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from './notifications.service';
-import { BehaviorSubject, Observable, Observer } from 'rxjs/index';
+import { BehaviorSubject, of } from 'rxjs/index';
 
 describe('Notification service spec.', () => {
     let httpStub;
@@ -75,7 +75,7 @@ describe('Notification service spec.', () => {
 
     describe('VAPID -', () => {
         beforeEach(() => {
-            httpStub.post.returns(Observable.create((observer: Observer<any>) => observer.next({status: 202})));
+            httpStub.post.returns(of({status: 202}));
             setUpTestBed();
         });
 

@@ -3,7 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ExampleApi } from '../exampleApi.service';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer } from '@angular/common';
-import { Observable, Observer } from 'rxjs/index';
+import { Observable, Observer, of } from 'rxjs/index';
 
 @Injectable()
 export class HitWithTransferStateResolver implements Resolve<string> {
@@ -18,13 +18,13 @@ export class HitWithTransferStateResolver implements Resolve<string> {
               if (isPlatformServer(this.platformId)) {
                 this.transferState.set(this.key, resp);
               }
-            })
+            });
             return response;
           });
         } else {
             const value: string = this.transferState.get(this.key, 'error');
             this.transferState.remove(this.key);
-            return Observable.create((observer: Observer<string>) => observer.next(value));
+            return of(value);
         }
     }
 }
