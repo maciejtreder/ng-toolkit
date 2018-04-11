@@ -52,19 +52,20 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 ### Using Angular CLI schematics
 
+Angular 5.x:
 ```bash
 npm install -g angular-universal-pwa
-ng new --collection angular-universal-pwa myApp
-cd myApp
-npm start
 ```
 
-### Using GIT
-
+Angular 6.x
 ```bash
-git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-pwa/application
-npm install
+npm install -g angular-universal-pwa@beta
+```
+
+Create project:
+```bash
+ng new --collection angular-universal-pwa myApp
+cd myApp
 npm start
 ```
 

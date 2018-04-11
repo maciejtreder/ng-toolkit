@@ -59,7 +59,7 @@ npm install -g angular-universal-pwa
 
 Angular 6.x
 ```bash
-npm install -g angular-universal-pwa@next
+npm install -g angular-universal-pwa@beta
 ```
 
 Create project:
@@ -67,6 +67,7 @@ Create project:
 ng new --collection angular-universal-pwa myApp
 cd myApp
 npm start
+```
 ```
 
 ### Cloning the repo 
