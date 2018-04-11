@@ -6,7 +6,7 @@ import { DebugElement, Directive, HostListener, Input } from '@angular/core';
 import { MatMenuModule } from '@angular/material';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from '../services/notifications.service';
-import { Observable, Observer, Subject, BehaviorSubject } from 'rxjs/index';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 
 @Directive({
     selector: '[routerLink]'
@@ -104,7 +104,7 @@ describe('Menu component.', () => {
     }));
 
     it('When subscribe link is clicked, then subscribe method should be called', async(() => {
-        nsServiceStub.subscribeToPush.returns(Observable.create((observer: Observer<boolean>) => observer.next(true)));
+        nsServiceStub.subscribeToPush.returns(of(true));
         subscribeLink.nativeElement.click();
         expect(nsServiceStub.subscribeToPush.calledOnce).toBe(true, 'Register to push method was not called.');
     }));

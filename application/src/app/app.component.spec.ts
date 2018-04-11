@@ -10,7 +10,7 @@ import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-wor
 import { WindowRef } from './window-ref.service';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SwUpdateServerMock } from './services/swUpdate-server.mock.service';
-import { Observable, Subject } from 'rxjs/index';
+import { Observable, Subject, of } from 'rxjs/index';
 
 let fixture: ComponentFixture<AppComponent>;
 let windowStub;
@@ -24,7 +24,7 @@ const activated: Subject<UpdateActivatedEvent> = new Subject();
 
 class FakeLoader implements TranslateLoader {
     public getTranslation(lang: string): Observable<any> {
-        return Observable.create(observer => observer.next({HELLO: 'This is a translation'}));
+        return of({HELLO: 'This is a translation'});
     }
 }
 

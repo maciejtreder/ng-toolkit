@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable, Observer, Subscriber } from 'rxjs/index';
+import { of, from } from 'rxjs';
 import { map } from 'rxjs/internal/operators';
 
 @Injectable()
@@ -38,9 +39,7 @@ export class Notifications {
                 observer.next(this.window.nativeWindow['safari'].pushNotification.permission('web.com.maciejtreder.angular-universal-pwa').permission === 'granted');
             });
         } else {
-          return Observable.create((observer: Observer<boolean>) => {
-            observer.next(false);
-          });
+          return of(false);
         }
     }
 
@@ -63,9 +62,7 @@ export class Notifications {
         let subscription: PushSubscription;
 
         return this.swPush.subscription.pipe(map((result: PushSubscription) => {
-          return Observable.create((observer: Observer<boolean>) => {
-            subscription.unsubscribe().then(() => observer.next(true)).catch( (error) => observer.error(error));
-          })
+          return from(subscription.unsubscribe());
         })).pipe(() => {
           return this.http.post(this.vapidSubscriptionEndpoint + '/unsubscribe', subscription, {headers: new HttpHeaders().set('content-type', 'application/json'), observe: 'response'}).pipe(map((resp) => resp.status === 202, (err) => err.status === 202));
         });
