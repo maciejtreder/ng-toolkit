@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { NgswCommChannel, UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker/src/low_level';
+import { Observable } from 'rxjs/index';
 
 export class SwPushServerMock {
     public messages: Observable<object>;

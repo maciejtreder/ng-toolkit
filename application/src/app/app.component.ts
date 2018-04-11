@@ -10,66 +10,66 @@ import { filter } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['app.component.scss']
+  templateUrl: './app.component.html',
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
 
-    private title: string = this.titleService.getTitle();
-    private metaDescription: string = this.metaService.getTag('name=description').content;
+  private title: string = this.titleService.getTitle();
+  private metaDescription: string = this.metaService.getTag('name=description').content;
 
-    constructor(
-        @Inject(PLATFORM_ID) private platformId: any,
-        private snackBarService: SnackBar,
-        private windowRef: WindowRef,
-        private swUpdate: SwUpdate,
-        private translate: TranslateService,
-        private titleService: Title,
-        private metaService: Meta,
-        private router: Router
-    ) {
-        this.translate.setDefaultLang(this.translate.getBrowserLang());
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: any,
+    private snackBarService: SnackBar,
+    private windowRef: WindowRef,
+    private swUpdate: SwUpdate,
+    private translate: TranslateService,
+    private titleService: Title,
+    private metaService: Meta,
+    private router: Router
+  ) {
+    this.translate.setDefaultLang(this.translate.getBrowserLang());
+  }
+
+  public ngOnInit(): void {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
+      const snapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root.firstChild;
+
+      const title: string = snapshot.data['title'];
+      this.titleService.setTitle(this.title + ' | ' + title);
+
+      const description: string = snapshot.data['description'];
+      this.metaService.updateTag({ name: 'description', content: this.metaDescription + ' ' + description}, 'name=description');
+    });
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
     }
 
-    public ngOnInit(): void {
-      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-            const snapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root.firstChild;
+    if (this.swUpdate.isEnabled) {
+      // this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
+      //     localStorage.setItem('cached', 'displayed');
+      //     this.snackBarService.displayNotification({
+      //         message: 'Content is cached', action: 'Ok'
+      //     } as SnackBarNotification);
+      // });
 
-            const title: string = snapshot.data['title'];
-            this.titleService.setTitle(this.title + ' | ' + title);
+      this.swUpdate.available.subscribe((evt) => {
+        this.snackBarService.displayNotification({
+          message: 'New version of app is available!',
+          action: 'Launch',
+          force: true,
+          callback: () => {
+            this.windowRef.nativeWindow.location.reload(true);
+          }
+        } as SnackBarNotification);
+      });
 
-            const description: string = snapshot.data['description'];
-            this.metaService.updateTag({ name: 'description', content: this.metaDescription + ' ' + description}, 'name=description');
-        });
-
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-
-        if (this.swUpdate.isEnabled) {
-            // this.swUpdate.activated.filter(() => !localStorage.getItem('cached')).subscribe(() => {
-            //     localStorage.setItem('cached', 'displayed');
-            //     this.snackBarService.displayNotification({
-            //         message: 'Content is cached', action: 'Ok'
-            //     } as SnackBarNotification);
-            // });
-
-            this.swUpdate.available.subscribe((evt) => {
-                this.snackBarService.displayNotification({
-                    message: 'New version of app is available!',
-                    action: 'Launch',
-                    force: true,
-                    callback: () => {
-                        this.windowRef.nativeWindow.location.reload(true);
-                    }
-                } as SnackBarNotification);
-            });
-
-            this.swUpdate.checkForUpdate().then(() => {
-                // noop
-            }).catch((err) => {
-                console.error('error when checking for update', err);
-            });
-        }
+      this.swUpdate.checkForUpdate().then(() => {
+        // noop
+      }).catch((err) => {
+        console.error('error when checking for update', err);
+      });
     }
+  }
 }

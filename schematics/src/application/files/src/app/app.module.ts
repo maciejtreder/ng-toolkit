@@ -1,11 +1,8 @@
-import 'rxjs/Rx';
-
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TransferHttpCacheModule } from '@nguniversal/common';
 import { TransferStateComponent } from './transfer-state/transfer-state.component';
 import { SnackBar } from './services/snack-bar.service';
 import { WindowRef } from './window-ref.service';
@@ -23,7 +20,7 @@ import { ExampleApi } from './services/exampleApi.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
-import { PrebootModule } from 'preboot';
+// import { PrebootModule } from 'preboot';
 
 @NgModule({
     declarations: [
@@ -52,8 +49,8 @@ import { PrebootModule } from 'preboot';
                 { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
             ]}
         ]),
-        HttpClientModule,
-        PrebootModule.withConfig({appRoot: 'app-root'})
+        HttpClientModule
+        // PrebootModule.withConfig({appRoot: 'app-root'})
       ],
       providers: [SnackBar, WindowRef, Notifications, HitWithTransferStateResolver, HitWithoutTransferStateResolver, ExampleApi, Title, Meta],
       bootstrap: [AppComponent]

@@ -6,7 +6,6 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
-import 'rxjs/Rx';
 import './polyfills';
 
 declare const require: any;

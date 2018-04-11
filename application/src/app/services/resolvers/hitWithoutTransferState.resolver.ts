@@ -5,9 +5,9 @@ import { Observable } from 'rxjs/index';
 
 @Injectable()
 export class HitWithoutTransferStateResolver implements Resolve<string> {
-    constructor(private api: ExampleApi) {}
+  constructor(private api: ExampleApi) {}
 
-    public resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
-        return this.api.hit();
-    }
+  public resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
+    return this.api.hit();
+  }
 }
