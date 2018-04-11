@@ -54,9 +54,18 @@ This is a great starting point for **microservices application**! Because of sup
 ## <a name="start"></a> Get Started
 
 ### Using Angular CLI schematics
-
+Angular 5.x:
 ```bash
 npm install -g angular-universal-pwa
+```
+
+Angular 6.x
+```bash
+npm install -g angular-universal-pwa@beta
+```
+
+Create project:
+```bash
 ng new --collection angular-universal-pwa myApp
 cd myApp
 npm start

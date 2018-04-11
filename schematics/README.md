@@ -58,7 +58,7 @@ npm install -g angular-universal-pwa
 
 Angular 6.x
 ```bash
-npm install -g angular-universal-pwa@next
+npm install -g angular-universal-pwa@beta
 ```
 
 Create project:
