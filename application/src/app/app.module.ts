@@ -1,5 +1,3 @@
-import 'rxjs';
-
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -51,7 +49,7 @@ import { Meta, Title } from '@angular/platform-browser';
                 { path: 'without', component: WithoutTransferStateComponent, resolve: {hits: HitWithoutTransferStateResolver}}
             ]}
         ]),
-        HttpClientModule,
+        HttpClientModule
         // PrebootModule.withConfig({appRoot: 'app-root'})
       ],
       providers: [SnackBar, WindowRef, Notifications, HitWithTransferStateResolver, HitWithoutTransferStateResolver, ExampleApi, Title, Meta],

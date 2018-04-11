@@ -6,6 +6,9 @@
 .idea
 .serverless
 *.iml
+*.js
+*.js.map
+*.d.ts
 .DS_Store
 dll
 .awcache

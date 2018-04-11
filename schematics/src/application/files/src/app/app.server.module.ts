@@ -6,11 +6,10 @@ import {AppModule} from './app.module';
 import {AppComponent} from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import * as fs from 'fs';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModuleMock } from './services/service-worker.mock.module';
+import { Observable, Observer } from 'rxjs/index';
 
 export function universalLoader(): TranslateLoader {
     return {

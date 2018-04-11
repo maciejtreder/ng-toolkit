@@ -26,6 +26,7 @@ deploy:
   provider: npm
   email: contact@maciejtreder.com
   skip_cleanup: true
+  tag: beta
   on:
     tags: true
     repo: maciejtreder/angular-universal-pwa
