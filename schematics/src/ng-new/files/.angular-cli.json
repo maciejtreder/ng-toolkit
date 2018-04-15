@@ -16,7 +16,7 @@
           "output": "./firebug-lite"
         },
         {
-          "glob": "ngsw-worker-empty.js",
+          "glob": "ngsw-worker.js",
           "input": "./",
           "output": "./ngsw-worker.js"
         }

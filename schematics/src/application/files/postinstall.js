@@ -9,12 +9,12 @@ if (!fs.existsSync('./firebug-lite.tar.tgz')) {
   console.log('Downloading firebug.');
   wget({url: 'https://getfirebug.com/releases/lite/latest/firebug-lite.tar.tgz', dest: './'}, () => {
     console.log('Downloaded.');
-  decompress('firebug-lite.tar.tgz', '.', {
-    plugins: [
-      decompressTargz()
-    ]
-  }).then(() => console.log('Decompressed.'));
-});
+    decompress('firebug-lite.tar.tgz', '.', {
+      plugins: [
+        decompressTargz()
+      ]
+    }).then(() => console.log('Decompressed.'));
+  });
 }
 
 /* eslint-disable no-console */

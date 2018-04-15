@@ -6,15 +6,12 @@
 [![Sponsors on Open Collective](https://opencollective.com/angular-universal-pwa/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/angular-universal-pwa.svg)](https://badge.fury.io/js/angular-universal-pwa)
 
-# Angular 5 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
+# Angular 5/6 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
-This schematics are the boilerplate for Angular Universal (serverside rendering) applications.
-It is running as a **(PWA) progressive web app** with the whole goodness of it (push messages, content caching and making it installable on the Android devices)!
+This repo is the boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
 It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
-
-This is a great starting point for **microservices application**! Because of support for external modules, you can split your application into separate projects and combine them together when deploying!
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
@@ -46,14 +43,15 @@ This is a great starting point for **microservices application**! Because of sup
 * Firebug Lite (great solution for development on touch-screen devices, ie: tablets)
 
 ### Used frameworks/technologies
-* Angular 5.x
-* Angular CLI
+* Angular 5.x & 6.x
+* Angular CLI 1.x & 6.x
 * Webpack
 * Serverless framework
 
 ## <a name="start"></a> Get Started
 
 ### Using Angular CLI schematics
+
 Angular 5.x:
 ```bash
 npm install -g angular-universal-pwa
@@ -68,15 +66,6 @@ Create project:
 ```bash
 ng new --collection angular-universal-pwa myApp
 cd myApp
-npm start
-```
-
-### Using GIT
-
-```bash
-git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-pwa/application
-npm install
 npm start
 ```
 
