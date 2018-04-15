@@ -4,7 +4,7 @@ import {
     mergeWith, move, Rule, SchematicContext, template, Tree, url
 } from '@angular-devkit/schematics';
 
-import { Observable, Subscriber } from '@angular-devkit/schematics/node_modules/rxjs';
+import { Observable, Subscriber } from 'rxjs/index';
 import { getSource } from '../utils/index';
 
 export default function (options: any): Rule {
