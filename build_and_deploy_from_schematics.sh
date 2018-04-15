@@ -1,4 +1,4 @@
-npm install -g @angular/cli;
+npm install -g @angular/cli@next;
 rm -rf application;
 cd schematics;
 npm install;
