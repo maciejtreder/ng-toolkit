@@ -1,4 +1,8 @@
-import { Rule, externalSchematic, chain, move, apply, url, mergeWith, MergeStrategy } from '@angular-devkit/schematics';
+import {
+    Rule, externalSchematic, chain,
+    move, apply, url, mergeWith, MergeStrategy, asSource
+} from '@angular-devkit/schematics';
+import { empty } from '@angular-devkit/schematics/src/tree/static';
 
 export default function (options: any): Rule {
     if (!options.directory) {
@@ -13,8 +17,26 @@ export default function (options: any): Rule {
     ]);
 
     return chain([
-        externalSchematic('@schematics/angular', 'ng-new', options),
-        mergeWith(templateSource, MergeStrategy.Overwrite),
-        mergeWith(angularCLIConfig, MergeStrategy.Overwrite)
+        chain([
+            mergeWith(templateSource, MergeStrategy.Overwrite),
+            mergeWith(angularCLIConfig, MergeStrategy.Overwrite),
+            ]),
+        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles(options)]), MergeStrategy.Overwrite)
+        // removeRedundantFiles(options)
     ]);
+}
+
+function removeRedundantFiles(options: any):Rule {
+    console.log(options);
+    return empty;
+    // return (tree: Tree, _context: SchematicContext) => {
+    //     console.log(tree.getDir(`./${options.directory}/src`).subfiles);
+    //     tree.delete(`./${options.directory}/src/karma.conf.js`);
+    //     tree.delete(`./${options.directory}/src/main.ts`);
+    //     tree.delete(`./${options.directory}/src/tslint.json`);
+    //     tree.delete(`./${options.directory}/src/browserslist`);
+    //
+    //     console.log(tree.getDir(`./${options.directory}/src`).subfiles);
+    //     // return tree;
+    // }
 }
