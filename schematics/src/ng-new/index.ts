@@ -1,82 +1,43 @@
 import {
-    apply,
-    chain, externalSchematic, MergeStrategy,
-    mergeWith, move, Rule, SchematicContext, template, Tree, url
+    Rule, externalSchematic, chain,
+    move, apply, url, mergeWith, MergeStrategy, asSource
 } from '@angular-devkit/schematics';
-
-import { Observable, Subscriber } from '@angular-devkit/schematics/node_modules/rxjs';
-import { getSource } from '../utils/index';
+import { empty } from '@angular-devkit/schematics/src/tree/static';
+import { createGitIgnore } from '../utils/index';
 
 export default function (options: any): Rule {
+    if (!options.directory) {
+        options.directory = options.name;
+    }
     const templateSource = apply(url('../application/files'), [
-        template({...options}),
+        move(options.directory),
+    ]);
+
+    const angularCLIConfig = apply(url('./files'), [
         move(options.directory)
-    ])
+    ]);
 
-  return chain([
-      updateCLI(options),
-          mergeWith(templateSource, MergeStrategy.Overwrite),
-
+    return chain([
+        chain([
+            mergeWith(templateSource, MergeStrategy.Overwrite),
+            mergeWith(angularCLIConfig, MergeStrategy.Overwrite),
+            ]),
+        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles()]), MergeStrategy.Overwrite),
+        createGitIgnore(options.directory)
+        // removeRedundantFiles(options)
     ]);
 }
 
-
-function updateCLI(options: any): Rule {
-    return (tree: Tree, _context: SchematicContext) => {
-        return Observable.create((subscriber: Subscriber<Tree>) => {
-
-        const defaultRule: Rule = externalSchematic('@schematics/angular', 'ng-new', options);
-
-            (defaultRule(tree, _context) as Observable<Tree>).subscribe(tree => {
-
-                const configSource = JSON.parse(getSource(tree, `${options.directory}/.angular-cli.json`));
-
-                const devApp = configSource.apps.splice(0, 1)[0];
-                const prodBrowser = JSON.parse(JSON.stringify(devApp));
-                const prodServer = JSON.parse(JSON.stringify(devApp));
-
-                configSource.apps.splice(0, 1);
-
-                devApp.serviceWorker = true;
-                devApp.outDir = `dist/browser`;
-                devApp.assets.push({glob: "**/*", input: "../firebug-lite", output: "./firebug-lite"})
-                devApp.assets.push({glob: "ngsw-worker.js", input: "./", output: "./ngsw-worker.js"})
-                devApp.main = "main.browser.ts";
-                devApp.styles = ["styles/main.scss"];
-                devApp.environments = {
-                    dev: "environments/environment.ts",
-                    firebug: "environments/environment.firebug.ts",
-                }
-
-                prodBrowser.serviceWorker = true;
-                prodBrowser.outDir = `dist/browser`;
-                prodBrowser.assets.push('manifest.json')
-                prodBrowser.main = "main.browser.ts";
-                prodBrowser.styles = ["styles/main.scss"];
-                prodBrowser.environments = {
-                    prod: "environments/environment.prod.ts"
-                }
-
-                prodServer.outDir = `dist/server`;
-                prodServer.assets.push('manifest.json')
-                prodServer.main = "main.server.ts";
-                prodServer.platform = "server";
-                prodServer.tsconfig = "tsconfig.server.json";
-                prodServer.styles = ["styles/main.scss"];
-                prodServer.polyfills = null;
-                prodServer.environments = {
-                    prod: "environments/environment.prod.ts"
-                }
-
-                configSource.apps.push(devApp);
-                configSource.apps.push(prodBrowser);
-                configSource.apps.push(prodServer);
-
-                tree.overwrite(`${options.directory}/.angular-cli.json`, JSON.stringify(configSource, null, "  "));
-
-                subscriber.next(tree);
-                subscriber.complete();
-            });
-        });
-    }
+function removeRedundantFiles():Rule {
+    return empty;
+    // return (tree: Tree, _context: SchematicContext) => {
+    //     console.log(tree.getDir(`./${options.directory}/src`).subfiles);
+    //     tree.delete(`./${options.directory}/src/karma.conf.js`);
+    //     tree.delete(`./${options.directory}/src/main.ts`);
+    //     tree.delete(`./${options.directory}/src/tslint.json`);
+    //     tree.delete(`./${options.directory}/src/browserslist`);
+    //
+    //     console.log(tree.getDir(`./${options.directory}/src`).subfiles);
+    //     // return tree;
+    // }
 }

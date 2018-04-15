@@ -4,6 +4,11 @@
     "application": {
       "description": "Creates boilerplate app.",
       "factory": "./application/index#application"
+    },
+    "ng-new": {
+      "description": "Creates boilerplate app.",
+      "factory": "./ng-new/index",
+      "schema": "./ng-new/schema.json"
     }
   }
 }

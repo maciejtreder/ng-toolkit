@@ -16,6 +16,8 @@ package:
    - src/**
    - node_modules/**
    - firebug-lite/**
+   - e2e/**
+   - coverage/**
    - '!node_modules/aws-serverless-express/**'
    - '!node_modules/binary-case/**'
    - '!node_modules/type-is/**'
