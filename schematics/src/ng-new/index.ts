@@ -21,13 +21,12 @@ export default function (options: any): Rule {
             mergeWith(templateSource, MergeStrategy.Overwrite),
             mergeWith(angularCLIConfig, MergeStrategy.Overwrite),
             ]),
-        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles(options)]), MergeStrategy.Overwrite)
+        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles()]), MergeStrategy.Overwrite)
         // removeRedundantFiles(options)
     ]);
 }
 
-function removeRedundantFiles(options: any):Rule {
-    console.log(options);
+function removeRedundantFiles():Rule {
     return empty;
     // return (tree: Tree, _context: SchematicContext) => {
     //     console.log(tree.getDir(`./${options.directory}/src`).subfiles);
