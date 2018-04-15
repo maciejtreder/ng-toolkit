@@ -3,13 +3,14 @@ import {
     move, apply, url, mergeWith, MergeStrategy, asSource
 } from '@angular-devkit/schematics';
 import { empty } from '@angular-devkit/schematics/src/tree/static';
+import { createGitIgnore } from '../utils/index';
 
 export default function (options: any): Rule {
     if (!options.directory) {
         options.directory = options.name;
     }
     const templateSource = apply(url('../application/files'), [
-        move(options.directory)
+        move(options.directory),
     ]);
 
     const angularCLIConfig = apply(url('./files'), [
@@ -21,7 +22,8 @@ export default function (options: any): Rule {
             mergeWith(templateSource, MergeStrategy.Overwrite),
             mergeWith(angularCLIConfig, MergeStrategy.Overwrite),
             ]),
-        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles()]), MergeStrategy.Overwrite)
+        mergeWith(apply(asSource(externalSchematic('@schematics/angular', 'ng-new', options)), [removeRedundantFiles()]), MergeStrategy.Overwrite),
+        createGitIgnore(options.directory)
         // removeRedundantFiles(options)
     ]);
 }
