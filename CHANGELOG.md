@@ -13,5 +13,5 @@
 * firebug is downloaded only if is not present on the path [fix #204](https://github.com/maciejtreder/angular-universal-pwa/issues/204)
 * Angular 6 CLI support (ng-new collection) [fix #205](https://github.com/maciejtreder/angular-universal-pwa/issues/205)
 
-### 2.0.0-beta.2.1
+### 2.0.0-beta.2-1
 * update to Angular 6.0.0-rc.5 [fix #214](https://github.com/maciejtreder/angular-universal-pwa/issues/214) [dc742e1](https://github.com/maciejtreder/angular-universal-pwa/pull/214/commits/dc742e1831e80eb4db61fb36c149c3631cc4b7ef)
