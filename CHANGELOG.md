@@ -12,3 +12,6 @@
 * firebug is no longer downloaded with schematics [fix #211](https://github.com/maciejtreder/angular-universal-pwa/issues/211)
 * firebug is downloaded only if is not present on the path [fix #204](https://github.com/maciejtreder/angular-universal-pwa/issues/204)
 * Angular 6 CLI support (ng-new collection) [fix #205](https://github.com/maciejtreder/angular-universal-pwa/issues/205)
+
+### 2.0.0-beta.2.1
+* update to Angular 6.0.0-rc.5
