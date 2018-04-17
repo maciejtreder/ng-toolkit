@@ -1,5 +1,5 @@
 {
-  "index": "/",
+  "index": "/index.html",
   "appData": {
     "name": "Angular Universal PWA",
     "description": "Angular PWA with Server Side Rendering - starter"
@@ -9,11 +9,11 @@
     "installMode": "prefetch",
     "resources": {
       "files": [
-        "/assets/icons/favicon.ico",
         "/index.html"
       ],
       "versionedFiles": [
         "/main.*.js",
+        "/0.*.js",
         "/polyfills.*.js",
         "/runtime.*.js",
         "/styles.*.css"
@@ -25,8 +25,7 @@
     "updateMode": "prefetch",
     "resources": {
       "files": [
-        "/assets/img/**",
-        "/styles/**"
+        "/assets/img/**"
       ]
     }
   }, {

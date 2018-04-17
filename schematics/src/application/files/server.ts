@@ -22,21 +22,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main.bundle');
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
 
 app.engine('html', ngExpressEngine({
-    bootstrap: AppServerModuleNgFactory,
-    providers: [
-        provideModuleMap(LAZY_MODULE_MAP)
-    ]
+  bootstrap: AppServerModuleNgFactory,
+  providers: [
+    provideModuleMap(LAZY_MODULE_MAP)
+  ]
 }));
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
 app.get('/redirect/**', (req, res) => {
-    const location = req.url.substring(10);
-    res.redirect(301, location);
+  const location = req.url.substring(10);
+  res.redirect(301, location);
 });
 
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
@@ -44,19 +44,19 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 }));
 
 app.get('/*', (req, res) => {
-    if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
-        res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
-        res.end();
-        return;
+  if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
+    res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
+    res.end();
+    return;
+  }
+  res.render('index', {req, res}, (err, html) => {
+    if (html) {
+      if (req.headers.host.indexOf('amazonaws.com') > 0) {
+        html = html.replace('<base href="/', '<base href="/production/');
+      }
+      res.send(html);
+    } else {
+      res.send(err);
     }
-    res.render('index', {req, res}, (err, html) => {
-        if (html) {
-            if (req.headers.host.indexOf('amazonaws.com') > 0) {
-                html = html.replace('<base href="/', '<base href="/production/');
-            }
-            res.send(html);
-        } else {
-            res.send(err);
-        }
-    });
+  });
 });
