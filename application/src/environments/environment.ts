@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-    firebug: false,
-    googleAnalytics: false
+  firebug: false,
+  googleAnalytics: false,
+  gaTrackingCode: ''
 };
