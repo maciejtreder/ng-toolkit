@@ -14,6 +14,10 @@ export default function (options: any): Rule {
 
     return chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
+        (tree => {
+            tree.rename(`${options.directory}/src/main.ts`, `${options.directory}/src/main.browser.ts`);
+            return tree;
+        }),
         mergeWith(templateSource, MergeStrategy.Overwrite),
         createGitIgnore(options.directory),
         adjustCLIConfig(options),

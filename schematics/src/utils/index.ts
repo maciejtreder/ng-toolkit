@@ -12,8 +12,7 @@ export function getSource(tree: Tree, filePath: string): string {
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
-        createOrOverwriteFile(tree, `./${dirName}/.gitignore`, `
-/node_modules/
+        createOrOverwriteFile(tree, `./${dirName}/.gitignore`, `/node_modules/
 /dist/
 /lib/
 /yarn.lock
