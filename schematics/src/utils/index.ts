@@ -12,7 +12,7 @@ export function getSource(tree: Tree, filePath: string): string {
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
-        tree.create(`./${dirName}/.gitignore`, `
+        createOrOverwriteFile(tree, `./${dirName}/.gitignore`, `
 /node_modules/
 /dist/
 /lib/
@@ -33,4 +33,11 @@ serverless.yml
 /coverage`);
         return tree;
     });
+}
+
+export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent: string): void {
+    if (!tree.exists(filePath)) {
+        tree.create(filePath, '');
+    }
+    tree.overwrite(filePath, fileContent);
 }

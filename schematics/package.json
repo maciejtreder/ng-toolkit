@@ -27,15 +27,15 @@
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "^0.5.6",
-    "@angular-devkit/schematics": "^0.5.6",
-    "@schematics/angular": "^0.5.6",
+    "@angular-devkit/core": "^0.5.7",
+    "@angular-devkit/schematics": "^0.5.7",
+    "@schematics/angular": "^0.5.7",
     "opencollective": "^1.0.3"
   },
   "devDependencies": {
-    "jasmine": "^2.8.0",
-    "typescript": "~2.7.2",
     "@types/jasmine": "^2.6.0",
-    "@types/node": "^8.0.31"
+    "@types/node": "^8.0.31",
+    "jasmine": "^2.8.0",
+    "typescript": "~2.7.2"
   }
 }

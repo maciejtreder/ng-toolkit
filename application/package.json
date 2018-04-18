@@ -20,7 +20,7 @@
     "build:firebug": "npm start --environment=firebug",
     "build": "ng build",
     "lint": "ng lint --fix",
-    "build:client-and-server-bundles": "ng build --prod && ng run angular-universal-PWA:server",
+    "build:client-and-server-bundles": "ng build --prod && ng run application:server",
     "build:prod": "npm run build:client-and-server-bundles && npm run webpack:server",
     "build:deploy:aws": "npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:aws",
     "build:deploy:gcloud": "npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:gcloud",
