@@ -106,7 +106,6 @@ or (since 2.0.0-beta.4)
 ng new --collection angular-universal-pwa myApp--provider gcloud 
 npm run build:deploy
 ```
-
 ## <a name="todo"></a> To do
 * prerender app for 'no-backend' hosting
 * microservices support - make replacement eligible external module without recompiling whole app

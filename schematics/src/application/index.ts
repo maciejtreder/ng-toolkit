@@ -5,7 +5,7 @@ import {
 } from '@angular-devkit/schematics';
 
 import { Observable, Subscriber } from 'rxjs/index';
-import { getSource } from '../utils/index';
+import { getFileContent } from '@schematics/angular/utility/test';
 
 export function application(options: any): Rule {
     const templateSource = apply(url('./files'), [
@@ -29,7 +29,7 @@ function updateCLI(options: any): Rule {
 
             (defaultRule(tree, _context) as Observable<Tree>).subscribe(tree => {
 
-                const configSource = JSON.parse(getSource(tree, `${options.directory}/.angular-cli.json`));
+                const configSource = JSON.parse(getFileContent(tree, `${options.directory}/.angular-cli.json`));
 
                 const devApp = configSource.apps.splice(0, 1)[0];
                 const prodBrowser = JSON.parse(JSON.stringify(devApp));

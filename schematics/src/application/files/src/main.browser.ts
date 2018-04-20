@@ -3,11 +3,10 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from './environments/environment';
 import { AppBrowserModule } from './app/app.browser.module';
-import { fireBug, googleAnalytics } from './scripts';
+import { fireBug } from './bootstrapScripts';
 
 if (environment.production) {
   enableProdMode();
-  googleAnalytics();
 }
 
 fireBug().then(() => {

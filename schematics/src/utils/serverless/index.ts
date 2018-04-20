@@ -1,5 +1,6 @@
 import { apply, chain, mergeWith, move, Rule, url } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, getSource } from '../index';
+import { addDependencyToPackageJson } from '../index';
+import { getFileContent } from '@schematics/angular/utility/test';
 
 
 function addServerlessAWS(options: any): Rule {
@@ -59,7 +60,7 @@ export function addServerless(options: any): Rule {
             addServerlessGcloud(options),
             tree => {
                 //add scripts to package.json
-                const packageJsonSource = JSON.parse(getSource(tree, `${options.directory}/package.json`));
+                const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
                 packageJsonSource.scripts['build:deploy:aws'] = 'npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:aws';
                 packageJsonSource.scripts['build:deploy:gcloud'] = 'npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:gcloud';
                 packageJsonSource.scripts['deploy:aws'] = 'cp-cli serverless-aws.yml serverless.yml && npm run deploy';
