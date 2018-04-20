@@ -40,11 +40,13 @@ function adjustCLIConfig(options: any): Rule {
         cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
         cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "manifest.json", input: "src", output: "/"});
+        cliConfig.projects[options.name].architect.build.options.assets.push({glob: "ngsw-worker.js", input: "src/assets/fakeSW", output: "/"});
         cliConfig.projects[options.name].architect.build.options.styles = [{input: "src/styles/main.scss"}];
         cliConfig.projects[options.name].architect.build.configurations.production.serviceWorker = true;
 
 
         cliConfig.projects[options.name].architect.serve.configurations.dev = {browserTarget: `${options.name}:build:dev`};
+        delete cliConfig.projects[options.name].architect.serve.configurations.production;
 
         cliConfig.projects[options.name].architect.test.options.assets.push({glob: "manifest.json", input: "src", output: "/"});
         cliConfig.projects[options.name].architect.test.options.styles = [{input: "src/styles/main.scss"}];
