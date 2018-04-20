@@ -31,7 +31,7 @@ export function addGoogleAnalytics(options: any): Rule {
 
             const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
             const mainFilePath = `${options.directory}/` + cliConfig.projects[options.name].architect.build.options.main;
-            addImportStatement(tree, mainFilePath, 'import { googleAnalytics } from \'./bootStrapScripts\';')
+            addImportStatement(tree, mainFilePath, 'import { googleAnalytics } from \'./bootstrapScripts\';')
 
             // adding script at the end of file
 

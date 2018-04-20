@@ -1,5 +1,6 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { isString } from 'util';
 
 export * from './serverless';
 export * from './googleAnalytics';
@@ -55,7 +56,7 @@ export function addEntryToEnvironment(tree: Tree, filePath: string, entryName: s
     const sourceText = getFileContent(tree, filePath);
     const changePos =  sourceText.lastIndexOf("};") - 1;
     const changeRecorder = tree.beginUpdate(filePath);
-    if (entryValue instanceof String) {
+    if (isString(entryValue)) {
         changeRecorder.insertLeft(changePos, `,\n\t${entryName}: '${entryValue}'`);
     } else {
         changeRecorder.insertLeft(changePos, `,\n\t${entryName}: ${entryValue}`);
