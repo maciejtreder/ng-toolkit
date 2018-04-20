@@ -26,3 +26,4 @@
 ### 2.0.0-beta.4
 * Service worker in development mode ([fix #222](https://github.com/maciejtreder/angular-universal-pwa/issues/222) - [d3c5cc7](https://github.com/maciejtreder/angular-universal-pwa/commit/d3c5cc7a57b1101494b97e5d37eae4a2aa691f01))
 * Configurable provider ([fix #220](https://github.com/maciejtreder/angular-universal-pwa/issues/220) - [71eaeb8](https://github.com/maciejtreder/angular-universal-pwa/commit/71eaeb8a12a7e6124dc585385650ba3cb8a23775))
+* Configurable provider ([fix #207](https://github.com/maciejtreder/angular-universal-pwa/issues/207) - [ec88c1b](https://github.com/maciejtreder/angular-universal-pwa/commit/ec88c1b4f38b36d881e54ac9ff673d0a80c4e556))
