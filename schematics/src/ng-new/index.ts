@@ -3,6 +3,7 @@ import {
     move, apply, url, mergeWith, MergeStrategy
 } from '@angular-devkit/schematics';
 import { createGitIgnore, createOrOverwriteFile, getSource } from '../utils/index';
+import { addServerless } from '../utils/serverless/index';
 
 export default function (options: any): Rule {
     if (!options.directory) {
@@ -21,7 +22,8 @@ export default function (options: any): Rule {
         mergeWith(templateSource, MergeStrategy.Overwrite),
         createGitIgnore(options.directory),
         adjustCLIConfig(options),
-        updatePackageJson(options)
+        updatePackageJson(options),
+        addServerless(options)
     ]);
 }
 

@@ -14,4 +14,5 @@ export interface Schema {
     prefix?: string;
     style?: string;
     skipTests?: boolean;
+    provider: ('both' | 'aws' | 'gcloud');
 }
