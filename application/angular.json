@@ -74,6 +74,9 @@
           "configurations": {
             "dev": {
               "browserTarget": "application:build:dev"
+            },
+            "firebug": {
+              "browserTarget": "application:build:firebug"
             }
           }
         },

@@ -121,6 +121,11 @@
     "gaTrackingCode": {
       "description": "Google Analytics tracking code.",
       "type": "string"
+    },
+    "firebug": {
+      "description": "Firebug lite.",
+      "default": false,
+      "alias": "fb"
     }
   },
   "required": [

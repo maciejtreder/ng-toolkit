@@ -4,15 +4,16 @@ import {
 } from '@angular-devkit/schematics';
 import { createGitIgnore, createOrOverwriteFile, addServerless, addGoogleAnalytics} from '../utils/index';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { addFireBug } from '../utils/firebug/index';
+import { Schema } from './schema';
 
-export default function (options: any): Rule {
+export default function (options: Schema): Rule {
     if (!options.directory) {
         options.directory = options.name;
     }
     const templateSource = apply(url('../application/files'), [
         move(options.directory),
     ]);
-
     let rule: Rule = chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
         (tree => {
@@ -26,7 +27,11 @@ export default function (options: any): Rule {
         addServerless(options)
     ]);
 
-    if(options.gaTrackingCode) {
+    if (options.firebug) {
+        rule = chain([rule, addFireBug(options)]);
+    }
+
+    if (options.gaTrackingCode) {
         rule = chain([rule, addGoogleAnalytics(options)]);
     }
 
