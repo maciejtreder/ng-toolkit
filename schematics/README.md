@@ -68,6 +68,12 @@ cd myApp
 npm start
 ```
 
+#### CLI params
+* `--provider` - What serverless provider you want to use? (`aws` | `gcloud` | `both`)
+* `--gaTrackingCode` - Provide your Google Analytics tracking code, to enable GA (ie `--gaTrackingCode UA-123456`)
+
+##Running modes
+
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + unit tests): ```npm run build:dev```
 * Development mode (autoreload + firebug lite): ```npm run build:firebug```

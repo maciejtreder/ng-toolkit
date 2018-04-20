@@ -1,16 +1,9 @@
-import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { Rule, Tree } from '@angular-devkit/schematics';
+import { getFileContent } from '@schematics/angular/utility/test';
+import { isString } from 'util';
 
-export * from './serverless/index';
-
-export function getSource(tree: Tree, filePath: string): string {
-    const text = tree.read(filePath);
-
-    if (text == null) {
-        throw new SchematicsException(`File ${filePath} does not exist.`);
-    }
-
-    return text.toString('utf-8');
-}
+export * from './serverless';
+export * from './googleAnalytics';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -45,7 +38,7 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
 
 export function addDependencyToPackageJson(options: any, name: string, version: string, dev: boolean = false): Rule {
     return tree => {
-        const packageJsonSource = JSON.parse(getSource(tree, `${options.directory}/package.json`));
+        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
 
         if (!dev) {
             packageJsonSource.dependencies[name] = version;
@@ -57,4 +50,22 @@ export function addDependencyToPackageJson(options: any, name: string, version: 
         tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
         return tree;
     }
+}
+
+export function addEntryToEnvironment(tree: Tree, filePath: string, entryName: string, entryValue: any): void {
+    const sourceText = getFileContent(tree, filePath);
+    const changePos =  sourceText.lastIndexOf("};") - 1;
+    const changeRecorder = tree.beginUpdate(filePath);
+    if (isString(entryValue)) {
+        changeRecorder.insertLeft(changePos, `,\n\t${entryName}: '${entryValue}'`);
+    } else {
+        changeRecorder.insertLeft(changePos, `,\n\t${entryName}: ${entryValue}`);
+    }
+    tree.commitUpdate(changeRecorder);
+}
+
+export function addImportStatement(tree: Tree, filePath: string, importLine: string): void {
+    const changeRecorder = tree.beginUpdate(filePath);
+    changeRecorder.insertLeft(0, importLine+'\n');
+    tree.commitUpdate(changeRecorder);
 }

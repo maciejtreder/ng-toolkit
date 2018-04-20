@@ -15,4 +15,5 @@ export interface Schema {
     style?: string;
     skipTests?: boolean;
     provider: ('both' | 'aws' | 'gcloud');
+    gaTrackingCode?: string;
 }

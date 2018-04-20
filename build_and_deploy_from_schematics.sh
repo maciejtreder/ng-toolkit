@@ -5,7 +5,7 @@ npm install;
 npm run build;
 npm link;
 cd ..;
-ng new --collection angular-universal-pwa application;
+ng new --collection angular-universal-pwa application --gaTrackingCode UA-109145893-2;
 cd application;
 npm run build:deploy:aws;
 curl -I https://www.angular-universal-pwa.maciejtreder.com;
