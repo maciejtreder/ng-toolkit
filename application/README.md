@@ -84,13 +84,27 @@ npm run server
 ```
 ### Serverless environments
 #### AWS Lambda
-```sh
+
+```bash
+ng new --collection angular-universal-pwa myApp
 npm run build:deploy:aws
+```
+or (since 2.0.0-beta.4)
+```bash
+ng new --collection angular-universal-pwa myApp --provider aws
+npm run build:deploy
 ```
 
 #### Google Cloud Functions
-```sh
+
+```bash
+ng new --collection angular-universal-pwa myApp
 npm run build:deploy:gcloud
+```
+or (since 2.0.0-beta.4)
+```bash
+ng new --collection angular-universal-pwa myApp--provider gcloud 
+npm run build:deploy
 ```
 
 ## <a name="todo"></a> To do

@@ -22,3 +22,7 @@
 * Removing .angular-cli.json config file ([fix #217](https://github.com/maciejtreder/angular-universal-pwa/issues/217) - [75048e8](https://github.com/maciejtreder/angular-universal-pwa/commit/75048e8d9f48cec9d588bf1d495b0f186e7aea6a))
 * angular.json file is generated depending on input from user ([fix #218](https://github.com/maciejtreder/angular-universal-pwa/issues/218) - [d5bca4c](https://github.com/maciejtreder/angular-universal-pwa/commit/d5bca4ceace85b677616eef8d801d208a0887249))
 * getting rid of main.ts file ([fix #203](https://github.com/maciejtreder/angular-universal-pwa/issues/203) - [4d12062](https://github.com/maciejtreder/angular-universal-pwa/commit/4d120629bafe2e875992723a6ad52a6a6542c277))
+
+### 2.0.0-beta.4
+* Service worker in development mode ([fix #222](https://github.com/maciejtreder/angular-universal-pwa/issues/222) - [d3c5cc7](https://github.com/maciejtreder/angular-universal-pwa/commit/d3c5cc7a57b1101494b97e5d37eae4a2aa691f01))
+* Configurable provider ([fix #220](https://github.com/maciejtreder/angular-universal-pwa/issues/220) - [71eaeb8](https://github.com/maciejtreder/angular-universal-pwa/commit/71eaeb8a12a7e6124dc585385650ba3cb8a23775))
