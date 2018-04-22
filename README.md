@@ -70,8 +70,9 @@ npm start
 ```
 
 #### CLI params
-* `--provider` - What serverless provider you want to use? (`aws` | `gcloud` | `both`)
+* `--provider` - What serverless provider you want to use? (`aws` | `gcloud` | `both`) - default `both`
 * `--gaTrackingCode` - Provide your Google Analytics tracking code, to enable GA (ie `--gaTrackingCode UA-123456`)
+* `--firebug` - Decide if you want to download firebug-lite (`true` | `false`) - default `false`
 
 ### Cloning the repo 
 ```bash
