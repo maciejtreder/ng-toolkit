@@ -12,7 +12,7 @@ export function addGoogleAnalytics(options: any): Rule {
     return chain([
         mergeWith(source),
         tree => {
-            let indexContent;
+            let indexContent = '';
             if (tree.exists(`${options.directory}/src/bootstrapScripts/index.ts`)) {
                 indexContent = getFileContent(tree, `${options.directory}/src/bootstrapScripts/index.ts`);
             }

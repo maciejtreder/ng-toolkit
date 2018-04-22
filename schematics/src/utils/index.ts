@@ -4,6 +4,7 @@ import { isString } from 'util';
 
 export * from './serverless';
 export * from './googleAnalytics';
+export * from './firebug';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {

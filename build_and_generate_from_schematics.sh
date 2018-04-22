@@ -11,4 +11,4 @@ ng new --collection angular-universal-pwa application;
 ## testing with CLI 6.x
 rm -rf application;
 npm install -g @angular/cli@next;
-ng new --collection angular-universal-pwa application --gaTrackingCode UA-109145893-2;
+ng new --collection angular-universal-pwa application --gaTrackingCode UA-109145893-2 --firebug true;

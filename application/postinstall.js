@@ -1,4 +1,3 @@
-"use strict";
 
 const fs = require('fs');
 const wget = require('node-wget');
@@ -15,9 +14,7 @@ if (!fs.existsSync('./firebug-lite.tar.tgz')) {
       ]
     }).then(() => console.log('Decompressed.'));
   });
-}
-
-/* eslint-disable no-console */
+}/* eslint-disable no-console */
 
 var green = "\u001b[32m";
 var white = "\u001b[22m\u001b[39m";
