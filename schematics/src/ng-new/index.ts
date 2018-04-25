@@ -56,6 +56,7 @@ function adjustCLIConfig(options: any): Rule {
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "ngsw-worker.js", input: "src/assets/fakeSW", output: "/"});
         cliConfig.projects[options.name].architect.build.options.styles = [{input: "src/styles/main.scss"}];
         cliConfig.projects[options.name].architect.build.configurations.production.serviceWorker = true;
+        delete cliConfig.defaultProject;
 
 
         cliConfig.projects[options.name].architect.serve.configurations.dev = {browserTarget: `${options.name}:build:dev`};
