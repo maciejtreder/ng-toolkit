@@ -1,0 +1,38 @@
+service: universal-by-maciej-treder
+
+plugins:
+  - serverless-apigw-binary
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  memorySize: 192
+  timeout: 10
+  stage: production
+  region: eu-central-1
+
+package:
+  exclude:
+   - src/**
+   - node_modules/**
+   - firebug-lite/**
+   - e2e/**
+   - coverage/**
+   - '!node_modules/aws-serverless-express/**'
+   - '!node_modules/binary-case/**'
+   - '!node_modules/type-is/**'
+   - '!node_modules/media-typer/**'
+   - '!node_modules/mime-types/**'
+   - '!node_modules/mime-db/**'
+
+custom:
+  apigwBinary:
+    types:
+      - '*/*'
+
+functions:
+  api:
+    handler: lambda.universal
+    events:
+      - http: ANY {proxy+}
+      - http: ANY /

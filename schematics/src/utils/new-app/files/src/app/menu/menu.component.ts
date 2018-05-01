@@ -1,9 +1,8 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from '../services/notifications.service';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'menu',

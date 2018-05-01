@@ -62,8 +62,6 @@ function updatePackageJson(options: any): Rule {
         addDependencyToPackageJson(options, '@nguniversal/express-engine', '^5.0.0-beta.8'),
         addDependencyToPackageJson(options, '@nguniversal/module-map-ngfactory-loader', '^5.0.0-beta.8'),
         addDependencyToPackageJson(options, 'typescript-collections', '^1.3.2'),
-        addDependencyToPackageJson(options, '@angular/cdk', '^5.2.0'),
-        addDependencyToPackageJson(options, '@angular/material', '^5.2.0'),
         addDependencyToPackageJson(options, 'cp-cli', '^1.1.0', true),
         addDependencyToPackageJson(options, 'cpy-cli', '^1.0.1', true),
         addDependencyToPackageJson(options, 'decompress', '^4.2.0', true),
@@ -78,9 +76,7 @@ function updatePackageJson(options: any): Rule {
         addDependencyToPackageJson(options, 'reflect-metadata', '^0.1.10', true),
         addDependencyToPackageJson(options, 'serverless', '^1.26.1', true),
         addDependencyToPackageJson(options, 'sinon', '^4.5.0', true),
-        addDependencyToPackageJson(options, 'ts-loader', '^2.3.7', true),
-        addDependencyToPackageJson(options, 'tslint', '^5.7.0', true),
-        addDependencyToPackageJson(options, 'typescript', '~2.4.2', true),
+        addDependencyToPackageJson(options, 'tslint', '^5.7.0', true)
     ]);
 }
 

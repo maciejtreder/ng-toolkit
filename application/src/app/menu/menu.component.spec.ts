@@ -6,8 +6,7 @@ import { DebugElement, Directive, HostListener, Input } from '@angular/core';
 import { MatMenuModule } from '@angular/material';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from '../services/notifications.service';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 
 @Directive({
   selector: '[routerLink]'

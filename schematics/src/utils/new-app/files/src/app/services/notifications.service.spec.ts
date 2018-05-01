@@ -5,8 +5,7 @@ import { SwPush } from '@angular/service-worker';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { WindowRef } from '../window-ref.service';
 import { Notifications } from './notifications.service';
-import { BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('Notification service spec.', () => {
   let httpStub;

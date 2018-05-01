@@ -3,8 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ExampleApi } from '../exampleApi.service';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer } from '@angular/common';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class HitWithTransferStateResolver implements Resolve<string> {

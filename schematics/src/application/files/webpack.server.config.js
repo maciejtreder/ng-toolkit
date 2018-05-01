@@ -20,9 +20,6 @@ module.exports = {
       { test: /\.ts$/, loader: 'ts-loader' }
     ]
   },
-  optimization: {
-    minimize: false
-  },
   plugins: [
     new webpack.ContextReplacementPlugin(
       // fixes WARNING Critical dependency: the request of a dependency is an expression

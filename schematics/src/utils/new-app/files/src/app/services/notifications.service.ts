@@ -3,10 +3,8 @@ import { WindowRef } from '../window-ref.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, Observer, Subscriber } from 'rxjs';
+import { from, Observable, Observer, of, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { from } from 'rxjs/observable/from';
 
 @Injectable()
 export class Notifications {
