@@ -24,9 +24,6 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
  - [Funding](#funding)
  - [Credentials](#credentials)
 
-
-
-
 ## <a name="wi"></a> What's inside?
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
 * AMP - Accelerated Mobile Pages - super fast initial load (down to ~650ms)
@@ -51,14 +48,8 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 ### Using Angular CLI schematics
 
-Angular 5.x:
 ```bash
 npm install -g angular-universal-pwa
-```
-
-Angular 6.x
-```bash
-npm install -g angular-universal-pwa@beta
 ```
 
 Create project:
