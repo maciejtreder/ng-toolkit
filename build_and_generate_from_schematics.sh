@@ -7,8 +7,13 @@ npm run build;
 npm link;
 cd ..;
 ng new --collection angular-universal-pwa application;
+cd application;
+npm run build:prod;
+cd ..;
 
 ## testing with CLI 6.x
 rm -rf application;
 npm install -g @angular/cli@next;
 ng new --collection angular-universal-pwa application --gaTrackingCode UA-109145893-2 --firebug true;
+cd application;
+npm run build:prod;
