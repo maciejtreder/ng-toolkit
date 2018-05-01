@@ -10,7 +10,8 @@ import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-wor
 import { WindowRef } from './window-ref.service';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SwUpdateServerMock } from './services/swUpdate-server.mock.service';
-import { Observable, Subject, of } from 'rxjs/index';
+import { Observable, Subject } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 
 let fixture: ComponentFixture<AppComponent>;
 let windowStub;

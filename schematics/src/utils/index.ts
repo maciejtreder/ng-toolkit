@@ -5,6 +5,7 @@ import { isString } from 'util';
 export * from './serverless';
 export * from './googleAnalytics';
 export * from './firebug';
+export * from './new-app';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -48,6 +49,15 @@ export function addDependencyToPackageJson(options: any, name: string, version: 
             packageJsonSource.devDependencies[name] = version;
         }
 
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+        return tree;
+    }
+}
+
+export function addOrReplaceScriptInPackageJson(options: any, name: string, script: string): Rule {
+    return tree => {
+        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+        packageJsonSource.scripts[name] = script;
         tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
         return tree;
     }

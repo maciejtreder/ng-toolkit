@@ -5,6 +5,7 @@
   "projects": {
     "application": {
       "root": "",
+      "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -18,16 +19,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              {
-                "glob": "favicon.ico",
-                "input": "src",
-                "output": "/"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "/assets"
-              },
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "manifest.json",
                 "input": "src",
@@ -101,16 +94,8 @@
             ],
             "scripts": [],
             "assets": [
-              {
-                "glob": "favicon.ico",
-                "input": "src/",
-                "output": "/"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "/assets"
-              },
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "manifest.json",
                 "input": "src",

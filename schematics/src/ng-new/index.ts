@@ -2,54 +2,66 @@ import {
     Rule, externalSchematic, chain,
     move, apply, url, mergeWith, MergeStrategy
 } from '@angular-devkit/schematics';
-import { createGitIgnore, createOrOverwriteFile, addServerless, addGoogleAnalytics} from '../utils/index';
+import {
+    createOrOverwriteFile,
+    addOrReplaceScriptInPackageJson, addDependencyToPackageJson
+} from '../utils/index';
 import { getFileContent } from '@schematics/angular/utility/test';
-import { addFireBug } from '../utils/firebug/index';
 import { Schema } from './schema';
+import { newApp } from '../utils/new-app/index';
 
 export default function (options: Schema): Rule {
     if (!options.directory) {
         options.directory = options.name;
     }
-    const templateSource = apply(url('../application/files'), [
+    const templateSource = apply(url('./files'), [
         move(options.directory),
     ]);
     let rule: Rule = chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
-        (tree => {
-            tree.rename(`${options.directory}/src/main.ts`, `${options.directory}/src/main.browser.ts`);
-            return tree;
-        }),
-        mergeWith(templateSource, MergeStrategy.Overwrite),
-        createGitIgnore(options.directory),
+
+
+
         adjustCLIConfig(options),
-        updatePackageJson(options),
-        addServerless(options)
+        newApp(options),
+        mergeWith(templateSource, MergeStrategy.Overwrite),
+        updatePackageJson(options)
     ]);
 
-    if (options.firebug) {
-        rule = chain([rule, addFireBug(options)]);
-    }
-
-    if (options.gaTrackingCode) {
-        rule = chain([rule, addGoogleAnalytics(options)]);
-    }
 
     return rule;
 }
 
 function updatePackageJson(options: any): Rule {
-    return tree => {
-        let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
-        packageJsonContent = packageJsonContent.replace('__projectName__', options.name);
-        createOrOverwriteFile(tree, `${options.directory}/package.json`, packageJsonContent);
-        return tree;
-    }
+    return chain([
+
+
+        addDependencyToPackageJson(options, '@angular/service-worker', '^6.0.0-rc.6'),
+        addDependencyToPackageJson(options, '@angular/platform-server', '^6.0.0-rc.6'),
+        addDependencyToPackageJson(options, '@angular/cdk', '^6.0.0-rc.6'),
+        addDependencyToPackageJson(options, '@angular/material', '^6.0.0-rc.6'),
+        addDependencyToPackageJson(options, 'webpack-cli', '2.1.2'),
+        addDependencyToPackageJson(options, 'ts-loader', '4.2.0', true),
+        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
+        addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
+        addDependencyToPackageJson(options, '@ngx-translate/core', '^10.0.1'),
+        addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^3.0.1'),
+
+        tree => {
+            let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
+            packageJsonContent = packageJsonContent.replace('__projectName__', options.name);
+            createOrOverwriteFile(tree, `${options.directory}/package.json`, packageJsonContent);
+            return tree;
+        }
+    ]);
 }
 
 function adjustCLIConfig(options: any): Rule {
     return tree => {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+
+        // delete cliConfig.projects[options.name].sourceRoot;
+
         cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
         cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "manifest.json", input: "src", output: "/"});

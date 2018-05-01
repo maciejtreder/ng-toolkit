@@ -1,71 +1,21 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "AngularUniversalPWANgNew",
-  "title": "Angular Ng New Options Schema",
+  "id": "SchematicsAngularPWAApp",
+  "title": "Angular Application Options Schema",
   "type": "object",
   "properties": {
-    "directory": {
+    "projectRoot": {
+      "description": "The root directory of the new application.",
       "type": "string",
-      "format": "path",
-      "description": "The directory name to create the workspace in.",
-      "default": ""
+      "visible": false
     },
     "name": {
-      "description": "The name of the workspace.",
+      "description": "The name of the application.",
       "type": "string",
-      "format": "html-selector",
       "$default": {
         "$source": "argv",
         "index": 0
       }
-    },
-    "skipInstall": {
-      "description": "Skip installing dependency packages.",
-      "type": "boolean",
-      "default": false
-    },
-    "linkCli": {
-      "description": "Link CLI to global version (internal development only).",
-      "type": "boolean",
-      "default": false,
-      "visible": false
-    },
-    "skipGit": {
-      "description": "Skip initializing a git repository.",
-      "type": "boolean",
-      "default": false,
-      "alias": "g"
-    },
-    "commit": {
-      "description": "Initial repository commit information.",
-      "oneOf": [
-        { "type": "boolean" },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "message": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "name",
-            "email"
-          ]
-        }
-      ],
-      "default": true
-    },
-    "newProjectRoot": {
-      "description": "The path where new projects will be created.",
-      "type": "string",
-      "default": "projects"
     },
     "inlineStyle": {
       "description": "Specifies if the style will be in the ts file.",
@@ -83,11 +33,6 @@
       "description": "Specifies the view encapsulation strategy.",
       "enum": ["Emulated", "Native", "None"],
       "type": "string"
-    },
-    "version": {
-      "type": "string",
-      "description": "The version of the Angular CLI to use.",
-      "visible": false
     },
     "routing": {
       "type": "boolean",
@@ -112,6 +57,11 @@
       "default": false,
       "alias": "S"
     },
+    "skipPackageJson": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add dependencies to package.json."
+    },
     "provider": {
       "description": "Specify serverless provider.",
       "enum": ["both", "aws", "gcloud"],
@@ -129,7 +79,5 @@
       "alias": "fb"
     }
   },
-  "required": [
-    "version"
-  ]
+  "required": []
 }

@@ -1,5 +1,8 @@
 import { move, Rule, url, chain, mergeWith, apply } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, addEntryToEnvironment, addImportStatement, createOrOverwriteFile } from '../index';
+import {
+    addDependencyToPackageJson, addEntryToEnvironment, addImportStatement,
+    createOrOverwriteFile
+} from '../index';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Path } from '@angular-devkit/core';
 
@@ -31,19 +34,23 @@ export function addFireBug(options: any): Rule {
                 }
             });
 
+            let mainFilePath;
             //add new configuration to serve
+            if (tree.exists(`${options.directory}/angular.json`)) {
+                const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+                mainFilePath = `${options.directory}/` + cliConfig.projects[options.name].architect.build.options.main;
 
-            const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-            cliConfig.projects[options.name].architect.serve.configurations.firebug = {browserTarget: `${options.name}:build:firebug`};
+                cliConfig.projects[options.name].architect.serve.configurations.firebug = {browserTarget: `${options.name}:build:firebug`};
 
-            createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, '  '));
+                createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, '  '));
 
-
+            } else {
+                const configSource = JSON.parse(getFileContent(tree, `${options.directory}/.angular-cli.json`));
+                mainFilePath = `${options.directory}/${configSource.apps[0].root}/main.browser.ts`;
+            }
             //find and add code to the main browser file
 
-            const mainFilePath = `${options.directory}/` + cliConfig.projects[options.name].architect.build.options.main;
             addImportStatement(tree, mainFilePath, 'import { fireBug } from \'./bootstrapScripts\';')
-
             const sourceText = getFileContent(tree, mainFilePath);
 
             createOrOverwriteFile(tree, mainFilePath, sourceText.replace('platformBrowserDynamic().bootstrapModule(AppBrowserModule);', 'fireBug().then(() => platformBrowserDynamic().bootstrapModule(AppBrowserModule));'));

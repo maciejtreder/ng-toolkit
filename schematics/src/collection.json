@@ -3,7 +3,8 @@
   "schematics": {
     "application": {
       "description": "Creates boilerplate app.",
-      "factory": "./application/index#application"
+      "factory": "./application/index",
+      "schema": "./application/schema.json"
     },
     "ng-new": {
       "description": "Creates boilerplate app.",
