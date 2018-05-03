@@ -49,6 +49,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 * Serverless framework
 
 ## <a name="start"></a> Get Started
+[![How to start project with angular-universal-pwa](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
 
 ### Using Angular CLI schematics
 
