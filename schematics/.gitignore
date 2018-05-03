@@ -6,7 +6,6 @@
 .idea
 .serverless
 *.iml
-*.js
 *.js.map
 *.d.ts
 .DS_Store
@@ -17,3 +16,4 @@ dll
 firebug-lite.tar.tgz
 serverless.yml
 /coverage
+*.js
