@@ -45,6 +45,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 * Serverless framework
 
 ## <a name="start"></a> Get Started
+Whatch on Youtube:
 [![How to start project with angular-universal-pwa](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
 
 ### Using Angular CLI schematics
@@ -84,22 +85,12 @@ npm run server
 #### AWS Lambda
 
 ```bash
-ng new --collection angular-universal-pwa myApp
-npm run build:deploy:aws
-```
-or (since 2.0.0-beta.4)
-```bash
 ng new --collection angular-universal-pwa myApp --provider aws
 npm run build:deploy
 ```
 
 #### Google Cloud Functions
 
-```bash
-ng new --collection angular-universal-pwa myApp
-npm run build:deploy:gcloud
-```
-or (since 2.0.0-beta.4)
 ```bash
 ng new --collection angular-universal-pwa myApp--provider gcloud 
 npm run build:deploy
