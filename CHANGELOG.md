@@ -32,3 +32,6 @@
 ### 2.0.0
 * Add more files to serverless deploy build ([fix #230])(https://github.com/maciejtreder/angular-universal-pwa/issues/230) - [9a7a1bb](https://github.com/maciejtreder/angular-universal-pwa/commit/d3c5cc7a57b1101494b97e5d37eae4a2aa691f01))
 * Add support for CLI 1.7
+
+### 2.1.1
+* Fix build scripts ([fix #237])(https://github.com/maciejtreder/angular-universal-pwa/issues/230) - [581b95a](https://github.com/maciejtreder/angular-universal-pwa/commit/581b95a34d7f18efcbd9498f03917242c95b4e69))
