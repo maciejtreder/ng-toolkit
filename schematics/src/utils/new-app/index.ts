@@ -74,7 +74,7 @@ function updatePackageJson(options: any): Rule {
         addDependencyToPackageJson(options, 'opencollective', '^1.0.3', true),
         addDependencyToPackageJson(options, 'pre-commit', '^1.2.2', true),
         addDependencyToPackageJson(options, 'reflect-metadata', '^0.1.10', true),
-        addDependencyToPackageJson(options, 'serverless', '^1.26.1', true),
+        addDependencyToPackageJson(options, 'serverless', '1.26.1', true),
         addDependencyToPackageJson(options, 'sinon', '^4.5.0', true),
         addDependencyToPackageJson(options, 'tslint', '^5.7.0', true)
     ]);
