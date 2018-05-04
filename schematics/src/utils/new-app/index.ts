@@ -49,8 +49,6 @@ function updatePackageJson(options: any): Rule {
         addOrReplaceScriptInPackageJson(options, 'start', 'run-p build:watch credentials'),
         addOrReplaceScriptInPackageJson(options, 'build:watch', 'ng serve'),
         addOrReplaceScriptInPackageJson(options, 'credentials', 'node credentials.js && opencollective postinstall'),
-        addOrReplaceScriptInPackageJson(options, 'test', 'ng test --single-run --code-coverage'),
-        addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --code-coverage'),
         addOrReplaceScriptInPackageJson(options, 'build:dev', 'run-p test:watch start'),
         addOrReplaceScriptInPackageJson(options, 'build', 'ng build'),
         addOrReplaceScriptInPackageJson(options, 'lint', 'ng lint --fix'),

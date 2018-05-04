@@ -42,10 +42,12 @@ function updatePackageJson(options: any): Rule {
         addDependencyToPackageJson(options, '@angular/material', '^6.0.0-rc.6'),
         addDependencyToPackageJson(options, 'webpack-cli', '2.1.2'),
         addDependencyToPackageJson(options, 'ts-loader', '4.2.0', true),
-        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
-        addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
         addDependencyToPackageJson(options, '@ngx-translate/core', '^10.0.1'),
         addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^3.0.1'),
+        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
+        addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
+        addOrReplaceScriptInPackageJson(options, 'test', 'ng test --code-coverage'),
+        addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --watch --code-coverage'),
 
         tree => {
             let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);

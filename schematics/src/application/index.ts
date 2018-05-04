@@ -49,9 +49,11 @@ function updatePackageJson(options: any): Rule {
         addDependencyToPackageJson(options, '@angular/material', '^5.2.0'),
         addDependencyToPackageJson(options, '@angular/cli', '~1.7.2'),
         addDependencyToPackageJson(options, 'ts-loader', '^2.3.7', true),
-        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --app 1 --prod && ng build --prod --app 2 --output-hashing=false'),
         addDependencyToPackageJson(options, '@ngx-translate/core', '^9.1.1'),
-        addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^2.0.1')
+        addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^2.0.1'),
+        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --app 1 --prod && ng build --prod --app 2 --output-hashing=false'),
+        addOrReplaceScriptInPackageJson(options, 'test', 'ng test --single-run --code-coverage'),
+        addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --code-coverage')
     ]);
 }
 
