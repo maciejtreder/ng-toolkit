@@ -1,5 +1,5 @@
 import { apply, chain, mergeWith, move, Rule, url } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson } from '../index';
+import { addDependencyToPackageJson, addOrReplaceScriptInPackageJson } from '../index';
 import { getFileContent } from '@schematics/angular/utility/test';
 
 
@@ -47,28 +47,34 @@ export function addServerless(options: any): Rule {
         aws: {},
         gcloud: {}
     };
+    const rules: Rule[] = [];
+
+    rules.push(addOrReplaceScriptInPackageJson(options,"build:deploy", "npm run build:prod && npm run deploy"));
+    rules.push(addOrReplaceScriptInPackageJson(options,"deploy", "serverless deploy"));
 
     if (options.provider === 'gcloud') {
-        return addServerlessGcloud(options);
+        rules.push(addServerlessGcloud(options));
     } else if (options.provider === 'aws') {
-        return addServerlessAWS(options);
+        rules.push(addServerlessAWS(options));
     } else {
         options.serverless.aws.filename = 'serverless-aws.yml';
         options.serverless.gcloud.filename = 'serverless-gcloud.yml';
-        return chain([
-            addServerlessAWS(options),
-            addServerlessGcloud(options),
-            tree => {
-                //add scripts to package.json
-                const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-                packageJsonSource.scripts['build:deploy:aws'] = 'npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:aws';
-                packageJsonSource.scripts['build:deploy:gcloud'] = 'npm run build:client-and-server-bundles && npm run webpack:server && npm run deploy:gcloud';
-                packageJsonSource.scripts['deploy:aws'] = 'cp-cli serverless-aws.yml serverless.yml && npm run deploy';
-                packageJsonSource.scripts['deploy:gcloud'] = 'cp-cli serverless-gcloud.yml serverless.yml && npm run deploy';
+        rules.push(addServerlessAWS(options));
+        rules.push(addServerlessGcloud(options));
+        rules.push(tree => {
+            //add scripts to package.json
+            const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+            delete packageJsonSource.scripts['build:deploy'];
 
-                tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
-                return tree;
-            }
-        ]);
+            packageJsonSource.scripts['build:deploy:aws'] = 'npm run build:prod && npm run deploy:aws';
+            packageJsonSource.scripts['build:deploy:gcloud'] = 'npm run build:prod && npm run deploy:gcloud';
+            packageJsonSource.scripts['deploy:aws'] = 'cp-cli serverless-aws.yml serverless.yml && npm run deploy';
+            packageJsonSource.scripts['deploy:gcloud'] = 'cp-cli serverless-gcloud.yml serverless.yml && npm run deploy';
+
+            tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+            return tree;
+        });
     }
+
+    return chain(rules);
 }
