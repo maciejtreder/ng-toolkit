@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "angular-universal-pwa",
-  "version": "2.0.91",
+  "version": "2.1.0",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -27,9 +27,9 @@
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "^0.5.7",
-    "@angular-devkit/schematics": "^0.5.7",
-    "@schematics/angular": "^0.5.7"
+    "@angular-devkit/core": "^0.6.0",
+    "@angular-devkit/schematics": "^0.6.0",
+    "@schematics/angular": "^0.6.0"
   },
   "devDependencies": {
     "@types/jasmine": "^2.6.0",
