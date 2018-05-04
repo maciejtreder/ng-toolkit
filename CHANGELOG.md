@@ -34,4 +34,5 @@
 * Add support for CLI 1.7
 
 ### 2.1.1
-* Fix build scripts ([fix #237])(https://github.com/maciejtreder/angular-universal-pwa/issues/230) - [581b95a](https://github.com/maciejtreder/angular-universal-pwa/commit/581b95a34d7f18efcbd9498f03917242c95b4e69))
+* Fix build scripts ([fix #237])(https://github.com/maciejtreder/angular-universal-pwa/issues/237) - [dd8269b](https://github.com/maciejtreder/angular-universal-pwa/commit/dd8269b9311ede6a055627b0bb1d091f6fde6d78))
+* Fix build scripts ([fix #239])(https://github.com/maciejtreder/angular-universal-pwa/issues/239) - [b0b8925](https://github.com/maciejtreder/angular-universal-pwa/commit/b0b8925245c32883c45b10dbec6707b86f45f8a7))
