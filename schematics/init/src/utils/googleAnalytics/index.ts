@@ -1,6 +1,6 @@
 import { apply, chain, mergeWith, move, Rule, url } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
-import { addEntryToEnvironment, addImportStatement, createOrOverwriteFile } from '../index';
+import { addEntryToEnvironment, addImportStatement, createOrOverwriteFile } from '../../../../utils';
 import { Path } from '@angular-devkit/core';
 
 export function addGoogleAnalytics(options: any): Rule {

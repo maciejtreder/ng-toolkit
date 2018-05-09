@@ -1,5 +1,5 @@
 import { apply, chain, mergeWith, move, Rule, url } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, addOrReplaceScriptInPackageJson } from '../utils/index';
+import { addDependencyToPackageJson, addOrReplaceScriptInPackageJson } from '@angular-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 
 export default function addServerless(options: any): Rule {
@@ -39,7 +39,6 @@ export default function addServerless(options: any): Rule {
     }
 
     return chain(rules);
-    return tree => tree;
 }
 
 function addServerlessAWS(options: any): Rule {

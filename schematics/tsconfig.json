@@ -26,7 +26,9 @@
     ]
   },
   "include": [
-    "init/**/*"
+    "init/**/*",
+    "serverless/**/*",
+    "utils/**/*"
   ],
   "exclude": [
     "./**/files/**/*"

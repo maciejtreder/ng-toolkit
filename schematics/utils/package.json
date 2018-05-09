@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
-  "name": "@angular-toolkit/serverless",
-  "version": "2.1.6",
+  "name": "@angular-toolkit/_utils",
+  "version": "2.1.4",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -10,7 +10,6 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine **/*_spec.js",
-    "postinstall": "node postinstall.js",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -27,7 +26,6 @@
   "license": "MIT",
   "schematics": "./collection.json",
   "dependencies": {
-    "@angular-toolkit/_utils": "2.1.4",
     "@angular-devkit/core": "^0.6.0",
     "@angular-devkit/schematics": "^0.6.0",
     "@schematics/angular": "^0.6.0"

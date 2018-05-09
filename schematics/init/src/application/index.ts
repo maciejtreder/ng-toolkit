@@ -9,7 +9,7 @@ import { newApp } from '../utils/new-app/index';
 import {
     addDependencyToPackageJson, addImportStatement, addOrReplaceScriptInPackageJson,
     createOrOverwriteFile
-} from '../utils/index';
+} from '../../../utils';
 
 export default function (options: any): Rule {
     if (!options.directory) {

@@ -2,7 +2,7 @@ import { move, Rule, url, chain, mergeWith, apply } from '@angular-devkit/schema
 import {
     addDependencyToPackageJson, addEntryToEnvironment, addImportStatement,
     createOrOverwriteFile
-} from '../index';
+} from '../../../../utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Path } from '@angular-devkit/core';
 

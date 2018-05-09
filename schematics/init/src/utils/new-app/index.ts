@@ -2,7 +2,7 @@ import {
     Rule, chain,
     move, apply, url, mergeWith, MergeStrategy
 } from '@angular-devkit/schematics';
-import { createGitIgnore, addOrReplaceScriptInPackageJson, addDependencyToPackageJson, createOrOverwriteFile } from '../index';
+import { createGitIgnore, addOrReplaceScriptInPackageJson, addDependencyToPackageJson, createOrOverwriteFile } from '../../../../utils';
 import { addFireBug } from '../firebug/index';
 import { addGoogleAnalytics } from '../googleAnalytics/index';
 import { getFileContent } from '@schematics/angular/utility/test';
