@@ -1,0 +1,2 @@
+cd init
+npm link

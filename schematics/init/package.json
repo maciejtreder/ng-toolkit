@@ -1,6 +1,6 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
-  "name": "angular-universal-pwa",
+  "name": "@angular-toolkit/init",
   "version": "2.1.1",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {

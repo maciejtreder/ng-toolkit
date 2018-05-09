@@ -26,9 +26,9 @@
     ]
   },
   "include": [
-    "src/**/*"
+    "init/**/*"
   ],
   "exclude": [
-    "src/**/files/**/*"
+    "./**/files/**/*"
   ]
 }
