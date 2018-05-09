@@ -1,0 +1,40 @@
+{
+  "author": "Maciej Treder <contact@maciejtreder.com>",
+  "name": "@angular-toolkit/serverless",
+  "version": "2.1.4",
+  "description": "Angular Universal PWA boilerplate for serverless environment.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maciejtreder/angular-universal-serverless.git"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && jasmine **/*_spec.js",
+    "postinstall": "node postinstall.js",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "schematics",
+    "angular",
+    "serverless",
+    "server side rendering",
+    "pwa",
+    "progressive web app",
+    "lambda",
+    "amazon web services",
+    "google cloud functions"
+  ],
+  "license": "MIT",
+  "schematics": "./collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "^0.6.0",
+    "@angular-devkit/schematics": "^0.6.0",
+    "@schematics/angular": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.6.0",
+    "@types/node": "^8.0.31",
+    "jasmine": "^2.8.0",
+    "typescript": "~2.7.2"
+  }
+}

@@ -2,7 +2,7 @@ import {
     Rule, chain,
     move, apply, url, mergeWith, MergeStrategy
 } from '@angular-devkit/schematics';
-import { createGitIgnore, addServerless, addOrReplaceScriptInPackageJson, addDependencyToPackageJson, createOrOverwriteFile } from '../index';
+import { createGitIgnore, addOrReplaceScriptInPackageJson, addDependencyToPackageJson, createOrOverwriteFile } from '../index';
 import { addFireBug } from '../firebug/index';
 import { addGoogleAnalytics } from '../googleAnalytics/index';
 import { getFileContent } from '@schematics/angular/utility/test';
@@ -17,7 +17,7 @@ export function newApp(options: any): Rule {
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
     rules.push(overwriteMainFile(options));
     rules.push(createGitIgnore(options.directory));
-    rules.push(addServerless(options));
+    // rules.push(addServerless(options));
     rules.push((tree => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         packageJsonSource['collective'] = {

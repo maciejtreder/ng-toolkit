@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsAngularPWAApp",
+  "title": "Angular Application Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "provider": {
+      "description": "Specify serverless provider.",
+      "enum": ["both", "aws", "gcloud"],
+      "type": "string",
+      "default": "both"
+    }
+  },
+  "required": []
+}

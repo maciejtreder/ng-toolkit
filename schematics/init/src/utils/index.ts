@@ -2,7 +2,6 @@ import { Rule, Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { isString } from 'util';
 
-export * from './serverless';
 export * from './googleAnalytics';
 export * from './firebug';
 export * from './new-app';
