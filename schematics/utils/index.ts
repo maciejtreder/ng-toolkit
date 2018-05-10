@@ -1,6 +1,7 @@
-import { Rule, Tree } from '@angular-devkit/schematics';
+import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { isString } from 'util';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -33,8 +34,29 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
     tree.overwrite(filePath, fileContent);
 }
 
+export function addDependenciesToPackageJson(options: any, dependencies: {name: string, version:string, dev: boolean}[]): Rule {
+    return (tree: Tree, context: SchematicContext) => {
+        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+
+        dependencies.forEach(entry => {
+            if (!entry.dev) {
+                packageJsonSource.dependencies[entry.name] = entry.version;
+            }
+            if (entry.dev) {
+                packageJsonSource.devDependencies[entry.name] = entry.version;
+            }
+        })
+
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+
+        context.addTask(new NodePackageInstallTask(options.directory))
+
+        return tree;
+    }
+}
+
 export function addDependencyToPackageJson(options: any, name: string, version: string, dev: boolean = false): Rule {
-    return tree => {
+    return (tree: Tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
 
         if (!dev) {
@@ -45,6 +67,7 @@ export function addDependencyToPackageJson(options: any, name: string, version: 
         }
 
         tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+
         return tree;
     }
 }
