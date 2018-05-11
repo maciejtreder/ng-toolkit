@@ -20,9 +20,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const DIST_FOLDER = join(process.cwd(), 'dist');
+const DIST_FOLDER = join(process.cwd(), '__distBrowserFolder__');
 
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./__distServerFolder__/main');
 
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
@@ -32,23 +32,13 @@ app.engine('html', ngExpressEngine({
 }));
 
 app.set('view engine', 'html');
-app.set('views', join(DIST_FOLDER, 'browser'));
+app.set('views', join(DIST_FOLDER));
 
-app.get('/redirect/**', (req, res) => {
-  const location = req.url.substring(10);
-  res.redirect(301, location);
-});
-
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
+app.get('*.*', express.static(join(DIST_FOLDER), {
   maxAge: '1y'
 }));
 
 app.get('/*', (req, res) => {
-  if (req.headers.host.indexOf('angular-universal-pwa.maciejtreder.com') > -1 && req.headers.host !== 'www.angular-universal-pwa.maciejtreder.com') {
-    res.writeHead (301, {Location: 'https://www.angular-universal-pwa.maciejtreder.com'});
-    res.end();
-    return;
-  }
   res.render('index', {req, res}, (err, html) => {
     if (html) {
       if (req.headers.host.indexOf('amazonaws.com') > 0) {

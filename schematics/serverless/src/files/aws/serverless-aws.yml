@@ -1,4 +1,4 @@
-service: universal-by-maciej-treder
+service: __appName__
 
 plugins:
   - serverless-apigw-binary

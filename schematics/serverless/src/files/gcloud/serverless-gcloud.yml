@@ -1,4 +1,4 @@
-service: another-my-service
+service: __appName__
 
 provider:
   name: google

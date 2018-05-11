@@ -1,9 +1,8 @@
 import {
-    apply, chain, mergeWith, move, Rule, SchematicsException, Tree, url, MergeStrategy, SchematicContext
+    apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext, SchematicsException
 } from '@angular-devkit/schematics';
 import {
     addDependencyToPackageJson, addOrReplaceScriptInPackageJson,
-    createOrOverwriteFile
 } from '@angular-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -24,7 +23,6 @@ export default function addServerless(options: any): Rule {
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
 
     rules.push(addOrReplaceScriptInPackageJson(options,"deploy", "serverless deploy"));
-    rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "npm run build && webpack --config webpack.server.config.js --progress --colors"));
     rules.push(addOrReplaceScriptInPackageJson(options,"build:deploy", "npm run build:prod && npm run deploy"));
 
     rules.push(addDependencyToPackageJson(options, 'serverless', '1.26.1', true));
@@ -58,13 +56,27 @@ export default function addServerless(options: any): Rule {
         });
     }
 
-    rules.push(tree => {
+    rules.push((tree: Tree) => {
         const universal:boolean = isUniversal(tree, options);
         if(universal) {
-            // noop
+                rules.push(addOrReplaceScriptInPackageJson(options,"build:client-and-server-bundles", "ng build --prod && ng run application:server"));
+                rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors"));
+            console.log('universal');
+            tree.rename('./server_universal.ts', './server.ts');
+            tree.rename('./server_static.ts', '.temp/toRemove');
         } else {
-            serveStaticFiles(tree, getDistFolder(tree, options, universal))
+            rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "ng build --prod && webpack --config webpack.server.config.js --progress --colors"));
+            tree.rename('./server_universal.ts', '.temp/toRemove');
+            tree.rename('./server_static.ts', './server.ts');
         }
+
+        const serverFileContent = getFileContent(tree, './server.ts');
+
+        tree.overwrite('./server.ts', serverFileContent
+            .replace('__distBrowserFolder__', getBrowserDistFolder(tree, options))
+            .replace('__distServerFolder__', getServerDistFolder(tree, options))
+        );
+
         return tree;
     });
 
@@ -83,6 +95,7 @@ function addServerlessAWS(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project));
             return tree;
         },
 
@@ -102,6 +115,7 @@ function addServerlessGcloud(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project));
             return tree;
         },
 
@@ -122,43 +136,24 @@ function isUniversal(tree: Tree, options: any): boolean {
     return false;
 }
 
-function serveStaticFiles(tree: Tree, distFolder: string): void {
-    createOrOverwriteFile(tree, './server.ts', `import 'zone.js/dist/zone-node';
-import 'reflect-metadata';
-
-import * as express from 'express';
-import * as cors from 'cors';
-import * as compression from 'compression';
-
-import {join} from 'path';
-
-export const app = express();
-
-app.use(compression());
-app.use(cors());
-
-const DIST_FOLDER = join(process.cwd(), 'dist/${distFolder}');
-
-app.get('*.*', express.static(join(DIST_FOLDER), {
-  maxAge: '1y'
-}));
-
-app.get('/*', (req, res) => {
-        res.sendFile(join(DIST_FOLDER+'index.html'));
-});`);
+function getServerDistFolder(tree: Tree, options: any): string {
+    const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
+    const project: any = cliConfig.projects[options.project].architect;
+    for (let property in project) {
+        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
+            return project[property].options.outputPath;
+        }
+    }
+    return '';
 }
 
-function getDistFolder(tree: Tree, options: any, universal: boolean): string {
-    if (universal) {
-        return '';
-    } else {
-        const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
-        const project: any = cliConfig.projects[options.project].architect;
-        for (let property in project) {
-            if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
-                return project[property].options.outputPath;
-            }
+function getBrowserDistFolder(tree: Tree, options: any): string {
+    const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
+    const project: any = cliConfig.projects[options.project].architect;
+    for (let property in project) {
+        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
+            return project[property].options.outputPath;
         }
-        throw new SchematicsException('browser nor server builder not found!');
     }
+    throw new SchematicsException('browser nor server builder not found!');
 }
