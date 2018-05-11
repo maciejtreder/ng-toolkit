@@ -8,11 +8,12 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function addServerless(options: any): Rule {
+    console.log('SERVERLESS');
+    console.log(options);
     options.serverless = {
         aws: {},
         gcloud: {}
     };
-    options.directory = '.';
 
     const templateSource = apply(url('files/common'), [
         move(options.directory),
@@ -50,7 +51,9 @@ export default function addServerless(options: any): Rule {
 
             tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
 
-            context.addTask(new NodePackageInstallTask(options.directory));
+            if (!options.skipInstall) {
+                context.addTask(new NodePackageInstallTask(options.directory));
+            }
 
             return tree;
         });
@@ -61,18 +64,17 @@ export default function addServerless(options: any): Rule {
         if(universal) {
                 rules.push(addOrReplaceScriptInPackageJson(options,"build:client-and-server-bundles", "ng build --prod && ng run application:server"));
                 rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors"));
-            console.log('universal');
-            tree.rename('./server_universal.ts', './server.ts');
-            tree.rename('./server_static.ts', '.temp/toRemove');
+            tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
+            tree.rename(`${options.directory}/server_static.ts`, `${options.directory}temp/toRemove`);
         } else {
             rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "ng build --prod && webpack --config webpack.server.config.js --progress --colors"));
-            tree.rename('./server_universal.ts', '.temp/toRemove');
-            tree.rename('./server_static.ts', './server.ts');
+            tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/toRemove`);
+            tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/server.ts`);
         }
 
-        const serverFileContent = getFileContent(tree, './server.ts');
+        const serverFileContent = getFileContent(tree, `${options.directory}/server.ts`);
 
-        tree.overwrite('./server.ts', serverFileContent
+        tree.overwrite(`${options.directory}/server.ts`, serverFileContent
             .replace('__distBrowserFolder__', getBrowserDistFolder(tree, options))
             .replace('__distServerFolder__', getServerDistFolder(tree, options))
         );
@@ -126,7 +128,7 @@ function addServerlessGcloud(options: any): Rule {
 }
 
 function isUniversal(tree: Tree, options: any): boolean {
-    const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
+    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
@@ -137,7 +139,7 @@ function isUniversal(tree: Tree, options: any): boolean {
 }
 
 function getServerDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
+    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
@@ -148,7 +150,7 @@ function getServerDistFolder(tree: Tree, options: any): string {
 }
 
 function getBrowserDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, './angular.json'));
+    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {

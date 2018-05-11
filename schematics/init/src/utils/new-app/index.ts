@@ -1,11 +1,11 @@
 import {
     Rule, chain,
-    move, apply, url, mergeWith, MergeStrategy
+    move, apply, url, mergeWith, MergeStrategy, externalSchematic
 } from '@angular-devkit/schematics';
-import { createGitIgnore, addOrReplaceScriptInPackageJson, addDependencyToPackageJson, createOrOverwriteFile } from '../../../../utils';
 import { addFireBug } from '../firebug/index';
 import { addGoogleAnalytics } from '../googleAnalytics/index';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { addOrReplaceScriptInPackageJson, createGitIgnore, addDependencyToPackageJson, createOrOverwriteFile } from '@angular-toolkit/_utils';
 
 export function newApp(options: any): Rule {
     const templateSource = apply(url('../utils/new-app/files'), [
@@ -17,14 +17,23 @@ export function newApp(options: any): Rule {
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
     rules.push(overwriteMainFile(options));
     rules.push(createGitIgnore(options.directory));
+
+    const serverlessOptions = {
+        skipInstall : true,
+        project : options.name,
+        provider : options.provider,
+        directory: options.directory
+    };
+
+    rules.push(externalSchematic('@angular-toolkit/serverless', 'ng-add', serverlessOptions));
     // rules.push(addServerless(options));
     rules.push((tree => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         packageJsonSource['collective'] = {
-            type: "opencollective",
-            url: "https://opencollective.com/angular-universal-pwa"
+            type: 'opencollective',
+            url: 'https://opencollective.com/angular-universal-pwa'
         };
-        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, '  '));
         return tree;
     }));
     rules.push(updatePackageJson(options));

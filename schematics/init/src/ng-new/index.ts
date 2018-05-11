@@ -5,7 +5,7 @@ import {
 import {
     createOrOverwriteFile,
     addOrReplaceScriptInPackageJson, addDependencyToPackageJson
-} from '../../../utils/index';
+} from '@angular-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
@@ -19,8 +19,6 @@ export default function (options: Schema): Rule {
     ]);
     let rule: Rule = chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
-
-
 
         adjustCLIConfig(options),
         newApp(options),

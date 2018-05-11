@@ -9,4 +9,6 @@
 export interface Schema {
     project?: string;
     provider: ('both' | 'aws' | 'gcloud');
+    skipInstall: boolean;
+    directory: string;
 }

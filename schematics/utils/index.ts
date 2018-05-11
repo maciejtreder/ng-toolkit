@@ -39,6 +39,7 @@ export function addDependenciesToPackageJson(options: any, dependencies: {name: 
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
 
         dependencies.forEach(entry => {
+            console.log(`add dependency ${entry.name} @ ${entry.version}`);
             if (!entry.dev) {
                 packageJsonSource.dependencies[entry.name] = entry.version;
             }
@@ -56,6 +57,7 @@ export function addDependenciesToPackageJson(options: any, dependencies: {name: 
 }
 
 export function addDependencyToPackageJson(options: any, name: string, version: string, dev: boolean = false): Rule {
+    console.log(`add dependency ${name} @ ${version} options: ${options.directory}`);
     return (tree: Tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
 
