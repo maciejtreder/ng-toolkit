@@ -10,16 +10,17 @@
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
-This repo is the boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
-It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
+Collection of tools for making your Angular app more robust!
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 ## Content
- - [What's inside?](#wi)
- - [Getting started](#start)
- - [Deployment](#deploy)
+ - What's inside:
+    - [Serverless support](#serverless)
+    - [PWA starter](#PWA)
+         - [Getting started](#start)
+         - [Deployment](#deploy)
  - [To do](#todo)
  - [Question, Problem, Feature Request](#question)
  - [Funding](#funding)
@@ -27,8 +28,18 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 
 
+## <a name="serverless"></a> Serverless
 
-## <a name="wi"></a> What's inside?
+```
+ng add @ng-toolkit/serverless [--provider aws|gcloud|both]
+```
+
+## <a name="pwa">PWA starter/boilerplate</a>
+
+Boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
+It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
+
+
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
 * AMP - Accelerated Mobile Pages - super fast initial load (down to ~650ms)
 * Push notifications:
@@ -48,19 +59,19 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 * Webpack
 * Serverless framework
 
-## <a name="start"></a> Get Started
+### <a name="start"></a> Getting Started
 Whatch on Youtube:
 [![How to start project with angular-universal-pwa](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
 
 ### Using Angular CLI schematics
 
 ```bash
-npm install -g angular-universal-pwa
+npm install -g @ng-toolkit/init
 ```
 
 Create project:
 ```bash
-ng new --collection angular-universal-pwa myApp
+ng new --collection @ng-toolkit/init myApp
 cd myApp
 npm start
 ```
@@ -72,13 +83,13 @@ npm start
 
 ### Cloning the repo 
 ```bash
-git clone https://github.com/maciejtreder/angular-universal-pwa.git
-cd angular-universal-pwa/application
+git clone https://github.com/maciejtreder/ng-toolkit.git
+cd ng-toolkit/application
 npm install
 npm start
 ```
 
-##Running modes
+### Running modes
 * Development mode (autoreload only): ```npm start```
 * Development mode (autoreload + unit tests): ```npm run build:dev```
 * Development mode (autoreload + firebug lite): ```npm run build:firebug```
@@ -86,7 +97,7 @@ npm start
 * Unit tests: ```npm run test```
 
 
-## <a name="deploy"></a> Deployment
+### <a name="deploy"></a> Deployment
 ### Production mode with Node.JS
 ```sh
 npm run build:prod

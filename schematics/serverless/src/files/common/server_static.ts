@@ -19,5 +19,5 @@ app.get('*.*', express.static(join(DIST_FOLDER), {
 }));
 
 app.get('/*', (req, res) => {
-    res.sendFile(join(DIST_FOLDER+'index.html'));
+    res.sendFile(join(DIST_FOLDER + '/index.html'));
 });

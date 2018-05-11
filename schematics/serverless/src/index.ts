@@ -8,8 +8,6 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function addServerless(options: any): Rule {
-    console.log('SERVERLESS');
-    console.log(options);
     options.serverless = {
         aws: {},
         gcloud: {}
@@ -60,17 +58,21 @@ export default function addServerless(options: any): Rule {
     }
 
     rules.push((tree: Tree) => {
+        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         const universal:boolean = isUniversal(tree, options);
         if(universal) {
-                rules.push(addOrReplaceScriptInPackageJson(options,"build:client-and-server-bundles", "ng build --prod && ng run application:server"));
-                rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors"));
+            packageJsonSource.scripts['build:client-and-server-bundles'] = 'ng build --prod && ng run application:server';
+            packageJsonSource.scripts['build:prod'] = 'npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors';
             tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
             tree.rename(`${options.directory}/server_static.ts`, `${options.directory}temp/toRemove`);
         } else {
+            packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors';
             rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "ng build --prod && webpack --config webpack.server.config.js --progress --colors"));
             tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/toRemove`);
             tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/server.ts`);
         }
+
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
 
         const serverFileContent = getFileContent(tree, `${options.directory}/server.ts`);
 

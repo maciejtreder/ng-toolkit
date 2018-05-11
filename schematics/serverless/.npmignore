@@ -1,4 +1,3 @@
 ./src/index.ts
 ./src/index_spec.ts
-./utils/index.ts
 ./tsconfig.json
