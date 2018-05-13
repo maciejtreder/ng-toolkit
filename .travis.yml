@@ -27,8 +27,7 @@ node_js: node
 #  - SCHEMATICS=init
 
 script:
-- if [ "$TRAVIS_BRANCH" = "master" ]; then ./scripts/deploy.sh; fi
-- if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/build.sh; fi
+- ./scripts/deploy.sh
 
 env:
   global:
