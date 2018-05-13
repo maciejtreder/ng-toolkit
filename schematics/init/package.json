@@ -1,11 +1,11 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/init",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maciejtreder/angular-universal-serverless.git"
+    "url": "git+https://github.com/maciejtreder/ng-toolkit.git"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

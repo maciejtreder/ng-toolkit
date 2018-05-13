@@ -4,9 +4,9 @@
 [![Dependency Status](https://david-dm.org/maciejtreder/angular-universal-pwa.svg)](https://david-dm.org/maciejtreder/angular-universal-pwa)
 [![Backers on Open Collective](https://opencollective.com/angular-universal-pwa/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/angular-universal-pwa/sponsors/badge.svg)](#sponsors)
-[![npm version](https://badge.fury.io/js/angular-universal-pwa.svg)](https://badge.fury.io/js/angular-universal-pwa)
+[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit)
 
-# Angular 5/6 Universal Progressive Web App - starter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20Angular%20Universal%20PWA%20boilerplate&url=https://github.com/maciejtreder/angular-universal-pwa&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
+# Toolkit for Angular CLI [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
