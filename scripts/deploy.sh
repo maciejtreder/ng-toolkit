@@ -4,16 +4,16 @@ cd schematics
 
 cd utils
 npm install
-npm run ci-publish
+npx semantic-release
 cd ..
 sleep 1
 
 cd serverless
 npm install
-npm run ci-publish
+npx semantic-release
 cd ..
 
 cd init
 npm install
-npm run ci-publish
+npx semantic-release
 cd ..

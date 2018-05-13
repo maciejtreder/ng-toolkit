@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/init",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -11,8 +11,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine **/*_spec.js",
     "postinstall": "node postinstall.js",
-    "prepublish": "npm run build",
-    "ci-publish": "ci-publish"
+    "prepublish": "npm run build"
   },
   "keywords": [
     "schematics",
@@ -38,7 +37,7 @@
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.10.14",
     "jasmine": "^2.8.0",
-    "ci-publish": "^1.3.1",
+    "semantic-release": "^15.4.1",
     "typescript": "~2.7.2"
   },
   "publishConfig": {
