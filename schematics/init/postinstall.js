@@ -8,7 +8,7 @@ var reset = "\u001b[0m";
 
 var output =
     green +
-    "\n\nDo you ❤️ @angular-toolkit? \n\nStar this repo on GitHub! \n\nBecome a donor:" +
+    "\n\nDo you ❤️ @ng-toolkit? \n\nStar this repo on GitHub! \n\nBecome a donor:" +
     white +
     "\n > " +
     boldCyan +
