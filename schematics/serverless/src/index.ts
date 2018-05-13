@@ -3,7 +3,7 @@ import {
 } from '@angular-devkit/schematics';
 import {
     addDependencyToPackageJson, addOrReplaceScriptInPackageJson,
-} from '@angular-toolkit/_utils';
+} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 

@@ -9,7 +9,7 @@ import { newApp } from '../utils/new-app/index';
 import {
     addDependencyToPackageJson, addImportStatement, addOrReplaceScriptInPackageJson,
     createOrOverwriteFile
-} from '@angular-toolkit/_utils';
+} from '@ng-toolkit/_utils';
 
 export default function (options: any): Rule {
     if (!options.directory) {
