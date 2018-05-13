@@ -25,10 +25,7 @@
       "node"
     ]
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
-    "src/**/files/**/*"
+    "./**/files/**/*"
   ]
 }

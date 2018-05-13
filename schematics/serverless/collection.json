@@ -1,0 +1,10 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "factory": "./src",
+      "description": "Update an application with serverless framework",
+      "schema": "./src/schema.json"
+    }
+  }
+}
