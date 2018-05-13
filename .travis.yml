@@ -28,7 +28,7 @@ node_js: node
 
 script:
 - if [ "$TRAVIS_BRANCH" = "master" ]; then ./scripts/deploy.sh; fi
-#- ./scripts/deploy.sh
+- if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/build.sh; fi
 
 env:
   global:
