@@ -17,7 +17,7 @@ Collection of tools for making your Angular app more robust!
 
 ## Content
  - What's inside:
-    - [Serverless support](#serverless)
+    - [Serverless support](https://github.com/maciejtreder/angular-universal-pwa/tree/master/schematics/serverless)
     - [PWA starter](#PWA)
          - [Getting started](#start)
          - [Deployment](#deploy)
@@ -27,12 +27,6 @@ Collection of tools for making your Angular app more robust!
  - [Credentials](#credentials)
 
 
-
-## <a name="serverless"></a> Serverless
-
-```
-ng add @ng-toolkit/serverless [--provider aws|gcloud|both]
-```
 
 ## <a name="pwa">PWA starter/boilerplate</a>
 

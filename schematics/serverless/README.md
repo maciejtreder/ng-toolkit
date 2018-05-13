@@ -1,29 +1,36 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-toolkit/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-toolkit/test_coverage) 
-[![Build Status](https://travis-ci.org/maciejtreder/angular-toolkit.png)](https://travis-ci.org/maciejtreder/angular-toolkit)
-[![Dependency Status](https://david-dm.org/maciejtreder/angular-toolkit.svg)](https://david-dm.org/maciejtreder/angular-toolkit)
-[![Backers on Open Collective](https://opencollective.com/angular-toolkit/backers/badge.svg)](#backers) 
-[![Sponsors on Open Collective](https://opencollective.com/angular-toolkit/sponsors/badge.svg)](#sponsors)
+[![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/ng-toolkit/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/ng-toolkit/test_coverage) 
+[![Build Status](https://travis-ci.org/maciejtreder/angular-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
+[![Dependency Status](https://david-dm.org/maciejtreder/angular-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
+[![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
 
-# Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@angular-toolkit/serverless&url=https://github.com/maciejtreder/angular-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
-![angular-toolkit report](https://raw.github.com/maciejtreder/angular-toolkit/master/application/src/assets/img/lighthouse_report.png)
+# Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/serverless&url=https://github.com/maciejtreder/angular-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 
 ### _**Star it and share with others!**_
-This is part of the @angular-toolkit project. [Check it out on GitHub](https://github.com/maciejtreder/angular-toolkit)
+This is part of the @ng-toolkit project. [Check main page](https://github.com/maciejtreder/ng-toolkit)
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
 
 ## Getting started
 ```bash
-ng add @angular-toolkit/serverless
-npm run build:deploy
+ng new myApp
+cd myApp
+ng add @ng-toolkit/serverless
 ```
 
 ## Params
 * `--provider` - Choose serverless provider which you want to use (`aws` | `gcloud` | `both`) - default `both` ie
 ```typescript
-ng add @angular-toolkit/serverles --provider aws
+ng add @ng-toolkit/serverles --provider aws
+```
+
+## Deployment
+```
+npm run build:deploy (if you choose provider 'aws' or 'gcloud')
+npm run build:deploy:aws (if you choose provider 'both')
+npm run build:deploy:gcloud (if you choose provider 'both')
 ```
 
 ## <a name="question"></a> Looking for something more?
