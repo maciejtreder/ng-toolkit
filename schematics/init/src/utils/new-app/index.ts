@@ -5,7 +5,7 @@ import {
 import { addFireBug } from '../firebug/index';
 import { addGoogleAnalytics } from '../googleAnalytics/index';
 import { getFileContent } from '@schematics/angular/utility/test';
-import { addOrReplaceScriptInPackageJson, createGitIgnore, addDependencyToPackageJson, createOrOverwriteFile } from '@angular-toolkit/_utils';
+import { addOrReplaceScriptInPackageJson, createGitIgnore, addDependencyToPackageJson, createOrOverwriteFile } from '@ng-toolkit/_utils';
 
 export function newApp(options: any): Rule {
     const templateSource = apply(url('../utils/new-app/files'), [

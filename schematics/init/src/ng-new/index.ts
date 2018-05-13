@@ -5,7 +5,7 @@ import {
 import {
     createOrOverwriteFile,
     addOrReplaceScriptInPackageJson, addDependencyToPackageJson
-} from '@angular-toolkit/_utils';
+} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
