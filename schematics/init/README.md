@@ -10,14 +10,16 @@
 ![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
-This is part of the @ng-toolkit project. [Check main page](https://github.com/maciejtreder/ng-toolkit)
+_This is part of the @ng-toolkit project. [Check main page for more](https://github.com/maciejtreder/ng-toolkit)_
 
+This is boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
+It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 ## Content
- - [What's inside:](#pwa)
+ - [What's inside](#pwa)
  - [Getting started](#start)
  - [Deployment](#deploy)
  - [To do](#todo)
@@ -27,11 +29,7 @@ This is part of the @ng-toolkit project. [Check main page](https://github.com/ma
 
 
 
-## <a name="pwa">PWA starter/boilerplate</a>
-
-Boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
-It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
-
+## <a name="pwa">What's inside</a>
 
 * PWA - content is cached and available offline, it can be also installed as native app on Android devices and Google Chrome
 * AMP - Accelerated Mobile Pages - super fast initial load (down to ~650ms)
@@ -47,7 +45,6 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 * Firebug Lite (great solution for development on touch-screen devices, ie: tablets)
 
 ### Used frameworks/technologies
-* Angular 6.x
 * Angular 6.x
 * Webpack
 * Serverless framework
@@ -91,7 +88,7 @@ npm start
 
 
 ### <a name="deploy"></a> Deployment
-### Production mode with Node.JS
+### Production mode with NodeJS
 ```sh
 npm run build:prod
 npm run server
@@ -104,13 +101,26 @@ ng new --collection angular-universal-pwa myApp --provider aws
 npm run build:deploy
 ```
 
+or
+
+```bash
+ng new --collection angular-universal-pwa myApp
+npm run build:deploy:aws
+```
+
+
 #### Google Cloud Functions
 
 ```bash
 ng new --collection angular-universal-pwa myApp--provider gcloud 
 npm run build:deploy
 ```
+or
 
+```bash
+ng new --collection angular-universal-pwa myApp
+npm run build:deploy:gcloud
+```
 ## <a name="todo"></a> To do
 * prerender app for 'no-backend' hosting
 * microservices support - make replacement eligible external module without recompiling whole app
