@@ -25,7 +25,7 @@ export function newApp(options: any): Rule {
         directory: options.directory
     };
 
-    rules.push(externalSchematic('@angular-toolkit/serverless', 'ng-add', serverlessOptions));
+    rules.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', serverlessOptions));
     // rules.push(addServerless(options));
     rules.push((tree => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
