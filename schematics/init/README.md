@@ -1,13 +1,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage) 
-[![Build Status](https://travis-ci.org/maciejtreder/angular-universal-pwa.png)](https://travis-ci.org/maciejtreder/angular-universal-pwa)
+[![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
 [![Dependency Status](https://david-dm.org/maciejtreder/angular-universal-pwa.svg)](https://david-dm.org/maciejtreder/angular-universal-pwa)
 [![Backers on Open Collective](https://opencollective.com/angular-universal-pwa/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/angular-universal-pwa/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit)
 
 # Angular Universal PWA starter/boilerplate (CLI schematics) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
-![angular-universal-PWA report](https://raw.github.com/maciejtreder/angular-universal-pwa/master/application/src/assets/img/lighthouse_report.png)
+![Lighthouse report](https://raw.github.com/maciejtreder/ng-toolkit/master/application/src/assets/img/lighthouse_report.png)
 
 ### _**Star it and share with others!**_
 _This is part of the @ng-toolkit project. [Check main page for more](https://github.com/maciejtreder/ng-toolkit)_
@@ -39,7 +39,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 * Server-side rendering with Angular Universal
 * TransferState
 * Lazy loading modules
-* External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module)) [TBD after CLI merge - [#150](https://github.com/maciejtreder/angular-universal-pwa/issues/150)]
+* External modules (You can split your application into multiple projects and lazy-load them, [read more here](https://github.com/maciejtreder/angular-external-module)) [TBD after CLI merge - [#150](https://github.com/maciejtreder/ng-toolkit/issues/150)]
 * Angular Material
 * Unit tests
 * Firebug Lite (great solution for development on touch-screen devices, ie: tablets)
@@ -51,7 +51,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 ### <a name="start"></a> Getting Started
 Whatch on Youtube:
-[![How to start project with angular-universal-pwa](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
+[![How to start project with ng-toolkit](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
 
 ### Using Angular CLI schematics
 
