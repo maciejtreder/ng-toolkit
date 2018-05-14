@@ -16,7 +16,7 @@ Collection of tools for making your Angular app more robust!
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 ## Content
- - What's inside:
+ - [What's inside](#quickOverview):
     - [PWA starter](https://github.com/maciejtreder/angular-universal-pwa/tree/master/schematics/init/README.md)
     - [Serverless support for existing projects](https://github.com/maciejtreder/angular-universal-pwa/tree/master/schematics/serverless/README.md)
  - [Question, Problem, Feature Request](#question)
@@ -24,6 +24,22 @@ Collection of tools for making your Angular app more robust!
  - [Credentials](#credentials)
 
 
+## <a name="quickOverview">  What's inside
+
+#### PWA starter:
+
+```
+npm install -g @ng-toolkit/init
+ng new --collection @ng-toolkit/init myApp
+```
+
+[Read more](https://github.com/maciejtreder/angular-universal-pwa/tree/master/schematics/init/README.md)
+
+#### Serverless support for existing projects:
+```
+ng add @ng-toolkit/serverless
+```
+[Read more](https://github.com/maciejtreder/angular-universal-pwa/tree/master/schematics/serverless/README.md)
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
