@@ -9,7 +9,9 @@
 # Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/serverless&url=https://github.com/maciejtreder/angular-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 
 ### _**Star it and share with others!**_
-This is part of the @ng-toolkit project. [Check main page](https://github.com/maciejtreder/ng-toolkit)
+_This is part of the @ng-toolkit project. [Check main page for more](https://github.com/maciejtreder/ng-toolkit)_
+
+Add serverless support (AWS Lambda and Google Cloud Functions) to your Angular project
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
@@ -27,7 +29,7 @@ ng add @ng-toolkit/serverless
 ng add @ng-toolkit/serverles --provider aws
 ```
 
-## Deployment
+## Deploy to production
 ```
 npm run build:deploy (if you choose provider 'aws' or 'gcloud')
 npm run build:deploy:aws (if you choose provider 'both')
