@@ -64,11 +64,11 @@ export default function addServerless(options: any): Rule {
             packageJsonSource.scripts['build:client-and-server-bundles'] = 'ng build --prod && ng run application:server';
             packageJsonSource.scripts['build:prod'] = 'npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors';
             tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
-            tree.rename(`${options.directory}/server_static.ts`, `${options.directory}temp/toRemove`);
+            tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/temp/server_static.ts${new Date().getDate()}`);
         } else {
             packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors';
             rules.push(addOrReplaceScriptInPackageJson(options,"build:prod", "ng build --prod && webpack --config webpack.server.config.js --progress --colors"));
-            tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/toRemove`);
+            tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/server_universal.ts${new Date().getDate()}`);
             tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/server.ts`);
         }
 

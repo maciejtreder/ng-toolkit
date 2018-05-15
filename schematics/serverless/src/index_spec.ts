@@ -1,13 +1,17 @@
-// import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 // import * as path from 'path';
-
-describe('Serverless', () => {
-    // const schematicRunner = new SchematicTestRunner(
-    //     '@angular-toolkit/serverless',
-    //     path.join(__dirname, '../collection.json')
-    // );
-
-    it('Should run the serverless schematic', () => {
-        console.log('test');
-    })
-})
+// import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+// import { Tree } from '@angular-devkit/schematics';
+//
+// const collectionPath = path.join(__dirname, '../collection.json');
+//
+// describe('my-component', () => {
+//   it('works', () => {
+//     expect(true).toBe(true);
+//       const runner = new SchematicTestRunner('schematics', collectionPath);
+//       const prerequisitTree = Tree.empty();
+//       prerequisitTree.create("./package.json", "{}");
+//       const tree = runner.runSchematic('ng-add', {}, prerequisitTree);
+//       expect(tree).toBeDefined();
+//     // expect(tree.files).toEqual([]);
+//   });
+// });
