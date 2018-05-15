@@ -8,7 +8,6 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function addServerless(options: any): Rule {
-    console.log('add serverless');
     options.serverless = {
         aws: {},
         gcloud: {}
@@ -58,8 +57,20 @@ export default function addServerless(options: any): Rule {
         });
     }
 
+    rules.push(addDependencyToPackageJson(options, 'opencollective', '^1.0.3', true));
     rules.push((tree: Tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+
+        packageJsonSource['collective'] = {
+            type: 'opencollective',
+            url: 'https://opencollective.com/ng-toolkit'
+        };
+        if (packageJsonSource.scripts['postinstall'] && packageJsonSource.scripts['postinstall'].indexOf('opencollective') == -1) {
+            packageJsonSource.scripts['postinstall'] += ' && opencollective postinstall'
+        } else {
+            packageJsonSource.scripts['postinstall'] = 'opencollective postinstall'
+        }
+
         const universal:boolean = isUniversal(tree, options);
         if(universal) {
             packageJsonSource.scripts['build:client-and-server-bundles'] = 'ng build --prod && ng run application:server';

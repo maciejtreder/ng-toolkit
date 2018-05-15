@@ -12,21 +12,16 @@ import {
 } from '@ng-toolkit/_utils';
 
 export default function (options: any): Rule {
-    console.log(options);
-    console.log('schematic runned');
     if (!options.directory) {
         options.directory = options.name;
     }
-    console.log('schematic runned');
     const specificFiles = apply(url('./files'), [
         move(options.directory),
     ]);
-    console.log('schematic runned');
 
     return chain( [
         externalSchematic('@schematics/angular', 'application', options),
         ((tree: Tree) => {
-            console.log('schematic runned');
             tree.getDir(`${options.directory}/src/app`).visit(visitor => {
                 tree.delete(visitor);
             });
@@ -45,7 +40,6 @@ export default function (options: any): Rule {
 }
 
 function updatePackageJson(options: any): Rule {
-    console.log('schematic runned, update packagejson');
     return chain([
         addDependencyToPackageJson(options, '@angular/service-worker', '^5.2.0'),
         addDependencyToPackageJson(options, '@angular/platform-server', '^5.2.0'),
@@ -62,7 +56,6 @@ function updatePackageJson(options: any): Rule {
 }
 
 function updateCLI(options: any): Rule {
-    console.log('schematic runned, update cli');
     return (tree: Tree) => {
         const configSource = JSON.parse(getFileContent(tree, `${options.directory}/.angular-cli.json`));
 
@@ -112,7 +105,6 @@ function updateCLI(options: any): Rule {
 }
 
 function downgradeRXJS(): Rule {
-    console.log('schematic runned, update downgrade');
     return tree => {
         tree.visit(visitor => {
             if (visitor.endsWith('.ts')) {

@@ -1,22 +1,21 @@
 cd schematics
 
-#UTILS
+CATALOGS=(utils serverless init)
 
-cd utils
-npm install
-npm test
-npm run ci-publish
-cd ..
-sleep 1
+exitStatus=0
 
-cd serverless
-npm install
-npm test
-npm run ci-publish
-cd ..
+for i in "${CATALOGS[@]}"
+do :
+   cd $i
+   npm install
+   if npm run ci-publish
+   then
+    echo $i passed
+   else
+    exitStatus=1
+   fi
+   cd ..
+   sleep 1
+done
 
-cd init
-npm install
-npm test
-npm run ci-publish
-cd ..
+exit $exitStatus

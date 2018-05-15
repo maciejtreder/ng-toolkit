@@ -42,7 +42,6 @@ describe('my-component', () => {
         checkIfFileExists(files,'/foo/LICENSE');
         checkIfFileExists(files,'/foo/local.js');
         checkIfFileExists(files,'/foo/ngsw-config.json');
-        checkIfFileExists(files,'/foo/postinstall.js');
         checkIfFileExists(files,'/foo/README.md');
         checkIfFileExists(files,'/foo/src/environments/environment.ts');
         checkIfFileExists(files,'/foo/src/environments/environment.prod.ts');

@@ -1,19 +1,21 @@
 cd schematics
 
-#UTILS
+CATALOGS=(utils serverless init)
 
-cd utils
-npm install
-npm test
-cd ..
-sleep 1
+exitStatus=0
 
-cd serverless
-npm install
-npm test
-cd ..
+for i in "${CATALOGS[@]}"
+do :
+   cd $i
+   npm install
+   if npm test
+   then
+    echo $i passed
+   else
+    exitStatus=1
+   fi
+   cd ..
+   sleep 1
+done
 
-cd init
-npm install
-npm test
-cd ..
+exit $exitStatus
