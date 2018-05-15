@@ -15,7 +15,6 @@ export default function (options: any): Rule {
     if (!options.directory) {
         options.directory = options.name;
     }
-
     const specificFiles = apply(url('./files'), [
         move(options.directory),
     ]);
@@ -41,7 +40,6 @@ export default function (options: any): Rule {
 }
 
 function updatePackageJson(options: any): Rule {
-
     return chain([
         addDependencyToPackageJson(options, '@angular/service-worker', '^5.2.0'),
         addDependencyToPackageJson(options, '@angular/platform-server', '^5.2.0'),

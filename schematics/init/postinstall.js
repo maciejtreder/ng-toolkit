@@ -8,7 +8,11 @@ var reset = "\u001b[0m";
 
 var output =
     green +
-    "\n\nDo you ❤️ @ng-toolkit? \n\nStar this repo on GitHub! \n\nBecome a donor:" +
+    "\n\nDo you ❤️ @ng-toolkit/init? \n\nStar it on GitHub!\n" +
+    boldCyan +
+    "https://github.com/maciejtreder/ng-toolkit\n" +
+    green +
+    " \n\nBecome a donor:" +
     white +
     "\n > " +
     boldCyan +

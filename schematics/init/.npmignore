@@ -1,3 +1,11 @@
-./src/index.ts
-./src/index_spec.ts
+./src/application/index.ts
+./src/application/index_spec.ts
+./src/ng-new/index.ts
+./src/ng-new/index_spec.ts
+./src/utils/firebug/index.ts
+./src/utils/firebug/index_spec.ts
+./src/utils/googleAnalytics/index.ts
+./src/utils/googleAnalytics/index_spec.ts
+./src/utils/new-app/index.ts
+./src/utils/new-app/index_spec.ts
 ./tsconfig.json

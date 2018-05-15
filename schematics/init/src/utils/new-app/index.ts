@@ -26,12 +26,11 @@ export function newApp(options: any): Rule {
     };
 
     rules.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', serverlessOptions));
-    // rules.push(addServerless(options));
     rules.push((tree => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         packageJsonSource['collective'] = {
             type: 'opencollective',
-            url: 'https://opencollective.com/angular-universal-pwa'
+            url: 'https://opencollective.com/ng-toolkit'
         };
         tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, '  '));
         return tree;
@@ -53,11 +52,10 @@ export function newApp(options: any): Rule {
 
 function updatePackageJson(options: any): Rule {
     return chain([
-        addOrReplaceScriptInPackageJson(options, 'postinstall', 'node postinstall.js'),
+        addOrReplaceScriptInPackageJson(options, 'postinstall', 'node credentials.js && opencollective postinstall'),
         addOrReplaceScriptInPackageJson(options, 'ng', 'ng'),
         addOrReplaceScriptInPackageJson(options, 'start', 'run-p build:watch credentials'),
         addOrReplaceScriptInPackageJson(options, 'build:watch', 'ng serve'),
-        addOrReplaceScriptInPackageJson(options, 'credentials', 'node credentials.js && opencollective postinstall'),
         addOrReplaceScriptInPackageJson(options, 'build:dev', 'run-p test:watch start'),
         addOrReplaceScriptInPackageJson(options, 'build', 'ng build'),
         addOrReplaceScriptInPackageJson(options, 'lint', 'ng lint --fix'),
