@@ -8,6 +8,7 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function addServerless(options: any): Rule {
+    console.log('add serverless');
     options.serverless = {
         aws: {},
         gcloud: {}

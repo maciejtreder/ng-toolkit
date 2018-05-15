@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine **/*_spec.js",
+    "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
     "prepublish": "npm run build",
     "ci-publish": "ci-publish"
