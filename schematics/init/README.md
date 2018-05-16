@@ -2,8 +2,8 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage) 
 [![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
 [![Dependency Status](https://david-dm.org/maciejtreder/angular-universal-pwa.svg)](https://david-dm.org/maciejtreder/angular-universal-pwa)
-[![Backers on Open Collective](https://opencollective.com/angular-universal-pwa/backers/badge.svg)](#backers) 
-[![Sponsors on Open Collective](https://opencollective.com/angular-universal-pwa/sponsors/badge.svg)](#sponsors)
+[![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit)
 
 # Angular Universal PWA starter/boilerplate (CLI schematics) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
@@ -97,14 +97,14 @@ npm run server
 #### AWS Lambda
 
 ```bash
-ng new --collection angular-universal-pwa myApp --provider aws
+ng new --collection @ng-toolkit/init myApp --provider aws
 npm run build:deploy
 ```
 
 or
 
 ```bash
-ng new --collection angular-universal-pwa myApp
+ng new --collection @ng-toolkit/init myApp
 npm run build:deploy:aws
 ```
 
@@ -112,13 +112,13 @@ npm run build:deploy:aws
 #### Google Cloud Functions
 
 ```bash
-ng new --collection angular-universal-pwa myApp--provider gcloud 
+ng new --collection @ng-toolkit/init myApp--provider gcloud 
 npm run build:deploy
 ```
 or
 
 ```bash
-ng new --collection angular-universal-pwa myApp
+ng new --collection @ng-toolkit/init myApp
 npm run build:deploy:gcloud
 ```
 ## <a name="todo"></a> To do
@@ -137,13 +137,13 @@ npm run build:deploy:gcloud
 
 
 ## <a name="question"></a> Looking for something more?
-Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-universal-pwa/issues/new)
+Feel free to [create issue with your feature request](https://github.com/maciejtreder/ng-toolkit/issues/new)
 
 
 ## <a name="funding"></a> Funding
 
 You can support development of this project via
-[Open Collective](https://opencollective.com/angular-universal-pwa),
+[Open Collective](https://opencollective.com/ng-toolkit),
 [Donorbox](https://donorbox.org/angular-universal-pwa),
 [Liberapay](https://liberapay.com/maciejtreder/donate),
 
@@ -151,25 +151,25 @@ You can support development of this project via
 
 ### Open Collective Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/angular-universal-pwa#backer)]
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ng-toolkit#backer)]
 
-<a href="https://opencollective.com/angular-universal-pwa#backers" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/backers.svg?width=890"></a>
+<a href="https://opencollective.com/ng-toolkit#backers" target="_blank"><img src="https://opencollective.com/ng-toolkit/backers.svg?width=890"></a>
 
 
 ### Open Collective Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/angular-universal-pwa#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ng-toolkit#sponsor)]
 
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/0/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/1/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/2/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/3/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/4/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/5/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/6/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/7/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/8/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/angular-universal-pwa/sponsor/9/website" target="_blank"><img src="https://opencollective.com/angular-universal-pwa/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/ng-toolkit/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/9/avatar.svg"></a>
 
 
 

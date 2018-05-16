@@ -8,7 +8,8 @@
 
 export interface Schema {
     project?: string;
-    provider: ('both' | 'aws' | 'gcloud');
+    provider: ('both' | 'aws' | 'gcloud' | 'firebase');
     skipInstall: boolean;
     directory: string;
+    firebaseProject: string;
 }

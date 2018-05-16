@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "predeploy": [
+      "npm run build:prod"
+    ]
+  }
+}
