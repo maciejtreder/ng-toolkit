@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/_utils",
-  "version": "1.0.5",
+  "version": "1.1.0-beta.2",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine **/*_spec.js",
+    "test": "npm run build && jasmine src/**/*_spec.js",
     "prepublish": "npm test",
     "ci-publish": "ci-publish"
   },
