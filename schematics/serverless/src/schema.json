@@ -13,7 +13,7 @@
     },
     "provider": {
       "description": "Specify serverless provider.",
-      "enum": ["both", "aws", "gcloud"],
+      "enum": ["both", "aws", "gcloud", "firebase"],
       "type": "string",
       "default": "both"
     },
@@ -26,6 +26,10 @@
       "description": "App root catalog",
       "type": "string",
       "default": "."
+    },
+    "firebaseProject": {
+      "description": "Firebase project id",
+      "type": "string"
     }
   },
   "required": []
