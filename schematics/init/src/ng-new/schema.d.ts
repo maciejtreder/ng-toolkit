@@ -14,7 +14,8 @@ export interface Schema {
     prefix?: string;
     style?: string;
     skipTests?: boolean;
-    provider: ('both' | 'aws' | 'gcloud');
+    provider: ('both' | 'aws' | 'gcloud' | 'firebase');
     gaTrackingCode?: string;
     firebug: boolean;
+    firebaseProject: string;
 }
