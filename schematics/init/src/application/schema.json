@@ -64,9 +64,9 @@
     },
     "provider": {
       "description": "Specify serverless provider.",
-      "enum": ["both", "aws", "gcloud"],
+      "enum": ["aws", "gcloud"],
       "type": "string",
-      "default": "both"
+      "default": "aws"
     },
     "gaTrackingCode": {
       "description": "Google Analytics tracking code.",

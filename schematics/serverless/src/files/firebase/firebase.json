@@ -1,7 +1,11 @@
 {
-  "functions": {
-    "predeploy": [
-      "npm run build:prod"
+  "hosting": {
+    "public": "functions/dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "http"
+      }
     ]
   }
 }

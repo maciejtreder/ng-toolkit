@@ -1,11 +1,13 @@
 import {
-    apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext, SchematicsException
+    apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore
+    addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore,
+    createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder, isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, addParamterToMethod
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { Path } from '@angular-devkit/core';
 
 export default function addServerless(options: any): Rule {
     options.serverless = {
@@ -19,16 +21,23 @@ export default function addServerless(options: any): Rule {
     ]);
 
     //common actions
+    rules.push(tree => {
+        if (tree.exists(`${options.directory}/local.js`)) {
+            tree.delete(`${options.directory}/local.js`);
+        }
+    })
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
 
-    rules.push(addOrReplaceScriptInPackageJson(options,"build:deploy", "npm run build:prod && npm run deploy"));
+    rules.push(addOrReplaceScriptInPackageJson(options,"server", "node local.js"));
+    rules.push(addOrReplaceScriptInPackageJson(options,"build:prod:deploy", "npm run build:prod && npm run deploy"));
+    rules.push(addOrReplaceScriptInPackageJson(options,"build:serverless:deploy", "npm run build:serverless && npm run deploy"));
 
     rules.push(addDependencyToPackageJson(options, 'ts-loader', '4.2.0', true));
     rules.push(addDependencyToPackageJson(options, 'webpack-cli', '2.1.2', true));
     rules.push(addDependencyToPackageJson(options, 'cors', '~2.8.4'));
+    rules.push(addDependencyToPackageJson(options, 'cp-cli', '^1.1.0'));
 
     rules.push(addOpenCollective(options));
-    rules.push(addBuildScriptsAndFiles(options));
 
     if (options.provider === 'firebase') {
 
@@ -67,23 +76,9 @@ export default function addServerless(options: any): Rule {
             tree.create(`${options.directory}/.firebaserc`, JSON.stringify(firebaseProjectSettings, null, "  "));
         });
 
-        rules.push(addOrReplaceScriptInPackageJson(options, 'build:deploy', 'cd functions && npm install && cd .. && firebase deploy'));
+        rules.push(addOrReplaceScriptInPackageJson(options, 'build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
 
         rules.push(mergeWith(source, MergeStrategy.Overwrite));
-
-        rules.push((tree => {
-            //outputPath
-            const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-            const project: any = cliConfig.projects[options.project].architect;
-            for (let property in project) {
-                if (project.hasOwnProperty(property) && project[property].builder.indexOf('@angular-devkit/build-angular') > -1) {
-                    project[property].options.outputPath = 'functions/' + project[property].options.outputPath;;
-                }
-            }
-
-            tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "));
-            return tree;
-        }));
     }
 
     if (options.provider === 'gcloud' || options.provider === 'aws' ) {
@@ -95,25 +90,6 @@ export default function addServerless(options: any): Rule {
             rules.push(addServerlessGcloud(options));
         } else if (options.provider === 'aws') {
             rules.push(addServerlessAWS(options));
-        } else {
-            options.serverless.aws.filename = 'serverless-aws.yml';
-            options.serverless.gcloud.filename = 'serverless-gcloud.yml';
-            rules.push(addServerlessAWS(options));
-            rules.push(addServerlessGcloud(options));
-            rules.push((tree: Tree) => {
-                //add scripts to package.json
-                const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-                delete packageJsonSource.scripts['build:deploy'];
-
-                packageJsonSource.scripts['build:deploy:aws'] = 'npm run build:prod && npm run deploy:aws';
-                packageJsonSource.scripts['build:deploy:gcloud'] = 'npm run build:prod && npm run deploy:gcloud';
-                packageJsonSource.scripts['deploy:aws'] = 'cp-cli serverless-aws.yml serverless.yml && npm run deploy';
-                packageJsonSource.scripts['deploy:gcloud'] = 'cp-cli serverless-gcloud.yml serverless.yml && npm run deploy';
-
-                tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
-
-                return tree;
-            });
         }
     }
 
@@ -124,6 +100,13 @@ export default function addServerless(options: any): Rule {
         let webpack = getFileContent(tree, `${options.directory}/webpack.server.config.js`);
         tree.overwrite(`${options.directory}/webpack.server.config.js`, webpack.replace("__distFolder__", getDistFolder(tree, options)));
     });
+
+    if (options.provider != 'firebase') {
+        rules.push(updateEnvironment(options));
+        rules.push(updateAppEntryFile(options));
+    }
+
+    rules.push(addBuildScriptsAndFiles(options));
 
     if (!options.skipInstall) {
         rules.push((tree: Tree, context: SchematicContext) => {
@@ -139,13 +122,35 @@ function addBuildScriptsAndFiles(options: any): Rule {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
 
         const universal:boolean = isUniversal(tree, options);
-        if(universal) {
-            packageJsonSource.scripts['build:client-and-server-bundles'] = 'ng build --prod && ng run application:server';
-            packageJsonSource.scripts['build:prod'] = 'npm run build:client-and-server-bundles && webpack --config webpack.server.config.js --progress --colors';
+
+        if (options.provider != 'firebase') {
+            let serverlessBasePath: string;
+
+            if (options.provider === 'aws') {
+                serverlessBasePath = '/production/';
+            } else {
+                serverlessBasePath = '/http/';
+            }
+
+            if (universal) {
+                packageJsonSource.scripts['build:prod'] = `ng build --prod && ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`;
+                packageJsonSource.scripts['build:serverless'] = `ng build --prod --base-href ${serverlessBasePath} && ng run ${options.project}:server:serverless && webpack --config webpack.server.config.js --progress --colors`;
+            } else {
+                packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors';
+                packageJsonSource.scripts['build:serverless'] = `ng build --prod --base-href ${serverlessBasePath} && webpack --config webpack.server.config.js --progress --colors`;
+            }
+        } else {
+            if (universal) {
+                packageJsonSource.scripts['build:prod'] = `ng build --prod && ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors && cp-cli dist functions/dist`;
+            } else {
+                packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors && cp-cli dist functions/dist';
+            }
+        }
+
+        if (universal) {
             tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
             tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/temp/server_static.ts${new Date().getDate()}`);
         } else {
-            packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors';
             tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/server_universal.ts${new Date().getDate()}`);
             tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/server.ts`);
         }
@@ -174,7 +179,7 @@ function addServerlessAWS(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project));
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
             return tree;
         },
 
@@ -194,7 +199,7 @@ function addServerlessGcloud(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project));
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
             return tree;
         },
 
@@ -204,65 +209,99 @@ function addServerlessGcloud(options: any): Rule {
     ]);
 }
 
-function isUniversal(tree: Tree, options: any): boolean {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
-    for (let property in project) {
-        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
-            return true;
+function updateEnvironment(options: any): Rule {
+    return tree => {
+        if (!isUniversal(tree, options) || options.provider === 'firebase') {
+            return tree;
+        }
+
+        let serverlessBasePath: string;
+
+        if (options.provider === 'aws') {
+            serverlessBasePath = '/production/';
+        } else {
+            serverlessBasePath = '/http/';
+        }
+
+        createOrOverwriteFile(tree, `${options.directory}/src/environments/environment.serverless.ts`, getFileContent(tree, `${options.directory}/src/environments/environment.prod.ts`));
+
+        tree.getDir(`${options.directory}/src/environments`).visit( (path: Path) => {
+            if (path.endsWith('.ts')) {
+                addEntryToEnvironment(tree, path, 'baseHref', path.indexOf('serverless') > -1?serverlessBasePath:'/');
+            }
+        });
+
+        //update CLI with new configuration
+
+        const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+        const project: any = cliConfig.projects[options.project].architect;
+        for (let property in project) {
+            if (project.hasOwnProperty(property) && (project[property].builder === '@angular-devkit/build-angular:server')) {
+                if (!project[property].configurations) {
+                    project[property].configurations = {};
+                }
+                project[property].configurations.serverless = {
+                    "fileReplacements": [
+                        {
+                            "replace": "src/environments/environment.ts",
+                            "with": "src/environments/environment.serverless.ts"
+                        }
+                    ]
+                };
+            }
+        }
+
+        tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "))
+
+        return tree;
+    }
+}
+
+function updateAppEntryFile(options: any): Rule {
+    return tree=> {
+        if (!isUniversal(tree, options)) {
+            return tree;
+        }
+        const appComponentFilePath = `${options.directory}/src/app/app.component.ts`;
+        const ngOnInit = getMethodBody(tree, appComponentFilePath, 'ngOnInit');
+        addImportStatement(tree, appComponentFilePath, 'environment', '../environments/environment');
+        implementInterface(tree, appComponentFilePath, 'OnInit', '@angular\/core');
+        addImportStatement(tree, appComponentFilePath, 'Inject', '@angular\/core');
+        addImportStatement(tree, appComponentFilePath, 'DOCUMENT', '@angular\/common');
+        addImportStatement(tree, appComponentFilePath, 'isPlatformBrowser', '@angular\/common');
+        addImportStatement(tree, appComponentFilePath, 'PLATFORM_ID', '@angular\/core');
+
+        if (getMethodBody(tree, appComponentFilePath, 'constructor')) {
+            addParamterToMethod(tree, appComponentFilePath, 'constructor', `@Inject(DOCUMENT) private document: any`)
+            addParamterToMethod(tree, appComponentFilePath, 'constructor', `@Inject(PLATFORM_ID) private platformId: any`)
+        } else {
+            addMethod(tree, appComponentFilePath, `
+    constructor(@Inject(DOCUMENT) private document:any, @Inject(PLATFORM_ID) private platformId: any){}
+`)
+        }
+
+        if (ngOnInit) {
+            updateMethod(tree, appComponentFilePath, 'ngOnInit', ngOnInit + `
+    if (!isPlatformBrowser(this.platformId)) {
+        let bases = this.document.getElementsByTagName('base');
+
+        if (bases.length > 0) {
+            bases[0].setAttribute('href', environment.baseHref);
         }
     }
-    return false;
-}
-
-function getServerDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
-    for (let property in project) {
-        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
-            return project[property].options.outputPath;
+`);
+        } else {
+            addMethod(tree, appComponentFilePath, `
+    public ngOnInit(): void {
+        if (!isPlatformBrowser(this.platformId)) {
+            let bases = this.document.getElementsByTagName('base');
+    
+            if (bases.length > 0) {
+                bases[0].setAttribute('href', environment.baseHref);
+            }
         }
-    }
-    return '';
-}
-
-function getBrowserDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
-    for (let property in project) {
-        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
-            return project[property].options.outputPath;
+    }`);
         }
-    }
-    throw new SchematicsException('browser nor server builder not found!');
-}
-
-function getDistFolder(tree: Tree, options: any): string {
-    if (isUniversal(tree, options)) {
-        let array = [getServerDistFolder(tree, options), getBrowserDistFolder(tree, options)]
-        let A = array.concat().sort(),
-            a1 = A[0], a2 = A[A.length - 1], L = a1.length, i = 0;
-        while (i < L && a1.charAt(i) === a2.charAt(i)) i++;
-
-        return a1.substring(0, i);
-    } else {
-        return getBrowserDistFolder(tree, options).substr(0, getBrowserDistFolder(tree,options).lastIndexOf('/'));
+        return tree;
     }
 }
-
-// function updateIndexFile(options: any): Rule {
-//     return tree => {
-//         const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-//         const project: any = cliConfig.projects[options.project].architect;
-//         let indexFilePath;
-//         for (let property in project) {
-//             if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
-//                 indexFilePath = project[property].options.index;
-//             }
-//         }
-//
-//         tree.overwrite(`${options.directory}/${indexFilePath}`, indexContent);
-//
-//         return tree;
-//     }
-// }

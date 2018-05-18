@@ -9,9 +9,7 @@
     "installMode": "prefetch",
     "resources": {
       "files": [
-        "/index.html"
-      ],
-      "versionedFiles": [
+        "/index.html",
         "/main.*.js",
         "/0.*.js",
         "/polyfills.*.js",

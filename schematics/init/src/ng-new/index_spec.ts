@@ -7,12 +7,6 @@ const collectionPath = path.join(__dirname, '../collection.json');
 describe('my-component', () => {
     const schematicRunner = new SchematicTestRunner('@ng-toolkit/init', collectionPath);
 
-    // const workspaceOptions = {
-    //     name: 'workspace',
-    //     newProjectRoot: 'projects',
-    //     version: '6.0.0',
-    // };
-
     const defaultOptions = {
         name: 'foo',
         inlineStyle: false,
@@ -37,7 +31,7 @@ describe('my-component', () => {
 
         checkIfFileExists(files,'/foo/tsconfig.json');
         checkIfFileExists(files,'/foo/tslint.json');
-        checkIfFileExists(files,'/foo/angular.json');
+        // checkIfFileExists(files,'/foo/angular.json');
         checkIfFileExists(files,'/foo/credentials.js');
         checkIfFileExists(files,'/foo/LICENSE');
         checkIfFileExists(files,'/foo/local.js');
