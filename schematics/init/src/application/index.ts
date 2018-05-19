@@ -123,11 +123,11 @@ function downgradeRXJS(): Rule {
 
 
                     if (oldSource.match('import.*(of).*from \'rxjs\';')) {
-                        addImportStatement(tree, visitor, 'import { of } from \'rxjs/observable/of\';');
+                        addImportStatement(tree, visitor, 'of', 'rxjs/observable/of');
                     }
 
                     if (oldSource.match('import.*(from).*from \'rxjs\';')) {
-                        addImportStatement(tree, visitor, 'import { from } from \'rxjs/observable/from\';');
+                        addImportStatement(tree, visitor, 'from', 'rxjs/observable/from');
                     }
                 }
             }
