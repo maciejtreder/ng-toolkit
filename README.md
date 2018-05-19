@@ -35,7 +35,7 @@ ng new --collection @ng-toolkit/init myApp
 
 [Read more](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
 
-#### Serverless support for existing projects:
+#### Serverless support for existing projects (Firebase, AWS Lambda, Google Cloud Functions):
 ```
 ng add @ng-toolkit/serverless
 ```
