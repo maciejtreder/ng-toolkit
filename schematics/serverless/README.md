@@ -1,40 +1,56 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/ng-toolkit/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/ng-toolkit/test_coverage) 
-[![Build Status](https://travis-ci.org/maciejtreder/angular-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
-[![Dependency Status](https://david-dm.org/maciejtreder/angular-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
+[![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
+[![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fserverless.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fserverless)
 
-# Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/serverless&url=https://github.com/maciejtreder/angular-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
+# Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/serverless&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers,serverless,firebase)
 
 ### _**Star it and share with others!**_
-_This is part of the @ng-toolkit project. [Check main page for more](https://github.com/maciejtreder/ng-toolkit)_
+_This is part of the @ng-toolkit project. [Check main page for more tools](https://github.com/maciejtreder/ng-toolkit)_
 
-Add serverless support (AWS Lambda and Google Cloud Functions) to your Angular project
+Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your Angular project. Supports as well client-side-only projects as Angular Universal projects (server side rendering).
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
 
 ## Getting started
+Create or navigate into your project:
 ```bash
 ng new myApp
 cd myApp
-ng add @ng-toolkit/serverless
 ```
 
-## Params
-* `--provider` - Choose serverless provider which you want to use (`aws` | `gcloud` | `both`) - default `both` ie
-```typescript
+### AWS Lambda & Google Cloud Functions
+```
 ng add @ng-toolkit/serverles --provider aws
 ```
 
-## Deploy to production
+Deploy to "maintenance link" (non customized - ie: https://123456.execute-api.eu-central-1.amazonaws.com/production)
 ```
-npm run build:deploy (if you choose provider 'aws' or 'gcloud')
-npm run build:deploy:aws (if you choose provider 'both')
-npm run build:deploy:gcloud (if you choose provider 'both')
+npm run build:serverless:deploy
 ```
+
+Deploy to customized link (example.com):
+```
+npm run build:prod:deploy
+```
+
+You can read more about [using custom domain in AWS Lambda](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html).
+
+### Firebase
+
+```
+ng add @ng-toolkit/serverless --provider firebase --firebaseProject [your_project_ID]
+npm run build:prod:deploy
+```
+
+Project ID, can be found in project settings:
+![where to find project ID](https://raw.github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless/project_id.png)
+
+
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)

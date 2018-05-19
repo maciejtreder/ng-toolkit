@@ -6,6 +6,12 @@
 [ ] Documentation issue or request
 </code></pre>
 
+## In package
+<pre><code>
+[ ] @ng-toolkit/init
+[ ] @ng-toolkit/serverless
+</code></pre>
+
 ## Current behavior
 <!-- Describe how the issue manifests. -->
 

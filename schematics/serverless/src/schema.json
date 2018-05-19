@@ -13,9 +13,9 @@
     },
     "provider": {
       "description": "Specify serverless provider.",
-      "enum": ["both", "aws", "gcloud", "firebase"],
+      "enum": ["aws", "gcloud", "firebase"],
       "type": "string",
-      "default": "both"
+      "default": "aws"
     },
     "skipInstall": {
       "description": "Skip installation of dependencies.",

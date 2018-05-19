@@ -17,7 +17,7 @@ export interface Schema {
     style?: string;
     skipTests?: boolean;
     skipPackageJson: boolean;
-    provider: ('both' | 'aws' | 'gcloud');
+    provider: ( 'aws' | 'gcloud');
     gaTrackingCode?: string;
     firebug: boolean;
 }

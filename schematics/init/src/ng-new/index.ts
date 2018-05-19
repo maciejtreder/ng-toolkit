@@ -1,6 +1,6 @@
 import {
-    Rule, externalSchematic, chain,
-    move, apply, url, mergeWith, MergeStrategy
+    Rule, chain,
+    move, apply, url, mergeWith, MergeStrategy, externalSchematic
 } from '@angular-devkit/schematics';
 import {
     createOrOverwriteFile,
@@ -25,8 +25,6 @@ export default function (options: Schema): Rule {
         mergeWith(templateSource, MergeStrategy.Overwrite),
         updatePackageJson(options)
     ]);
-
-
     return rule;
 }
 
