@@ -50,7 +50,7 @@ export function addFireBug(options: any): Rule {
             }
             //find and add code to the main browser file
 
-            addImportStatement(tree, mainFilePath, 'import { fireBug } from \'./bootstrapScripts\';')
+            addImportStatement(tree, mainFilePath, 'fireBug', './bootstrapScripts')
             const sourceText = getFileContent(tree, mainFilePath);
 
             createOrOverwriteFile(tree, mainFilePath, sourceText.replace('platformBrowserDynamic().bootstrapModule(AppBrowserModule);', 'fireBug().then(() => platformBrowserDynamic().bootstrapModule(AppBrowserModule));'));

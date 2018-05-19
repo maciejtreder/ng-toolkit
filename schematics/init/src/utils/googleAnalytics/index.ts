@@ -38,7 +38,7 @@ export function addGoogleAnalytics(options: any): Rule {
                 mainFilePath = `${options.directory}/${configSource.apps[0].root}/main.browser.ts`;
             }
 
-            addImportStatement(tree, mainFilePath, 'import { googleAnalytics } from \'./bootstrapScripts\';')
+            addImportStatement(tree, mainFilePath, 'googleAnalytics', './bootstrapScripts')
 
             // adding script at the end of file
 
