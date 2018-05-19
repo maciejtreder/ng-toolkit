@@ -17,8 +17,8 @@ Collection of tools for making your Angular app more robust!
 
 ## Content
  - [What's inside](#quickOverview):
-    - [PWA starter](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
-    - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless/README.md)
+    - [PWA starter](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
+    - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless)
  - [Question, Problem, Feature Request](#question)
  - [Funding](#funding)
  - [Credentials](#credentials)

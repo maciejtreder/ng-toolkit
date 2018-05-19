@@ -67,7 +67,8 @@ npm start
 ```
 
 #### CLI params
-* `--provider` - What serverless provider you want to use? (`aws` | `gcloud` | `both`) - default `both`
+* `--provider` - What serverless provider you want to use? (`aws` | `gcloud` | `firebase`) - default `aws`
+* `--firebaseProject` - projectID, used when you choose `firebase` in above param
 * `--gaTrackingCode` - Provide your Google Analytics tracking code, to enable GA (ie `--gaTrackingCode UA-123456`)
 * `--firebug` - Decide if you want to download firebug-lite (`true` | `false`) - default `false`
 
@@ -94,33 +95,8 @@ npm run build:prod
 npm run server
 ```
 ### Serverless environments
-#### AWS Lambda
+[Check out Serverless library documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless)
 
-```bash
-ng new --collection @ng-toolkit/init myApp --provider aws
-npm run build:deploy
-```
-
-or
-
-```bash
-ng new --collection @ng-toolkit/init myApp
-npm run build:deploy:aws
-```
-
-
-#### Google Cloud Functions
-
-```bash
-ng new --collection @ng-toolkit/init myApp--provider gcloud 
-npm run build:deploy
-```
-or
-
-```bash
-ng new --collection @ng-toolkit/init myApp
-npm run build:deploy:gcloud
-```
 ## <a name="todo"></a> To do
 * prerender app for 'no-backend' hosting
 * microservices support - make replacement eligible external module without recompiling whole app

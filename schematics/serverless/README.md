@@ -48,7 +48,7 @@ npm run build:prod:deploy
 ```
 
 Project ID, can be found in project settings:
-![where to find project ID](https://raw.github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless/project_id.png)
+![where to find project ID](https://raw.githubusercontent.com/maciejtreder/ng-toolkit/master/schematics/serverless/project_id.png)
 
 
 
