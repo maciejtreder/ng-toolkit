@@ -18,7 +18,7 @@ Collection of tools for making your Angular app more robust!
 ## Content
  - [What's inside](#quickOverview):
     - [PWA starter](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
-    - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless)
+    - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) - [Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
  - [Question, Problem, Feature Request](#question)
  - [Funding](#funding)
  - [Credentials](#credentials)
@@ -49,7 +49,7 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 
 You can support development of this project via
 [Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/angular-universal-pwa),
+[Donorbox](https://donorbox.org/ng-toolkit),
 [Liberapay](https://liberapay.com/maciejtreder/donate),
 
 
