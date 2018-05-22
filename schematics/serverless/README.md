@@ -12,6 +12,7 @@
 _This is part of the @ng-toolkit project. [Check main page for more tools](https://github.com/maciejtreder/ng-toolkit)_
 
 Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your Angular project. Supports as well client-side-only projects as Angular Universal projects (server side rendering).
+[Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
@@ -59,7 +60,7 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 
 You can support development of this project via
 [Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/angular-universal-pwa),
+[Donorbox](https://donorbox.org/ng-toolkit),
 [Liberapay](https://liberapay.com/maciejtreder/donate),
 
 

@@ -49,7 +49,7 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 
 You can support development of this project via
 [Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/angular-universal-pwa),
+[Donorbox](https://donorbox.org/ng-toolkit),
 [Liberapay](https://liberapay.com/maciejtreder/donate),
 
 
