@@ -39,7 +39,7 @@ Deploy to customized link (example.com):
 npm run build:prod:deploy
 ```
 
-You can read more about [using custom domain in AWS Lambda](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html).
+You can read more about [using custom domain in AWS Lambda in this Medium post](https://medium.com/@maciejtreder/custom-domain-in-aws-api-gateway-a2b7feaf9c74) or [in the official AWS documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html).
 
 ### Firebase
 
