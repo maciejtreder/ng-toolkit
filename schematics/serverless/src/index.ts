@@ -21,11 +21,6 @@ export default function addServerless(options: any): Rule {
     ]);
 
     //common actions
-    rules.push(tree => {
-        if (tree.exists(`${options.directory}/local.js`)) {
-            tree.delete(`${options.directory}/local.js`);
-        }
-    })
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
 
     rules.push(addOrReplaceScriptInPackageJson(options,"server", "node local.js"));
@@ -94,8 +89,15 @@ export default function addServerless(options: any): Rule {
     }
 
     rules.push(tree => {
-        let localJS = getFileContent(tree, `${options.directory}/local.js`);
-        tree.overwrite(`${options.directory}/local.js`, localJS.replace("__distFolder__", getDistFolder(tree, options)));
+        createOrOverwriteFile(tree,`${options.directory}/local.js`,`
+const port = process.env.PORT || 8080;
+
+const server = require('./${getDistFolder(tree, options)}/server');
+
+server.app.listen(port, () => {
+    console.log("Listening on: http://localhost:"+port);
+});
+`);
 
         let webpack = getFileContent(tree, `${options.directory}/webpack.server.config.js`);
         tree.overwrite(`${options.directory}/webpack.server.config.js`, webpack.replace("__distFolder__", getDistFolder(tree, options)));
