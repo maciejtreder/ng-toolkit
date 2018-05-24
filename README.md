@@ -6,22 +6,21 @@
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit)
 
-# Toolkit for Angular CLI [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
-![angular-universal-PWA report](https://raw.github.com/maciejtreder/ng-toolkit/master/application/src/assets/img/lighthouse_report.png)
+# @ng-toolkit [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
+
+This project have two faces: 
+    - First one is Angular Universal PWA boilerplate, prepared for easy deployment on Serverless environment. The boilerplate contains all of the best practices and is continously evolving. [Find out more about the boilerplate here.](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init).
+    - Second, is a collection of `schematics` (used with the `ng add` command) which can be applied to existing Angular projects. All `schematics` comes from the boilerplate mentioned above. The main goal is to make those schematics **interchangeably** (developer can apply them in any order)!
 
 ### _**Star it and share with others!**_
-Collection of tools for making your Angular app more robust!
-
-## Live demo
-[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 
 ## Content
  - [What's inside](#quickOverview):
-    - [PWA starter](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
+    - [Application starter/boilerplate](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init) - [Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
     - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) - [Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
+ - [Planned features](#plannedFeature)
  - [Question, Problem, Feature Request](#question)
- - [Funding](#funding)
- - [Credentials](#credentials)
+ - [Support @ng-toolkit](#funding)
 
 
 ## <a name="quickOverview">  What's inside
@@ -30,27 +29,36 @@ Collection of tools for making your Angular app more robust!
 
 ```
 npm install -g @ng-toolkit/init
-ng new --collection @ng-toolkit/init myApp
+ng new --collection @ng-toolkit/init myApp [--provider --firebaseProject --gaTrackingCode --firebug]
 ```
 
-[Read more](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
+[Check out more options here](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
 
 #### Serverless support for existing projects (Firebase, AWS Lambda, Google Cloud Functions):
 ```
-ng add @ng-toolkit/serverless
+ng add @ng-toolkit/serverless [--provider --firebaseProject]
 ```
-[Read more](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless/README.md)
+[Check out more options here](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless/README.md)
+
+## <a nem="plannedFeature"> Planned features </a>
+- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/issues/259) - add server side rendering
+- [@ng-toolkit/googleAnalytics](https://github.com/maciejtreder/ng-toolkit/issues/225) - tracking user and JS exceptions in Google Analytics
+- @ng-toolkit/compodoc - introduce [compodoc](https://github.com/compodoc/compodoc) - documentation tool for your angular app
+- @ng-toolkit/firebug - add firebug lite, for easy debug on touch devices - ie for development on iPad
+- @ng-toolkit/safariPush - add pushes for Safari users
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/ng-toolkit/issues/new)
 
 
-## <a name="funding"></a> Funding
+## <a name="funding"></a> Support @ng-toolkit
 
 You can support development of this project via
-[Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/ng-toolkit),
-[Liberapay](https://liberapay.com/maciejtreder/donate),
+- [Open Collective](https://opencollective.com/ng-toolkit),
+- [Donorbox](https://donorbox.org/ng-toolkit),
+- [Liberapay](https://liberapay.com/maciejtreder/donate)
+
+If you want, you can be listed on the [List of donors](https://www.angular-universal-pwa.maciejtreder.com/donors) on the demo page.
 
 
 
@@ -78,9 +86,4 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 
 
-## <a name="credentials"></a> Credentials
-* Checkout my [home page](https://www.maciejtreder.com) and find out more about me
-* Inspired by [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
-
-
-
+Founded by [@maciejtreder](https://www.maciejtreder.com)
