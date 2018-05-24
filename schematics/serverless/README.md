@@ -17,7 +17,12 @@ Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your A
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
 
-## Getting started
+## Content
+ - [Getting started](#start)
+ - [Question, Problem, Feature Request](#question)
+ - [Support @ng-toolkit/init](#funding)
+
+## <a name="start"></a> Getting started
 Create or navigate into your project:
 ```bash
 ng new myApp
@@ -56,12 +61,14 @@ Project ID, can be found in project settings:
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)
 
-## <a name="funding"></a> Funding
+## <a name="funding"></a> Support @ng-toolkit/serverless
 
 You can support development of this project via
-[Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/ng-toolkit),
-[Liberapay](https://liberapay.com/maciejtreder/donate),
+- [Open Collective](https://opencollective.com/ng-toolkit),
+- [Donorbox](https://donorbox.org/ng-toolkit),
+- [Liberapay](https://liberapay.com/maciejtreder/donate)
+
+If you want, you can be listed on the [List of donors](https://www.angular-universal-pwa.maciejtreder.com/donors) on the demo page.
 
 
 ### Open Collective Backers
@@ -137,7 +144,4 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 
 
-
-## <a name="credentials"></a> Credentials
-* Checkout my [home page](https://www.maciejtreder.com) and find out more about me
-* Inspired by [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
+Founded by [@maciejtreder](https://www.maciejtreder.com)

@@ -24,8 +24,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
  - [Deployment](#deploy)
  - [To do](#todo)
  - [Question, Problem, Feature Request](#question)
- - [Funding](#funding)
- - [Credentials](#credentials)
+ - [Support @ng-toolkit/init](#funding)
 
 
 
@@ -116,14 +115,14 @@ npm run server
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/ng-toolkit/issues/new)
 
 
-## <a name="funding"></a> Funding
+## <a name="funding"></a> Support @ng-toolkit/init
 
 You can support development of this project via
-[Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/ng-toolkit),
-[Liberapay](https://liberapay.com/maciejtreder/donate),
+- [Open Collective](https://opencollective.com/ng-toolkit),
+- [Donorbox](https://donorbox.org/ng-toolkit),
+- [Liberapay](https://liberapay.com/maciejtreder/donate)
 
-
+If you want, you can be listed on the [List of donors](https://www.angular-universal-pwa.maciejtreder.com/donors) on the demo page.
 
 ### Open Collective Backers
 
@@ -147,11 +146,4 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/ng-toolkit/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/ng-toolkit/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/9/avatar.svg"></a>
 
-
-
-## <a name="credentials"></a> Credentials
-* Checkout my [home page](https://www.maciejtreder.com) and find out more about me
-* Inspired by [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)
-
-
-
+Founded by [@maciejtreder](https://www.maciejtreder.com).
