@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/serverless",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -23,14 +23,15 @@
     "progressive web app",
     "lambda",
     "amazon web services",
-    "google cloud functions"
+    "google cloud functions",
+    "firebase"
   ],
   "license": "MIT",
   "schematics": "./collection.json",
   "dependencies": {
     "@angular-devkit/core": "^0.6.3",
     "@angular-devkit/schematics": "^0.6.3",
-    "@ng-toolkit/_utils": "^1.0.0",
+    "@ng-toolkit/_utils": "^1.1.0",
     "@schematics/angular": "^0.6.3"
   },
   "devDependencies": {

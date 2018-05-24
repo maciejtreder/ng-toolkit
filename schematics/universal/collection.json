@@ -3,7 +3,8 @@
   "schematics": {
     "ng-add": {
       "factory": "./src",
-      "description": "Update an application with server side rendering (Angular Universal)"
+      "description": "Update an application with server side rendering (Angular Universal)",
+      "schema": "./src/schema.json"
     }
   }
 }
