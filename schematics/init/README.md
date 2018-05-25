@@ -94,7 +94,16 @@ npm run build:prod
 npm run server
 ```
 ### Serverless environments
+#### Maintenance link (not customized)
+```
+npm run build:serverless:deploy
+```
+#### Custom link
+```
+npm run build:prod:deploy
+```
 [Check out Serverless library documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless)
+[Read more about link customization in AWS API Gateway & Lambda](https://medium.com/@maciejtreder/custom-domain-in-aws-api-gateway-a2b7feaf9c74)
 
 ## <a name="todo"></a> To do
 * prerender app for 'no-backend' hosting

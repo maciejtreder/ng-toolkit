@@ -31,19 +31,26 @@ This project have two faces:
 npm install -g @ng-toolkit/init
 ng new --collection @ng-toolkit/init myApp [--provider --firebaseProject --gaTrackingCode --firebug]
 ```
+- [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
 
-[Check out more options here](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
-
-#### Serverless support for existing projects (Firebase, AWS Lambda, Google Cloud Functions):
+#### Serverless (Firebase, AWS Lambda, Google Cloud Functions):
+Make your app deployable on serverless environment (FaaS)
 ```
 ng add @ng-toolkit/serverless [--provider --firebaseProject]
 ```
-[Check out more options here](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless/README.md)
+- [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless/README.md)
+- [Read article about serverless with @ng-toolkit](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
+
+#### Angular Universal
+Add server-side rendering and improve SEO of your app
+```
+ng add @ng-toolkit/universal
+```
+- [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/universal/README.md)
 
 ## Planned features
-- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/issues/259) - add server side rendering
 - [@ng-toolkit/googleAnalytics](https://github.com/maciejtreder/ng-toolkit/issues/225) - tracking user and JS exceptions in Google Analytics
-- @ng-toolkit/compodoc - introduce [compodoc](https://github.com/compodoc/compodoc) - documentation tool for your angular app
+- [@ng-toolkit/compodoc](https://github.com/maciejtreder/ng-toolkit/issues/275) - introduce [compodoc](https://github.com/compodoc/compodoc) - documentation tool for your angular app
 - @ng-toolkit/firebug - add firebug lite, for easy debug on touch devices - ie for development on iPad
 - @ng-toolkit/safariPush - add pushes for Safari users
 
