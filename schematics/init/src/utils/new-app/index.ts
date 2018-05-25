@@ -62,23 +62,25 @@ function updatePackageJson(options: any): Rule {
         addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run test && npm run build:client-and-server-bundles && npm run webpack:server'),
         addOrReplaceScriptInPackageJson(options, 'webpack:server', 'webpack --config webpack.server.config.js --progress --colors'),
         addOrReplaceScriptInPackageJson(options, 'server', 'node local.js'),
-        addDependencyToPackageJson(options, '@nguniversal/express-engine', '^6.0.0'),
-        addDependencyToPackageJson(options, '@nguniversal/module-map-ngfactory-loader', '^6.0.0'),
-        addDependencyToPackageJson(options, 'typescript-collections', '^1.3.2'),
-        addDependencyToPackageJson(options, 'cp-cli', '^1.1.0', true),
-        addDependencyToPackageJson(options, 'cpy-cli', '^1.0.1', true),
-        addDependencyToPackageJson(options, 'decompress', '^4.2.0', true),
-        addDependencyToPackageJson(options, 'decompress-targz', '^4.1.1', true),
-        addDependencyToPackageJson(options, 'express', '^4.15.2', true),
-        addDependencyToPackageJson(options, 'http-server', '^0.10.0', true),
-        addDependencyToPackageJson(options, 'karma-phantomjs-launcher', '^1.0.4', true),
-        addDependencyToPackageJson(options, 'node-wget', '^0.4.2', true),
-        addDependencyToPackageJson(options, 'npm-run-all', '^4.1.2', true),
-        addDependencyToPackageJson(options, 'pre-commit', '^1.2.2', true),
-        addDependencyToPackageJson(options, 'reflect-metadata', '^0.1.10', true),
-        addDependencyToPackageJson(options, 'serverless', '1.26.1', true),
-        addDependencyToPackageJson(options, 'sinon', '^4.5.0', true),
-        addDependencyToPackageJson(options, 'tslint', '^5.7.0', true)
+        tree => {
+            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', '^6.0.0');
+            addDependencyToPackageJson(tree, options, 'typescript-collections', '^1.3.2');
+            addDependencyToPackageJson(tree, options, 'cp-cli', '^1.1.0', true);
+            addDependencyToPackageJson(tree, options, 'cpy-cli', '^1.0.1', true);
+            addDependencyToPackageJson(tree, options, 'decompress', '^4.2.0', true);
+            addDependencyToPackageJson(tree, options, 'decompress-targz', '^4.1.1', true);
+            addDependencyToPackageJson(tree, options, 'express', '^4.15.2', true);
+            addDependencyToPackageJson(tree, options, 'http-server', '^0.10.0', true);
+            addDependencyToPackageJson(tree, options, 'karma-phantomjs-launcher', '^1.0.4', true);
+            addDependencyToPackageJson(tree, options, 'node-wget', '^0.4.2', true);
+            addDependencyToPackageJson(tree, options, 'npm-run-all', '^4.1.2', true);
+            addDependencyToPackageJson(tree, options, 'pre-commit', '^1.2.2', true);
+            addDependencyToPackageJson(tree, options, 'reflect-metadata', '^0.1.10', true);
+            addDependencyToPackageJson(tree, options, 'serverless', '1.26.1', true);
+            addDependencyToPackageJson(tree, options, 'sinon', '^4.5.0', true);
+            addDependencyToPackageJson(tree, options, 'tslint', '^5.7.0', true);
+        }
     ]);
 }
 

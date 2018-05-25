@@ -41,14 +41,17 @@ export default function (options: any): Rule {
 
 function updatePackageJson(options: any): Rule {
     return chain([
-        addDependencyToPackageJson(options, '@angular/service-worker', '^5.2.0'),
-        addDependencyToPackageJson(options, '@angular/platform-server', '^5.2.0'),
-        addDependencyToPackageJson(options, '@angular/cdk', '^5.2.0'),
-        addDependencyToPackageJson(options, '@angular/material', '^5.2.0'),
-        addDependencyToPackageJson(options, '@angular/cli', '~1.7.2'),
-        addDependencyToPackageJson(options, 'ts-loader', '^2.3.7', true),
-        addDependencyToPackageJson(options, '@ngx-translate/core', '^9.1.1'),
-        addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^2.0.1'),
+        tree => {
+            addDependencyToPackageJson(tree, options, '@angular/service-worker', '^5.2.0');
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^5.2.0');
+            addDependencyToPackageJson(tree, options, '@angular/cdk', '^5.2.0');
+            addDependencyToPackageJson(tree, options, '@angular/material', '^5.2.0');
+            addDependencyToPackageJson(tree, options, '@angular/cli', '~1.7.2');
+            addDependencyToPackageJson(tree, options, 'ts-loader', '^2.3.7', true);
+            addDependencyToPackageJson(tree, options, '@ngx-translate/core', '^9.1.1');
+            addDependencyToPackageJson(tree, options, '@ngx-translate/http-loader', '^2.0.1');
+            return tree;
+        },
         addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --app 1 --prod && ng build --prod --app 2 --output-hashing=false'),
         addOrReplaceScriptInPackageJson(options, 'test', 'ng test --single-run --code-coverage'),
         addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --code-coverage')

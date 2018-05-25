@@ -30,16 +30,17 @@ export default function (options: Schema): Rule {
 
 function updatePackageJson(options: any): Rule {
     return chain([
-
-
-        addDependencyToPackageJson(options, '@angular/service-worker', '^6.0.0-rc.6'),
-        addDependencyToPackageJson(options, '@angular/platform-server', '^6.0.0-rc.6'),
-        addDependencyToPackageJson(options, '@angular/cdk', '^6.0.0-rc.6'),
-        addDependencyToPackageJson(options, '@angular/material', '^6.0.0-rc.6'),
-        addDependencyToPackageJson(options, 'webpack-cli', '2.1.2'),
-        addDependencyToPackageJson(options, 'ts-loader', '4.2.0', true),
-        addDependencyToPackageJson(options, '@ngx-translate/core', '^10.0.1'),
-        addDependencyToPackageJson(options, '@ngx-translate/http-loader', '^3.0.1'),
+        tree => {
+            addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0-rc.6');
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0-rc.6');
+            addDependencyToPackageJson(tree, options, '@angular/cdk', '^6.0.0-rc.6');
+            addDependencyToPackageJson(tree, options, '@angular/material', '^6.0.0-rc.6');
+            addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2');
+            addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0', true);
+            addDependencyToPackageJson(tree, options, '@ngx-translate/core', '^10.0.1');
+            addDependencyToPackageJson(tree, options, '@ngx-translate/http-loader', '^3.0.1');
+            return tree;
+        },
         addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
         addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
         addOrReplaceScriptInPackageJson(options, 'test', 'ng test --code-coverage'),

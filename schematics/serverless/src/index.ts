@@ -27,10 +27,13 @@ export default function addServerless(options: any): Rule {
     rules.push(addOrReplaceScriptInPackageJson(options,"build:prod:deploy", "npm run build:prod && npm run deploy"));
     rules.push(addOrReplaceScriptInPackageJson(options,"build:serverless:deploy", "npm run build:serverless && npm run deploy"));
 
-    rules.push(addDependencyToPackageJson(options, 'ts-loader', '4.2.0', true));
-    rules.push(addDependencyToPackageJson(options, 'webpack-cli', '2.1.2', true));
-    rules.push(addDependencyToPackageJson(options, 'cors', '~2.8.4'));
-    rules.push(addDependencyToPackageJson(options, 'cp-cli', '^1.1.0'));
+    rules.push(tree => {
+        addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0', true);
+        addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2', true);
+        addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
+        addDependencyToPackageJson(tree, options, 'cp-cli', '^1.1.0');
+    });
+    
 
     rules.push(addOpenCollective(options));
 
@@ -79,7 +82,11 @@ export default function addServerless(options: any): Rule {
     if (options.provider === 'gcloud' || options.provider === 'aws' ) {
         //serverless stuff
         rules.push(addOrReplaceScriptInPackageJson(options, "deploy", "serverless deploy"));
-        rules.push(addDependencyToPackageJson(options, 'serverless', '1.26.1', true));
+        rules.push( tree => {
+            addDependencyToPackageJson(tree, options, 'serverless', '1.26.1', true)
+            return tree;
+        }
+        );
 
         if (options.provider === 'gcloud') {
             rules.push(addServerlessGcloud(options));
@@ -182,11 +189,11 @@ function addServerlessAWS(options: any): Rule {
         tree => {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
             tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
-            return tree;
-        },
 
-        addDependencyToPackageJson(options, 'aws-serverless-express', '^3.2.0' ),
-        addDependencyToPackageJson(options, 'serverless-apigw-binary', '^0.4.4', true )
+            addDependencyToPackageJson(tree, options, 'aws-serverless-express', '^3.2.0' );
+            addDependencyToPackageJson(tree, options, 'serverless-apigw-binary', '^0.4.4', true );
+            return tree;
+        }
     ]);
 }
 
@@ -202,12 +209,12 @@ function addServerlessGcloud(options: any): Rule {
         tree => {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
             tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
-            return tree;
-        },
 
-        addDependencyToPackageJson(options, 'firebase-admin', '^5.11.0' ),
-        addDependencyToPackageJson(options, 'firebase-functions', '^0.9.1' ),
-        addDependencyToPackageJson(options, 'serverless-google-cloudfunctions', '^1.1.1', true )
+            addDependencyToPackageJson(tree, options, 'firebase-admin', '^5.11.0' );
+            addDependencyToPackageJson(tree, options, 'firebase-functions', '^0.9.1' );
+            addDependencyToPackageJson(tree, options, 'serverless-google-cloudfunctions', '^1.1.1', true );
+            return tree;
+        }
     ]);
 }
 
