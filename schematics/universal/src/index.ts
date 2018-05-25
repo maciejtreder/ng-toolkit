@@ -1,5 +1,5 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicsException, SchematicContext } from '@angular-devkit/schematics';
-import { isUniversal, addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, addOrReplaceScriptInPackageJson, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getDecoratorSettings } from '@ng-toolkit/_utils';
+import { isUniversal, addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getDecoratorSettings } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
@@ -16,6 +16,18 @@ export default function index(options: any): Rule {
             }
             return tree;
         },
+
+        tree => {
+            const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+            if (packageJsonSource.dependencies['@ng-toolkit/serverless']) {
+                tree.delete(`${options.directory}/local.js`);
+                tree.delete(`${options.directory}/server.ts`);
+                tree.delete(`${options.directory}/webpack.server.config.js`);
+            } 
+        },
+
+
+
         mergeWith(templateSource, MergeStrategy.Overwrite),
         (tree: Tree, context: SchematicContext) => {
             // add dependencies
@@ -89,12 +101,54 @@ export default function index(options: any): Rule {
             tree.overwrite(`${options.directory}/server.ts`, getFileContent(tree, `${options.directory}/server.ts`).replace(/__distFolder__/g, distFolder).replace(/__browserDistFolder__/g, getBrowserDistFolder(tree, options)));
             tree.overwrite(`${options.directory}/local.js`, getFileContent(tree, `${options.directory}/local.js`).replace(/__distFolder__/g, distFolder));
 
+            //add scripts
+            addOrReplaceScriptInPackageJson(tree, options, "build:server:prod", "webpack --config webpack.server.config.js --progress --colors");
+            addOrReplaceScriptInPackageJson(tree, options, "build:browser:prod", "ng build --prod");
+            addOrReplaceScriptInPackageJson(tree, options, "build:prod", "build:server:prod && npm run build:browser:prod");
+
             // add installation task
             if (!options.skipInstall) {
                 context.addTask(new NodePackageInstallTask(options.directory));
             }
             return tree;
-        },
-        addOrReplaceScriptInPackageJson(options, 'build:server', `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`)
+        }
     ]);
 }
+
+// function updateScripts(tree: Tree, options: any, appliedSchematics: ["universal" | "serverless"]): void {
+//     console.log(appliedSchematics);
+//     if (appliedSchematics.indexOf("serverless") > -1 && appliedSchematics.indexOf("universal") == -1) {
+//         addOrReplaceScriptInPackageJson(tree, options, "build:server", "webpack --config webpack.server.config.js --progress --colors");
+//     }
+//     if (appliedSchematics.indexOf("universal") > -1) {
+//         addOrReplaceScriptInPackageJson(tree, options, 'build:server', `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`)
+//     }
+//     if (appliedSchematics.indexOf("serverless") > -1 ) {
+//         addOrReplaceScriptInPackageJson(tree, options, "build:server:serverless", "ng run ${options.project}:server:serverless && webpack --config webpack.server.config.js --progress --colors")
+//         addOrReplaceScriptInPackageJson(tree, options, "build:browser:serverless", `ng build --prod --base-href ${serverlessBasePath}`)
+//     }
+//     addOrReplaceScriptInPackageJson(tree, options, 'build:browser', `ng build --prod`)
+//     addOrReplaceScriptInPackageJson(tree, options, 'build:prod', `npm run build:server && npm run build:browser`)
+// }
+
+function addOrReplaceScriptInPackageJson(tree: Tree, options: any, name: string, script: string) {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+    packageJsonSource.scripts[name] = script;
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+}
+
+
+// if (universal) {
+//     packageJsonSource.scripts['build:prod'] = `ng build --prod && ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`;
+//     packageJsonSource.scripts['build:serverless'] = `ng build --prod --base-href ${serverlessBasePath} && ng run ${options.project}:server:serverless && webpack --config webpack.server.config.js --progress --colors`;
+// } else {
+//     packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors';
+//     packageJsonSource.scripts['build:serverless'] = `ng build --prod --base-href ${serverlessBasePath} && webpack --config webpack.server.config.js --progress --colors`;
+// }
+// } else {
+// if (universal) {
+//     packageJsonSource.scripts['build:prod'] = `ng build --prod && ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors && cp-cli dist functions/dist`;
+// } else {
+//     packageJsonSource.scripts['build:prod'] = 'ng build --prod && webpack --config webpack.server.config.js --progress --colors && cp-cli dist functions/dist';
+// }
+// }
