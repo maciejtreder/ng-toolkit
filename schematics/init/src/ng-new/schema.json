@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "AngularUniversalPWANgNew",
+  "id": "ng-toolkit init",
   "title": "Angular Ng New Options Schema",
   "type": "object",
   "properties": {

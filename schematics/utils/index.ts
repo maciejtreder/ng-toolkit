@@ -411,3 +411,14 @@ export function updateDecorator(tree: Tree, filePath: string, decorator: string,
     }
     throw new SchematicsException(`Decorator ${decorator} not found in ${filePath}`);
 }
+
+export function getNgToolkitInfo(tree: Tree, options: any) {
+    if (!tree.exists(`${options.directory}/ng-toolkit.json`)) {
+        tree.create(`${options.directory}/ng-toolkit.json`, `{}`);
+    }
+    return JSON.parse(getFileContent(tree, `${options.directory}/ng-toolkit.json`));
+}
+
+export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) {
+    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
+}

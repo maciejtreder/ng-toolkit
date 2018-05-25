@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsAngularPWAApp",
+  "id": "ng-toolkit universal",
   "title": "Angular Application Options Schema",
   "type": "object",
   "properties": {
