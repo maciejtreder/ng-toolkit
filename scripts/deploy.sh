@@ -11,7 +11,7 @@ do :
    version=${version:2}
    version=${version::${#version}-2}
    remoteVersion=$(npm view @ng-toolkit/init version)
-   if [ "$version" = "$remoteVersion" ]; 
+   if [ "$version" != "$remoteVersion" ]; 
    then 
         npm install
         if npm run ci-publish
