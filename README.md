@@ -13,10 +13,11 @@ This project have two faces:
  - Second, is a collection of `schematics` (used with the `ng add` command) which can be applied to existing Angular projects. All `schematics` comes from the boilerplate mentioned above. The main goal is to make those schematics **interchangeably** (developer can apply them in any order)!
 
 ### _**Star it and share with others!**_
+**[Online Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)**
 
 ## Content
  - [What's inside](#quickOverview):
-    - [Application starter/boilerplate](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init) - [Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
+    - [Application starter/boilerplate](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init) 
     - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) - [Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
  - [Planned features](#planned-features)
  - [Question, Problem, Feature Request](#question)
