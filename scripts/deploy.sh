@@ -11,8 +11,11 @@ do :
    version=${version:2}
    version=${version::${#version}-2}
    remoteVersion=$(npm view @ng-toolkit/init version)
+   echo "to deploy: $version"
+   echo "remote version: $remoteVersion";
    if [ "$version" != "$remoteVersion" ]; 
-   then 
+   then
+        echo "deploying"
         npm install
         if npm run ci-publish
         then
