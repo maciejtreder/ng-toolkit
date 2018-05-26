@@ -14,9 +14,11 @@ export function addFireBug(options: any): Rule {
 
     return chain([
         mergeWith(source),
-        addDependencyToPackageJson(options, 'node-wget', '^0.4.2', true),
-        addDependencyToPackageJson(options, 'decompress', '^4.2.0', true),
-        addDependencyToPackageJson(options, 'decompress-targz', '^4.1.1', true),
+        tree => {
+            addDependencyToPackageJson(tree, options, 'node-wget', '^0.4.2', true);
+            addDependencyToPackageJson(tree, options, 'decompress', '^4.2.0', true);
+            addDependencyToPackageJson(tree, options, 'decompress-targz', '^4.1.1', true);
+        },
         tree => {
             let indexContent = '';
             if (tree.exists(`${options.directory}/src/bootstrapScripts/index.ts`)) {
