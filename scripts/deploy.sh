@@ -11,8 +11,8 @@ do :
    version=${version:2}
    version=${version::${#version}-2}
    remoteVersion=$(npm view @ng-toolkit/init version)
-   echo "to deploy: $version"
-   echo "remote version: $remoteVersion";
+   echo "$i to deploy: $version"
+   echo "$i remote version: $remoteVersion";
    if [ "$version" != "$remoteVersion" ]; 
    then
         echo "deploying"
