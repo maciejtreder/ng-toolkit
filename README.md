@@ -19,9 +19,7 @@ This project have two faces:
  - [What's inside](#quickOverview):
     - [Application starter/boilerplate](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init) 
     - [Angular Universal/server-side rendering](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/universal) 
-        - [@ng-toolkit/universal on Medium.com](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
     - [Serverless support (Firebase, AWS Lambda, Google Cloud Functions)](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) 
-        - [@ng-toolkit/serverless on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
  - [Planned features](#planned-features)
  - [Question, Problem, Feature Request](#question)
  - [Support @ng-toolkit](#funding)
