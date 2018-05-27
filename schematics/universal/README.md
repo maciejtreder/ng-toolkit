@@ -12,6 +12,7 @@
 _This is part of the @ng-toolkit project. [Check main page for more tools](https://github.com/maciejtreder/ng-toolkit)_
 
 Add Server Side Rendering support (Angular Universal) to your Angular project.
+[Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
