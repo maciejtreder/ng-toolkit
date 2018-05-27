@@ -18,7 +18,10 @@ This project have two faces:
 ## Content
  - [What's inside](#quickOverview):
     - [Application starter/boilerplate](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init) 
-    - [Serverless support for existing projects](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) - [Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
+    - [Angular Universal/server-side rendering](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/universal) 
+        - [@ng-toolkit/universal on Medium.com](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
+    - [Serverless support (Firebase, AWS Lambda, Google Cloud Functions)](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/serverless) 
+        - [@ng-toolkit/serverless on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
  - [Planned features](#planned-features)
  - [Question, Problem, Feature Request](#question)
  - [Support @ng-toolkit](#funding)
@@ -48,6 +51,7 @@ Add server-side rendering and improve SEO of your app
 ng add @ng-toolkit/universal
 ```
 - [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/universal/README.md)
+- [Read article about server-side rendering with @ng-toolkit](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
 
 ## Planned features
 - [@ng-toolkit/googleAnalytics](https://github.com/maciejtreder/ng-toolkit/issues/225) - tracking user and JS exceptions in Google Analytics
