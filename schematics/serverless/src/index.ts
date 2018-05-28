@@ -2,7 +2,7 @@ import {
     apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore,
+    applyAndLog, addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore,
     createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder, isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, addParamterToMethod, getNgToolkitInfo, updateNgToolkitInfo
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
@@ -167,7 +167,7 @@ server.app.listen(port, () => {
         ngToolkitSettings.serverless = options;
         updateNgToolkitInfo(tree, options, ngToolkitSettings);
     });
-    return chain(rules);
+    return applyAndLog(chain(rules));
 }
 
 function addBuildScriptsAndFiles(options: any): Rule {

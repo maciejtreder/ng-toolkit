@@ -1,6 +1,8 @@
-import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { isString } from 'util';
+import { Subject, Observable } from 'rxjs';
+import * as bugsnag from 'bugsnag';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -421,4 +423,18 @@ export function getNgToolkitInfo(tree: Tree, options: any) {
 
 export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) {
     tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
+}
+
+export function applyAndLog(rule: Rule): Rule {
+    bugsnag.register('0b326fddc255310e516875c9874fed91');
+    return (tree: Tree, context: SchematicContext) => {
+        let subject: Subject<Tree> = new Subject();
+        bugsnag.autoNotify(() => {
+            (<Observable<Tree>> rule(tree, context)).subscribe(tree => {
+                subject.next(tree);
+                subject.complete();
+            });
+        });
+        return subject;
+    }
 }

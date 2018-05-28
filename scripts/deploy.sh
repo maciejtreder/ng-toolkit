@@ -10,7 +10,7 @@ do :
    version=$( cat package.json | grep version | cut -d':' -f2 )
    version=${version:2}
    version=${version::${#version}-2}
-   remoteVersion=$(npm view @ng-toolkit/init version)
+   remoteVersion=$(npm view @ng-toolkit/$i version)
    echo "$i to deploy: $version"
    echo "$i remote version: $remoteVersion";
    if [ "$version" != "$remoteVersion" ]; 
