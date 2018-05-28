@@ -1,15 +1,14 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getDecoratorSettings, getNgToolkitInfo, updateNgToolkitInfo } from '@ng-toolkit/_utils';
+import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getDecoratorSettings, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function index(options: any): Rule {
-
     const templateSource = apply(url('files'), [
         move(options.directory),
     ]);
 
-    return chain([
+    return applyAndLog(chain([
         tree => {
             const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
             if (packageJsonSource.dependencies['@ng-toolkit/serverless']) {
@@ -111,9 +110,9 @@ export default function index(options: any): Rule {
                 ngToolkitSettings.serverless.skipInstall = true;
                 return externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless)(tree, context)
             }
-            return tree;
+        return tree;
         }
-    ]);
+    ]));
 }
 
 function addOrReplaceScriptInPackageJson(tree: Tree, options: any, name: string, script: string) {
