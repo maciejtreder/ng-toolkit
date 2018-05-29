@@ -36,10 +36,11 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 
 ## <a name="funding"></a> Funding
 
-You can support development of this project via
-[Open Collective](https://opencollective.com/ng-toolkit),
-[Donorbox](https://donorbox.org/ng-toolkit),
-[Liberapay](https://liberapay.com/maciejtreder/donate),
+You can support development of this project via:
+- [Open Collective](https://opencollective.com/ng-toolkit)
+- [Donorbox](https://donorbox.org/ng-toolkit)
+- [Liberapay](https://liberapay.com/maciejtreder/donate)
+- [Paypal](https://www.paypal.me/ngtoolkit)
 
 
 ### Open Collective Backers
