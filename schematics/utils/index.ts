@@ -396,7 +396,7 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     const fileContent = getFileContent(tree, filePath);
     const results = fileContent.match(new RegExp(`@${decorator}\\((.*)\\).*class`, 's'));
     if (results) {
-        return JSON.parse(results[1].replace(/([A-Za-z]+)/g, `"$1"`));
+        return JSON.parse(results[1].replace(/([A-Za-z\.\(\)]+)/g, `"$1"`));
     }
     throw new SchematicsException(`Can't find decorator`);
 }

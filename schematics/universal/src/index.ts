@@ -1,5 +1,5 @@
-import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getDecoratorSettings, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog } from '@ng-toolkit/_utils';
+import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic, SchematicsException } from '@angular-devkit/schematics';
+import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
