@@ -63,10 +63,11 @@ Feel free to [create issue with your feature request](https://github.com/maciejt
 
 ## <a name="funding"></a> Support @ng-toolkit
 
-You can support development of this project via
-- [Open Collective](https://opencollective.com/ng-toolkit),
-- [Donorbox](https://donorbox.org/ng-toolkit),
+You can support development of this project via:
+- [Open Collective](https://opencollective.com/ng-toolkit)
+- [Donorbox](https://donorbox.org/ng-toolkit)
 - [Liberapay](https://liberapay.com/maciejtreder/donate)
+- [Paypal](https://www.paypal.me/ngtoolkit)
 
 If you want, you can be listed on the [List of donors](https://www.angular-universal-pwa.maciejtreder.com/donors) on the demo page.
 
