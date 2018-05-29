@@ -31,7 +31,7 @@ cd myApp
 
 ### AWS Lambda & Google Cloud Functions
 ```
-ng add @ng-toolkit/serverles --provider aws
+ng add @ng-toolkit/serverless --provider aws
 ```
 
 Deploy to "maintenance link" (non customized - ie: https://123456.execute-api.eu-central-1.amazonaws.com/production)
