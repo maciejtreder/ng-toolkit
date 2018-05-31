@@ -432,7 +432,6 @@ export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) 
 }
 
 export function applyAndLog(rule: Rule): Rule {
-    bugsnag.register('0b326fddc255310e516875c9874fed91');
     return (tree: Tree, context: SchematicContext) => {
         let subject: Subject<Tree> = new Subject();
         bugsnag.autoNotify(() => {

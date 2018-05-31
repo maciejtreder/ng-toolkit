@@ -2,8 +2,15 @@ import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, Schemati
 import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import * as bugsnag from 'bugsnag';
 
 export default function index(options: any): Rule {
+    bugsnag.register('0b326fddc255310e516875c9874fed91');
+    bugsnag.onBeforeNotify((notification) => {
+        let metaData = notification.events[0].metaData;
+        metaData.subsystem = {name: 'universal'};
+    });
+
     const templateSource = apply(url('files'), [
         move(options.directory),
     ]);
