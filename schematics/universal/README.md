@@ -4,7 +4,7 @@
 [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
-[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Funiversal.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fserverless)
+[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Funiversal.svg)](https://badge.fury.io/js/%40ng-toolkit%2Funiversal)
 
 # Universal support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/universal&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers,serverless,firebase)
 
