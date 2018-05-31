@@ -349,7 +349,7 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
 
 export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string} {
     const moduleSource = getFileContent(tree, modulePath);
-    const results = moduleSource.match(/@NgModule\({.*bootstrap:\s*\[(.*?)\]/s);
+    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:\s*\[(.*?)\]/);
     let componentName;
     let componentFilePath;
     let appId;
