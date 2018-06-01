@@ -1,5 +1,5 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings } from '@ng-toolkit/_utils';
+import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings, normalizePath } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
@@ -59,7 +59,26 @@ export default function index(options: any): Rule {
             
             const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
             serverNgModuleDecorator.imports.push(entryModule.moduleName);
-            
+
+            //update tsconfig with lazy loaded modules
+            if (!options.routingModule) {
+                options.routingModule = entryModule.filePath
+            }
+
+            const lazyPaths: string[] = [];
+            const routingModule = getFileContent(tree, options.routingModule);
+            let regex = /loadChildren:\s*(?:'|")(.*)#.*(?:'|")/g;
+            let match = regex.exec(routingModule);
+            while (match != null) {
+                lazyPaths.push(normalizePath('.' + options.routingModule.substring(5, options.routingModule.lastIndexOf('/') + 1) + match[1] + '.ts'));
+                match = regex.exec(routingModule);
+            }
+
+            const tscConfigServer = JSON.parse(getFileContent(tree, `${options.directory}/src/tsconfig.server.json`));
+            lazyPaths.forEach(path => {
+                tscConfigServer.include.push(path);
+            });
+            tree.overwrite(`${options.directory}/src/tsconfig.server.json`, JSON.stringify(tscConfigServer, null, "  "));
             
             // add bootstrap component
             const bootstrapComponent = getBootStrapComponent(tree, entryModule.filePath);
@@ -83,7 +102,9 @@ export default function index(options: any): Rule {
             // manipulate old entry module
             const appNgModuleDecorator = getDecoratorSettings(tree, entryModule.filePath, 'NgModule');
             delete appNgModuleDecorator.bootstrap;
-            appNgModuleDecorator.imports.splice(appNgModuleDecorator.imports.indexOf("BrowserModule"), 1);
+            appNgModuleDecorator.imports.splice(appNgModuleDecorator.imports.indexOf(appNgModuleDecorator.imports.find((entry: string) => {
+                return entry.indexOf("BrowserModule") > -1;
+            })), 1);
             appNgModuleDecorator.imports.push("CommonModule");
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
             updateDecorator(tree, entryModule.filePath, 'NgModule', appNgModuleDecorator);
@@ -95,9 +116,10 @@ export default function index(options: any): Rule {
             tree.overwrite(mainFilePath, entryFileSource.replace(new RegExp(`bootstrapModule\\(\\s*${entryModule.moduleName}\\s*\\)`), `bootstrapModule(AppBrowserModule)`));
             addImportStatement(tree, mainFilePath, 'AppBrowserModule', getRelativePath(mainFilePath, browserModulePath));
 
-            // upate server.ts and local.js with proper dist folder
+            // upate server.ts and local.js and webpack config with proper dist folder
             tree.overwrite(`${options.directory}/server.ts`, getFileContent(tree, `${options.directory}/server.ts`).replace(/__distFolder__/g, distFolder).replace(/__browserDistFolder__/g, getBrowserDistFolder(tree, options)));
             tree.overwrite(`${options.directory}/local.js`, getFileContent(tree, `${options.directory}/local.js`).replace(/__distFolder__/g, distFolder));
+            tree.overwrite(`${options.directory}/webpack.server.config.js`, getFileContent(tree, `${options.directory}/webpack.server.config.js`).replace(/__distFolder__/g, distFolder));
 
             //add scripts
             addOrReplaceScriptInPackageJson(tree, options, "build:server:prod", `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`);

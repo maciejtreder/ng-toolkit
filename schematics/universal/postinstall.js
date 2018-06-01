@@ -8,7 +8,7 @@ var reset = "\u001b[0m";
 
 var output =
     green +
-    "\n\nDo you ❤️ @ng-toolkit/serverless? \n\nStar it on GitHub!\n" +
+    "\n\nDo you ❤️ @ng-toolkit? \n\nStar it on GitHub!\n" +
     boldCyan +
     "https://github.com/maciejtreder/ng-toolkit\n" +
     green +
