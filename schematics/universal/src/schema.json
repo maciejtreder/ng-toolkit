@@ -20,6 +20,10 @@
       "description": "App root catalog",
       "type": "string",
       "default": "."
+    },
+    "routingModule": {
+      "description": "Path to file containing routing instructions",
+      "type": "string"
     }
   },
   "required": []
