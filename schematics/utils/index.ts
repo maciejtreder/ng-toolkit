@@ -401,7 +401,7 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
             .replace(/"/g, "'")
             .replace(/\n/g, "")
             .replace(/\t/g, "")
-            .replace(/([A-Za-z]+(\.[A-z]+\((.*?)\))*)/gs, `"$1"`)
+            .replace(/([A-Za-z]+(\.[A-z]+\(([\s\S]*?)\))*)/g, `"$1"`)
         );
     }
     throw new SchematicsException(`Can't find decorator`);
