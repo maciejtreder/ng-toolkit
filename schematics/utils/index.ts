@@ -92,7 +92,7 @@ export function addImportStatement(tree: Tree, filePath: string, type: string, f
     if (results) {
         return;
     }
-    results = fileContent.match(new RegExp("import.*{(.*)}.*(" + file + ").*"));
+    results = fileContent.match(new RegExp(`import.*{(.*)}.*(?:'|")(${file})(?:'|").*`));
     if (results) {
         let newImport = `import {${results[1]}, ${type}} from '${file}';`;
         tree.overwrite(filePath, fileContent.replace(results[0], newImport));
