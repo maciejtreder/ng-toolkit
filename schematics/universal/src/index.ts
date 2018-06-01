@@ -86,6 +86,7 @@ export default function index(options: any): Rule {
             appNgModuleDecorator.imports.splice(appNgModuleDecorator.imports.indexOf("BrowserModule"), 1);
             appNgModuleDecorator.imports.push("CommonModule");
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
+            updateDecorator(tree, entryModule.filePath, 'NgModule', appNgModuleDecorator);
 
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
