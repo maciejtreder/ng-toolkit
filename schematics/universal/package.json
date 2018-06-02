@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/universal",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Adds Angular Universal support for any Angular CLI project",
   "repository": {
     "type": "git",
