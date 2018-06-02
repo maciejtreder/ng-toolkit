@@ -21,7 +21,7 @@
       "type": "string",
       "default": "."
     },
-    "routingModule": {
+    "routing": {
       "description": "Path to file containing routing instructions",
       "type": "string"
     }

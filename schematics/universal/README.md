@@ -31,7 +31,7 @@ ng add @ng-toolkit/universal
 
 If you have lazy loaded modules and your routing is described in the external module you need to tell `@ng-toolkit/universal` about that:
 ```
-ng add @ng-toolkit/universal --routingModule ./src/app/app-routing.module.ts 
+ng add @ng-toolkit/universal --routing ./src/app/app-routing.module.ts 
 ```
 
 You can chain this package with [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)

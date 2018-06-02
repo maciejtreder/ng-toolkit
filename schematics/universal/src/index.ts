@@ -63,12 +63,12 @@ export default function index(options: any): Rule {
             serverNgModuleDecorator.imports.push(entryModule.moduleName);
 
             //update tsconfig with lazy loaded modules
-            if (!options.routingModule) {
-                options.routingModule = entryModule.filePath
+            if (!options.routing) {
+                options.routing = entryModule.filePath
             }
 
             const lazyPaths: string[] = [];
-            const routingModule = getFileContent(tree, options.routingModule);
+            const routingModule = getFileContent(tree, options.routing);
             let regex = /loadChildren:\s*(?:'|")(.*)#.*(?:'|")/g;
             let match = regex.exec(routingModule);
             while (match != null) {
