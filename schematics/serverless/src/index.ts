@@ -15,7 +15,7 @@ export default function addServerless(options: any): Rule {
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
         let metaData = notification.events[0].metaData;
-        metaData.subsystem = {name: 'serverless'};
+        metaData.subsystem = {package: 'serverless'};
     });
 
     options.serverless = {

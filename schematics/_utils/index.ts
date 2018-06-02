@@ -1,7 +1,8 @@
 import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { isString } from 'util';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import * as bugsnag from 'bugsnag';
 
 export function createGitIgnore(dirName: string): Rule {
@@ -150,7 +151,7 @@ export function updateMethod(tree: Tree, filePath: string, name: string, newBody
 
         tree.overwrite(filePath, fileContent.replace(oldMethod, newMethodContent));
     } else {
-        throw new SchematicsException(`Method ${name} not found in ${filePath}`);
+        throw new ngToolkitException(`Method ${name} not found in ${filePath}`, {fileContent: fileContent});
     }
 }
 
@@ -288,7 +289,7 @@ export function getBrowserDistFolder(tree: Tree, options: any): string {
             return project[property].options.outputPath;
         }
     }
-    throw new SchematicsException('browser nor server builder not found!');
+    throw new ngToolkitException('Browser build not found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
 }
 
 export function getDistFolder(tree: Tree, options: any): string {
@@ -325,7 +326,7 @@ export function getMainFilePath(tree: Tree, options: any): string {
            return project[property].options.main;
         }
     }
-    throw new SchematicsException('Main file could not be found');
+    throw new ngToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
 }
 
 export function getAppEntryModule(tree: Tree, options: any): {moduleName: string, filePath: string} {
@@ -333,13 +334,13 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
     const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
     let results = entryFileSource.match(/bootstrapModule\((.*?)\)/);
     if (!results) {
-        throw new SchematicsException(`Entry module not found in ${options.directory}/${mainFilePath}`);
+        throw new ngToolkitException(`Entry module not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
     }
 
     const entryModule = results[1];
     results = entryFileSource.match(new RegExp(`import\\s*{\\s*.*${entryModule}.*from\\s*(?:'|")(.*)(?:'|")`));
     if (!results) {
-        throw new SchematicsException(`Entry module import not found!`);
+        throw new ngToolkitException(`Entry module import not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
     }
     
     const appModuleFilePath = `${options.directory}/${mainFilePath.substr(0, mainFilePath.lastIndexOf('/'))}/${results[1]}.ts`;
@@ -353,20 +354,22 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let componentName;
     let componentFilePath;
     let appId;
+    let error;
     if (results) {
         componentName = results[1];
         const resultsFilePath = moduleSource.match(new RegExp(`.*${componentName}.*from.*('|")(.*)('|")`));
         if (resultsFilePath) {
             componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[2]}.ts`;
-
             const componentFileSource = getFileContent(tree, componentFilePath);
-
             appId = (componentFileSource.match(/selector\s*:\s*'(.*)'/)||[])[1];
-
             return {component: componentName, appId: appId, filePath: componentFilePath};
+        } else {
+            error = `Can't find bootstrap component file path in ${modulePath}.`;
         }
+    } else {
+        error = `Can't find bootstrap component entry in ${modulePath}.`;
     }
-        throw new SchematicsException(`Can't find bootstrap component`);
+    throw new ngToolkitException(error, {fileContent: moduleSource});
 }
 
 export function normalizePath(path: string) {
@@ -404,7 +407,8 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
             .replace(/([A-Za-z]+(\.[A-z]+\(([\s\S]*?)\))*)/g, `"$1"`)
         );
     }
-    throw new SchematicsException(`Can't find decorator`);
+    let exception = new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
+    throw exception;
 }
 
 export function updateDecorator(tree: Tree, filePath: string, decorator: string, newSettings: any):void {
@@ -417,7 +421,7 @@ export function updateDecorator(tree: Tree, filePath: string, decorator: string,
         tree.overwrite(filePath, newFileContent);
         return;
     }
-    throw new SchematicsException(`Decorator ${decorator} not found in ${filePath}`);
+    throw new ngToolkitException(`Decorator ${decorator} not found in ${filePath}`, {fileContent: oldFileContent});
 }
 
 export function getNgToolkitInfo(tree: Tree, options: any) {
@@ -432,14 +436,31 @@ export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) 
 }
 
 export function applyAndLog(rule: Rule): Rule {
+
     return (tree: Tree, context: SchematicContext) => {
-        let subject: Subject<Tree> = new Subject();
-        bugsnag.autoNotify(() => {
-            (<Observable<Tree>> rule(tree, context)).subscribe(tree => {
-                subject.next(tree);
+        return (<Observable<Tree>> rule(tree, context))
+        .pipe(catchError<Tree, never>((error: any) => {
+            let subject: Subject<Tree> = new Subject();
+            console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
+            console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
+            bugsnag.notify(error, (error, response) => {
+                if (!error && response === 'OK') {
+                    console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`)
+                }
+                subject.next(Tree.empty());
                 subject.complete();
-            });
+            })
+            return subject;
+        }))
+    }
+}
+
+class ngToolkitException extends SchematicsException {
+    constructor(message: string, additionalData?: any) {
+        super(message);
+        bugsnag.onBeforeNotify((notification) => {
+            let metaData = notification.events[0].metaData;
+            metaData.subsystem.additionalData = additionalData;
         });
-        return subject;
     }
 }
