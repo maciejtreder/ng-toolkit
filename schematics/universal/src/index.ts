@@ -1,5 +1,5 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
-import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings, normalizePath } from '@ng-toolkit/_utils';
+import { addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
@@ -41,6 +41,9 @@ export default function index(options: any): Rule {
             // update CLI config
             const distFolder = getDistFolder(tree, options);
             const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+            console.log('cli config', cliConfig);
+            console.log('distFolder', distFolder);
+            cliConfig.projects[options.project].architect.build.options.outputPath = `${distFolder}/browser`
             cliConfig.projects[options.project].architect.server =
             {
               "builder": "@angular-devkit/build-angular:server",
@@ -62,26 +65,6 @@ export default function index(options: any): Rule {
             const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
             serverNgModuleDecorator.imports.push(entryModule.moduleName);
 
-            //update tsconfig with lazy loaded modules
-            if (!options.routing) {
-                options.routing = entryModule.filePath
-            }
-
-            const lazyPaths: string[] = [];
-            const routingModule = getFileContent(tree, options.routing);
-            let regex = /loadChildren:\s*(?:'|")(.*)#.*(?:'|")/g;
-            let match = regex.exec(routingModule);
-            while (match != null) {
-                lazyPaths.push(normalizePath('.' + options.routingModule.substring(5, options.routingModule.lastIndexOf('/') + 1) + match[1] + '.ts'));
-                match = regex.exec(routingModule);
-            }
-
-            const tscConfigServer = JSON.parse(getFileContent(tree, `${options.directory}/src/tsconfig.server.json`));
-            lazyPaths.forEach(path => {
-                tscConfigServer.include.push(path);
-            });
-            tree.overwrite(`${options.directory}/src/tsconfig.server.json`, JSON.stringify(tscConfigServer, null, "  "));
-            
             // add bootstrap component
             const bootstrapComponent = getBootStrapComponent(tree, entryModule.filePath);
             addImportStatement(tree, serverModulePath, bootstrapComponent.component, getRelativePath(serverModulePath, bootstrapComponent.filePath));

@@ -16,6 +16,6 @@
     "entryModule": "app/app.server.module#AppServerModule"
   },
   "include": [
-    "main.server.ts"
+    "**/*.ts"
   ]
 }
