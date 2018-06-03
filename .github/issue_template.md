@@ -10,6 +10,7 @@
 <pre><code>
 [ ] @ng-toolkit/init
 [ ] @ng-toolkit/serverless
+[ ] @ng-toolkit/universal
 </code></pre>
 
 ## Current behavior
