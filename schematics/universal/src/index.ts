@@ -41,8 +41,6 @@ export default function index(options: any): Rule {
             // update CLI config
             const distFolder = getDistFolder(tree, options);
             const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-            console.log('cli config', cliConfig);
-            console.log('distFolder', distFolder);
             cliConfig.projects[options.project].architect.build.options.outputPath = `${distFolder}/browser`
             cliConfig.projects[options.project].architect.server =
             {
