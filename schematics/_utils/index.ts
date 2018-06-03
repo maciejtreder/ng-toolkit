@@ -397,7 +397,7 @@ export function getRelativePath(from: string, to: string): string {
 
 export function getDecoratorSettings(tree: Tree, filePath: string, decorator: string): any {
     const fileContent = getFileContent(tree, filePath);
-    const results = fileContent.match(new RegExp(`@${decorator}\\((.*)\\).*class`, 's'));
+    const results = fileContent.match(new RegExp(`@${decorator}\\(([\\s\\S]]*)\\)[\\s\\S]]*class`));
     if (results) {
         return JSON.parse(
             results[1]
