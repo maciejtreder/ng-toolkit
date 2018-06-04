@@ -415,7 +415,7 @@ export function updateDecorator(tree: Tree, filePath: string, decorator: string,
     const parsedSettings = JSON.stringify(newSettings, null, "  ").replace(/"/g,'');
     const oldFileContent = getFileContent(tree, filePath);
     let newFileContent;
-    const results = oldFileContent.match(new RegExp(`@${decorator}\\((.*)\\).*class`, 's'));
+    const results = oldFileContent.match(new RegExp(`@${decorator}\\(([\\s\\S]*)\\).*class`));
     if (results) {
         newFileContent = oldFileContent.replace(results[1], parsedSettings);
         tree.overwrite(filePath, newFileContent);
