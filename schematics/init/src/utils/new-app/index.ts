@@ -55,6 +55,7 @@ function updatePackageJson(options: any): Rule {
         addOrReplaceScriptInPackageJson(options, 'postinstall', 'node credentials.js && opencollective postinstall'),
         addOrReplaceScriptInPackageJson(options, 'ng', 'ng'),
         addOrReplaceScriptInPackageJson(options, 'start', 'run-p build:watch credentials'),
+        addOrReplaceScriptInPackageJson(options, 'credentials', 'node credentials.js'),
         addOrReplaceScriptInPackageJson(options, 'build:watch', 'ng serve'),
         addOrReplaceScriptInPackageJson(options, 'build:dev', 'run-p test:watch start'),
         addOrReplaceScriptInPackageJson(options, 'build', 'ng build'),
