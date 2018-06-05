@@ -10,6 +10,7 @@ export default function index(options: any): Rule {
         let metaData = notification.events[0].metaData;
         metaData.subsystem = {
             package: 'universal',
+            options: options
         };
     });
 
