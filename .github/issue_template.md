@@ -26,6 +26,11 @@
 For bug reports please provide the *STEPS TO REPRODUCE*
 -->
 
+## Example repository
+<!--
+Please provide link to your public, cloneable repository, to give us a chance to reproduce your issue on our end
+-->
+
 ## What is the motivation / use case for changing the behavior?
 <!-- Describe the motivation or the concrete use case. -->
 

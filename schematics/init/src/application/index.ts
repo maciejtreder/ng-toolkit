@@ -8,10 +8,21 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { newApp } from '../utils/new-app/index';
 import {
     addDependencyToPackageJson, addImportStatement, addOrReplaceScriptInPackageJson,
-    createOrOverwriteFile
+    createOrOverwriteFile,
+    applyAndLog
 } from '@ng-toolkit/_utils';
+import * as bugsnag from 'bugsnag';
 
 export default function (options: any): Rule {
+    bugsnag.register('0b326fddc255310e516875c9874fed91');
+    bugsnag.onBeforeNotify((notification) => {
+        let metaData = notification.events[0].metaData;
+        metaData.subsystem = {
+            package: 'application',
+            options: options
+        };
+    });
+
     if (!options.directory) {
         options.directory = options.name;
     }
@@ -19,7 +30,7 @@ export default function (options: any): Rule {
         move(options.directory),
     ]);
 
-    return chain( [
+    return applyAndLog(chain( [
         externalSchematic('@schematics/angular', 'application', options),
         ((tree: Tree) => {
             tree.getDir(`${options.directory}/src/app`).visit(visitor => {
@@ -36,7 +47,7 @@ export default function (options: any): Rule {
             return tree;
         }),
         downgradeRXJS()
-    ]);
+    ]));
 }
 
 function updatePackageJson(options: any): Rule {
