@@ -436,7 +436,6 @@ export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) 
 }
 
 export function applyAndLog(rule: Rule): Rule {
-
     return (tree: Tree, context: SchematicContext) => {
         return (<Observable<Tree>> rule(tree, context))
         .pipe(catchError<Tree, never>((error: any) => {
@@ -453,6 +452,14 @@ export function applyAndLog(rule: Rule): Rule {
             return subject;
         }))
     }
+}
+
+export function checkCLIcompatibility(tree: Tree, options: any): boolean {
+    if (tree.exists(`${options.directory}/angular.json`)) {
+        return true;
+    }
+    console.log(`\u001B[31mERROR: \u001b[0m@ng-toolkit works only with CLI version 6 and higher. Update your Angular CLI and try again.`);
+    return false;
 }
 
 class ngToolkitException extends SchematicsException {
