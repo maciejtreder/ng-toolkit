@@ -177,7 +177,11 @@ server.app.listen(port, () => {
         ngToolkitSettings.serverless = options;
         updateNgToolkitInfo(tree, options, ngToolkitSettings);
     });
-    return applyAndLog(chain(rules));
+    if (!options.disableBugsnag) {
+        return applyAndLog(chain(rules));
+    } else {
+        return chain(rules);
+    }
 }
 
 function addBuildScriptsAndFiles(options: any): Rule {

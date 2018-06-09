@@ -323,7 +323,7 @@ export function getMainFilePath(tree: Tree, options: any): string {
     const project: any = cliConfig.projects[options.project].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
-           return project[property].options.main;
+           return `${project[property].options.main}`;
         }
     }
     throw new ngToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
@@ -331,7 +331,9 @@ export function getMainFilePath(tree: Tree, options: any): string {
 
 export function getAppEntryModule(tree: Tree, options: any): {moduleName: string, filePath: string} {
     const mainFilePath = getMainFilePath(tree, options);
+    
     const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
+    
     let results = entryFileSource.match(/bootstrapModule\((.*?)\)/);
     if (!results) {
         throw new ngToolkitException(`Entry module not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
@@ -444,7 +446,7 @@ export function applyAndLog(rule: Rule): Rule {
             console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
             bugsnag.notify(error, (error, response) => {
                 if (!error && response === 'OK') {
-                    console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`)
+                    console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
                 }
                 subject.next(Tree.empty());
                 subject.complete();
@@ -455,11 +457,10 @@ export function applyAndLog(rule: Rule): Rule {
 }
 
 export function checkCLIcompatibility(tree: Tree, options: any): boolean {
-    if (tree.exists(`${options.directory}/angular.json`)) {
-        return true;
+    if (!tree.exists(`${options.directory}/angular.json`)) {
+        throw new ngToolkitException('@ng-toolkit works only with CLI version 6 or higher. Update your Angular CLI and/or project.')
     }
-    console.log(`\u001B[31mERROR: \u001b[0m@ng-toolkit works only with CLI version 6 and higher. Update your Angular CLI and try again.`);
-    return false;
+    return true;
 }
 
 class ngToolkitException extends SchematicsException {
