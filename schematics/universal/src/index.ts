@@ -18,7 +18,7 @@ export default function index(options: any): Rule {
         move(options.directory),
     ]);
 
-    return applyAndLog(chain([
+    let rule: Rule = chain([
         tree => {
             const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
             if (packageJsonSource.dependencies['@ng-toolkit/serverless']) {
@@ -30,8 +30,10 @@ export default function index(options: any): Rule {
 
         mergeWith(templateSource, MergeStrategy.Overwrite),
         (tree: Tree, context: SchematicContext) => {
+            
             // add dependencies
             addDependencyToPackageJson(tree, options, '@angular/platform-browser', '^6.0.0');
+            
             addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
             addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', '^6.0.0');
             addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
@@ -48,11 +50,12 @@ export default function index(options: any): Rule {
               "builder": "@angular-devkit/build-angular:server",
               "options": {
                 "outputPath": `${distFolder}/server`,
-                "main": "src/main.server.ts",
+                "main": `src/main.server.ts`,
                 "tsConfig": "src/tsconfig.server.json"
               }
             };
             tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "));
+            
 
 
             // manipulate entry modules
@@ -60,10 +63,10 @@ export default function index(options: any): Rule {
             const entryModule = getAppEntryModule(tree, options);
             const serverModulePath = `${options.directory}/src/app/app.server.module.ts`;
             addImportStatement(tree, serverModulePath, entryModule.moduleName, getRelativePath(serverModulePath, entryModule.filePath));
-            
             const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
             serverNgModuleDecorator.imports.push(entryModule.moduleName);
 
+            
             // add bootstrap component
             const bootstrapComponent = getBootStrapComponent(tree, entryModule.filePath);
             addImportStatement(tree, serverModulePath, bootstrapComponent.component, getRelativePath(serverModulePath, bootstrapComponent.filePath));
@@ -71,7 +74,7 @@ export default function index(options: any): Rule {
             serverNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
             updateDecorator(tree, serverModulePath, 'NgModule', serverNgModuleDecorator);
 
-
+            
             // manipulate browser module
             const browserModulePath = `${options.directory}/src/app/app.browser.module.ts`;
             addImportStatement(tree, browserModulePath, entryModule.moduleName, getRelativePath(browserModulePath, entryModule.filePath));
@@ -82,7 +85,8 @@ export default function index(options: any): Rule {
             browserNgModuleDecorator.bootstrap = [bootstrapComponent.component];
             addImportStatement(tree, browserModulePath, bootstrapComponent.component, getRelativePath(browserModulePath, bootstrapComponent.filePath));
             updateDecorator(tree, browserModulePath, 'NgModule', browserNgModuleDecorator);
-
+            
+            
             // manipulate old entry module
             const appNgModuleDecorator = getDecoratorSettings(tree, entryModule.filePath, 'NgModule');
             delete appNgModuleDecorator.bootstrap;
@@ -93,28 +97,39 @@ export default function index(options: any): Rule {
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
             updateDecorator(tree, entryModule.filePath, 'NgModule', appNgModuleDecorator);
 
+            
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
+            
+
             const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
+            
 
-            tree.overwrite(mainFilePath, entryFileSource.replace(new RegExp(`bootstrapModule\\(\\s*${entryModule.moduleName}\\s*\\)`), `bootstrapModule(AppBrowserModule)`));
-            addImportStatement(tree, mainFilePath, 'AppBrowserModule', getRelativePath(mainFilePath, browserModulePath));
+            tree.overwrite(`${options.directory}/${mainFilePath}`, entryFileSource.replace(new RegExp(`bootstrapModule\\(\\s*${entryModule.moduleName}\\s*\\)`), `bootstrapModule(AppBrowserModule)`));
+            
+            addImportStatement(tree, `${options.directory}/${mainFilePath}`, 'AppBrowserModule', getRelativePath(mainFilePath, browserModulePath));
+            
 
+            
             // upate server.ts and local.js and webpack config with proper dist folder
             tree.overwrite(`${options.directory}/server.ts`, getFileContent(tree, `${options.directory}/server.ts`).replace(/__distFolder__/g, distFolder).replace(/__browserDistFolder__/g, getBrowserDistFolder(tree, options)));
             tree.overwrite(`${options.directory}/local.js`, getFileContent(tree, `${options.directory}/local.js`).replace(/__distFolder__/g, distFolder));
             tree.overwrite(`${options.directory}/webpack.server.config.js`, getFileContent(tree, `${options.directory}/webpack.server.config.js`).replace(/__distFolder__/g, distFolder));
 
+            
             //add scripts
             addOrReplaceScriptInPackageJson(tree, options, "build:server:prod", `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`);
             addOrReplaceScriptInPackageJson(tree, options, "build:browser:prod", "ng build --prod");
             addOrReplaceScriptInPackageJson(tree, options, "build:prod", "npm run build:server:prod && npm run build:browser:prod");
             addOrReplaceScriptInPackageJson(tree, options, "server", "node local.js");
 
+            
             // add installation task
             if (!options.skipInstall) {
                 context.addTask(new NodePackageInstallTask(options.directory));
             }
+
+            
             //applying other schematics (if installed)
             const ngToolkitSettings = getNgToolkitInfo(tree, options);
             ngToolkitSettings.universal = options;
@@ -126,7 +141,14 @@ export default function index(options: any): Rule {
             }
         return tree;
         }
-    ]));
+    ]);
+
+
+    if (!options.disableBugsnag) {
+        return applyAndLog(rule);
+    } else {
+        return rule;
+    }
 }
 
 function addOrReplaceScriptInPackageJson(tree: Tree, options: any, name: string, script: string) {
