@@ -50,6 +50,7 @@ It is prepared to be easily deployed on serverless environment (Google Cloud Fun
 
 ### <a name="start"></a> Getting Started
 Whatch on Youtube:
+
 [![How to start project with ng-toolkit](https://img.youtube.com/vi/FPWRXSzhjug/0.jpg)](https://www.youtube.com/watch?v=FPWRXSzhjug)
 
 ### Using Angular CLI schematics
