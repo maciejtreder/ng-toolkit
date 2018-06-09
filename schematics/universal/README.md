@@ -29,7 +29,16 @@ apply package
 ng add @ng-toolkit/universal
 ```
 
+Adding new component:
+```
+ng g c myComponent --module app
+```
+
 You can chain this package with [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
+
+Check out tutorial by Gary Sinon:
+
+[![How to start project with ng-toolkit](https://img.youtube.com/vi/hxG9nuvnh-A/0.jpg)](https://www.youtube.com/watch?v=hxG9nuvnh-A)
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)
