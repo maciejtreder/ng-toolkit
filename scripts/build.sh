@@ -1,6 +1,6 @@
 cd schematics
 
-CATALOGS=(_utils serverless init universal)
+CATALOGS=(_utils universal serverless init)
 
 exitStatus=0
 

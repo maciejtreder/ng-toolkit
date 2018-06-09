@@ -281,6 +281,30 @@ export function getServerDistFolder(tree: Tree, options: any): string {
     return '';
 }
 
+export function updateProject(tree: Tree, options: any): void {
+    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: any = cliConfig.projects[options.project].architect;
+    for (let property in project) {
+        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
+            console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+            return;
+        }
+    }
+
+    if (cliConfig.defaultProject) {
+        options.project = cliConfig.defaultProject;
+        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+        return;
+    }
+
+    // trying with regex - will take first project found with the browser builder
+
+    let results = /"projects":\s*{[\s\S]*?"(.*)"[\s\S]*@angular-devkit\/build-angular:browser/.exec(getFileContent(tree, `${options.directory}/angular.json`));
+    if (results) {
+        options.project = results[1];
+        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+    }
+}
 export function getBrowserDistFolder(tree: Tree, options: any): string {
     const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
@@ -289,6 +313,8 @@ export function getBrowserDistFolder(tree: Tree, options: any): string {
             return project[property].options.outputPath;
         }
     }
+
+    // Not found for the passed project. Checks the default one
     throw new ngToolkitException('Browser build not found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
 }
 

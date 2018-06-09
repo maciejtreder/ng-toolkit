@@ -3,7 +3,8 @@ import {
 } from '@angular-devkit/schematics';
 import {
     applyAndLog, addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore,
-    createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder, isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, addParamterToMethod, getNgToolkitInfo, updateNgToolkitInfo
+    createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder,
+    isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, addParamterToMethod, getNgToolkitInfo, updateNgToolkitInfo, updateProject
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -33,6 +34,9 @@ export default function addServerless(options: any): Rule {
     const rules: Rule[] = [];
 
     rules.push((tree: Tree, context: SchematicContext) => {
+        // update project name
+        updateProject(tree, options);
+            
         const ngToolkitSettings = getNgToolkitInfo(tree, options);
         if (!ngToolkitSettings.universal) {
             return chain([
