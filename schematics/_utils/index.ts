@@ -432,7 +432,8 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
             .replace(/"/g, "'")
             .replace(/\n/g, "")
             .replace(/\t/g, "")
-            .replace(/([A-Za-z]+(\.[A-z]+\(([\s\S]*?)\))*)/g, `"$1"`)
+            .replace(/([A-Za-z]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
+            .replace(/,[\s]*?]/g, ']')
         );
     }
     let exception = new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
