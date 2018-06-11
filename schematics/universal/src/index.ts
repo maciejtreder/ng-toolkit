@@ -66,7 +66,7 @@ export default function index(options: any): Rule {
             const serverModulePath = `${options.directory}/src/app/app.server.module.ts`;
             addImportStatement(tree, serverModulePath, entryModule.moduleName, getRelativePath(serverModulePath, entryModule.filePath));
             const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
-            serverNgModuleDecorator.imports.push(entryModule.moduleName);
+            serverNgModuleDecorator.imports.unshift(entryModule.moduleName);
 
             
             // add bootstrap component
