@@ -328,7 +328,10 @@ export function getDistFolder(tree: Tree, options: any): string {
 
         toReturn = a1.substring(0, i);
     } else {
-        toReturn = getBrowserDistFolder(tree, options).substr(0, getBrowserDistFolder(tree,options).lastIndexOf('/'));
+        toReturn = getBrowserDistFolder(tree, options)
+        if (toReturn.lastIndexOf('/') >= 0) {
+            toReturn = toReturn.substr(0, toReturn.lastIndexOf('/'));
+        }
     }
     return toReturn;
 }
@@ -379,6 +382,16 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
 export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string} {
     const moduleSource = getFileContent(tree, modulePath);
     const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:\s*\[(.*?)\]/);
+    // const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:[\s]*\[([\s\S]*?)\]/);
+    //     let toReturn = [];
+    //     if (results) {
+    //         results[1].split(',').forEach(component => {
+    //             console.log('component', component);
+    //             const resultsFilePath = moduleSource.match(new RegExp(`.*${component}.*from.*('|")(.*)('|")`));
+    //         })
+    //     }
+
+
     let componentName;
     let componentFilePath;
     let appId;
