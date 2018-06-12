@@ -427,14 +427,18 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     const fileContent = getFileContent(tree, filePath);
     const results = fileContent.match(new RegExp(`@${decorator}\\(([\\s\\S]*)\\)[\\s\\S]*class`));
     if (results) {
-        return JSON.parse(
-            results[1]
-            .replace(/"/g, "'")
-            .replace(/\n/g, "")
-            .replace(/\t/g, "")
-            .replace(/([A-Za-z]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
-            .replace(/,[\s]*?]/g, ']')
-        );
+        try {
+            return JSON.parse(
+                results[1]
+                .replace(/"/g, "'")
+                .replace(/\n/g, "")
+                .replace(/\t/g, "")
+                .replace(/([A-Za-z]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
+                .replace(/,[\s]*?]/g, ']')
+            );
+        } catch(error) {
+            throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, catchedException: error});
+        }
     }
     let exception = new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
     throw exception;
