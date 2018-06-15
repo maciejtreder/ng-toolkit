@@ -68,24 +68,27 @@ export default function index(options: any): Rule {
             const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
             serverNgModuleDecorator.imports.unshift(entryModule.moduleName);
 
+
+            const browserModulePath = `${options.directory}/src/app/app.browser.module.ts`;
+            const browserNgModuleDecorator = getDecoratorSettings(tree, browserModulePath, 'NgModule');
             
             // add bootstrap component
-            const bootstrapComponent = getBootStrapComponent(tree, entryModule.filePath);
-            addImportStatement(tree, serverModulePath, bootstrapComponent.component, getRelativePath(serverModulePath, bootstrapComponent.filePath));
-            serverNgModuleDecorator.bootstrap = [bootstrapComponent.component];
-            serverNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
-            updateDecorator(tree, serverModulePath, 'NgModule', serverNgModuleDecorator);
+            const bootstrapComponents = getBootStrapComponent(tree, entryModule.filePath);
+            bootstrapComponents.forEach(bootstrapComponent => {
+                addImportStatement(tree, serverModulePath, bootstrapComponent.component, getRelativePath(serverModulePath, bootstrapComponent.filePath));
+                serverNgModuleDecorator.bootstrap = [bootstrapComponent.component];
+                serverNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
+                            
+                // manipulate browser module
+                addImportStatement(tree, browserModulePath, entryModule.moduleName, getRelativePath(browserModulePath, entryModule.filePath));
+                
+                browserNgModuleDecorator.imports.push(entryModule.moduleName);
+                browserNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
+                browserNgModuleDecorator.bootstrap = [bootstrapComponent.component];
+                addImportStatement(tree, browserModulePath, bootstrapComponent.component, getRelativePath(browserModulePath, bootstrapComponent.filePath));
+            });
 
-            
-            // manipulate browser module
-            const browserModulePath = `${options.directory}/src/app/app.browser.module.ts`;
-            addImportStatement(tree, browserModulePath, entryModule.moduleName, getRelativePath(browserModulePath, entryModule.filePath));
-            
-            const browserNgModuleDecorator = getDecoratorSettings(tree, browserModulePath, 'NgModule');
-            browserNgModuleDecorator.imports.push(entryModule.moduleName);
-            browserNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
-            browserNgModuleDecorator.bootstrap = [bootstrapComponent.component];
-            addImportStatement(tree, browserModulePath, bootstrapComponent.component, getRelativePath(browserModulePath, bootstrapComponent.filePath));
+            updateDecorator(tree, serverModulePath, 'NgModule', serverNgModuleDecorator);
             updateDecorator(tree, browserModulePath, 'NgModule', browserNgModuleDecorator);
             
             

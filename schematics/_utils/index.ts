@@ -379,38 +379,33 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
     return {moduleName: entryModule, filePath: appModuleFilePath}
 }
 
-export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string} {
+export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string}[] {
     const moduleSource = getFileContent(tree, modulePath);
-    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:\s*\[(.*?)\]/);
-    // const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:[\s]*\[([\s\S]*?)\]/);
-    //     let toReturn = [];
-    //     if (results) {
-    //         results[1].split(',').forEach(component => {
-    //             console.log('component', component);
-    //             const resultsFilePath = moduleSource.match(new RegExp(`.*${component}.*from.*('|")(.*)('|")`));
-    //         })
-    //     }
-
-
-    let componentName;
-    let componentFilePath;
-    let appId;
+    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:[\s]*\[([\s\S]*?)\]/);
+    let toReturn: any[] = [];
     let error;
     if (results) {
-        componentName = results[1];
-        const resultsFilePath = moduleSource.match(new RegExp(`.*${componentName}.*from.*('|")(.*)('|")`));
-        if (resultsFilePath) {
-            componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[2]}.ts`;
-            const componentFileSource = getFileContent(tree, componentFilePath);
-            appId = (componentFileSource.match(/selector\s*:\s*'(.*)'/)||[])[1];
-            return {component: componentName, appId: appId, filePath: componentFilePath};
-        } else {
-            error = `Can't find bootstrap component file path in ${modulePath}.`;
-        }
+        results[1].split(',').forEach(component => {
+            console.log('component', component);
+            const resultsFilePath = moduleSource.match(new RegExp(`.*${component}.*from.*('|")(.*)('|")`));
+            if (resultsFilePath) {
+                const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[2]}.ts`;
+                const componentFileSource = getFileContent(tree, componentFilePath);
+                const appId = (componentFileSource.match(/selector\s*:\s*'(.*)'/)||[])[1];
+                toReturn.push({component: component, appId: appId, filePath: componentFilePath})
+            } else {
+                error = `Can't find bootstrap component (${component}) file path in ${modulePath}.`;
+            }
+        })
     } else {
         error = `Can't find bootstrap component entry in ${modulePath}.`;
     }
-    throw new ngToolkitException(error, {fileContent: moduleSource});
+
+    if (error) {
+        throw new ngToolkitException(error, {fileContent: moduleSource});
+    }
+
+    return toReturn;
 }
 
 export function normalizePath(path: string) {
