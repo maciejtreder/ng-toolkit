@@ -40,6 +40,21 @@ Check out tutorial by Gary Sinon:
 
 [![How to start project with ng-toolkit](https://img.youtube.com/vi/hxG9nuvnh-A/0.jpg)](https://www.youtube.com/watch?v=hxG9nuvnh-A)
 
+## Working with `window` object
+
+This package is shipped with the wrapper for the `window` object. Whenewer you need to use it, just inject it into your component or service:
+```
+import { WINDOW } from @ng-toolkit/universal
+
+/*
+    class/service declaration and decorator
+*/
+
+constructor(@Inject(WINDOW) private window:Window) {
+    console.log(this.window);
+}
+```
+
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)
 

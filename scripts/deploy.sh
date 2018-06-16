@@ -1,3 +1,5 @@
+npm install -g @angular/cli
+
 cd schematics
 
 CATALOGS=(_utils universal serverless init)
@@ -17,7 +19,7 @@ do :
    then
         echo "deploying"
         npm install
-        if npm run ci-publish
+        if ./publish.sh
         then
             echo $i passed
         else

@@ -14,7 +14,8 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "src/",
+    "declarationDir": "src/",
+    "outDir": "dist/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -26,6 +27,8 @@
     ]
   },
   "exclude": [
-    "./**/files/**/*"
+    "./**/files/**/*",
+    "./**/universal-window/**",
+    "./**/public_api.ts"
   ]
 }

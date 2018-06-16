@@ -2,9 +2,9 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "ng-add": {
-      "factory": "./src",
+      "factory": "./schematics",
       "description": "Update an application with server side rendering (Angular Universal)",
-      "schema": "./src/schema.json"
+      "schema": "./schema.json"
     }
   }
 }
