@@ -245,9 +245,21 @@ export function getMethodBody(tree: Tree, filePath:string, name: string): string
 
 export function addMethod(tree: Tree, filePath: string, body: string): void {
     const sourceText = getFileContent(tree, filePath);
-    const changePos =  sourceText.lastIndexOf("}") - 1;
+    let changePos;
     const changeRecorder = tree.beginUpdate(filePath);
-    changeRecorder.insertLeft(changePos, body);
+
+
+    if (body.indexOf('constructor') >= 0 || body.indexOf('public') >= 0) {
+        let match = sourceText.match(/(?:export|) class.*?{[\s\S]*?((?:constructor|public|private|)[\w\s]*?\()/);
+        if (match) {
+            changePos = (match['index'] || 0) + match[0].length - match[1].length;
+        } else {
+            changePos =  sourceText.lastIndexOf("}") - 1;
+        }
+    } else {
+        changePos =  sourceText.lastIndexOf("}") - 1;
+    }
+    changeRecorder.insertLeft(changePos, `\n${body}\n`);
     tree.commitUpdate(changeRecorder);
 }
 
@@ -386,7 +398,6 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            console.log('component', component);
             const resultsFilePath = moduleSource.match(new RegExp(`.*${component}.*from.*('|")(.*)('|")`));
             if (resultsFilePath) {
                 const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[2]}.ts`;

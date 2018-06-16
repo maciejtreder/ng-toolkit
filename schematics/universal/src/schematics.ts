@@ -1,5 +1,9 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
-import { updateProject, addDependencyToPackageJson, getAppEntryModule, addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, updateNgToolkitInfo, applyAndLog, getDecoratorSettings } from '@ng-toolkit/_utils';
+import { updateProject, addDependencyToPackageJson, getAppEntryModule, 
+    addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, 
+    getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, 
+    updateNgToolkitInfo, applyAndLog, getDecoratorSettings, addParamterToMethod, 
+    createOrOverwriteFile, getMethod, addMethod } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
@@ -98,10 +102,11 @@ export default function index(options: any): Rule {
             appNgModuleDecorator.imports.splice(appNgModuleDecorator.imports.indexOf(appNgModuleDecorator.imports.find((entry: string) => {
                 return entry.indexOf("BrowserModule") > -1;
             })), 1);
-            appNgModuleDecorator.imports.push("CommonModule");
+            appNgModuleDecorator.imports.push('CommonModule');
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
+            appNgModuleDecorator.imports.push('WindowModule');
+            addImportStatement(tree, entryModule.filePath, 'WindowModule', '@ng-toolkit/universal');
             updateDecorator(tree, entryModule.filePath, 'NgModule', appNgModuleDecorator);
-
             
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
@@ -128,6 +133,25 @@ export default function index(options: any): Rule {
             addOrReplaceScriptInPackageJson(tree, options, "build:prod", "npm run build:server:prod && npm run build:browser:prod");
             addOrReplaceScriptInPackageJson(tree, options, "server", "node local.js");
 
+            // search for 'window' occurences and replace them with injected Window instance
+
+            tree.getDir(cliConfig.projects[options.project].sourceRoot).visit(visitor => {
+                if (visitor.endsWith('.ts')) {
+                    let fileContent  = getFileContent(tree, visitor);
+                    if (fileContent.match(/class.*{[\s\S]*((?<!\.)window)/)) {
+                        fileContent = fileContent.replace(/((?<!\.)window)/g, 'this.window');
+                        createOrOverwriteFile(tree, visitor, fileContent);
+                        addImportStatement(tree, visitor, 'WINDOW', '@ng-toolkit/universal');
+                        addImportStatement(tree, visitor, 'Inject', '@angular/core');
+
+                        if (getMethod(tree, visitor, 'constructor')) {
+                            addParamterToMethod(tree, visitor, 'constructor', `@Inject(WINDOW) private window: Window`);
+                        } else {
+                            addMethod(tree, visitor, `constructor(@Inject(WINDOW) private window: Window) {}`);
+                        }
+                    }
+                }
+            });
             
             // add installation task
             if (!options.skipInstall) {
