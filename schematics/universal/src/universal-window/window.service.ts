@@ -18,6 +18,3 @@ export class WindowService {
         return this._window;
     }
 }
-
-// export const USERAGENT = new InjectionToken('requestToken');
-export const WINDOW = new InjectionToken('ng-module-window');
