@@ -1,1 +1,1 @@
-npm run ci-publish
+npm publish

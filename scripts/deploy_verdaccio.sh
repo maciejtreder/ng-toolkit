@@ -17,6 +17,7 @@ for i in "${CATALOGS[@]}"
 do :
     cd $i
     npm install
+    echo publishing $i
     if ./publish_verdaccio.sh
     then
         echo $i passed

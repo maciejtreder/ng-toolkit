@@ -398,9 +398,9 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`.*${component}.*from.*('|")(.*)('|")`));
+            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from.*(?:'|")(.*)(?:'|")`));
             if (resultsFilePath) {
-                const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[2]}.ts`;
+                const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
                 const componentFileSource = getFileContent(tree, componentFilePath);
                 const appId = (componentFileSource.match(/selector\s*:\s*'(.*)'/)||[])[1];
                 toReturn.push({component: component, appId: appId, filePath: componentFilePath})
@@ -452,15 +452,14 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
                 .replace(/"/g, "'")
                 .replace(/\n/g, "")
                 .replace(/\t/g, "")
-                .replace(/([A-Za-z]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
+                .replace(/([A-Za-z0-9]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
                 .replace(/,[\s]*?]/g, ']')
             );
         } catch(error) {
-            throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, catchedException: error});
+            throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, decorator: decorator , catchedException: error});
         }
     }
-    let exception = new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
-    throw exception;
+    throw new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent, decorator: decorator});
 }
 
 export function updateDecorator(tree: Tree, filePath: string, decorator: string, newSettings: any):void {
