@@ -138,8 +138,8 @@ export default function index(options: any): Rule {
             tree.getDir(cliConfig.projects[options.project].sourceRoot).visit(visitor => {
                 if (visitor.endsWith('.ts')) {
                     let fileContent  = getFileContent(tree, visitor);
-                    if (fileContent.match(/class.*{[\s\S]*((?<!\.)window)/)) {
-                        fileContent = fileContent.replace(/((?<!\.)window)/g, 'this.window');
+                    if (fileContent.match(/class.*{[\s\S]*?((?<![\.'"])window)/)) {
+                        fileContent = fileContent.replace(/((?<![\.'"])window)/g, 'this.window');
                         createOrOverwriteFile(tree, visitor, fileContent);
                         addImportStatement(tree, visitor, 'WINDOW', '@ng-toolkit/universal');
                         addImportStatement(tree, visitor, 'Inject', '@angular/core');
