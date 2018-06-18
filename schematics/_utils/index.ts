@@ -157,7 +157,7 @@ export function updateMethod(tree: Tree, filePath: string, name: string, newBody
 
 export function getMethodSignature(tree: Tree, filePath: string, name: string): string | null {
     let fileContent = getFileContent(tree, filePath);
-    let results: any = fileContent.match(new RegExp("(?:public|private|).*" + name + ".*?\\(((\\s.*?)*)\\).*\\s*{"));
+    let results: any = fileContent.match(new RegExp("(?:public|private|).*"+ name +".*?\\(([\\s\\S]*?\\))"));
     if (results) {
         fileContent = fileContent.substr(results.index);
         let lines = fileContent.split('\n');
@@ -180,7 +180,7 @@ export function getMethodSignature(tree: Tree, filePath: string, name: string): 
 
 export function getMethod(tree: Tree, filePath:string, name: string): string | null {
     let fileContent = getFileContent(tree, filePath);
-    let results: any = fileContent.match(new RegExp("(?:public|private|).*" + name + ".*?\\(((\\s.*?)*)\\).*\\s*{"));
+    let results: any = fileContent.match(new RegExp("(?:public|private|).*"+ name +".*?\\(([\\s\\S]*?\\))"));
     if (results) {
         fileContent = fileContent.substr(results.index);
         let lines = fileContent.split('\n');
@@ -267,13 +267,14 @@ export function addParamterToMethod(tree: Tree, filePath:string, name: string, p
     let method = getMethod(tree, filePath, name);
     const fileContent = getFileContent(tree, filePath);
     if (method) {
-        let results: any = method.match(new RegExp("((public|private|).*constructor.*?\\()((\\s.*\\s*?)*)\\)\\s*{"));
+        let results: any = method.match(new RegExp("(?:public|private|\\s).*"+name+"[\\s\\S]*?(\([\\s\\S]*?\)[\\s\\S]*?{)"));
         if (results) {
-            let oldParams = results[3];
+            let oldParams = results[1];
+            oldParams = oldParams.substring(1, oldParams.lastIndexOf(")"));
             if (oldParams.indexOf(parameterDeclaration) > 0) {
                 return;
             }
-            let newParams = oldParams + ", " + parameterDeclaration;
+            let newParams = parameterDeclaration + ", " + oldParams;
 
             let newMethod = method.replace(oldParams, newParams);
 
