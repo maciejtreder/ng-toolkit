@@ -1,7 +1,5 @@
 npm install -g @angular/cli
 
-echo "//https://registry.npmjs.org//:_authToken=\"$NPM_TOKEN\"" >> ~/.npmrc
-
 cd schematics
 
 CATALOGS=(_utils universal serverless init)
