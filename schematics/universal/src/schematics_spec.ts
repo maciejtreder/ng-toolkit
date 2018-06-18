@@ -4,7 +4,7 @@ import { checkIfFileExists, shouldContainEntry } from '@ng-toolkit/_utils/testin
 import { Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '@schematics/angular/utility/test';
 
-const collectionPath = path.join(__dirname, '../collection.json');
+const collectionPath = path.join(__dirname, './collection.json');
 
 describe('Serverless', () => {
     let appTree: UnitTestTree;
