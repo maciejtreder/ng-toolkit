@@ -15,7 +15,6 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "declarationDir": "src/",
-    "outDir": "dist/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
