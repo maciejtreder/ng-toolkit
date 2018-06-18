@@ -1,3 +1,3 @@
 npm test
 cd dist
-npm publish
+./../node_modules/ci-publish/bin/ci-publish.js
