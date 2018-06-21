@@ -399,7 +399,7 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from.*(?:'|")(.*)(?:'|")`));
+            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from.*(?:'|")(.*)(?:'|")/g`));
             if (resultsFilePath) {
                 const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
                 const componentFileSource = getFileContent(tree, componentFilePath);
