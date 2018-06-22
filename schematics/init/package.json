@@ -31,6 +31,7 @@
   "dependencies": {
     "@angular-devkit/core": "^0.6.1",
     "@angular-devkit/schematics": "^0.6.1",
+
     "@ng-toolkit/_utils": "^1.1.26",
     "@ng-toolkit/serverless": "^1.1.26",
     "@schematics/angular": "^0.6.1"
