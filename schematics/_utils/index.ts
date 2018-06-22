@@ -399,7 +399,7 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from[\\s\\S]*?(?:'|")(.*)(?:'|")/g`));
+            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from[\\s\\S]*?(?:'|")(.*)(?:'|")`));
             if (resultsFilePath) {
                 const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
                 const componentFileSource = getFileContent(tree, componentFilePath);
@@ -450,11 +450,14 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
         try {
             return JSON.parse(
                 results[1]
+                .replace(/\/\/.*/g, "")
+                .replace(/\/\*[\s\S]*?\*\//g, "")
                 .replace(/"/g, "'")
                 .replace(/\n/g, "")
                 .replace(/\t/g, "")
                 .replace(/([A-Za-z0-9]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
                 .replace(/,[\s]*?]/g, ']')
+                .replace(/,[\s]*?}/g, '}')
             );
         } catch(error) {
             throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, decorator: decorator , catchedException: error});
