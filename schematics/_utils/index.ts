@@ -394,12 +394,12 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
 
 export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string}[] {
     const moduleSource = getFileContent(tree, modulePath);
-    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:[\s]*\[([\s\S]*?)\]/);
+    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap[\s\S]*?:[\s\S]*?\[([\s\S]*?)\]/);
     let toReturn: any[] = [];
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from.*(?:'|")(.*)(?:'|")`));
+            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from[\\s\\S]*?(?:'|")(.*)(?:'|")`));
             if (resultsFilePath) {
                 const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
                 const componentFileSource = getFileContent(tree, componentFilePath);
@@ -450,11 +450,14 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
         try {
             return JSON.parse(
                 results[1]
+                .replace(/\/\/.*/g, "")
+                .replace(/\/\*[\s\S]*?\*\//g, "")
                 .replace(/"/g, "'")
                 .replace(/\n/g, "")
                 .replace(/\t/g, "")
                 .replace(/([A-Za-z0-9]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
                 .replace(/,[\s]*?]/g, ']')
+                .replace(/,[\s]*?}/g, '}')
             );
         } catch(error) {
             throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, decorator: decorator , catchedException: error});
