@@ -394,12 +394,12 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
 
 export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string}[] {
     const moduleSource = getFileContent(tree, modulePath);
-    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap:[\s]*\[([\s\S]*?)\]/);
+    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap[\s\S]*?:[\s\S]*?\[([\s\S]*?)\]/);
     let toReturn: any[] = [];
     let error;
     if (results) {
         results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from.*(?:'|")(.*)(?:'|")/g`));
+            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from[\\s\\S]*?(?:'|")(.*)(?:'|")/g`));
             if (resultsFilePath) {
                 const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
                 const componentFileSource = getFileContent(tree, componentFilePath);
