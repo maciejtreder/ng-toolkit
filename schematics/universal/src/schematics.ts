@@ -1,9 +1,16 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
 import { updateProject, addDependencyToPackageJson, getAppEntryModule, 
-    addImportStatement, getMainFilePath, getDistFolder, getBrowserDistFolder, 
-    getBootStrapComponent, getRelativePath, updateDecorator, getNgToolkitInfo, 
-    updateNgToolkitInfo, applyAndLog, getDecoratorSettings, addParamterToMethod, 
-    createOrOverwriteFile, getMethod, addMethod } from '@ng-toolkit/_utils';
+    addImportStatement, getDistFolder, 
+    getBootStrapComponent, getRelativePath, getNgToolkitInfo, 
+    updateNgToolkitInfo, applyAndLog, 
+    createOrOverwriteFile, 
+    getMainFilePath,
+    getMethod,
+    addParamterToMethod,
+    getBrowserDistFolder,
+    addToNgModule,
+    removeFromNgModule,
+    addMethod} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
@@ -61,7 +68,6 @@ export default function index(options: any): Rule {
               }
             };
             tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "));
-            
 
 
             // manipulate entry modules
@@ -69,56 +75,42 @@ export default function index(options: any): Rule {
             const entryModule = getAppEntryModule(tree, options);
             const serverModulePath = `${options.directory}/src/app/app.server.module.ts`;
             addImportStatement(tree, serverModulePath, entryModule.moduleName, getRelativePath(serverModulePath, entryModule.filePath));
-            const serverNgModuleDecorator = getDecoratorSettings(tree, serverModulePath, 'NgModule');
-            serverNgModuleDecorator.imports.unshift(entryModule.moduleName);
-
+            addToNgModule(tree, serverModulePath, 'imports', entryModule.moduleName);
 
             const browserModulePath = `${options.directory}/src/app/app.browser.module.ts`;
-            const browserNgModuleDecorator = getDecoratorSettings(tree, browserModulePath, 'NgModule');
             
             // add bootstrap component
             const bootstrapComponents = getBootStrapComponent(tree, entryModule.filePath);
             bootstrapComponents.forEach(bootstrapComponent => {
                 addImportStatement(tree, serverModulePath, bootstrapComponent.component, getRelativePath(serverModulePath, bootstrapComponent.filePath));
-                serverNgModuleDecorator.bootstrap = [bootstrapComponent.component];
-                serverNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
+                addToNgModule(tree, serverModulePath, 'bootstrap', bootstrapComponent.component);
+                addToNgModule(tree, serverModulePath, 'imports', `BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
                             
                 // manipulate browser module
                 addImportStatement(tree, browserModulePath, entryModule.moduleName, getRelativePath(browserModulePath, entryModule.filePath));
                 
-                browserNgModuleDecorator.imports.push(entryModule.moduleName);
-                browserNgModuleDecorator.imports.push(`BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
-                browserNgModuleDecorator.bootstrap = [bootstrapComponent.component];
+                addToNgModule(tree, browserModulePath, 'imports', entryModule.moduleName);
+                addToNgModule(tree, browserModulePath, 'imports', `BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
+                addToNgModule(tree, browserModulePath, 'bootstrap', bootstrapComponent.component);
                 addImportStatement(tree, browserModulePath, bootstrapComponent.component, getRelativePath(browserModulePath, bootstrapComponent.filePath));
             });
 
-            updateDecorator(tree, serverModulePath, 'NgModule', serverNgModuleDecorator);
-            updateDecorator(tree, browserModulePath, 'NgModule', browserNgModuleDecorator);
-            
-            
             // manipulate old entry module
-            const appNgModuleDecorator = getDecoratorSettings(tree, entryModule.filePath, 'NgModule');
-            delete appNgModuleDecorator.bootstrap;
-            appNgModuleDecorator.imports.splice(appNgModuleDecorator.imports.indexOf(appNgModuleDecorator.imports.find((entry: string) => {
-                return entry.indexOf("BrowserModule") > -1;
-            })), 1);
-            appNgModuleDecorator.imports.push('CommonModule');
+            
+            addToNgModule(tree, entryModule.filePath, 'imports', 'CommonModule,\nWindowModule');
+            removeFromNgModule(tree, entryModule.filePath, 'imports', 'BrowserModule')
+            removeFromNgModule(tree, entryModule.filePath, 'bootstrap');
+
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
-            appNgModuleDecorator.imports.push('WindowModule');
             addImportStatement(tree, entryModule.filePath, 'WindowModule', '@ng-toolkit/universal');
-            updateDecorator(tree, entryModule.filePath, 'NgModule', appNgModuleDecorator);
             
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
-            
-
             const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
-            
 
             tree.overwrite(`${options.directory}/${mainFilePath}`, entryFileSource.replace(new RegExp(`bootstrapModule\\(\\s*${entryModule.moduleName}\\s*\\)`), `bootstrapModule(AppBrowserModule)`));
             
             addImportStatement(tree, `${options.directory}/${mainFilePath}`, 'AppBrowserModule', getRelativePath(mainFilePath, browserModulePath));
-            
 
             
             // upate server.ts and local.js and webpack config with proper dist folder
