@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
         ServerModule,
         NoopAnimationsModule,
         ModuleMapLoaderModule,
-        ServerTransferStateModule
+        ServerTransferStateModule, // comment
     ]
 })
 export class AppServerModule {}
