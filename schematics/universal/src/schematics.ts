@@ -1,19 +1,18 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
 import { updateProject, addDependencyToPackageJson, getAppEntryModule, 
     addImportStatement, getDistFolder, 
-    getBootStrapComponent, getRelativePath, getNgToolkitInfo, 
+    getRelativePath, getNgToolkitInfo, 
     updateNgToolkitInfo, applyAndLog, 
-    createOrOverwriteFile, 
     getMainFilePath,
-    getMethod,
-    addParamterToMethod,
     getBrowserDistFolder,
     addToNgModule,
     removeFromNgModule,
-    addMethod} from '@ng-toolkit/_utils';
+    getBootStrapComponent,
+    createOrOverwriteFile} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
+import * as ts from 'typescript';
 
 export default function index(options: any): Rule {
     bugsnag.register('0b326fddc255310e516875c9874fed91');
@@ -131,16 +130,33 @@ export default function index(options: any): Rule {
                 if (visitor.endsWith('.ts')) {
                     let fileContent  = getFileContent(tree, visitor);
                     if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])window)/)) {
-                        fileContent = fileContent.replace(/class.*{[\s\S]*?((?:[()'"`\s])window)/g, 'this.window');
-                        createOrOverwriteFile(tree, visitor, fileContent);
+                        
                         addImportStatement(tree, visitor, 'WINDOW', '@ng-toolkit/universal');
                         addImportStatement(tree, visitor, 'Inject', '@angular/core');
 
-                        if (getMethod(tree, visitor, 'constructor')) {
-                            addParamterToMethod(tree, visitor, 'constructor', `@Inject(WINDOW) private window: Window`);
-                        } else {
-                            addMethod(tree, visitor, `constructor(@Inject(WINDOW) private window: Window) {}`);
-                        }
+                        fileContent  = getFileContent(tree, visitor);
+                        let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
+                        let constructorFound: boolean = false;
+                        sourceFile.forEachChild(node => {
+                            if (ts.isClassDeclaration(node)) {
+                                node.members.forEach(node => {
+                                    if (ts.isConstructorDeclaration(node)) {
+                                        constructorFound = true;
+                                    }
+                                    if (ts.isMethodDeclaration(node)) {
+                                        (node.body as ts.Block).statements.forEach(statement => {
+                                            findStatements(tree, statement, visitor);
+                                        })
+                                    }
+                                });
+                                if (constructorFound) {
+                                    fileContent = fileContent.replace('constructor(', 'constructor(@Inject(WINDOW) private window: Window')
+                                } else {
+                                    fileContent = fileContent.substr(0, node.pos) + `\n constructor(@Inject(WINDOW) private window: Window){}\n` + fileContent.substr(node.pos);
+                                }
+                                createOrOverwriteFile(tree, visitor, fileContent);
+                            }
+                        })
                     }
                 }
             });
@@ -176,4 +192,18 @@ function addOrReplaceScriptInPackageJson(tree: Tree, options: any, name: string,
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource.scripts[name] = script;
     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+}
+
+function findStatements(tree: Tree, node: ts.Node, filePath: string): void {
+    let fileContent = getFileContent(tree, filePath);
+    node.forEachChild(node => {
+        if (ts.isPropertyAccessExpression(node)) {
+            let statement = fileContent.substr(node.pos, node.end - node.pos);
+            if (statement.startsWith('window')) {
+                fileContent = fileContent.substr(0, node.pos) + 'this.' + statement + fileContent.substr(node.end);
+                createOrOverwriteFile(tree, filePath, fileContent);
+            }
+        }
+        else findStatements(tree, node, filePath);
+    })
 }
