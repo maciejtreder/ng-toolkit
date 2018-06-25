@@ -1,7 +1,7 @@
 import { Rule, apply, url, move, chain, mergeWith, MergeStrategy, Tree, SchematicContext, externalSchematic } from '@angular-devkit/schematics';
 import { updateProject, addDependencyToPackageJson, getAppEntryModule, 
     addImportStatement, getDistFolder, 
-    getBootStrapComponent, getRelativePath, getNgToolkitInfo, 
+    getRelativePath, getNgToolkitInfo, 
     updateNgToolkitInfo, applyAndLog, 
     createOrOverwriteFile, 
     getMainFilePath,
@@ -10,6 +10,7 @@ import { updateProject, addDependencyToPackageJson, getAppEntryModule,
     getBrowserDistFolder,
     addToNgModule,
     removeFromNgModule,
+    getBootStrapComponent,
     addMethod} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';

@@ -393,34 +393,6 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
     return {moduleName: entryModule, filePath: appModuleFilePath}
 }
 
-export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string}[] {
-    const moduleSource = getFileContent(tree, modulePath);
-    const results = moduleSource.match(/@NgModule\({[\s\S]*bootstrap[\s\S]*?:[\s\S]*?\[([\s\S]*?)\]/);
-    let toReturn: any[] = [];
-    let error;
-    if (results) {
-        results[1].split(',').forEach(component => {
-            const resultsFilePath = moduleSource.match(new RegExp(`${component}[\\s\\S]*?from[\\s\\S]*?(?:'|")(.*)(?:'|")`));
-            if (resultsFilePath) {
-                const componentFilePath = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${resultsFilePath[1]}.ts`;
-                const componentFileSource = getFileContent(tree, componentFilePath);
-                const appId = (componentFileSource.match(/selector\s*:\s*'(.*)'/)||[])[1];
-                toReturn.push({component: component, appId: appId, filePath: componentFilePath})
-            } else {
-                error = `Can't find bootstrap component (${component}) file path in ${modulePath}.`;
-            }
-        })
-    } else {
-        error = `Can't find bootstrap component entry in ${modulePath}.`;
-    }
-
-    if (error) {
-        throw new ngToolkitException(error, {fileContent: moduleSource});
-    }
-
-    return toReturn;
-}
-
 export function normalizePath(path: string) {
     return path.replace(/(([A-z0-9_-]*\/\.\.)|(\/\.))/g,'');
 }
@@ -445,11 +417,10 @@ export function getRelativePath(from: string, to: string): string {
 }
 
 export function getDecoratorSettings(tree: Tree, filePath: string, decorator: string): ts.Node {
-    
     const fileContent = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
 
-    let toReturn: ts.Node | undefined = undefined;
+    let toReturn: ts.Node | undefined;
 
     sourceFile.getChildren().forEach(node => {
         node.getChildren().filter(node => ts.isClassDeclaration(node)).forEach((node: ts.Node) => {
@@ -469,43 +440,7 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     if (toReturn) {
         return toReturn;
     }
-    throw new Error(`Can't find decorator ${decorator} in ${filePath}`);
-}
-
-// export function getDecoratorSettings(tree: Tree, filePath: string, decorator: string): any {
-//     const fileContent = getFileContent(tree, filePath);
-//     const results = fileContent.match(new RegExp(`@${decorator}\\(([\\s\\S]*)\\)[\\s\\S]*class`));
-//     if (results) {
-//         try {
-//             return JSON.parse(
-//                 results[1]
-//                 .replace(/\/\/.*/g, "")
-//                 .replace(/\/\*[\s\S]*?\*\//g, "")
-//                 .replace(/"/g, "'")
-//                 .replace(/\n/g, "")
-//                 .replace(/\t/g, "")
-//                 .replace(/([A-Za-z0-9]+(?:\.[A-z]+\((?:[\s\S]*?)\))*)/g, `"$1"`)
-//                 .replace(/,[\s]*?]/g, ']')
-//                 .replace(/,[\s]*?}/g, '}')
-//             );
-//         } catch(error) {
-//             throw new ngToolkitException(`Can't parse ${decorator} settings in ${filePath}. Please verify trailing commas.`, {fileContent: fileContent, decorator: decorator , catchedException: error});
-//         }
-//     }
-//     throw new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent, decorator: decorator});
-// }
-
-export function updateDecorator(tree: Tree, filePath: string, decorator: string, newSettings: any):void {
-    const parsedSettings = JSON.stringify(newSettings, null, "  ").replace(/"/g,'');
-    const oldFileContent = getFileContent(tree, filePath);
-    let newFileContent;
-    const results = oldFileContent.match(/@NgModule\(([\s\S]*)\)[\s\S]*class/);
-    if (results) {
-        newFileContent = oldFileContent.replace(results[1], parsedSettings);
-        tree.overwrite(filePath, newFileContent);
-        return;
-    }
-    throw new ngToolkitException(`Decorator ${decorator} not found in ${filePath}`, {fileContent: oldFileContent});
+    throw new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
 }
 
 export function getNgToolkitInfo(tree: Tree, options: any) {
@@ -556,50 +491,108 @@ export function removeFromNgModule(tree: Tree, filePath: string, literal: string
 function editNgModule(tree: Tree, filePath: string, literal: string, add:boolean = true, entry?: string) {
     let newFileContent = null;
     let fileContent = getFileContent(tree, filePath);
-    const ngModuleDecorator = getDecoratorSettings(tree, filePath, 'NgModule');
-    let decoratorNode;
-    ngModuleDecorator.forEachChild((node: ts.Node) => {
-        if (ts.isObjectLiteralExpression(node)) {
-            node.forEachChild( parentNode => {
-                if (ts.isPropertyAssignment(parentNode)) {
-                    let foundLiteral: boolean = false;
-                    decoratorNode = parentNode;
-                    parentNode.forEachChild(node => {
-                        if (ts.isIdentifier(node) && node.escapedText === literal) {
-                            foundLiteral = true;
-                        } else if (foundLiteral && ts.isArrayLiteralExpression(node)) {
-                            let actualLiteral;
-                            let newLiteral = '';
-                            if (entry) {
-                                actualLiteral = fileContent.substr(node.pos, node.end - node.pos);
-                            } else {
-                                actualLiteral = fileContent.substr(parentNode.pos, parentNode.end - parentNode.pos);
-                            }
-                            if (add) {
-                                newLiteral = actualLiteral.substr(actualLiteral.indexOf('[') + 1);
-                                newLiteral = `[\n ${entry},\n ${newLiteral}`;
-                            } else {
-                                if (entry) {
-                                    newLiteral = actualLiteral.replace(new RegExp(`${entry}([\s]*?,|)`), '');
-                                } else {
-                                    newLiteral = '';
-                                }
-                            }
-                            newFileContent = fileContent.replace(actualLiteral, newLiteral);
-                        }
-                    });
+    const ngModuleDecorator: ts.Node = getDecoratorSettings(tree, filePath, 'NgModule');
+
+    let literalNode: ts.Node | null = getLiteral(ngModuleDecorator, literal);
+
+    if(literalNode) {
+        let temp: ts.Node = literalNode //compilation error work-around
+        literalNode.forEachChild(node => {
+            if (ts.isArrayLiteralExpression(node)) {
+                let actualLiteral;
+                let newLiteral = '';
+                if (entry) {
+                    actualLiteral = fileContent.substr(node.pos, node.end - node.pos);
+                } else {
+                    actualLiteral = fileContent.substr(temp.pos, temp.end - temp.pos);
                 }
-            });
-        }
-    });
-    if (!newFileContent && add && decoratorNode) {
-        let actualLiteral = fileContent.substr((decoratorNode as ts.Node).pos, (decoratorNode as ts.Node).end - (decoratorNode as ts.Node).pos);
+                if (add) {
+                    newLiteral = actualLiteral.substr(actualLiteral.indexOf('[') + 1);
+                    newLiteral = `[\n ${entry},\n ${newLiteral}`;
+                } else {
+                    if (entry) {
+                        newLiteral = actualLiteral.replace(new RegExp(`${entry}([\s]*?,|)`), '');
+                    } else {
+                        newLiteral = '';
+                    }
+                }
+                newFileContent = fileContent.replace(actualLiteral, newLiteral);
+            }
+        })
+    }
+
+    if (!literalNode && add && ngModuleDecorator) {
+        let ngModuleContent = (ngModuleDecorator as ts.CallExpression).arguments
+        let actualLiteral = fileContent.substr(ngModuleContent.pos + 1, ngModuleContent.end + 1 - ngModuleContent.pos);
         let newLiteral = `\n ${literal}: [${entry}],\n${actualLiteral}`;
         newFileContent = fileContent.replace(actualLiteral, newLiteral);
     }
     if (newFileContent) {
         createOrOverwriteFile(tree, filePath, newFileContent)
     }
+}
+
+function getLiteral(inputNode: ts.Node, literal: string): ts.Node | null {
+    let toReturn = null;
+    inputNode.forEachChild((node: ts.Node) => {
+        if (ts.isObjectLiteralExpression(node)) {
+            node.forEachChild( parentNode => {
+                if (ts.isPropertyAssignment(parentNode)) {
+                    parentNode.forEachChild(node => {
+                        if (ts.isIdentifier(node) && node.escapedText === literal) {
+                            toReturn = parentNode;
+                        }
+                    });
+                }
+            });
+        }
+    });
+    return toReturn;
+}
+
+
+export function getBootStrapComponent(tree: Tree, modulePath: string): {component: string, appId: string, filePath: string}[] {
+    const moduleSource = getFileContent(tree, modulePath);
+    let components: string[] = [];
+    let toReturn: any[] = [];
+    let decorator: ts.Node = getDecoratorSettings(tree, modulePath, 'NgModule');
+    let bootstrapNode = getLiteral(decorator, 'bootstrap');
+
+    if (!bootstrapNode) {
+        throw new ngToolkitException(`Bootstrap not found in ${modulePath}.`, {fileContent: moduleSource});
+    }
+
+    bootstrapNode.forEachChild(node => {
+        if (ts.isArrayLiteralExpression(node)) {
+            node.elements.forEach((elem: ts.Identifier) => {
+                components.push(elem.escapedText.toString());
+            });
+        }
+    });
+    
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', moduleSource, ts.ScriptTarget.Latest);
+
+    sourceFile.forEachChild(node => {
+        if (ts.isImportDeclaration(node) && node.importClause && node.importClause.namedBindings) {
+            let imports = moduleSource.substr(node.importClause.namedBindings.pos, node.importClause.namedBindings.end - node.importClause.namedBindings.pos);
+            for (let component of components) {
+                if (imports.indexOf(component) > -1 && ts.isStringLiteral(node.moduleSpecifier)) {
+                    let componentPath = normalizePath(`${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${node.moduleSpecifier.text}.ts`);
+                    let componentDecorator: ts.Node = getDecoratorSettings(tree, componentPath, 'Component');
+                    let appId;
+                    componentDecorator.forEachChild(node => node.forEachChild(node =>  {
+                        if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.escapedText === 'selector') {
+                            appId = (node.initializer as ts.StringLiteral).text;
+                        }
+                    }));
+                    toReturn.push({component: component, appId: appId, filePath: `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${node.moduleSpecifier.text}.ts`})
+                    break;
+                }
+            }
+        }
+    });
+
+    return toReturn;
 }
 
 class ngToolkitException extends SchematicsException {
