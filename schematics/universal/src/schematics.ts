@@ -160,13 +160,12 @@ export default function index(options: any): Rule {
                     }
                 }
             });
-            
+
             // add installation task
             if (!options.skipInstall) {
                 context.addTask(new NodePackageInstallTask(options.directory));
             }
 
-            
             //applying other schematics (if installed)
             const ngToolkitSettings = getNgToolkitInfo(tree, options);
             ngToolkitSettings.universal = options;
@@ -174,6 +173,13 @@ export default function index(options: any): Rule {
             if (ngToolkitSettings.serverless) {
                 ngToolkitSettings.serverless.directory = options.directory;
                 ngToolkitSettings.serverless.skipInstall = true;
+                return externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless)(tree, context)
+            } else if(tree.exists(`${options.directory}/.firebaserc`)) {
+                ngToolkitSettings.serverless = {};
+                ngToolkitSettings.serverless.directory = options.directory;
+                ngToolkitSettings.serverless.skipInstall = true;
+                ngToolkitSettings.serverless.provider = 'firebase';
+                addDependencyToPackageJson(tree, options, '@ng-toolkit/serverless', '1.1.28');
                 return externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless)(tree, context)
             }
         return tree;

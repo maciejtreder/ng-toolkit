@@ -73,7 +73,6 @@ export default function addServerless(options: any): Rule {
                 }
                 case 'firebase': {
                     tree.delete(`${options.directory}/functions/index.js`);
-                    tree.delete(`${options.directory}/firebase.json`);
                     break;
                 }
             }
@@ -125,7 +124,37 @@ export default function addServerless(options: any): Rule {
                     }
                 };
             }
-            tree.create(`${options.directory}/.firebaserc`, JSON.stringify(firebaseProjectSettings, null, "  "));
+            if (!tree.exists(`${options.directory}/.firebaserc`)) {
+                tree.create(`${options.directory}/.firebaserc`, JSON.stringify(firebaseProjectSettings, null, "  "));
+            }
+
+            let firebaseJson;
+    
+              if (tree.exists(`${options.directory}/firebase.json`)) {
+                  firebaseJson = JSON.parse(getFileContent(tree, `${options.directory}/firebase.json`));
+                  firebaseJson.hosting = {
+                      "public": "functions/dist",
+                      "rewrites": [
+                        {
+                          "source": "**",
+                          "function": "http"
+                        }
+                      ]
+                    };
+              } else {
+                  firebaseJson = {
+                    "hosting": {
+                      "public": "functions/dist",
+                      "rewrites": [
+                        {
+                          "source": "**",
+                          "function": "http"
+                        }
+                      ]
+                    }
+                  };
+                }
+                createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, "  "));
         });
 
         rules.push(addOrReplaceScriptInPackageJson(options, 'build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
