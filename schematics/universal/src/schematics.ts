@@ -7,7 +7,7 @@ import { updateProject, addDependencyToPackageJson, getAppEntryModule,
     getBrowserDistFolder,
     addToNgModule,
     removeFromNgModule,
-    getBootStrapComponent,
+    getBootStrapComponent, addDependencyInjection,
     createOrOverwriteFile} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -131,10 +131,12 @@ export default function index(options: any): Rule {
                     let fileContent  = getFileContent(tree, visitor);
                     if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])localStorage)/)) {
                         addDependencyInjection(tree, visitor, 'LOCAL_STORAGE', 'localStorage', 'any', '@ng-toolkit/universal');
+                        updateCode(tree, visitor, 'localStorage');
                         fileContent  = getFileContent(tree, visitor);
                     }
                     if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])window)/)) {
                         addDependencyInjection(tree, visitor, 'WINDOW', 'window', 'Window', '@ng-toolkit/universal');
+                        updateCode(tree, visitor, 'window');
                     }
                 }
             });
@@ -148,18 +150,30 @@ export default function index(options: any): Rule {
             const ngToolkitSettings = getNgToolkitInfo(tree, options);
             ngToolkitSettings.universal = options;
             updateNgToolkitInfo(tree, options, ngToolkitSettings);
+            let externals: Rule[] = [];
             if (ngToolkitSettings.serverless) {
                 ngToolkitSettings.serverless.directory = options.directory;
                 ngToolkitSettings.serverless.skipInstall = true;
-                return externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless)(tree, context)
+                externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
             } else if(tree.exists(`${options.directory}/.firebaserc`)) {
                 ngToolkitSettings.serverless = {};
                 ngToolkitSettings.serverless.directory = options.directory;
                 ngToolkitSettings.serverless.skipInstall = true;
                 ngToolkitSettings.serverless.provider = 'firebase';
                 addDependencyToPackageJson(tree, options, '@ng-toolkit/serverless', '1.1.28');
-                return externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless)(tree, context)
+                externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
             }
+
+            if (ngToolkitSettings.pwa) {
+                ngToolkitSettings.pwa.directory = options.directory;
+                ngToolkitSettings.pwa.skipInstall = true;
+                externals.push(externalSchematic('@ng-toolkit/pwa', 'ng-add', ngToolkitSettings.pwa));
+            }
+
+            if (externals.length > 0) {
+                return chain(externals)(tree, context);
+            }
+
         return tree;
         }
     ]);
@@ -193,27 +207,14 @@ function findStatements(tree: Tree, node: ts.Node, filePath: string, subject: st
     });
 }
 
-function addDependencyInjection(tree: Tree, filePath: string, token:string, varName: string, type:string, importFrom: string) {
-    addImportStatement(tree, filePath, token, importFrom);
-    addImportStatement(tree, filePath, 'Inject', '@angular/core');
-
+function updateCode(tree: Tree, filePath: string, varName: string) {
     let fileContent  = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
 
     sourceFile.forEachChild(node => {
         if (ts.isClassDeclaration(node)) {
-            let methodFound = false;
-            let constructorFound: boolean = false;
-            let firstMethodPosition = node.end;
             let replacementTable: any[] = [];
             node.members.forEach(node => {
-                if (ts.isMethodDeclaration(node) && !methodFound) {
-                    methodFound = true;
-                    firstMethodPosition = node.pos;
-                }
-                if (ts.isConstructorDeclaration(node)) {
-                    constructorFound = true;
-                }
                 if (ts.isMethodDeclaration(node)) {
                     (node.body as ts.Block).statements.forEach(statement => {
                         findStatements(tree, statement, filePath, varName, `this.${varName}`, replacementTable);
@@ -223,11 +224,6 @@ function addDependencyInjection(tree: Tree, filePath: string, token:string, varN
             replacementTable.reverse().forEach(element => {
                 fileContent = fileContent.substr(0, element.start) + element.key + fileContent.substr(element.end);
             });
-            if (constructorFound) {
-                fileContent = fileContent.replace('constructor(', `constructor(@Inject(${token}) private ${varName}: ${type}, `)
-            } else {
-                fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(@Inject(${token}) private ${varName}: ${type}) {}\n` + fileContent.substr(firstMethodPosition);
-            }
             createOrOverwriteFile(tree, filePath, fileContent);
         }
     });

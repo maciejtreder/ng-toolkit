@@ -20,7 +20,7 @@ Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your A
 ## Content
  - [Getting started](#start)
  - [Question, Problem, Feature Request](#question)
- - [Support @ng-toolkit/init](#funding)
+ - [Support @ng-toolkit](#funding)
 
 ## <a name="start"></a> Getting started
 Create or navigate into your project:
@@ -28,6 +28,10 @@ Create or navigate into your project:
 ng new myApp
 cd myApp
 ```
+
+You can chain this package with:
+- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
+- [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
 
 ### AWS Lambda & Google Cloud Functions
 ```

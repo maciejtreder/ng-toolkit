@@ -4,18 +4,19 @@
 [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
-[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Funiversal.svg)](https://badge.fury.io/js/%40ng-toolkit%2Funiversal)
+[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fpwa.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fpwa)
 
-# Universal support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/universal&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers,serverless,firebase)
+# Extension for @angular/pwa package. [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/pwa&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers,serverless,firebase)
 
 ### _**Star it and share with others!**_
 _This is part of the @ng-toolkit project. [Check main page for more tools](https://github.com/maciejtreder/ng-toolkit)_
 
-Add Server Side Rendering support (Angular Universal) to your Angular project.
-[Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
-
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
+
+## What's inside?
+- PWA support for serverside rendering (stop thining about `isPlatformBrowser` in the code which touches PWA stuff)
+- Auto update mechanism in entry component
 
 ## Getting started
 Create or navigate into your project:
@@ -23,39 +24,16 @@ Create or navigate into your project:
 ng new myApp
 cd myApp
 ```
-apply package
+apply packages
 
 ```
-ng add @ng-toolkit/universal
+ng add @angular/pwa
+ng add @ng-toolkit/pwa [--serverModule path/to/your/server.module.ts]
 ```
 
-Adding new component:
-```
-ng g c myComponent --module app
-```
-
-You can chain this package with:
+You can chain this package with: 
+- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
 - [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
-- [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
-
-Check out tutorial by Gary Sinon:
-
-[![How to start project with ng-toolkit](https://img.youtube.com/vi/hxG9nuvnh-A/0.jpg)](https://www.youtube.com/watch?v=hxG9nuvnh-A)
-
-## Working with `window` object
-
-This package is shipped with the wrapper for the `window` object. Whenewer you need to use it, just inject it into your component or service:
-```
-import { WINDOW } from @ng-toolkit/universal
-
-/*
-    class/service declaration and decorator
-*/
-
-constructor(@Inject(WINDOW) private window:Window) {
-    console.log(this.window);
-}
-```
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)

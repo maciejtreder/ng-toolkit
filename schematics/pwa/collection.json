@@ -1,0 +1,10 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "factory": "./schematics",
+      "description": "Update an application with PWA functionality",
+      "schema": "./schema.json"
+    }
+  }
+}
