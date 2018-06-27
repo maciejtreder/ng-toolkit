@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "src/public_api.ts"
   },
-  "whitelistedNonPeerDependencies": ["@ng-toolkit/_utils", "bugsnag"]
+  "whitelistedNonPeerDependencies": ["@ng-toolkit/_utils", "bugsnag", "@ng-toolkit/serverless"]
 }

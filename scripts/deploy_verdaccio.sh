@@ -1,4 +1,4 @@
-CATALOGS=(_utils universal serverless init)
+CATALOGS=(_utils serverless universal init)
 
 echo "//localhost:4873/:_authToken=\"fooBar\"" >> ~/.npmrc
 
