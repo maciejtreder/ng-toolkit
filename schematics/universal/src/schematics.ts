@@ -150,7 +150,7 @@ export default function index(options: any): Rule {
                                     }
                                 });
                                 if (constructorFound) {
-                                    fileContent = fileContent.replace('constructor(', 'constructor(@Inject(WINDOW) private window: Window')
+                                    fileContent = fileContent.replace('constructor(', 'constructor(@Inject(WINDOW) private window: Window,')
                                 } else {
                                     fileContent = fileContent.substr(0, node.pos) + `\n constructor(@Inject(WINDOW) private window: Window){}\n` + fileContent.substr(node.pos);
                                 }
