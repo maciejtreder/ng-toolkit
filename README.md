@@ -8,9 +8,9 @@
 
 # @ng-toolkit [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 
-This project have two faces: 
- - First one is Angular Universal PWA boilerplate, prepared for easy deployment on Serverless environment. The boilerplate contains all of the best practices and is continously evolving. [Find out more about the boilerplate here.](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
- - Second, is a collection of `schematics` (used with the `ng add` command) which can be applied to existing Angular projects. All `schematics` comes from the boilerplate mentioned above. The main goal is to make those schematics **interchangeably** (developer can apply them in any order)!
+This project has two faces: 
+ - First, a Angular Universal PWA boilerplate, prepared for easy deployment on Serverless environment. The boilerplate contains all of the best practices and is continously evolving. [Find out more about the boilerplate here.](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
+ - Second, a collection of `schematics` (used with the `ng add` command) which can be applied to existing Angular projects. All `schematics` comes from the boilerplate mentioned above. The main goal is to make those schematics **interchangeably** (developer can apply them in any order)!
 
 ### _**Star it and share with others!**_
 **[Online Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)**
