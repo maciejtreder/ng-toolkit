@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/universal",
   "main": "dist/index.js",
-  "version": "1.1.31",
+  "version": "1.1.32-beta.1",
   "description": "Adds Angular Universal support for any Angular CLI project",
   "repository": {
     "type": "git",
@@ -35,8 +35,8 @@
     "@angular/core": "^6.0.5"
   },
   "dependencies": {
-    "@ng-toolkit/_utils": "1.1.31",
-    "@ng-toolkit/serverless": "1.1.31",
+    "@ng-toolkit/_utils": "1.1.32-beta.1",
+    "@ng-toolkit/serverless": "1.1.32-beta.1",
     "bugsnag": "^2.4.2"
   },
   "devDependencies": {
