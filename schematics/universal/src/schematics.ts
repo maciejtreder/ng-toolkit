@@ -96,12 +96,12 @@ export default function index(options: any): Rule {
 
             // manipulate old entry module
             
-            addToNgModule(tree, entryModule.filePath, 'imports', 'CommonModule,\nWindowModule');
+            addToNgModule(tree, entryModule.filePath, 'imports', 'CommonModule,\nNgtUniversalModule');
             removeFromNgModule(tree, entryModule.filePath, 'imports', 'BrowserModule')
             removeFromNgModule(tree, entryModule.filePath, 'bootstrap');
 
             addImportStatement(tree, entryModule.filePath, 'CommonModule', '@angular/common');
-            addImportStatement(tree, entryModule.filePath, 'WindowModule', '@ng-toolkit/universal');
+            addImportStatement(tree, entryModule.filePath, 'NgtUniversalModule', '@ng-toolkit/universal');
             
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
@@ -129,34 +129,12 @@ export default function index(options: any): Rule {
             tree.getDir(cliConfig.projects[options.project].sourceRoot).visit(visitor => {
                 if (visitor.endsWith('.ts')) {
                     let fileContent  = getFileContent(tree, visitor);
-                    if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])window)/)) {
-                        
-                        addImportStatement(tree, visitor, 'WINDOW', '@ng-toolkit/universal');
-                        addImportStatement(tree, visitor, 'Inject', '@angular/core');
-
+                    if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])localStorage)/)) {
+                        addDependencyInjection(tree, visitor, 'LOCAL_STORAGE', 'localStorage', 'any', '@ng-toolkit/universal');
                         fileContent  = getFileContent(tree, visitor);
-                        let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
-                        let constructorFound: boolean = false;
-                        sourceFile.forEachChild(node => {
-                            if (ts.isClassDeclaration(node)) {
-                                node.members.forEach(node => {
-                                    if (ts.isConstructorDeclaration(node)) {
-                                        constructorFound = true;
-                                    }
-                                    if (ts.isMethodDeclaration(node)) {
-                                        (node.body as ts.Block).statements.forEach(statement => {
-                                            findStatements(tree, statement, visitor);
-                                        })
-                                    }
-                                });
-                                if (constructorFound) {
-                                    fileContent = fileContent.replace('constructor(', 'constructor(@Inject(WINDOW) private window: Window,')
-                                } else {
-                                    fileContent = fileContent.substr(0, node.pos) + `\n constructor(@Inject(WINDOW) private window: Window){}\n` + fileContent.substr(node.pos);
-                                }
-                                createOrOverwriteFile(tree, visitor, fileContent);
-                            }
-                        })
+                    }
+                    if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])window)/)) {
+                        addDependencyInjection(tree, visitor, 'WINDOW', 'window', 'Window', '@ng-toolkit/universal');
                     }
                 }
             });
@@ -186,7 +164,6 @@ export default function index(options: any): Rule {
         }
     ]);
 
-
     if (!options.disableBugsnag) {
         return applyAndLog(rule);
     } else {
@@ -200,16 +177,58 @@ function addOrReplaceScriptInPackageJson(tree: Tree, options: any, name: string,
     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
 }
 
-function findStatements(tree: Tree, node: ts.Node, filePath: string): void {
+function findStatements(tree: Tree, node: ts.Node, filePath: string, subject: string, replacement: string, toReplace: any[]){
     let fileContent = getFileContent(tree, filePath);
     node.forEachChild(node => {
-        if (ts.isPropertyAccessExpression(node)) {
+        if (ts.isIdentifier(node)) {
             let statement = fileContent.substr(node.pos, node.end - node.pos);
-            if (statement.startsWith('window')) {
-                fileContent = fileContent.substr(0, node.pos) + 'this.' + statement + fileContent.substr(node.end);
-                createOrOverwriteFile(tree, filePath, fileContent);
+            let index = statement.indexOf(subject);
+            if (index >= 0) {
+                toReplace.push({key: replacement, start: node.pos + index, end: node.end});
             }
         }
-        else findStatements(tree, node, filePath);
-    })
+        else {
+            findStatements(tree, node, filePath, subject, replacement, toReplace);
+        }
+    });
+}
+
+function addDependencyInjection(tree: Tree, filePath: string, token:string, varName: string, type:string, importFrom: string) {
+    addImportStatement(tree, filePath, token, importFrom);
+    addImportStatement(tree, filePath, 'Inject', '@angular/core');
+
+    let fileContent  = getFileContent(tree, filePath);
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
+
+    sourceFile.forEachChild(node => {
+        if (ts.isClassDeclaration(node)) {
+            let methodFound = false;
+            let constructorFound: boolean = false;
+            let firstMethodPosition = node.end;
+            let replacementTable: any[] = [];
+            node.members.forEach(node => {
+                if (ts.isMethodDeclaration(node) && !methodFound) {
+                    methodFound = true;
+                    firstMethodPosition = node.pos;
+                }
+                if (ts.isConstructorDeclaration(node)) {
+                    constructorFound = true;
+                }
+                if (ts.isMethodDeclaration(node)) {
+                    (node.body as ts.Block).statements.forEach(statement => {
+                        findStatements(tree, statement, filePath, varName, `this.${varName}`, replacementTable);
+                    })
+                }
+            });
+            replacementTable.reverse().forEach(element => {
+                fileContent = fileContent.substr(0, element.start) + element.key + fileContent.substr(element.end);
+            });
+            if (constructorFound) {
+                fileContent = fileContent.replace('constructor(', `constructor(@Inject(${token}) private ${varName}: ${type}, `)
+            } else {
+                fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(@Inject(${token}) private ${varName}: ${type}) {}\n` + fileContent.substr(firstMethodPosition);
+            }
+            createOrOverwriteFile(tree, filePath, fileContent);
+        }
+    });
 }
