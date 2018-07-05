@@ -99,7 +99,7 @@ export default function addServerless(options: any): Rule {
         ]);
 
         rules.push(tree => {
-            tree.create(`${options.directory}/functions/package.json`,`{
+            createOrOverwriteFile(tree, `${options.directory}/functions/package.json`,`{
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {

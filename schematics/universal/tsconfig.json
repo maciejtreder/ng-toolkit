@@ -28,7 +28,7 @@
   },
   "exclude": [
     "./**/files/**/*",
-    "./**/universal-window/**",
+    "./**/ngt-universal/**",
     "./**/public_api.ts"
   ],
   "include": [

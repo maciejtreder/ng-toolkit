@@ -126,9 +126,11 @@ describe('Serverless', () => {
 
     describe('After Universal', () => {
         beforeEach((done) => {
-            schematicRunner.runExternalSchematicAsync('@ng-toolkit/universal', 'ng-add', defaultOptions, appTree).subscribe(tree => {
-                appTree = tree;
-                done();
+            schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
+                schematicRunner.runExternalSchematicAsync('@ng-toolkit/universal', 'ng-add', defaultOptions, tree).subscribe(tree => {
+                    appTree = tree;
+                    done();
+                });
             });
         });
 
@@ -152,7 +154,7 @@ describe('Serverless', () => {
             });
         });
     
-        describe('Firebase', () => {
+        fdescribe('Firebase', () => {
             beforeAll(() => defaultOptions['provider'] = 'firebase');
             afterAll(() => delete defaultOptions['provider']);
     
