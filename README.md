@@ -35,6 +35,13 @@ ng new --collection @ng-toolkit/init myApp [--provider --firebaseProject --gaTra
 ```
 - [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init/README.md)
 
+#### PWA - @angular/pwa extension
+Add update mechanism and server-side rendering fixes to your PWA
+```
+ng add @ng-toolkit/pwa [--serverModule]
+```
+- [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/pwa/README.md)
+
 #### Serverless (Firebase, AWS Lambda, Google Cloud Functions):
 Make your app deployable on serverless environment (FaaS)
 ```

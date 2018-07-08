@@ -2,7 +2,7 @@ npm install -g @angular/cli
 
 cd schematics
 
-CATALOGS=(_utils serverless universal init)
+CATALOGS=(_utils serverless universal pwa init)
 
 exitStatus=0
 

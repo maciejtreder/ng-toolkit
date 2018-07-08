@@ -12,8 +12,7 @@ node_modules
 dll
 .awcache
 /src/styles/main.css
-/firebug-lite
-firebug-lite.tar.tgz
 serverless.yml
 /coverage
 *.js
+package-lock.json

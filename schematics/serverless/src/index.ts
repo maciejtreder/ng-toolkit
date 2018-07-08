@@ -2,9 +2,9 @@ import {
     apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    applyAndLog, addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore,
+    applyAndLog, addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
     createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder,
-    isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, addParamterToMethod, getNgToolkitInfo, updateNgToolkitInfo, updateProject
+    isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, getNgToolkitInfo, updateNgToolkitInfo, updateProject
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -360,18 +360,10 @@ function updateAppEntryFile(options: any): Rule {
         addImportStatement(tree, appComponentFilePath, 'environment', '../environments/environment');
         implementInterface(tree, appComponentFilePath, 'OnInit', '@angular\/core');
         addImportStatement(tree, appComponentFilePath, 'Inject', '@angular\/core');
-        addImportStatement(tree, appComponentFilePath, 'DOCUMENT', '@angular\/common');
         addImportStatement(tree, appComponentFilePath, 'isPlatformBrowser', '@angular\/common');
-        addImportStatement(tree, appComponentFilePath, 'PLATFORM_ID', '@angular\/core');
-
-        if (getMethodBody(tree, appComponentFilePath, 'constructor')) {
-            addParamterToMethod(tree, appComponentFilePath, 'constructor', `@Inject(DOCUMENT) private document: any`)
-            addParamterToMethod(tree, appComponentFilePath, 'constructor', `@Inject(PLATFORM_ID) private platformId: any`)
-        } else {
-            addMethod(tree, appComponentFilePath, `
-    constructor(@Inject(DOCUMENT) private document:any, @Inject(PLATFORM_ID) private platformId: any){}
-`)
-        }
+        
+        addDependencyInjection(tree, appComponentFilePath, 'document', 'any', '@angular/common', 'DOCUMENT');
+        addDependencyInjection(tree, appComponentFilePath, 'platformId', 'any', '@angular/core', 'PLATFORM_ID');
 
         if (ngOnInit) {
             updateMethod(tree, appComponentFilePath, 'ngOnInit', ngOnInit + `

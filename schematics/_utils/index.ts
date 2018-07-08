@@ -152,7 +152,7 @@ export function updateMethod(tree: Tree, filePath: string, name: string, newBody
 
         tree.overwrite(filePath, fileContent.replace(oldMethod, newMethodContent));
     } else {
-        throw new ngToolkitException(`Method ${name} not found in ${filePath}`, {fileContent: fileContent});
+        throw new NgToolkitException(`Method ${name} not found in ${filePath}`, {fileContent: fileContent});
     }
 }
 
@@ -177,6 +177,27 @@ export function getMethodSignature(tree: Tree, filePath: string, name: string): 
     } else {
         return null;
     }
+}
+
+export function getMethodBodyEdges(tree: Tree, filePath:string, name: string): {start: number, end: number} | null {
+    let fileContent  = getFileContent(tree, filePath);
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
+
+    let toReturn = null;
+    sourceFile.forEachChild(node => {
+        if (ts.isClassDeclaration(node)) {
+            let methodFound = false;
+            node.members.forEach(node => {
+                if (((name === 'constructor' && ts.isConstructorDeclaration(node)) || ts.isMethodDeclaration(node)) && !methodFound) {
+                    methodFound = true;
+                    if (node.body) {
+                        toReturn = {start: fileContent.indexOf('{', node.body.pos) + 1, end: node.body.end - 1};
+                    }
+                }
+            });
+        }
+    });
+    return toReturn;
 }
 
 export function getMethod(tree: Tree, filePath:string, name: string): string | null {
@@ -284,6 +305,7 @@ export function addParamterToMethod(tree: Tree, filePath:string, name: string, p
     }
 }
 
+
 export function getServerDistFolder(tree: Tree, options: any): string {
     const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
@@ -329,7 +351,7 @@ export function getBrowserDistFolder(tree: Tree, options: any): string {
     }
 
     // Not found for the passed project. Checks the default one
-    throw new ngToolkitException('Browser build not found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
+    throw new NgToolkitException('Browser build not found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
 }
 
 export function getDistFolder(tree: Tree, options: any): string {
@@ -361,6 +383,17 @@ export function isUniversal(tree: Tree, options: any): boolean {
     return false;
 }
 
+export function getMainServerFilePath(tree: Tree, options: any): string | undefined  {
+    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: any = cliConfig.projects[options.project].architect;
+    for (let property in project) {
+        if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
+           return `${project[property].options.main}`;
+        }
+    }
+    return undefined;
+}
+
 export function getMainFilePath(tree: Tree, options: any): string {
     const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
@@ -369,7 +402,7 @@ export function getMainFilePath(tree: Tree, options: any): string {
            return `${project[property].options.main}`;
         }
     }
-    throw new ngToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
+    throw new NgToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
 }
 
 export function getAppEntryModule(tree: Tree, options: any): {moduleName: string, filePath: string} {
@@ -379,13 +412,13 @@ export function getAppEntryModule(tree: Tree, options: any): {moduleName: string
     
     let results = entryFileSource.match(/bootstrapModule\((.*?)\)/);
     if (!results) {
-        throw new ngToolkitException(`Entry module not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
+        throw new NgToolkitException(`Entry module not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
     }
 
     const entryModule = results[1];
     results = entryFileSource.match(new RegExp(`import\\s*{\\s*.*${entryModule}.*from\\s*(?:'|")(.*)(?:'|")`));
     if (!results) {
-        throw new ngToolkitException(`Entry module import not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
+        throw new NgToolkitException(`Entry module import not found in ${options.directory}/${mainFilePath}.`, {fileContent: entryFileSource});
     }
     
     const appModuleFilePath = `${options.directory}/${mainFilePath.substr(0, mainFilePath.lastIndexOf('/'))}/${results[1]}.ts`;
@@ -440,7 +473,7 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     if (toReturn) {
         return toReturn;
     }
-    throw new ngToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
+    throw new NgToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
 }
 
 export function getNgToolkitInfo(tree: Tree, options: any) {
@@ -475,7 +508,7 @@ export function applyAndLog(rule: Rule): Rule {
 
 export function checkCLIcompatibility(tree: Tree, options: any): boolean {
     if (!tree.exists(`${options.directory}/angular.json`)) {
-        throw new ngToolkitException('@ng-toolkit works only with CLI version 6 or higher. Update your Angular CLI and/or project.')
+        throw new NgToolkitException('@ng-toolkit works only with CLI version 6 or higher. Update your Angular CLI and/or project.')
     }
     return true;
 }
@@ -559,7 +592,7 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     let bootstrapNode = getLiteral(decorator, 'bootstrap');
 
     if (!bootstrapNode) {
-        throw new ngToolkitException(`Bootstrap not found in ${modulePath}.`, {fileContent: moduleSource});
+        throw new NgToolkitException(`Bootstrap not found in ${modulePath}.`, {fileContent: moduleSource});
     }
 
     bootstrapNode.forEachChild(node => {
@@ -585,7 +618,9 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
                             appId = (node.initializer as ts.StringLiteral).text;
                         }
                     }));
-                    toReturn.push({component: component, appId: appId, filePath: `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${node.moduleSpecifier.text}.ts`})
+                    let path = `${modulePath.substring(0, modulePath.lastIndexOf('/'))}/${node.moduleSpecifier.text}.ts`;
+                    path = normalizePath(path);
+                    toReturn.push({component: component, appId: appId, filePath: path})
                     break;
                 }
             }
@@ -595,7 +630,7 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): {componen
     return toReturn;
 }
 
-class ngToolkitException extends SchematicsException {
+export class NgToolkitException extends SchematicsException {
     constructor(message: string, additionalData?: any) {
         super(message);
         bugsnag.onBeforeNotify((notification) => {
@@ -603,4 +638,44 @@ class ngToolkitException extends SchematicsException {
             metaData.subsystem.additionalData = additionalData;
         });
     }
+}
+
+export function addDependencyInjection(tree: Tree, filePath: string, varName: string, type:string, importFrom: string, token?: string) {
+    
+    if (token) {
+        addImportStatement(tree, filePath, token, importFrom);
+        addImportStatement(tree, filePath, 'Inject', '@angular/core');
+    } else {
+        addImportStatement(tree, filePath, type, importFrom);
+    }
+
+    let fileContent  = getFileContent(tree, filePath);
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
+
+    sourceFile.forEachChild(node => {
+        if (ts.isClassDeclaration(node)) {
+            let methodFound = false;
+            let constructorFound: boolean = false;
+            let firstMethodPosition = node.end - 1;
+            let toAdd = `private ${varName}: ${type}`;;
+            node.members.forEach(node => {
+                if (ts.isMethodDeclaration(node) && !methodFound) {
+                    methodFound = true;
+                    firstMethodPosition = node.pos;
+                }
+                if (ts.isConstructorDeclaration(node)) {
+                    constructorFound = true;
+                }
+            });
+            if (token) {
+                toAdd = `@Inject(${token}) ${toAdd}`;
+            }
+            if (constructorFound) {
+                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+            } else {
+                fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
+            }
+            createOrOverwriteFile(tree, filePath, fileContent);
+        }
+    });
 }
