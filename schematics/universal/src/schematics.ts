@@ -165,6 +165,9 @@ export default function index(options: any): Rule {
             }
 
             if (cliConfig.projects[options.project].architect.build.configurations.production.serviceWorker) {
+                if (!ngToolkitSettings.pwa) {
+                    ngToolkitSettings.pwa = {};
+                }
                 ngToolkitSettings.pwa.directory = options.directory;
                 ngToolkitSettings.pwa.skipInstall = true;
                 externals.push(externalSchematic('@ng-toolkit/pwa', 'ng-add', ngToolkitSettings.pwa));

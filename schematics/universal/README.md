@@ -154,7 +154,5 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 
 
-
 ## <a name="credentials"></a> Credentials
 * Checkout my [home page](https://www.maciejtreder.com) and find out more about me
-* Inspired by [ng-universal-demo](https://github.com/FrozenPandaz/ng-universal-demo)

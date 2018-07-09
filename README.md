@@ -104,4 +104,5 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 
 
-Founded by [@maciejtreder](https://www.maciejtreder.com)
+## <a name="credentials"></a> Credentials
+* Checkout my [home page](https://www.maciejtreder.com) and find out more about me

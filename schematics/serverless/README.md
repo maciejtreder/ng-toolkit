@@ -148,5 +148,5 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 
 
-
-Founded by [@maciejtreder](https://www.maciejtreder.com)
+## <a name="credentials"></a> Credentials
+* Checkout my [home page](https://www.maciejtreder.com) and find out more about me
