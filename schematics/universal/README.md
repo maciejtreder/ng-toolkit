@@ -18,6 +18,7 @@ Add Server Side Rendering support (Angular Universal) to your Angular project.
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
 
 ## Getting started
+
 Create or navigate into your project:
 ```bash
 ng new myApp
@@ -42,19 +43,30 @@ Check out tutorial by Gary Sinon:
 
 [![How to start project with ng-toolkit](https://img.youtube.com/vi/hxG9nuvnh-A/0.jpg)](https://www.youtube.com/watch?v=hxG9nuvnh-A)
 
-## Working with `window` object
+## Working with `window` and `localStorage` objects
 
-This package is shipped with the wrapper for the `window` object. Whenewer you need to use it, just inject it into your component or service:
+This package is shipped with the wrapper for the `window` and `localStorage` objects. Whenewer you need to use it, just inject it into your component or service:
 ```
-import { WINDOW } from @ng-toolkit/universal
+import { WINDOW, LOCAL_STORAGE } from @ng-toolkit/universal
 
 /*
     class/service declaration and decorator
 */
 
-constructor(@Inject(WINDOW) private window:Window) {
+constructor(@Inject(WINDOW) private window:Window, @Inject(LOCAL_STORAGE) private localStorage: any) {
     console.log(this.window);
 }
+```
+
+If you did not use Angular CLI to install this package, you need to import `NgtUniversalModule` in your shared app module:
+```
+@NgModule({
+  imports:[
+    /* other imports*/
+    NgtUniversalModule
+  ]
+})
+export class AppModule { }
 ```
 
 ## <a name="question"></a> Looking for something more?

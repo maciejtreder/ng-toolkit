@@ -35,6 +35,23 @@ You can chain this package with:
 - [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
 - [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
 
+If you did not use Angular CLI to install this package, you need to import `NgtPwaMockModule` in your server module:
+```
+@NgModule({
+ bootstrap: [AppComponent],
+
+    imports:[
+        NgtPwaMockModule,
+        BrowserModule.withServerTransition({appId: 'app-root'}),
+        AppModule,
+        ServerModule,
+        ModuleMapLoaderModule,
+        ServerTransferStateModule
+    ]
+})
+export class AppServerModule {}
+```
+
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)
 
