@@ -156,4 +156,5 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/ng-toolkit/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/ng-toolkit/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ng-toolkit/sponsor/9/avatar.svg"></a>
 
-Founded by [@maciejtreder](https://www.maciejtreder.com).
+## <a name="credentials"></a> Credentials
+* Checkout my [home page](https://www.maciejtreder.com) and find out more about me

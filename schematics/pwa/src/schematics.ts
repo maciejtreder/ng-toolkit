@@ -45,6 +45,8 @@ export default function index(options: any): Rule {
                 //add update mechanism
                 let bootstrapComponent = getBootStrapComponent(tree, getAppEntryModule(tree, options).filePath)[0];
 
+                let swUpdateVar = addDependencyInjection(tree, bootstrapComponent.filePath, 'swUpdate', 'SwUpdate', '@angular/service-worker');
+
                 implementInterface(tree, bootstrapComponent.filePath, 'OnInit', '@angular/core');
 
                 let methodBodyEdges = getMethodBodyEdges(tree, bootstrapComponent.filePath, 'ngOnInit');
@@ -56,12 +58,12 @@ export default function index(options: any): Rule {
                 }
                 if (methodBodyEdges)
                     fileContent = fileContent.substring(0, methodBodyEdges.start) + `
-        if (this.swUpdate.isEnabled) {
-            this.swUpdate.available.subscribe((evt) => {
+        if (this.${swUpdateVar}.isEnabled) {
+            this.${swUpdateVar}.available.subscribe((evt) => {
                 console.log('service worker updated');
             });
     
-            this.swUpdate.checkForUpdate().then(() => {
+            this.${swUpdateVar}.checkForUpdate().then(() => {
                 // noop
             }).catch((err) => {
                 console.error('error when checking for update', err);
@@ -69,7 +71,6 @@ export default function index(options: any): Rule {
         }` + fileContent.substring(methodBodyEdges.end);
                 createOrOverwriteFile(tree, bootstrapComponent.filePath, fileContent);
 
-                addDependencyInjection(tree, bootstrapComponent.filePath, 'swUpdate', 'SwUpdate', '@angular/service-worker');
             }
             ngToolkitSettings.pwa = options;
             updateNgToolkitInfo(tree, options, ngToolkitSettings);
