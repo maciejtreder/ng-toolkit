@@ -164,7 +164,7 @@ export default function index(options: any): Rule {
                 externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
             }
 
-            if (ngToolkitSettings.pwa) {
+            if (cliConfig.projects[options.project].architect.build.configurations.production.serviceWorker) {
                 ngToolkitSettings.pwa.directory = options.directory;
                 ngToolkitSettings.pwa.skipInstall = true;
                 externals.push(externalSchematic('@ng-toolkit/pwa', 'ng-add', ngToolkitSettings.pwa));
