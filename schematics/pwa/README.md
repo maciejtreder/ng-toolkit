@@ -15,7 +15,7 @@ _This is part of the @ng-toolkit project. [Check main page for more tools](https
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
 
 ## What's inside?
-- PWA support for serverside rendering (stop thining about `isPlatformBrowser` in the code which touches PWA stuff)
+- PWA support for serverside rendering (stop thinking about `isPlatformBrowser` in the code which touches PWA stuff)
 - Auto update mechanism in entry component
 
 ## Getting started
