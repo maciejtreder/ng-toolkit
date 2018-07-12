@@ -641,7 +641,6 @@ export class NgToolkitException extends SchematicsException {
 }
 
 export function addDependencyInjection(tree: Tree, filePath: string, varName: string, type:string, importFrom: string, token?: string): string {
-    
     if (token) {
         addImportStatement(tree, filePath, token, importFrom);
         addImportStatement(tree, filePath, 'Inject', '@angular/core');
@@ -659,6 +658,9 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
             let constructorFound: boolean = false;
             let firstMethodPosition = node.end - 1;
             let toAdd = `private ${varName}: ${type}`;
+            if (token) {
+                toAdd = `@Inject(${token}) ${toAdd}`;
+            }
             node.members.forEach(node => {
                 if (ts.isMethodDeclaration(node) && !methodFound) {
                     methodFound = true;
@@ -667,7 +669,13 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                 if (ts.isConstructorDeclaration(node)) {
                     node.parameters.forEach(param => {
                         let parameterContent = fileContent.substring(param.pos, param.end);
-                        let match = parameterContent.match(new RegExp(`(?:private|public|)(.*)\\s?:\\s?${type}`));
+                        let regex;
+                        if (token) {
+                            regex = `@Inject\\(\\s*?${token}\\s*?\\)\\s*?(?:private|public)(.*)?:`;
+                        } else {
+                            regex = `(?:private|public)(.*):\\s?${type}`;
+                        }
+                        let match = parameterContent.match(new RegExp(regex));
                         if (match) {
                             paramName = match[1].trim();
                         }
@@ -675,16 +683,13 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            if (token) {
-                toAdd = `@Inject(${token}) ${toAdd}`;
-            }
             if (constructorFound && paramName === varName) {
                 fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
             } else if (!constructorFound){
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
-            createOrOverwriteFile(tree, filePath, fileContent);
         }
     });
+    createOrOverwriteFile(tree, filePath, fileContent);
     return paramName;
 }
