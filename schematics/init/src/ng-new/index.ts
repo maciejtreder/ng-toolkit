@@ -12,7 +12,6 @@ import { newApp } from '../utils/new-app/index';
 import * as bugsnag from 'bugsnag';
 
 export default function(options: Schema): Rule {
-    console.log(options);
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
         const metaData = notification.events[0].metaData;
@@ -42,7 +41,7 @@ function updatePackageJson(options: any): Rule {
     return chain([
         (tree) => {
             addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0');
-            // addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
             addDependencyToPackageJson(tree, options, '@angular/cdk', '^6.0.0');
             addDependencyToPackageJson(tree, options, '@angular/material', '^6.0.0');
             addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2');

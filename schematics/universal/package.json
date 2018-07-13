@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/universal",
   "main": "dist/index.js",
-  "version": "1.1.36",
+  "version": "1.1.37",
   "description": "Adds Angular Universal support for any Angular CLI project",
   "repository": {
     "type": "git",
@@ -35,9 +35,9 @@
     "@angular/core": "^6.0.5"
   },
   "dependencies": {
-    "@ng-toolkit/_utils": "^1.1.36",
-    "@ng-toolkit/pwa": "^1.1.36",
-    "@ng-toolkit/serverless": "^1.1.36",
+    "@ng-toolkit/_utils": "^1.1.37",
+    "@ng-toolkit/pwa": "^1.1.37",
+    "@ng-toolkit/serverless": "^1.1.37",
     "bugsnag": "^2.4.2"
   },
   "devDependencies": {

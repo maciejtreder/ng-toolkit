@@ -650,7 +650,7 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
 
     let fileContent  = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
-    let paramName = varName;
+    let paramName: any = null;
 
     sourceFile.forEachChild(node => {
         if (ts.isClassDeclaration(node)) {
@@ -667,15 +667,16 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     firstMethodPosition = node.pos;
                 }
                 if (ts.isConstructorDeclaration(node)) {
+                    let regex: string;
+                    if (token) {
+                        regex = `@Inject\\(\\s*?${token}\\s*?\\)\\s*?(?:private|public)(.*)?:`;
+                    } else {
+                        regex = `(?:private|public)(.*):\\s?${type}`;
+                    }
+                    const compiledRegex = new RegExp(regex);
                     node.parameters.forEach(param => {
                         let parameterContent = fileContent.substring(param.pos, param.end);
-                        let regex;
-                        if (token) {
-                            regex = `@Inject\\(\\s*?${token}\\s*?\\)\\s*?(?:private|public)(.*)?:`;
-                        } else {
-                            regex = `(?:private|public)(.*):\\s?${type}`;
-                        }
-                        let match = parameterContent.match(new RegExp(regex));
+                        let match = parameterContent.match(compiledRegex);
                         if (match) {
                             paramName = match[1].trim();
                         }
@@ -683,8 +684,9 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            if (constructorFound && paramName === varName) {
+            if (constructorFound && !paramName) {
                 fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+                paramName = varName;
             } else if (!constructorFound){
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
