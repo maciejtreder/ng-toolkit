@@ -12,7 +12,7 @@ export function newApp(options: any): Rule {
         move(options.directory),
     ]);
 
-    let rules: Rule[] = [];
+    const rules: Rule[] = [];
 
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
     rules.push(overwriteMainFile(options));
@@ -26,7 +26,7 @@ export function newApp(options: any): Rule {
     };
 
     rules.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', serverlessOptions));
-    rules.push((tree => {
+    rules.push(((tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         packageJsonSource['collective'] = {
             type: 'opencollective',
