@@ -11,13 +11,13 @@ import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
 import * as bugsnag from 'bugsnag';
 
-export default function (options: Schema): Rule {
+export default function(options: Schema): Rule {
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
-        let metaData = notification.events[0].metaData;
+        const metaData = notification.events[0].metaData;
         metaData.subsystem = {
             package: 'ng-new',
-            options: options
+            options
         };
     });
     if (!options.directory) {
@@ -26,7 +26,7 @@ export default function (options: Schema): Rule {
     const templateSource = apply(url('./files'), [
         move(options.directory),
     ]);
-    let rule: Rule = chain([
+    const rule: Rule = chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
 
         adjustCLIConfig(options),
@@ -39,11 +39,11 @@ export default function (options: Schema): Rule {
 
 function updatePackageJson(options: any): Rule {
     return chain([
-        tree => {
-            addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0-rc.6');
-            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0-rc.6');
-            addDependencyToPackageJson(tree, options, '@angular/cdk', '^6.0.0-rc.6');
-            addDependencyToPackageJson(tree, options, '@angular/material', '^6.0.0-rc.6');
+        (tree) => {
+            addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/cdk', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/material', '^6.0.0');
             addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0', true);
             addDependencyToPackageJson(tree, options, '@ngx-translate/core', '^10.0.1');
@@ -55,7 +55,7 @@ function updatePackageJson(options: any): Rule {
         addOrReplaceScriptInPackageJson(options, 'test', 'ng test --code-coverage'),
         addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --watch --code-coverage'),
 
-        tree => {
+        (tree) => {
             let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
             packageJsonContent = packageJsonContent.replace('__projectName__', options.name);
             createOrOverwriteFile(tree, `${options.directory}/package.json`, packageJsonContent);
@@ -65,7 +65,7 @@ function updatePackageJson(options: any): Rule {
 }
 
 function adjustCLIConfig(options: any): Rule {
-    return tree => {
+    return (tree) => {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
 
         // delete cliConfig.projects[options.name].sourceRoot;

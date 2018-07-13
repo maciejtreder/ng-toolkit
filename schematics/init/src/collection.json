@@ -1,11 +1,6 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "application": {
-      "description": "Creates boilerplate app.",
-      "factory": "./application/index",
-      "schema": "./application/schema.json"
-    },
     "ng-new": {
       "description": "Creates boilerplate app.",
       "factory": "./ng-new/index",
