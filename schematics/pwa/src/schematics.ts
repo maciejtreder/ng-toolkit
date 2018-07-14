@@ -1,10 +1,11 @@
-import { Rule, chain, Tree } from '@angular-devkit/schematics';
+import { Rule, chain, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { applyAndLog, updateProject, addImportStatement, addToNgModule, 
     getMainServerFilePath, normalizePath, NgToolkitException, 
     getBootStrapComponent, getAppEntryModule, addDependencyInjection,
     createOrOverwriteFile, getMethodBodyEdges, implementInterface,
     addMethod, getNgToolkitInfo, updateNgToolkitInfo } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
 
 export default function index(options: any): Rule {
@@ -20,7 +21,7 @@ export default function index(options: any): Rule {
 
     let rule: Rule = chain([
         
-        (tree: Tree) => {
+        (tree: Tree, context: SchematicContext) => {
             updateProject(tree, options);
 
 
@@ -74,6 +75,10 @@ export default function index(options: any): Rule {
             }
             ngToolkitSettings.pwa = options;
             updateNgToolkitInfo(tree, options, ngToolkitSettings);
+
+            if (!options.skipInstall) {
+                context.addTask(new NodePackageInstallTask(options.directory));
+            }
 
             return tree;
         }
