@@ -117,6 +117,7 @@ export default function addServerless(options: any): Rule {
 }
 `);
             let firebaseProjectSettings = {};
+            console.log(options);
             if (options.firebaseProject) {
                 firebaseProjectSettings = {
                     projects: {

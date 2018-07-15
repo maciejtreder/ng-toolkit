@@ -38,6 +38,7 @@ export default function(options: Schema): Rule {
 }
 
 function updatePackageJson(options: any): Rule {
+    console.log(options);
     return chain([
         (tree) => {
             addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0');
