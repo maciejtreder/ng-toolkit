@@ -20,7 +20,8 @@ export function newApp(options: any): Rule {
 
     const serverlessOptions = {
         skipInstall : true,
-        project : options.name,
+        project: options.name,
+        firebaseProject : options.firebaseProject,
         provider : options.provider,
         directory: options.directory
     };
