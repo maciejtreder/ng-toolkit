@@ -2,7 +2,6 @@ import {
     Rule, chain,
     move, apply, url, mergeWith, MergeStrategy, externalSchematic
 } from '@angular-devkit/schematics';
-import { addFireBug } from '../firebug/index';
 import { addGoogleAnalytics } from '../googleAnalytics/index';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { addOrReplaceScriptInPackageJson, createGitIgnore, addDependencyToPackageJson, createOrOverwriteFile } from '@ng-toolkit/_utils';
@@ -27,6 +26,9 @@ export function newApp(options: any): Rule {
     };
 
     rules.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', serverlessOptions));
+    if (options.firebug) {
+        rules.push(externalSchematic('@ng-toolkit/firebug', 'ng-add', options));
+    }
     rules.push(((tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         packageJsonSource['collective'] = {
@@ -37,12 +39,6 @@ export function newApp(options: any): Rule {
         return tree;
     }));
     rules.push(updatePackageJson(options));
-
-    if (options.firebug) {
-        rules.push(addFireBug(options));
-        rules.push(addOrReplaceScriptInPackageJson(options, 'build:watch:firebug', 'ng serve -env=firebug'),)
-        rules.push(addOrReplaceScriptInPackageJson(options, 'build:firebug', 'run-p build:watch:firebug credentials'),)
-    }
 
     if (options.gaTrackingCode) {
         rules.push(addGoogleAnalytics(options));
