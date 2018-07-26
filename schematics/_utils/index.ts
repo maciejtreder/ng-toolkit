@@ -61,9 +61,7 @@ export function addDependencyToPackageJson(tree: Tree, options: any, name: strin
 
 export function addOrReplaceScriptInPackageJson(options: any, name: string, script: string): Rule {
     return tree => {
-        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-        packageJsonSource.scripts[name] = script;
-        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+        addOrReplaceScriptInPackageJson2(tree, options, name, script);
         return tree;
     }
 }
@@ -694,4 +692,10 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
     });
     createOrOverwriteFile(tree, filePath, fileContent);
     return paramName;
+}
+
+export function addOrReplaceScriptInPackageJson2 (tree: Tree, options: any, name: string, script: string) {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+    packageJsonSource.scripts[name] = script;
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
 }

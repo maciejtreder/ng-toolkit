@@ -38,6 +38,7 @@ ng g c myComponent --module app
 You can chain this package with:
 - [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
 - [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
+- [@ng-toolkit/firebug](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/firebug)
 
 Check out tutorial by Gary Sinon:
 

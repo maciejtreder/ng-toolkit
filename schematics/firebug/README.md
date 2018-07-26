@@ -4,18 +4,14 @@
 [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
-[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fserverless.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fserverless)
+[![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fserverless.svg)](https://badge.fury.io/js/%40ng-toolkit%2Ffirebug)
 
 # Serverless support for your Angular application [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Just%20started%20using%20@ng-toolkit/serverless&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers,serverless,firebase)
 
 ### _**Star it and share with others!**_
 _This is part of the @ng-toolkit project. [Check main page for more tools](https://github.com/maciejtreder/ng-toolkit)_
 
-Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your Angular project. Supports as well client-side-only projects as Angular Universal projects (server side rendering).
-[Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
-
-## Live demo
-[Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
+Add firebug-lite to your Angular project.
 
 ## Content
  - [Getting started](#start)
@@ -29,46 +25,27 @@ ng new myApp
 cd myApp
 ```
 
-
-
-### AWS Lambda & Google Cloud Functions
+Add firebug
 ```
-ng add @ng-toolkit/serverless --provider aws
+ng add @ng-toolkit/firebug
 ```
 
-Deploy to "maintenance link" (non customized - ie: https://123456.execute-api.eu-central-1.amazonaws.com/production)
+Run your app in development mode, together with firebug-lite
 ```
-npm run build:serverless:deploy
+npm run build:firebug
 ```
-
-Deploy to customized link (example.com):
-```
-npm run build:prod:deploy
-```
-
-You can read more about [using custom domain in AWS Lambda in this Medium post](https://medium.com/@maciejtreder/custom-domain-in-aws-api-gateway-a2b7feaf9c74) or [in the official AWS documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html).
-
-### Firebase
-
-```
-ng add @ng-toolkit/serverless --provider firebase --firebaseProject [your_project_ID]
-npm run build:prod:deploy
-```
-
-Project ID, can be found in project settings:
-![where to find project ID](https://raw.githubusercontent.com/maciejtreder/ng-toolkit/master/schematics/serverless/project_id.png)
 
 
 You can chain this package with:
 - [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
 - [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
-- [@ng-toolkit/firebug](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/firebug)
+- [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
 
 
 ## <a name="question"></a> Looking for something more?
 Feel free to [create issue with your feature request](https://github.com/maciejtreder/angular-toolkit/issues/new)
 
-## <a name="funding"></a> Support @ng-toolkit/serverless
+## <a name="funding"></a> Support @ng-toolkit
 
 You can support development of this project via:
 - [Open Collective](https://opencollective.com/ng-toolkit)

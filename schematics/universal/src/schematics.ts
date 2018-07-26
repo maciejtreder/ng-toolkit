@@ -130,14 +130,18 @@ export default function index(options: any): Rule {
                 if (visitor.endsWith('.ts')) {
                     let fileContent  = getFileContent(tree, visitor);
                     if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])localStorage)/)) {
-                        addDependencyInjection(tree, visitor, 'LOCAL_STORAGE', 'localStorage', 'any', '@ng-toolkit/universal');
+                        addDependencyInjection(tree, visitor, 'localStorage', 'any', '@ng-toolkit/universal', 'LOCAL_STORAGE');
                         updateCode(tree, visitor, 'localStorage');
                         fileContent  = getFileContent(tree, visitor);
                     }
                     if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])window)/)) {
-                        addDependencyInjection(tree, visitor, 'WINDOW', 'window', 'Window', '@ng-toolkit/universal');
+                        addDependencyInjection(tree, visitor, 'window', 'Window', '@ng-toolkit/universal', 'WINDOW');
                         updateCode(tree, visitor, 'window');
                     }
+                    // if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])document)/)) {
+                    //     addDependencyInjection(tree, visitor, 'document', 'Document', '@ng-toolkit/universal', 'NGT_DOCUMENT');
+                    //     updateCode(tree, visitor, 'document');
+                    // }
                 }
             });
 

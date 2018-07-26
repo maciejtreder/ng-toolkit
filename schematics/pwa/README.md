@@ -34,6 +34,7 @@ ng add @ng-toolkit/pwa [--serverModule path/to/your/server.module.ts]
 You can chain this package with: 
 - [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
 - [@ng-toolkit/serverless](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/serverless)
+- [@ng-toolkit/firebug](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/firebug)
 
 If you did not use Angular CLI to install this package, you need to import `NgtPwaMockModule` in your server module:
 ```

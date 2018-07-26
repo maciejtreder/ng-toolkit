@@ -1,7 +1,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage) 
 [![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
-[![Dependency Status](https://david-dm.org/maciejtreder/angular-universal-pwa.svg)](https://david-dm.org/maciejtreder/angular-universal-pwa)
+[![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit.svg)](https://david-dm.org/maciejtreder/ng-toolkit)
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
 [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit)
@@ -58,10 +58,16 @@ ng add @ng-toolkit/universal
 - [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/universal/README.md)
 - [Read article about server-side rendering with @ng-toolkit](https://medium.com/@maciejtreder/angular-server-side-rendering-with-ng-toolkit-universal-c08479ca688)
 
+#### Firebug-lite
+Add firebug-lite to your Angular app
+```
+ng add @ng-toolkit/firebug
+```
+- [Read more documentation](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/firebug/README.md)
+
 ## Planned features
 - [@ng-toolkit/googleAnalytics](https://github.com/maciejtreder/ng-toolkit/issues/225) - tracking user and JS exceptions in Google Analytics
 - [@ng-toolkit/compodoc](https://github.com/maciejtreder/ng-toolkit/issues/275) - introduce [compodoc](https://github.com/compodoc/compodoc) - documentation tool for your angular app
-- @ng-toolkit/firebug - add firebug lite, for easy debug on touch devices - ie for development on iPad
 - @ng-toolkit/safariPush - add pushes for Safari users
 
 ## <a name="question"></a> Looking for something more?

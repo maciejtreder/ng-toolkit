@@ -13,6 +13,7 @@ export const fireBug = () =>  new Promise((resolve) => {
         `;
         document.head.appendChild(fb);
         const interval = setInterval(() => {
+            console.log('interval');
             if (!!document.getElementById('FirebugUI')) {
                 clearInterval(interval);
                 resolve();
