@@ -29,9 +29,7 @@ ng new myApp
 cd myApp
 ```
 
-You can chain this package with:
-- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
-- [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
+
 
 ### AWS Lambda & Google Cloud Functions
 ```
@@ -60,6 +58,11 @@ npm run build:prod:deploy
 Project ID, can be found in project settings:
 ![where to find project ID](https://raw.githubusercontent.com/maciejtreder/ng-toolkit/master/schematics/serverless/project_id.png)
 
+
+You can chain this package with:
+- [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
+- [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
+- [@ng-toolkit/firebug](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/firebug)
 
 
 ## <a name="question"></a> Looking for something more?
