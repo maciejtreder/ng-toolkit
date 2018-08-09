@@ -6,8 +6,8 @@ export class DocumentService {
     private _document: Document;
     constructor(@Inject(PLATFORM_ID) platformId: any) {
         if (!isPlatformBrowser(platformId)) {
-            this._document = {
-                getElementById: (id: string) => {console.log('getElement by id'); return new HTMLElement();},
+            this._document = <unknown> {
+                getElementById: (id: string) => new HTMLElement(),
                 getElementsByClassName: (className: string) => new HTMLCollection(),
                 getElementsByName: (name: string) => new NodeList(),
                 getElementsByTagName: (name: string) => new NodeList()

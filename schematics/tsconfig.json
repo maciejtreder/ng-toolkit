@@ -6,6 +6,7 @@
       "dom"
     ],
     "declaration": true,
+    "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,

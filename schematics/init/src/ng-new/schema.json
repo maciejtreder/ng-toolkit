@@ -85,6 +85,7 @@
     "version": {
       "type": "string",
       "description": "The version of the Angular CLI to use.",
+      "default": "7.0.3",
       "visible": false
     },
     "routing": {
@@ -130,8 +131,5 @@
       "description": "Firebase project id",
       "type": "string"
     }
-  },
-  "required": [
-    "version"
-  ]
+  }
 }

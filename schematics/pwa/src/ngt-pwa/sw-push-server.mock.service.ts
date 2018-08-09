@@ -6,6 +6,7 @@ export class SwPushServerMock {
     public requestSubscription(options: {
         serverPublicKey: string;
     }): Promise<PushSubscription> {
+        console.log(`requested subscription with options: ${options}`);
         return new Promise((resolve) => resolve());
     }
     public unsubscribe(): Promise<void> {
