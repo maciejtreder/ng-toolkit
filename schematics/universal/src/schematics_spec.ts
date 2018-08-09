@@ -6,10 +6,10 @@ import { getFileContent } from '@schematics/angular/utility/test';
 
 const collectionPath = path.join(__dirname, './collection.json');
 
-describe('Serverless', () => {
+describe('Universal', () => {
     let appTree: UnitTestTree;
 
-    const schematicRunner = new SchematicTestRunner('@ng-toolkit/serverless', collectionPath);
+    const schematicRunner = new SchematicTestRunner('@ng-toolkit/universal', collectionPath);
 
     const defaultOptions: any = {
         project: 'foo',
@@ -44,7 +44,7 @@ describe('Serverless', () => {
         });
     });
 
-    it('Should create files', (done) => {
+    it('Should create scripts', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
             shouldContainEntry(tree, `${defaultOptions.directory}/package.json`, /"build:server:prod": "ng run foo:server && webpack --config webpack.server.config.js --progress --colors"/);
             shouldContainEntry(tree, `${defaultOptions.directory}/package.json`, /"build:browser:prod": "ng build --prod"/);
