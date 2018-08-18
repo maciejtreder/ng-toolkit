@@ -63,14 +63,14 @@
               "buildOptimizer": true,
               "serviceWorker": true
             },
-             "firebug": {
+            "firebug": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.firebug.ts"
                 }
               ]
-             }
+            }
           }
         },
         "serve": {
@@ -154,6 +154,125 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "seo-friendly": {
+      "root": "projects/seo-friendly/",
+      "sourceRoot": "projects/seo-friendly/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/seo-friendly",
+            "index": "projects/seo-friendly/src/index.html",
+            "main": "projects/seo-friendly/src/main.ts",
+            "polyfills": "projects/seo-friendly/src/polyfills.ts",
+            "tsConfig": "projects/seo-friendly/tsconfig.app.json",
+            "assets": [
+              "projects/seo-friendly/src/favicon.ico",
+              "projects/seo-friendly/src/assets"
+            ],
+            "styles": [
+              "projects/seo-friendly/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/seo-friendly/src/environments/environment.ts",
+                  "with": "projects/seo-friendly/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "seo-friendly:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "seo-friendly:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "seo-friendly:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/seo-friendly/src/test.ts",
+            "polyfills": "projects/seo-friendly/src/polyfills.ts",
+            "tsConfig": "projects/seo-friendly/tsconfig.spec.json",
+            "karmaConfig": "projects/seo-friendly/karma.conf.js",
+            "styles": [
+              "projects/seo-friendly/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/seo-friendly/src/favicon.ico",
+              "projects/seo-friendly/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/seo-friendly/tsconfig.app.json",
+              "projects/seo-friendly/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "seo-friendly-e2e": {
+      "root": "projects/seo-friendly-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/seo-friendly-e2e/protractor.conf.js",
+            "devServerTarget": "seo-friendly:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "seo-friendly:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/seo-friendly-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
