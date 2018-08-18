@@ -7,14 +7,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     
 @NgModule({
-  bootstrap: [AppComponent],
+ 	bootstrap: [AppComponent],
   imports:[
 		BrowserModule.withServerTransition({appId: 'app-root'}),
-		AppModule,
+ 		AppModule,
 		ServerModule,
 		NoopAnimationsModule,
 		ModuleMapLoaderModule,
-		ServerTransferStateModule // comment
+		ServerTransferStateModule, // comment
 	]
 })
 export class AppServerModule {}

@@ -1,3 +1,5 @@
+import { NgtUniversalModule } from '@ng-toolkit/universal';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -10,11 +12,13 @@ import { UsersComponent } from './users/users.component';
     AppComponent,
     UsersComponent
   ],
-  imports: [
-    BrowserModule,
+  imports:[
+ CommonModule,
+NgtUniversalModule,
+ 
+    
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }
