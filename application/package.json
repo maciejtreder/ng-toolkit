@@ -17,7 +17,7 @@
     "build:watch": "ng serve",
     "credentials": "node credentials.js && opencollective postinstall",
     "build:dev": "run-p test:watch start",
-    "build:prod": "npm run build:server:prod && npm run build:browser:prod",
+    "build:prod": "npm run build:browser:prod && npm run build:server:prod",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "server": "node local.js",
     "build:watch:firebug": "ng serve -c firebug",

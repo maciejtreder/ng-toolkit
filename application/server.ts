@@ -12,6 +12,8 @@ import 'zone.js/dist/zone-node';
     import {join} from 'path';
     
     enableProdMode();
+    const project = process.env.npm_config_project;
+    const dist = project ? `./dist/${project}` : './dist';
     
     export const app = express();
     
@@ -22,7 +24,7 @@ import 'zone.js/dist/zone-node';
     
     // const DIST_FOLDER = join(process.cwd(), 'dist');
     
-    const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
+    const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require(`${dist}/server/main`);
     
     app.engine('html', ngExpressEngine({
       bootstrap: AppServerModuleNgFactory,
@@ -32,14 +34,14 @@ import 'zone.js/dist/zone-node';
     }));
     
     app.set('view engine', 'html');
-    app.set('views', './dist/browser');
+    app.set('views', `${dist}/browser`);
     
     app.get('/redirect/**', (req, res) => {
       const location = req.url.substring(10);
       res.redirect(301, location);
     });
     
-    app.get('*.*', express.static('./dist/browser', {
+    app.get('*.*', express.static(`${dist}/browser`, {
       maxAge: '1y'
     }));
     

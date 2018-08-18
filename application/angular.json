@@ -171,7 +171,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/browser",
+            "outputPath": "dist/seo-friendly/browser",
             "index": "projects/seo-friendly/src/index.html",
             "main": "projects/seo-friendly/src/main.ts",
             "polyfills": "projects/seo-friendly/src/polyfills.ts",
@@ -254,9 +254,9 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/server",
-            "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json"
+            "outputPath": "dist/seo-friendly/server",
+            "main": "projects/seo-friendly/src/main.server.ts",
+            "tsConfig": "projects/seo-friendly/tsconfig.server.json"
           }
         }
       }
