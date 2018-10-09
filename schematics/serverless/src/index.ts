@@ -36,7 +36,7 @@ export default function addServerless(options: any): Rule {
     rules.push((tree: Tree, context: SchematicContext) => {
         // update project name
         updateProject(tree, options);
-            
+
         const ngToolkitSettings = getNgToolkitInfo(tree, options);
         if (!ngToolkitSettings.universal) {
             return chain([
@@ -86,7 +86,7 @@ export default function addServerless(options: any): Rule {
         addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
         addDependencyToPackageJson(tree, options, 'cp-cli', '^1.1.0');
     });
-    
+
 
     rules.push(addOpenCollective(options));
 
@@ -129,7 +129,7 @@ export default function addServerless(options: any): Rule {
             }
 
             let firebaseJson;
-    
+
               if (tree.exists(`${options.directory}/firebase.json`)) {
                   firebaseJson = JSON.parse(getFileContent(tree, `${options.directory}/firebase.json`));
                   firebaseJson.hosting = {
@@ -165,7 +165,7 @@ export default function addServerless(options: any): Rule {
     if (options.provider === 'gcloud' || options.provider === 'aws' ) {
         //serverless stuff
         rules.push( tree => {
-            addDependencyToPackageJson(tree, options, 'serverless', '1.26.1', true)
+            addDependencyToPackageJson(tree, options, 'serverless', '^1.32.0', true)
             return tree;
         });
 
@@ -274,7 +274,7 @@ function addServerlessAWS(options: any): Rule {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
             tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
 
-            addDependencyToPackageJson(tree, options, 'aws-serverless-express', '^3.2.0' );
+            addDependencyToPackageJson(tree, options, 'aws-serverless-express', '^3.3.5' );
             addDependencyToPackageJson(tree, options, 'serverless-apigw-binary', '^0.4.4', true );
             return tree;
         }
@@ -361,7 +361,7 @@ function updateAppEntryFile(options: any): Rule {
         implementInterface(tree, appComponentFilePath, 'OnInit', '@angular\/core');
         addImportStatement(tree, appComponentFilePath, 'Inject', '@angular\/core');
         addImportStatement(tree, appComponentFilePath, 'isPlatformBrowser', '@angular\/common');
-        
+
         addDependencyInjection(tree, appComponentFilePath, 'document', 'any', '@angular/common', 'DOCUMENT');
         addDependencyInjection(tree, appComponentFilePath, 'platformId', 'any', '@angular/core', 'PLATFORM_ID');
 
@@ -380,7 +380,7 @@ function updateAppEntryFile(options: any): Rule {
     public ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
             let bases = this.document.getElementsByTagName('base');
-    
+
             if (bases.length > 0) {
                 bases[0].setAttribute('href', environment.baseHref);
             }
