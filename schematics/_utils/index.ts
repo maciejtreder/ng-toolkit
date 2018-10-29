@@ -488,7 +488,7 @@ export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) 
 export function applyAndLog(rule: Rule): Rule {
     return (tree: Tree, context: SchematicContext) => {
         return (<Observable<Tree>> rule(tree, context))
-        .pipe(catchError<Tree, never>((error: any) => {
+        .pipe(catchError((error: any) => {
             let subject: Subject<Tree> = new Subject();
             console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
             console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
@@ -682,9 +682,11 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
+            console.log(`paramname1: ${paramName}`);
             if (constructorFound && !paramName) {
                 fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
                 paramName = varName;
+                console.log(`paramname2: ${paramName}`);
             } else if (!constructorFound){
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }

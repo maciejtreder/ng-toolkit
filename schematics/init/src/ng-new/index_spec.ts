@@ -15,7 +15,7 @@ describe('my-component', () => {
         style: 'css',
         skipTests: false,
         skipPackageJson: false,
-        version: '6.0.0'
+        version: '7.0.0'
     };
 
     let workspaceTree: Tree;
