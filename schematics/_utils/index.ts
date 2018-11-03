@@ -682,11 +682,9 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            console.log(`paramname1: ${paramName}`);
             if (constructorFound && !paramName) {
                 fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
                 paramName = varName;
-                console.log(`paramname2: ${paramName}`);
             } else if (!constructorFound){
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
@@ -700,4 +698,9 @@ export function addOrReplaceScriptInPackageJson2 (tree: Tree, options: any, name
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource.scripts[name] = script;
     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+}
+
+export function getAngularVersion (tree: Tree, options: any): string {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+    return packageJsonSource.dependencies['@angular/core'];
 }
