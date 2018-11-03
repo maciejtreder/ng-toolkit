@@ -7,6 +7,7 @@ import { updateProject, addDependencyToPackageJson, getAppEntryModule,
     getBrowserDistFolder,
     addToNgModule,
     removeFromNgModule,
+    getAngularVersion,
     getBootStrapComponent, addDependencyInjection,
     createOrOverwriteFile} from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
@@ -40,18 +41,19 @@ export default function index(options: any): Rule {
 
         // mergeWith(templateSource, MergeStrategy.Overwrite),
         (tree: Tree, context: SchematicContext) => {
+            const angularVersion = getAngularVersion(tree, options);
             createFiles(tree, options);
             // update project name
             updateProject(tree, options);
             
             // add dependencies
-            addDependencyToPackageJson(tree, options, '@angular/platform-browser', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/platform-browser', angularVersion);
             
-            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
-            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', angularVersion);
+            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', angularVersion);
             addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0');
-            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', '^6.0.0');
+            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', angularVersion);
             addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
 
             // update CLI config
