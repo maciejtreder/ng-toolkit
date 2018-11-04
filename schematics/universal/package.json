@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/universal",
   "main": "dist/index.js",
-  "version": "1.1.43",
+  "version": "1.1.44",
   "description": "Adds Angular Universal support for any Angular CLI project",
   "repository": {
     "type": "git",
@@ -31,26 +31,26 @@
   "license": "MIT",
   "schematics": "./collection.json",
   "peerDependencies": {
-    "@angular/common": "^7.0.1",
-    "@angular/core": "^7.0.1"
+    "@angular/common": "~7.0.0",
+    "@angular/core": "~7.0.0"
   },
   "dependencies": {
-    "@ng-toolkit/_utils": "1.1.43",
-    "@ng-toolkit/pwa": "1.1.43",
-    "@ng-toolkit/serverless": "1.1.43",
+    "@ng-toolkit/_utils": "1.1.44",
+    "@ng-toolkit/pwa": "1.1.44",
+    "@ng-toolkit/serverless": "1.1.44",
     "bugsnag": "^2.4.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.10.3",
     "@angular-devkit/build-ng-packagr": "^0.10.3",
-    "@angular-devkit/core": "^7.0.3",
-    "@angular-devkit/schematics": "^7.0.3",
-    "@angular/cli": "~7.0.1",
-    "@angular/common": "~7.0.1",
-    "@angular/compiler": "~7.0.1",
-    "@angular/compiler-cli": "~7.0.1",
-    "@angular/core": "~7.0.1",
-    "@schematics/angular": "^7.0.3",
+    "@angular-devkit/core": "~7.0.0",
+    "@angular-devkit/schematics": "~7.0.0",
+    "@angular/cli": "~7.0.0",
+    "@angular/common": "~7.0.0",
+    "@angular/compiler": "~7.0.0",
+    "@angular/compiler-cli": "~7.0.0",
+    "@angular/core": "~7.0.0",
+    "@schematics/angular": "~7.0.0",
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.10.17",
     "ci-publish": "^1.3.1",
