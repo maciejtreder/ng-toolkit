@@ -1,5 +1,37 @@
 {
-  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "tsconfig",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "experimentalDecorators": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "declarationDir": "src/",
+    "outDir": "dist/",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es6",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "exclude": [
+    "./**/files/**/*",
+    "./**/ngt-universal/**",
+    "./**/public_api.ts"
+  ],
   "include": [
     "./**/*"
   ]

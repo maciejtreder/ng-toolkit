@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/init",
-  "version": "1.1.45",
+  "version": "1.1.46",
   "description": "Angular Universal PWA boilerplate for serverless environment.",
   "repository": {
     "type": "git",
@@ -31,9 +31,9 @@
   "dependencies": {
     "@angular-devkit/core": "^7.0.3",
     "@angular-devkit/schematics": "^7.0.3",
-    "@ng-toolkit/_utils": "^1.1.45",
-    "@ng-toolkit/serverless": "^1.1.45",
-    "@ng-toolkit/firebug": "^1.1.45",
+    "@ng-toolkit/_utils": "^1.1.46",
+    "@ng-toolkit/serverless": "^1.1.46",
+    "@ng-toolkit/firebug": "^1.1.46",
     "@schematics/angular": "^7.0.3"
   },
   "devDependencies": {
