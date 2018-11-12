@@ -682,10 +682,14 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            if (constructorFound && !paramName) {
-                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+            console.log(`paramname before check ${paramName}`);
+            console.log(`constructor found ${constructorFound}`);
+            if (!paramName) {
                 paramName = varName;
-            } else if (!constructorFound){
+            }
+            if (constructorFound) {
+                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+            } else {
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
         }
