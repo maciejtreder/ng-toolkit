@@ -5,6 +5,7 @@
       "es2017",
       "dom"
     ],
+    "experimentalDecorators": true,
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -28,7 +29,7 @@
   },
   "exclude": [
     "./**/files/**/*",
-    "./**/ngt-pwa/**",
+    "./**/ngt-universal/**",
     "./**/public_api.ts"
   ],
   "include": [

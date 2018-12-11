@@ -11,6 +11,8 @@
 [ ] @ng-toolkit/init
 [ ] @ng-toolkit/serverless
 [ ] @ng-toolkit/universal
+[ ] @ng-toolkit/pwa
+[ ] @ng-toolkit/firebug
 </code></pre>
 
 ## Current behavior
@@ -41,17 +43,6 @@ Please provide link to your public, cloneable repository, to give us a chance to
 Angular version: X.Y.Z
 <!-- Check whether this is still an issue in the most recent Angular version -->
 
-Browser:
-- [ ] Chrome (desktop) version XX
-- [ ] Chrome (Android) version XX
-- [ ] Chrome (iOS) version XX
-- [ ] Firefox version XX
-- [ ] Safari (desktop) version XX
-- [ ] Safari (iOS) version XX
-- [ ] IE version XX
-- [ ] Edge version XX
- 
-For Tooling issues:
 - Node version: XX  <!-- run `node --version` -->
 - Platform:  <!-- Mac, Linux, Windows -->
 
