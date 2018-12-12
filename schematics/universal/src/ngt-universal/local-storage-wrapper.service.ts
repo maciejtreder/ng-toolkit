@@ -6,7 +6,7 @@ export class LocalStorageWrapper {
     private localStorageRef;
 
     constructor(@Inject(PLATFORM_ID) platformId) {
-        if (isPlatformBrowser(platformId)) {
+        if (isPlatformBrowser(platformId) && navigator.cookieEnabled) {
             this.localStorageRef = localStorage;
         } else {
             this.localStorageRef = {
