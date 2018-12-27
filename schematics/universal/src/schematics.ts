@@ -47,13 +47,13 @@ export default function index(options: any): Rule {
             updateProject(tree, options);
             
             // add dependencies
-            addDependencyToPackageJson(tree, options, '@angular/platform-browser', angularVersion);
+            addDependencyToPackageJson(tree, options, '@angular/platform-browser', '>=6.0.0');
             
-            addDependencyToPackageJson(tree, options, '@angular/platform-server', angularVersion);
-            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', angularVersion);
+            addDependencyToPackageJson(tree, options, '@angular/platform-server', '>=6.0.0');
+            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', '>=6.0.0');
             addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0');
-            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', angularVersion);
+            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', '>=6.0.0');
             addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
 
             // update CLI config
