@@ -60,8 +60,10 @@ export default function index(options: any): Rule {
             addDependencyToPackageJson(tree, options, '@angular/platform-browser', angularVersion);
             
             addDependencyToPackageJson(tree, options, '@angular/platform-server', angularVersion);
+            addDependencyToPackageJson(tree, options, '@angular/http', angularVersion);
+            
             addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', `~${angularMajor}.0.0`);
-            addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
+            addDependencyToPackageJson(tree, options, 'webpack-cli', '^3.1.2');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0');
             addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', `~${angularMajor}.0.0`);
             addDependencyToPackageJson(tree, options, '@nguniversal/common', `~${angularMajor}.0.0`);
