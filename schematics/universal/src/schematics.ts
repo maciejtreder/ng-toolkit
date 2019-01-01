@@ -54,6 +54,7 @@ export default function index(options: any): Rule {
             addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0');
             addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', angularVersion);
+            addDependencyToPackageJson(tree, options, '@nguniversal/common', angularVersion);
             addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
 
             // update CLI config
@@ -92,6 +93,8 @@ export default function index(options: any): Rule {
                 addImportStatement(tree, browserModulePath, entryModule.moduleName, getRelativePath(browserModulePath, entryModule.filePath));
                 
                 addToNgModule(tree, browserModulePath, 'imports', entryModule.moduleName);
+                addToNgModule(tree, browserModulePath, 'imports', 'BrowserTransferStateModule');
+                addImportStatement(tree, browserModulePath, 'BrowserTransferStateModule', '@angular/platform-browser');
                 addToNgModule(tree, browserModulePath, 'imports', `BrowserModule.withServerTransition({appId: '${bootstrapComponent.appId}'})`);
                 addToNgModule(tree, browserModulePath, 'bootstrap', bootstrapComponent.component);
                 addImportStatement(tree, browserModulePath, bootstrapComponent.component, getRelativePath(browserModulePath, bootstrapComponent.filePath));
@@ -99,6 +102,12 @@ export default function index(options: any): Rule {
 
             // manipulate old entry module
             
+            if (options.http) {
+                addToNgModule(tree, entryModule.filePath, 'imports', 'TransferHttpCacheModule,\nHttpClientModule');  
+                addImportStatement(tree, entryModule.filePath, 'TransferHttpCacheModule', '@nguniversal/common');
+                addImportStatement(tree, entryModule.filePath, 'HttpClientModule', '@angular/common/http');  
+            }
+
             addToNgModule(tree, entryModule.filePath, 'imports', 'CommonModule,\nNgtUniversalModule');
             removeFromNgModule(tree, entryModule.filePath, 'imports', 'BrowserModule')
             removeFromNgModule(tree, entryModule.filePath, 'bootstrap');
@@ -109,9 +118,14 @@ export default function index(options: any): Rule {
             // update main file
             const mainFilePath = getMainFilePath(tree, options);
             const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
-
-            tree.overwrite(`${options.directory}/${mainFilePath}`, entryFileSource.replace(new RegExp(`bootstrapModule\\(\\s*${entryModule.moduleName}\\s*\\)`), `bootstrapModule(AppBrowserModule)`));
-            
+            tree.overwrite(`${options.directory}/${mainFilePath}`, entryFileSource.replace(
+                new RegExp(`platformBrowserDynamic\\(\\).bootstrapModule\\(.*\\)[\\s\\S]*.catch\\(.*\\);`),
+                `document.addEventListener('DOMContentLoaded', () => {
+                    platformBrowserDynamic()
+                      .bootstrapModule(AppBrowserModule)
+                      .catch(err => console.log(err));
+                  });`
+                ));
             addImportStatement(tree, `${options.directory}/${mainFilePath}`, 'AppBrowserModule', getRelativePath(mainFilePath, browserModulePath));
 
             

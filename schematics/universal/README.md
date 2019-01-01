@@ -27,8 +27,11 @@ cd myApp
 apply package
 
 ```
-ng add @ng-toolkit/universal
+ng add @ng-toolkit/universal [--http false]
 ```
+
+### Options
+If you don't want to use TransferHttpCacheModule indicate it by adding `--http false` flag.
 
 Adding new component:
 ```
