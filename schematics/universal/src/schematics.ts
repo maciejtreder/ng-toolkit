@@ -42,6 +42,16 @@ export default function index(options: any): Rule {
         // mergeWith(templateSource, MergeStrategy.Overwrite),
         (tree: Tree, context: SchematicContext) => {
             const angularVersion = getAngularVersion(tree, options);
+            // console.log(/[~|^|](\d*)\./.exec(angularVersion)[0]);
+            let angularMajor;
+            const regexResult = /[~|^|](\d*)\./.exec(angularVersion);
+            if (regexResult) {
+                angularMajor = regexResult[1];
+            } else {
+                angularMajor = '7';
+            }
+            console.log(angularMajor);
+
             createFiles(tree, options);
             // update project name
             updateProject(tree, options);
@@ -50,11 +60,11 @@ export default function index(options: any): Rule {
             addDependencyToPackageJson(tree, options, '@angular/platform-browser', angularVersion);
             
             addDependencyToPackageJson(tree, options, '@angular/platform-server', angularVersion);
-            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', angularVersion);
+            addDependencyToPackageJson(tree, options, '@nguniversal/module-map-ngfactory-loader', `~${angularMajor}.0.0`);
             addDependencyToPackageJson(tree, options, 'webpack-cli', '^2.1.4');
             addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0');
-            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', angularVersion);
-            addDependencyToPackageJson(tree, options, '@nguniversal/common', angularVersion);
+            addDependencyToPackageJson(tree, options, '@nguniversal/express-engine', `~${angularMajor}.0.0`);
+            addDependencyToPackageJson(tree, options, '@nguniversal/common', `~${angularMajor}.0.0`);
             addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
 
             // update CLI config
