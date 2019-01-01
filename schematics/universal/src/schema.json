@@ -20,6 +20,11 @@
       "description": "App root catalog",
       "type": "string",
       "default": "."
+    },
+    "http": {
+      "description": "Determines if you want to install TransferHttpCacheModule",
+      "type": "boolean",
+      "default": true
     }
   },
   "required": []
