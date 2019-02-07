@@ -18,8 +18,7 @@ describe('Universal', () => {
     };
 
     const appOptions: any = {
-        name: 'foo',
-        version: '6.0.0',
+        name: 'foo'
     };
 
     beforeEach((done) => {

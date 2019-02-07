@@ -42,6 +42,7 @@ export default function index(options: any): Rule {
         // mergeWith(templateSource, MergeStrategy.Overwrite),
         (tree: Tree, context: SchematicContext) => {
             const angularVersion = getAngularVersion(tree, options);
+            console.log(angularVersion);
             // console.log(/[~|^|](\d*)\./.exec(angularVersion)[0]);
             let angularMajor;
             const regexResult = /[~|^|](\d*)\./.exec(angularVersion);
