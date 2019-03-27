@@ -4,25 +4,90 @@
   "title": "Angular Application Options Schema",
   "type": "object",
   "properties": {
-    "project": {
-      "type": "string",
-      "description": "The name of the project.",
-      "$default": {
-        "$source": "projectName"
-      }
-    },
     "skipInstall": {
       "description": "Skip installation of dependencies.",
       "type": "boolean",
       "default": false
     },
-    "directory": {
-      "description": "App root catalog",
-      "type": "string",
-      "default": "."
-    },
     "http": {
       "description": "Determines if you want to install TransferHttpCacheModule",
+      "type": "boolean",
+      "default": true
+    },
+    "clientProject": {
+      "type": "string",
+      "description": "Name of related client app.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "appId": {
+      "type": "string",
+      "format": "html-selector",
+      "description": "The appId to use withServerTransition.",
+      "default": "serverApp"
+    },
+    "main": {
+      "type": "string",
+      "format": "path",
+      "description": "The name of the main entry-point file.",
+      "default": "main.server.ts"
+    },
+    "test": {
+      "type": "string",
+      "format": "path",
+      "description": "The name of the test entry-point file."
+    },
+    "serverFileName": {
+      "type": "string",
+      "default": "server.ts",
+      "description": "The name of the Express server file."
+    },
+    "serverPort": {
+      "type": "number",
+      "default": 4000,
+      "description": "The port for the Express server."
+    },
+    "tsconfigFileName": {
+      "type": "string",
+      "default": "tsconfig.server",
+      "description": "The name of the TypeScript configuration file."
+    },
+    "testTsconfigFileName": {
+      "type": "string",
+      "format": "path",
+      "description": "The name of the TypeScript configuration file for tests.",
+      "default": "tsconfig.spec"
+    },
+    "appDir": {
+      "type": "string",
+      "format": "path",
+      "description": "The name of the application directory.",
+      "default": "app"
+    },
+    "rootModuleFileName": {
+      "type": "string",
+      "format": "path",
+      "description": "The name of the root module file",
+      "default": "app.server.module.ts"
+    },
+    "rootModuleClassName": {
+      "type": "string",
+      "description": "The name of the root module class.",
+      "default": "AppServerModule"
+    },
+    "skipServer": {
+      "description": "Skip adding Express server file.",
+      "type": "boolean",
+      "default": false
+    },
+    "skipUniversal": {
+      "description": "Skip the Angular Universal schematic",
+      "type": "boolean",
+      "default": false
+    },
+    "webpack": {
+      "description": "Whether to add webpack configuration files",
       "type": "boolean",
       "default": true
     }
