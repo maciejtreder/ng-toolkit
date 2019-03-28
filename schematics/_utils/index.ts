@@ -5,6 +5,8 @@ import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as bugsnag from 'bugsnag';
 import * as ts from 'typescript';
+import {addSymbolToNgModuleMetadata, insertImport} from '@schematics/angular/utility/ast-utils';
+import { InsertChange } from '@schematics/angular/utility/change';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -85,19 +87,24 @@ export function addImportLine(tree: Tree, filePath: string, importLine: string):
         tree.commitUpdate(changeRecorder);
     }
 }
+function getTsSourceFile(tree: Tree, path: string): ts.SourceFile {
+    const buffer = tree.read(path);
+    if (!buffer) {
+      throw new SchematicsException(`Could not read file (${path}).`);
+    }
+    const content = buffer.toString();
+    const source = ts.createSourceFile(path, content, ts.ScriptTarget.Latest, true);
+  
+    return source;
+}
 
 export function addImportStatement(tree: Tree, filePath: string, type: string, file: string ) {
-    const fileContent = getFileContent(tree, filePath);
-    let results: any = fileContent.match(new RegExp("import.*{.*(" + type + ").*}.*(" + file + ").*"));
-    if (results) {
-        return;
-    }
-    results = fileContent.match(new RegExp(`import.*{(.*)}.*(?:'|")(${file})(?:'|").*`));
-    if (results) {
-        let newImport = `import {${results[1]}, ${type}} from '${file}';`;
-        createOrOverwriteFile(tree, filePath, fileContent.replace(results[0], newImport));
-    } else {
-        addImportLine(tree, filePath, `import { ${type} } from '${file}';`)
+    let source = getTsSourceFile(tree, filePath);
+    const importChange = insertImport(source, filePath, type, file) as InsertChange;
+    if (importChange) {
+      const recorder = tree.beginUpdate(filePath);
+      recorder.insertLeft(importChange.pos, importChange.toAdd);
+      tree.commitUpdate(recorder);
     }
 }
 
@@ -512,58 +519,44 @@ export function checkCLIcompatibility(tree: Tree, options: any): boolean {
 }
 
 export function addToNgModule(tree: Tree, filePath: string, literal: string, entry: string) {
-    editNgModule(tree, filePath, literal, true, entry);
+    let source = getTsSourceFile(tree, filePath);
+    const changes = addSymbolToNgModuleMetadata(source, filePath, literal, entry);
+    if (changes) {
+        const recorder = tree.beginUpdate(filePath);
+        changes.forEach((change: InsertChange) => {
+            recorder.insertRight(change.pos, change.toAdd);
+        });
+        tree.commitUpdate(recorder);
+    }
 }
 
 export function removeFromNgModule(tree: Tree, filePath: string, literal: string, entry?: string) {
-    editNgModule(tree, filePath, literal, false, entry);
-}
-
-function editNgModule(tree: Tree, filePath: string, literal: string, add:boolean = true, entry?: string) {
-    let newFileContent = null;
     let fileContent = getFileContent(tree, filePath);
     const ngModuleDecorator: ts.Node = getDecoratorSettings(tree, filePath, 'NgModule');
 
-    let literalNode: ts.Node | null = getLiteral(ngModuleDecorator, literal);
+    let literalNode: ts.Node = getLiteral(ngModuleDecorator, literal);
 
-    if(literalNode) {
-        let temp: ts.Node = literalNode //compilation error work-around
-        literalNode.forEachChild(node => {
-            if (ts.isArrayLiteralExpression(node)) {
-                let actualLiteral;
-                let newLiteral = '';
-                if (entry) {
-                    actualLiteral = fileContent.substr(node.pos, node.end - node.pos);
-                } else {
-                    actualLiteral = fileContent.substr(temp.pos, temp.end - temp.pos);
-                }
-                if (add) {
-                    newLiteral = actualLiteral.substr(actualLiteral.indexOf('[') + 1);
-                    newLiteral = `[\n ${entry},\n ${newLiteral}`;
-                } else {
-                    if (entry) {
-                        newLiteral = actualLiteral.replace(new RegExp(`${entry}([\s]*?,|)`), '');
-                    } else {
-                        newLiteral = '';
-                    }
-                }
-                newFileContent = fileContent.replace(actualLiteral, newLiteral);
+    if (!literalNode) {
+        throw new SchematicsException(`Literal: ${literal} not found in ${filePath}`);
+    }
+    
+    literalNode.forEachChild(node => {
+        if (ts.isArrayLiteralExpression(node)) {
+            let actualLiteral;
+            let newLiteral = '';
+            actualLiteral = fileContent.substr(literalNode.pos, literalNode.end - literalNode.pos + 1);
+            if (entry) {
+                newLiteral = actualLiteral.replace(new RegExp(`${entry.replace(/\(/g, '\\(').replace(/\)/g, '\\)')}([\s]*?,|)`), '');
+            } else {
+                newLiteral = '';
             }
-        })
-    }
-
-    if (!literalNode && add && ngModuleDecorator) {
-        let ngModuleContent = (ngModuleDecorator as ts.CallExpression).arguments
-        let actualLiteral = fileContent.substr(ngModuleContent.pos + 1, ngModuleContent.end + 1 - ngModuleContent.pos);
-        let newLiteral = `\n ${literal}: [${entry}],\n${actualLiteral}`;
-        newFileContent = fileContent.replace(actualLiteral, newLiteral);
-    }
-    if (newFileContent) {
-        createOrOverwriteFile(tree, filePath, newFileContent)
-    }
+            const newFileContent = fileContent.replace(actualLiteral, newLiteral);
+                createOrOverwriteFile(tree, filePath, newFileContent)
+        }
+    })
 }
 
-function getLiteral(inputNode: ts.Node, literal: string): ts.Node | null {
+function getLiteral(inputNode: ts.Node, literal: string): ts.Node {
     let toReturn = null;
     inputNode.forEachChild((node: ts.Node) => {
         if (ts.isObjectLiteralExpression(node)) {
@@ -578,6 +571,9 @@ function getLiteral(inputNode: ts.Node, literal: string): ts.Node | null {
             });
         }
     });
+    if (!toReturn) {
+        throw new SchematicsException(`Literal: ${literal} not found!`);
+    }
     return toReturn;
 }
 
