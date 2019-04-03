@@ -1,4 +1,4 @@
-import { Rule, chain, externalSchematic, mergeWith, apply, move, url, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, chain, externalSchematic, mergeWith, apply, move, url, SchematicsException, noop } from '@angular-devkit/schematics';
 import { applyAndLog, addImportStatement, addToNgModule, createOrOverwriteFile, removeFromNgModule, addDependencyInjection, getNgToolkitInfo, updateNgToolkitInfo } from '@ng-toolkit/_utils';
 import * as bugsnag from 'bugsnag';
 import { Tree, MergeStrategy } from '@angular-devkit/schematics/src/tree/interface';
@@ -123,9 +123,9 @@ export default function index(options: any): Rule {
   function applyOtherNgToolkitSchematics(): Rule {
     return tree => {
       //applying other schematics (if installed)
-      const ngToolkitSettings = getNgToolkitInfo(tree, options);
+      const ngToolkitSettings = getNgToolkitInfo(tree);
       ngToolkitSettings.universal = options;
-      updateNgToolkitInfo(tree, options, ngToolkitSettings);
+      updateNgToolkitInfo(tree, ngToolkitSettings);
       let externals: Rule[] = [];
       if (ngToolkitSettings.serverless) {
           ngToolkitSettings.serverless.directory = options.directory;
@@ -167,9 +167,53 @@ export default function index(options: any): Rule {
 
   function applyExpressEngine(): Rule {
     return tree => {
+      let hasUniversalBuild = false;
       const workspace = getWorkspace(tree);
-      console.log(workspace.projects[options.clientProject].architect);
-      return externalSchematic('@nguniversal/express-engine', 'ng-add', expressOptions);
+      const architect = workspace.projects[options.clientProject].architect;
+      if (architect) {
+        for (let builder in architect) {
+          if (architect[builder].builder === '@angular-devkit/build-angular:server') {
+            hasUniversalBuild = true;
+          }
+        }
+      }
+      if (!hasUniversalBuild) {
+        return externalSchematic('@nguniversal/express-engine', 'ng-add', expressOptions);
+      } else {
+        return noop();
+      }
+    }
+  }
+
+  function addPrerender(): Rule {
+    return tree => {
+      // add dependencies
+      addPackageJsonDependency(tree, {
+        type: NodeDependencyType.Default,
+        name: 'domino',
+        version: '^2.1.3'
+      });
+
+      // add scripts
+      const pkgPath = '/package.json';
+      const buffer = tree.read(pkgPath);
+      if (buffer === null) {
+        throw new SchematicsException('Could not find package.json');
+      }
+
+      const pkg = JSON.parse(buffer.toString());
+
+      pkg.scripts['serve:prerender'] = 'node static.js';
+      pkg.scripts['build:prerender'] = 'npm run build:prod && node dist/prerender.js';
+
+      tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2));
+
+      //add entry in webpack configuration
+
+      const webpackConfig = getFileContent(tree, `./webpack.server.config.js`);
+      createOrOverwriteFile(tree, `./webpack.server.config.js`, webpackConfig.replace(`server: './server.ts'`, `server: './server.ts',\n\tprerender: './prerender.ts'`));
+
+      return tree;
     }
   }
 
@@ -215,7 +259,8 @@ export default function index(options: any): Rule {
     renameAndEnhanceBrowserModule(),
     updateWebpackConfig(),
     addWrappers(),
-    applyOtherNgToolkitSchematics()
+    applyOtherNgToolkitSchematics(),
+    addPrerender()
   ]);
 
   if (!options.disableBugsnag) {

@@ -7,6 +7,11 @@ import * as bugsnag from 'bugsnag';
 import * as ts from 'typescript';
 import {addSymbolToNgModuleMetadata, insertImport} from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
+import { getWorkspace } from '@schematics/angular/utility/config';
+import {
+  addPackageJsonDependency,
+  NodeDependencyType,
+} from '@schematics/angular/utility/dependencies';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -47,23 +52,9 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
     tree.overwrite(filePath, fileContent);
 }
 
-
-export function addDependencyToPackageJson(tree: Tree, options: any, name: string, version: string, dev: boolean = false):void {
-    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-
-    if (!dev) {
-        packageJsonSource.dependencies[name] = version;
-    }
-    if (dev) {
-        packageJsonSource.devDependencies[name] = version;
-    }
-
-    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
-}
-
-export function addOrReplaceScriptInPackageJson(options: any, name: string, script: string): Rule {
+export function addOrReplaceScriptInPackageJson(name: string, script: string): Rule {
     return tree => {
-        addOrReplaceScriptInPackageJson2(tree, options, name, script);
+        addOrReplaceScriptInPackageJson2(tree, name, script);
         return tree;
     }
 }
@@ -143,7 +134,11 @@ export function addOpenCollective(options: any): Rule {
             packageJsonSource.scripts['postinstall'] = 'opencollective postinstall'
         }
 
-        addDependencyToPackageJson(tree, options, 'opencollective', '^1.0.3', true)
+        addPackageJsonDependency(tree, {
+            type: NodeDependencyType.Dev,
+            name: 'opencollective',
+            version: '^1.0.3'
+        });
     }
 }
 
@@ -323,7 +318,7 @@ export function getServerDistFolder(tree: Tree, options: any): string {
 }
 
 export function updateProject(tree: Tree, options: any): void {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const cliConfig: any = JSON.parse(getFileContent(tree, `angular.json`));
     const project: any = cliConfig.projects[options.project].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
@@ -400,14 +395,14 @@ export function getMainServerFilePath(tree: Tree, options: any): string | undefi
 }
 
 export function getMainFilePath(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const workspace = getWorkspace(tree);
+    const project: any = workspace.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
            return `${project[property].options.main}`;
         }
     }
-    throw new NgToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {fileContent: cliConfig});
+    throw new NgToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', {workspace: workspace});
 }
 
 export function getAppEntryModule(tree: Tree, options: any): {moduleName: string, filePath: string} {
@@ -481,15 +476,15 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     throw new NgToolkitException(`Can't find decorator ${decorator} in ${filePath}`, {fileContent: fileContent});
 }
 
-export function getNgToolkitInfo(tree: Tree, options: any) {
-    if (!tree.exists(`${options.directory}/ng-toolkit.json`)) {
-        tree.create(`${options.directory}/ng-toolkit.json`, `{}`);
+export function getNgToolkitInfo(tree: Tree) {
+    if (!tree.exists(`ng-toolkit.json`)) {
+        tree.create(`ng-toolkit.json`, `{}`);
     }
-    return JSON.parse(getFileContent(tree, `${options.directory}/ng-toolkit.json`));
+    return JSON.parse(getFileContent(tree, `ng-toolkit.json`));
 }
 
-export function updateNgToolkitInfo(tree: Tree, options: any, newSettings: any) {
-    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
+export function updateNgToolkitInfo(tree: Tree, newSettings: any) {
+    tree.overwrite(`ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
 }
 
 export function applyAndLog(rule: Rule): Rule {
@@ -540,7 +535,7 @@ export function removeFromNgModule(tree: Tree, filePath: string, literal: string
         throw new SchematicsException(`Literal: ${literal} not found in ${filePath}`);
     }
     
-    literalNode.forEachChild(node => {
+literalNode.forEachChild(node => {
         if (ts.isArrayLiteralExpression(node)) {
             let actualLiteral;
             let newLiteral = '';
@@ -690,10 +685,10 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
     return paramName;
 }
 
-export function addOrReplaceScriptInPackageJson2 (tree: Tree, options: any, name: string, script: string) {
-    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+export function addOrReplaceScriptInPackageJson2 (tree: Tree, name: string, script: string) {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `package.json`));
     packageJsonSource.scripts[name] = script;
-    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+    tree.overwrite(`package.json`, JSON.stringify(packageJsonSource, null, "  "));
 }
 
 export function getAngularVersion (tree: Tree, options: any): string {

@@ -1,5 +1,5 @@
 import { Rule, chain, Tree, SchematicContext } from '@angular-devkit/schematics';
-import { applyAndLog, updateProject, addImportStatement, addToNgModule, 
+import { applyAndLog, addImportStatement, addToNgModule, 
     getMainServerFilePath, normalizePath, NgToolkitException, 
     getBootStrapComponent, getAppEntryModule, addDependencyInjection,
     createOrOverwriteFile, getMethodBodyEdges, implementInterface,
@@ -18,18 +18,13 @@ export default function index(options: any): Rule {
         };
     });
 
-
     let rule: Rule = chain([
-        
         (tree: Tree, context: SchematicContext) => {
-            updateProject(tree, options);
-
-
             //check if angular/pwa was applied
 
             const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-            if (!cliConfig.projects[options.project].architect.build.configurations.production.serviceWorker) {
-                throw new NgToolkitException(`Run 'ng add @angular/pwa' before applying this package.`);
+            if (!cliConfig.projects[options.clientProject].architect.build.configurations.production.serviceWorker) {
+                throw new NgToolkitException(`Run 'ng add @angular/universal' before applying this schematics.`);
             }
             
             // add entry to server module
@@ -39,7 +34,7 @@ export default function index(options: any): Rule {
                 addToNgModule(tree, serverModulePath, 'imports', 'NgtPwaMockModule');
             }
 
-            const ngToolkitSettings = getNgToolkitInfo(tree, options);
+            const ngToolkitSettings = getNgToolkitInfo(tree);
             
             if (!ngToolkitSettings.pwa) {
 
@@ -74,7 +69,7 @@ export default function index(options: any): Rule {
 
             }
             ngToolkitSettings.pwa = options;
-            updateNgToolkitInfo(tree, options, ngToolkitSettings);
+            updateNgToolkitInfo(tree, ngToolkitSettings);
 
             if (!options.skipInstall) {
                 context.addTask(new NodePackageInstallTask(options.directory));
