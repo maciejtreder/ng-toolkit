@@ -4,12 +4,16 @@ import {
 } from '@angular-devkit/schematics';
 import {
     createOrOverwriteFile,
-    addOrReplaceScriptInPackageJson, addDependencyToPackageJson, applyAndLog
+    addOrReplaceScriptInPackageJson, applyAndLog
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
 import * as bugsnag from 'bugsnag';
+import {
+  addPackageJsonDependency,
+  NodeDependencyType,
+} from '@schematics/angular/utility/dependencies';
 
 export default function(options: Schema): Rule {
     bugsnag.register('0b326fddc255310e516875c9874fed91');

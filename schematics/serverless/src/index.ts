@@ -2,14 +2,19 @@ import {
     apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    applyAndLog, addDependencyToPackageJson, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
+    applyAndLog, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
     createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder,
-    isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, getNgToolkitInfo, updateNgToolkitInfo, updateProject
+    isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, getNgToolkitInfo, updateNgToolkitInfo
 } from '@ng-toolkit/_utils';
+// import { getWorkspace } from '@schematics/angular/utility/config';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '@angular-devkit/core';
 import * as bugsnag from 'bugsnag';
+import {
+  addPackageJsonDependency,
+  NodeDependencyType,
+} from '@schematics/angular/utility/dependencies';
 
 export default function addServerless(options: any): Rule {
 
@@ -34,14 +39,16 @@ export default function addServerless(options: any): Rule {
     const rules: Rule[] = [];
 
     rules.push((tree: Tree, context: SchematicContext) => {
-        // update project name
-        updateProject(tree, options);
+        // // update project name
+        // updateProject(tree, options);
             
-        const ngToolkitSettings = getNgToolkitInfo(tree, options);
+        const ngToolkitSettings = getNgToolkitInfo(tree);
         if (!ngToolkitSettings.universal) {
             return chain([
                 mergeWith(templateSource, MergeStrategy.Overwrite),
                 tree => {
+                    // const worskpace = getWorkspace(tree);
+                    // workspace.
                     if (isUniversal(tree, options)) {
                         tree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
                         tree.rename(`${options.directory}/server_static.ts`, `${options.directory}/temp/server_static.ts${new Date().getDate()}`);
@@ -81,10 +88,26 @@ export default function addServerless(options: any): Rule {
     });
 
     rules.push(tree => {
-        addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0', true);
-        addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2', true);
-        addDependencyToPackageJson(tree, options, 'cors', '~2.8.4');
-        addDependencyToPackageJson(tree, options, 'cp-cli', '^1.1.0');
+        addPackageJsonDependency(tree, {
+            type: NodeDependencyType.Dev,
+            name: 'ts-loader',
+            version: '4.2.0'
+        });
+        addPackageJsonDependency(tree, {
+            type: NodeDependencyType.Dev,
+            name: 'webpack-cl',
+            version: '2.1.2'
+        });
+        addPackageJsonDependency(tree, {
+            type: NodeDependencyType.Default,
+            name: 'cors',
+            version: '~2.8.4'
+        });
+        addPackageJsonDependency(tree, {
+            type: NodeDependencyType.Default,
+            name: 'cp-cli',
+            version: '^1.1.0'
+        });
     });
     
 
@@ -157,7 +180,7 @@ export default function addServerless(options: any): Rule {
                 createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, "  "));
         });
 
-        rules.push(addOrReplaceScriptInPackageJson(options, 'build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
+        rules.push(addOrReplaceScriptInPackageJson('build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
 
         rules.push(mergeWith(source, MergeStrategy.Overwrite));
     }
@@ -165,7 +188,11 @@ export default function addServerless(options: any): Rule {
     if (options.provider === 'gcloud' || options.provider === 'aws' ) {
         //serverless stuff
         rules.push( tree => {
-            addDependencyToPackageJson(tree, options, 'serverless', '1.26.1', true)
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Dev,
+                name: 'serverless',
+                version: '1.40.0'
+            });
             return tree;
         });
 
@@ -206,9 +233,9 @@ server.app.listen(port, () => {
     }
 
     rules.push(tree => {
-        const ngToolkitSettings = getNgToolkitInfo(tree, options);
+        const ngToolkitSettings = getNgToolkitInfo(tree);
         ngToolkitSettings.serverless = options;
-        updateNgToolkitInfo(tree, options, ngToolkitSettings);
+        updateNgToolkitInfo(tree, ngToolkitSettings);
     });
     if (!options.disableBugsnag) {
         return applyAndLog(chain(rules));
@@ -274,8 +301,16 @@ function addServerlessAWS(options: any): Rule {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
             tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
 
-            addDependencyToPackageJson(tree, options, 'aws-serverless-express', '^3.2.0' );
-            addDependencyToPackageJson(tree, options, 'serverless-apigw-binary', '^0.4.4', true );
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: 'aws-serverless-express',
+                version: '^3.2.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Dev,
+                name: 'serverless-apigw-binary',
+                version: '^0.4.4'
+            });
             return tree;
         }
     ]);
@@ -294,9 +329,21 @@ function addServerlessGcloud(options: any): Rule {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
             tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
 
-            addDependencyToPackageJson(tree, options, 'firebase-admin', '^5.11.0' );
-            addDependencyToPackageJson(tree, options, 'firebase-functions', '^0.9.1' );
-            addDependencyToPackageJson(tree, options, 'serverless-google-cloudfunctions', '^1.1.1', true );
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Dev,
+                name: 'firebase-admin',
+                version: '^5.11.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Dev,
+                name: 'firebase-functions',
+                version: '^0.9.1'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: 'serverless-google-cloudfunctions',
+                version: '^1.1.1'
+            });
             return tree;
         }
     ]);
@@ -326,7 +373,7 @@ function updateEnvironment(options: any): Rule {
 
         //update CLI with new configuration
 
-        const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+        const cliConfig: any = JSON.parse(getFileContent(tree, `angular.json`));
         const project: any = cliConfig.projects[options.project].architect;
         for (let property in project) {
             if (project.hasOwnProperty(property) && (project[property].builder === '@angular-devkit/build-angular:server')) {
@@ -344,7 +391,7 @@ function updateEnvironment(options: any): Rule {
             }
         }
 
-        tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "))
+        tree.overwrite(`angular.json`, JSON.stringify(cliConfig, null, "  "))
 
         return tree;
     }

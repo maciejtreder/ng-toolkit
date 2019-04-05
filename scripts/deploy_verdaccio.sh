@@ -1,4 +1,4 @@
-CATALOGS=(_utils pwa serverless universal firebug init)
+CATALOGS=(_utils pwa serverless universal firebug)
 
 echo "//localhost:4873/:_authToken=\"fooBar\"" >> ~/.npmrc
 

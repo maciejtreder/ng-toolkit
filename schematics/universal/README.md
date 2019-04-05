@@ -30,6 +30,22 @@ apply package
 ng add @ng-toolkit/universal [--http false]
 ```
 
+## Run options
+
+### Run server locally
+
+```
+npm run build:ssr
+npm run serve:ssr
+```
+
+### Prerender Angular app
+
+```
+npm run build:prerender
+npm run serve:prerender
+```
+
 ### Options
 If you don't want to use TransferHttpCacheModule indicate it by adding `--http false` flag.
 

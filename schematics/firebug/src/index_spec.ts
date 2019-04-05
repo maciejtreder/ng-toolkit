@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
-import { Tree } from '@angular-devkit/schematics';
+// import { Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '../node_modules/@schematics/angular/utility/test';
 
 const collectionPath = path.join(__dirname, '../collection.json');
@@ -14,34 +14,29 @@ describe('Firebug', () => {
     const defaultOptions: any = {
         project: 'foo',
         disableBugsnag: true,
-        directory: '/foo'
+        clientProject: 'foo'
     };
 
-    const appOptions: any = {
-        name: 'foo',
-        version: '6.0.0',
-    };
-
-    beforeEach((done) => {
-        appTree = new UnitTestTree(Tree.empty());
-        schematicRunner.runExternalSchematicAsync('@schematics/angular', 'ng-new', appOptions, appTree).subscribe(tree => {
-            appTree = tree;
-
-            schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree). subscribe(tree => {
-                appTree = tree;
-                done();
-            });
+    beforeEach(() => {
+        appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
+            name: 'workspace',
+            version: '6.0.0',
+            newProjectRoot: 'projects'
         });
+
+        schematicRunner.runExternalSchematic('@schematics/angular', 'application', {name: 'foo'}, appTree);
+
+        schematicRunner.runSchematic('ng-add', defaultOptions, appTree);
     });
 
     it('Should create necessary files', () => {
-        checkIfFileExists(appTree, `${defaultOptions.directory}/src/environments/environment.firebug.ts`);
-        checkIfFileExists(appTree, `${defaultOptions.directory}/src/bootstrapScripts/firebug.ts`);
-        checkIfFileExists(appTree, `${defaultOptions.directory}/getFirebug.js`);
+        checkIfFileExists(appTree, `/projects/foo/src/environments/environment.firebug.ts`);
+        checkIfFileExists(appTree, `/projects/foo/src/bootstrapScripts/firebug.ts`);
+        checkIfFileExists(appTree, `/getFirebug.js`);
     });
 
     it('Should add firebug build to angular.json', () => {
-        const CLIConfig = JSON.parse(getFileContent(appTree, `${defaultOptions.directory}/angular.json`));
+        const CLIConfig = JSON.parse(getFileContent(appTree, `angular.json`));
 
         const fireBugConfiguration = CLIConfig.projects[defaultOptions.project].architect.build.configurations.firebug;
         expect(fireBugConfiguration).toBeDefined('Lack of firebug configuration in angular.json');
@@ -57,7 +52,7 @@ describe('Firebug', () => {
     });
 
     it('Should add proper configration to serve in angular.json', () => {
-        const CLIConfig = JSON.parse(getFileContent(appTree, `${defaultOptions.directory}/angular.json`));
+        const CLIConfig = JSON.parse(getFileContent(appTree, `angular.json`));
 
         const fireBugConfiguration = CLIConfig.projects[defaultOptions.project].architect.serve.configurations.firebug;
         expect(fireBugConfiguration).toBeDefined('Lack of firebug serve configuration in angular.json');
@@ -66,25 +61,25 @@ describe('Firebug', () => {
     });
 
     it ('Should add scripts to package.json', () => {
-        const packageJson = JSON.parse(getFileContent(appTree, `${defaultOptions.directory}/package.json`));
+        const packageJson = JSON.parse(getFileContent(appTree, `package.json`));
         expect(packageJson.scripts['build:firebug']).toEqual('node getFirebug.js && ng serve -c firebug');
     });
 
     it('Should contain necessary dependencies', () => {
-        const packageJson = JSON.parse(getFileContent(appTree, `${defaultOptions.directory}/package.json`));
+        const packageJson = JSON.parse(getFileContent(appTree, `package.json`));
         expect(packageJson.devDependencies['node-wget']).toBeDefined('Lack of node-wget in dependencies');
         expect(packageJson.devDependencies['decompress']).toBeDefined('Lack of decompress in dependencies');
         expect(packageJson.devDependencies['decompress-targz']).toBeDefined('Lack of decompress-targz in dependencies');
     });
 
     it('Should contain firebug script in bootstrap file', () => {
-        const bootstrapFile = getFileContent(appTree, `${defaultOptions.directory}/src/main.ts`);
+        const bootstrapFile = getFileContent(appTree, `/projects/foo/src/main.ts`);
         expect(bootstrapFile.indexOf('fireBug')).toBeGreaterThan(-1, 'Lack of firebug script in bootstrap');
     });
 
 
     it('Should contain firebug in assets', () => {
-        const CLIConfig = JSON.parse(getFileContent(appTree, `${defaultOptions.directory}/angular.json`));
+        const CLIConfig = JSON.parse(getFileContent(appTree, `angular.json`));
 
         const assets = CLIConfig.projects[defaultOptions.project].architect.build.options.assets;
         expect(JSON.stringify(assets[2])).toEqual(JSON.stringify({
