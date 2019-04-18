@@ -95,7 +95,7 @@ export default function addServerless(options: any): Rule {
         });
         addPackageJsonDependency(tree, {
             type: NodeDependencyType.Dev,
-            name: 'webpack-cl',
+            name: 'webpack-cli',
             version: '2.1.2'
         });
         addPackageJsonDependency(tree, {
