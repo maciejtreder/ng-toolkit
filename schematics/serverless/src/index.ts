@@ -2,7 +2,8 @@ import {
     apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    applyAndLog, addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
+    applyAndLog, 
+    addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
     createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder,
     isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, getNgToolkitInfo, updateNgToolkitInfo
 } from '@ng-toolkit/_utils';
@@ -95,7 +96,7 @@ export default function addServerless(options: any): Rule {
         });
         addPackageJsonDependency(tree, {
             type: NodeDependencyType.Dev,
-            name: 'webpack-cl',
+            name: 'webpack-cli',
             version: '2.1.2'
         });
         addPackageJsonDependency(tree, {

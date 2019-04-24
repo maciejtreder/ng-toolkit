@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import * as bugsnag from 'bugsnag';
 import * as ts from 'typescript';
 import {addSymbolToNgModuleMetadata, insertImport} from '@schematics/angular/utility/ast-utils';
-import { InsertChange } from '@schematics/angular/utility/change';
+import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import {
   addPackageJsonDependency,
@@ -92,7 +92,7 @@ function getTsSourceFile(tree: Tree, path: string): ts.SourceFile {
 export function addImportStatement(tree: Tree, filePath: string, type: string, file: string ) {
     let source = getTsSourceFile(tree, filePath);
     const importChange = insertImport(source, filePath, type, file) as InsertChange;
-    if (importChange) {
+    if (!(importChange instanceof NoopChange)) {
       const recorder = tree.beginUpdate(filePath);
       recorder.insertLeft(importChange.pos, importChange.toAdd);
       tree.commitUpdate(recorder);
