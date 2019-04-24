@@ -1,6 +1,6 @@
 import * as bugsnag from 'bugsnag';
 import { Rule, chain, mergeWith, MergeStrategy, apply, url, move, Tree, SchematicContext } from '@angular-devkit/schematics';
-import { applyAndLog, createOrOverwriteFile, addOrReplaceScriptInPackageJson2, addEntryToEnvironment, getMainFilePath, addImportLine } from '@ng-toolkit/_utils';
+import { applyAndLog, createOrOverwriteFile, addOrReplaceScriptInPackageJson, addEntryToEnvironment, getMainFilePath, addImportLine } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '../node_modules/@angular-devkit/core';
@@ -12,7 +12,7 @@ import {
 } from '@schematics/angular/utility/dependencies';
 
 export default function addFirebug(options: any): Rule {
-
+    options.project = options.clientProject;
     function getSourceRoot(tree: Tree): string {
         const workspace = getWorkspace(tree);
         return `/${workspace.projects[options.clientProject].sourceRoot}`;
@@ -32,6 +32,8 @@ export default function addFirebug(options: any): Rule {
     ]);
 
     let rule: Rule = chain([
+        // adding build script and dependencies
+        addOrReplaceScriptInPackageJson('build:firebug', `node getFirebug.js && ng serve -c firebug`),
         (tree: Tree, context: SchematicContext) => {
 
             // updating CLI config
@@ -54,10 +56,6 @@ export default function addFirebug(options: any): Rule {
               });
 
             createOrOverwriteFile(tree,  `angular.json`, JSON.stringify(CLIConfig, null, "  "));
-
-
-            // adding build script and dependencies
-            addOrReplaceScriptInPackageJson2(tree, "build:firebug", `node getFirebug.js && ng serve -c firebug`);
 
             addPackageJsonDependency(tree, {
                 type: NodeDependencyType.Dev,

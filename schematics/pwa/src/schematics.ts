@@ -9,6 +9,7 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import * as bugsnag from 'bugsnag';
 
 export default function index(options: any): Rule {
+    options.project = options.clientProject;
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
         let metaData = notification.events[0].metaData;
@@ -24,7 +25,7 @@ export default function index(options: any): Rule {
 
             const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
             if (!cliConfig.projects[options.clientProject].architect.build.configurations.production.serviceWorker) {
-                throw new NgToolkitException(`Run 'ng add @angular/universal' before applying this schematics.`);
+                throw new NgToolkitException(`Run 'ng add @angular/pwa' before applying this schematics.`);
             }
             
             // add entry to server module
