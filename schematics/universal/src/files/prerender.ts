@@ -44,7 +44,6 @@ const index = readFileSync('./dist/browser/index.html', 'utf8');
 
 let previousRender = Promise.resolve();
 
-
 const angularConfiguration = JSON.parse(fs.readFileSync('./angular.json').toString());
 
 let universalProjectEntryFile;
@@ -248,7 +247,6 @@ function findRoutes(sourceCode: string, path: string) {
       // }
     });
   }
-
 
   return {identifiers: identifiers, routes: routes };
 }

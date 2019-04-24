@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/universal",
   "main": "dist/index.js",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "Adds Angular Universal support for any Angular CLI project",
   "repository": {
     "type": "git",
@@ -35,13 +35,13 @@
     "@angular/core": "^7.1.0"
   },
   "dependencies": {
-    "@ng-toolkit/_utils": "7.1.1",
-    "@ng-toolkit/pwa": "^7.1.0",
-    "@ng-toolkit/serverless": "^7.1.0",
+    "@ng-toolkit/_utils": "7.1.2",
     "@nguniversal/express-engine": "^7.1.1",
     "bugsnag": "^2.4.2"
   },
   "devDependencies": {
+    "@ng-toolkit/pwa": "^7.1.1",
+    "@ng-toolkit/serverless": "^7.1.2",
     "@angular-devkit/build-angular": "^0.13.6",
     "@angular-devkit/build-ng-packagr": "^0.13.6",
     "@angular-devkit/core": "^7.1.0",
