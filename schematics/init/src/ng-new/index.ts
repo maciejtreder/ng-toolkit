@@ -44,20 +44,52 @@ export default function(options: Schema): Rule {
 function updatePackageJson(options: any): Rule {
     return chain([
         (tree) => {
-            addDependencyToPackageJson(tree, options, '@angular/service-worker', '^6.0.0');
-            addDependencyToPackageJson(tree, options, '@angular/platform-server', '^6.0.0');
-            addDependencyToPackageJson(tree, options, '@angular/cdk', '^6.0.0');
-            addDependencyToPackageJson(tree, options, '@angular/material', '^6.0.0');
-            addDependencyToPackageJson(tree, options, 'webpack-cli', '2.1.2');
-            addDependencyToPackageJson(tree, options, 'ts-loader', '4.2.0', true);
-            addDependencyToPackageJson(tree, options, '@ngx-translate/core', '^10.0.1');
-            addDependencyToPackageJson(tree, options, '@ngx-translate/http-loader', '^3.0.1');
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@angular/service-worker',
+                version: '^6.0.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@angular/platform-server',
+                version: '^6.0.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@angular/cdk',
+                version: '^6.0.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@angular/material',
+                version: '^6.0.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: 'webpack-cli',
+                version: '2.1.2'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Dev,
+                name: 'ts-loader',
+                version: '4.2.0'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@ngx-translate/core',
+                version: '^10.0.1'
+            });
+            addPackageJsonDependency(tree, {
+                type: NodeDependencyType.Default,
+                name: '@ngx-translate/http-loader',
+                version: '^3.0.1'
+            });
             return tree;
         },
-        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
-        addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
-        addOrReplaceScriptInPackageJson(options, 'test', 'ng test --code-coverage'),
-        addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --watch --code-coverage'),
+        addOrReplaceScriptInPackageJson('build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
+        addOrReplaceScriptInPackageJson('build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
+        addOrReplaceScriptInPackageJson('test', 'ng test --code-coverage'),
+        addOrReplaceScriptInPackageJson('test:watch', 'ng test --watch --code-coverage'),
 
         (tree) => {
             let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
@@ -73,7 +105,7 @@ function adjustCLIConfig(options: any): Rule {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
 
         // delete cliConfig.projects[options.name].sourceRoot;
-
+        console.log('CLI Config: ', cliConfig);
         cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
         cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "manifest.json", input: "src", output: "/"});
