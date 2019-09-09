@@ -4,7 +4,7 @@ import { applyAndLog, createOrOverwriteFile, addOrReplaceScriptInPackageJson, ad
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '../node_modules/@angular-devkit/core';
-import * as ts from 'typescript';
+import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import {
   addPackageJsonDependency,
