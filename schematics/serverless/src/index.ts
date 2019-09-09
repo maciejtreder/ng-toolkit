@@ -2,7 +2,7 @@ import {
     apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, SchematicContext
 } from '@angular-devkit/schematics';
 import {
-    applyAndLog, 
+    applyAndLog,
     addOrReplaceScriptInPackageJson, addOpenCollective, updateGitIgnore, addDependencyInjection,
     createOrOverwriteFile, addEntryToEnvironment, getMethodBody, updateMethod, addMethod, addImportStatement, getDistFolder,
     isUniversal, getBrowserDistFolder, getServerDistFolder, implementInterface, getNgToolkitInfo, updateNgToolkitInfo
@@ -13,12 +13,12 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '@angular-devkit/core';
 import * as bugsnag from 'bugsnag';
 import {
-  addPackageJsonDependency,
-  NodeDependencyType,
+    addPackageJsonDependency,
+    NodeDependencyType,
 } from '@schematics/angular/utility/dependencies';
 
 export default function addServerless(options: any): Rule {
-    options.project = options.clientProject;
+    options.clientProject = options.project;
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
         let metaData = notification.events[0].metaData;
@@ -42,7 +42,6 @@ export default function addServerless(options: any): Rule {
     rules.push((tree: Tree, context: SchematicContext) => {
         // // update project name
         // updateProject(tree, options);
-            
         const ngToolkitSettings = getNgToolkitInfo(tree);
         if (!ngToolkitSettings.universal) {
             return chain([
@@ -68,7 +67,7 @@ export default function addServerless(options: any): Rule {
             ])(tree, context);
         }
         if (ngToolkitSettings.serverless) {
-            switch(options.provider) {
+            switch (options.provider) {
                 case 'aws': {
                     tree.delete(`${options.directory}/lambda.js`);
                     tree.delete(`${options.directory}/serverless.yml`);
@@ -110,7 +109,7 @@ export default function addServerless(options: any): Rule {
             version: '^1.1.0'
         });
     });
-    
+
 
     rules.push(addOpenCollective(options));
 
@@ -123,23 +122,22 @@ export default function addServerless(options: any): Rule {
         ]);
 
         rules.push(tree => {
-            createOrOverwriteFile(tree, `${options.directory}/functions/package.json`,`{
-  "name": "functions",
-  "description": "Cloud Functions for Firebase",
-  "scripts": {
-    "serve": "firebase serve --only functions",
-    "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "dependencies": {
-    "firebase-admin": "~5.12.0",
-    "firebase-functions": "^1.0.1"
-  },
-  "private": true
-}
-`);
+            createOrOverwriteFile(tree, `${options.directory}/functions/package.json`, `{
+                "name": "functions",
+                "description": "Cloud Functions for Firebase",
+                "scripts": {
+                    "serve": "firebase serve --only functions",
+                    "shell": "firebase functions:shell",
+                    "start": "npm run shell",
+                    "deploy": "firebase deploy --only functions",
+                    "logs": "firebase functions:log"
+                },
+                "dependencies": {
+                    "firebase-admin": "~5.12.0",
+                    "firebase-functions": "^1.0.1"
+                },
+                "private": true
+            }`);
             let firebaseProjectSettings = {};
             if (options.firebaseProject) {
                 firebaseProjectSettings = {
@@ -153,42 +151,41 @@ export default function addServerless(options: any): Rule {
             }
 
             let firebaseJson;
-    
-              if (tree.exists(`${options.directory}/firebase.json`)) {
-                  firebaseJson = JSON.parse(getFileContent(tree, `${options.directory}/firebase.json`));
-                  firebaseJson.hosting = {
-                      "public": "functions/dist",
-                      "rewrites": [
-                        {
-                          "source": "**",
-                          "function": "http"
-                        }
-                      ]
-                    };
-              } else {
-                  firebaseJson = {
-                    "hosting": {
-                      "public": "functions/dist",
-                      "rewrites": [
-                        {
-                          "source": "**",
-                          "function": "http"
-                        }
-                      ]
-                    }
-                  };
-                }
-                createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, "  "));
-        });
 
+            if (tree.exists(`${options.directory}/firebase.json`)) {
+                firebaseJson = JSON.parse(getFileContent(tree, `${options.directory}/firebase.json`));
+                firebaseJson.hosting = {
+                    "public": "functions/dist",
+                    "rewrites": [
+                        {
+                            "source": "**",
+                            "function": "http"
+                        }
+                    ]
+                };
+            } else {
+                firebaseJson = {
+                    "hosting": {
+                        "public": "functions/dist",
+                        "rewrites": [
+                            {
+                                "source": "**",
+                                "function": "http"
+                            }
+                        ]
+                    }
+                };
+            }
+            createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, "  "));
+        });
         rules.push(addOrReplaceScriptInPackageJson('build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
 
         rules.push(mergeWith(source, MergeStrategy.Overwrite));
     }
 
-    if (options.provider === 'gcloud' || options.provider === 'aws' ) {
+    if (options.provider === 'gcloud' || options.provider === 'aws') {
         //serverless stuff
-        rules.push( tree => {
+        rules.push(tree => {
             addPackageJsonDependency(tree, {
                 type: NodeDependencyType.Dev,
                 name: 'serverless',
@@ -205,15 +202,15 @@ export default function addServerless(options: any): Rule {
     }
 
     rules.push(tree => {
-        createOrOverwriteFile(tree,`${options.directory}/local.js`,`
-const port = process.env.PORT || 8080;
+        createOrOverwriteFile(tree, `${options.directory}/local.js`, `
+            const port = process.env.PORT || 8080;
 
-const server = require('./${getDistFolder(tree, options)}/server');
+            const server = require('./${getDistFolder(tree, options)}/server');
 
-server.app.listen(port, () => {
-    console.log("Listening on: http://localhost:"+port);
-});
-`);
+            server.app.listen(port, () => {
+                console.log("Listening on: http://localhost:"+port);
+            });
+        `);
 
         let webpack = getFileContent(tree, `${options.directory}/webpack.server.config.js`);
         tree.overwrite(`${options.directory}/webpack.server.config.js`, webpack.replace("__distFolder__", getDistFolder(tree, options)));
@@ -248,11 +245,11 @@ server.app.listen(port, () => {
 function addBuildScriptsAndFiles(options: any): Rule {
     return (tree: Tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-
-        const universal:boolean = isUniversal(tree, options);
+        // console.debug(`Package JSON Source: ${JSON.stringify(packageJsonSource, null, 4)}`);
+        const universal: boolean = isUniversal(tree, options);
 
         let serverlessBasePath;
-        switch(options.provider) {
+        switch (options.provider) {
             default: serverlessBasePath = '/'; break;
             case 'aws': serverlessBasePath = '/production/'; break;
             case 'gcloud': serverlessBasePath = '/http/'; break;
@@ -300,8 +297,7 @@ function addServerlessAWS(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
-
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
             addPackageJsonDependency(tree, {
                 type: NodeDependencyType.Default,
                 name: 'aws-serverless-express',
@@ -328,7 +324,7 @@ function addServerlessGcloud(options: any): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree,`${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
 
             addPackageJsonDependency(tree, {
                 type: NodeDependencyType.Dev,
@@ -366,9 +362,9 @@ function updateEnvironment(options: any): Rule {
 
         createOrOverwriteFile(tree, `${options.directory}/src/environments/environment.serverless.ts`, getFileContent(tree, `${options.directory}/src/environments/environment.prod.ts`));
 
-        tree.getDir(`${options.directory}/src/environments`).visit( (path: Path) => {
+        tree.getDir(`${options.directory}/src/environments`).visit((path: Path) => {
             if (path.endsWith('.ts')) {
-                addEntryToEnvironment(tree, path, 'baseHref', path.indexOf('serverless') > -1?serverlessBasePath:'/');
+                addEntryToEnvironment(tree, path, 'baseHref', path.indexOf('serverless') > -1 ? serverlessBasePath : '/');
             }
         });
 
@@ -392,14 +388,14 @@ function updateEnvironment(options: any): Rule {
             }
         }
 
-        tree.overwrite(`angular.json`, JSON.stringify(cliConfig, null, "  "))
+        tree.overwrite(`angular.json`, JSON.stringify(cliConfig, null, 4));
 
         return tree;
     }
 }
 
 function updateAppEntryFile(options: any): Rule {
-    return tree=> {
+    return tree => {
         if (!isUniversal(tree, options)) {
             return tree;
         }
@@ -409,31 +405,32 @@ function updateAppEntryFile(options: any): Rule {
         implementInterface(tree, appComponentFilePath, 'OnInit', '@angular\/core');
         addImportStatement(tree, appComponentFilePath, 'Inject', '@angular\/core');
         addImportStatement(tree, appComponentFilePath, 'isPlatformBrowser', '@angular\/common');
-        
+
         addDependencyInjection(tree, appComponentFilePath, 'document', 'any', '@angular/common', 'DOCUMENT');
         addDependencyInjection(tree, appComponentFilePath, 'platformId', 'any', '@angular/core', 'PLATFORM_ID');
 
         if (ngOnInit) {
             updateMethod(tree, appComponentFilePath, 'ngOnInit', ngOnInit + `
-    if (!isPlatformBrowser(this.platformId)) {
-        let bases = this.document.getElementsByTagName('base');
+                if (!isPlatformBrowser(this.platformId)) {
+                    let bases = this.document.getElementsByTagName('base');
 
-        if (bases.length > 0) {
-            bases[0].setAttribute('href', environment.baseHref);
-        }
-    }
-`);
+                    if (bases.length > 0) {
+                        bases[0].setAttribute('href', environment.baseHref);
+                    }
+                }`
+            );
         } else {
             addMethod(tree, appComponentFilePath, `
-    public ngOnInit(): void {
-        if (!isPlatformBrowser(this.platformId)) {
-            let bases = this.document.getElementsByTagName('base');
-    
-            if (bases.length > 0) {
-                bases[0].setAttribute('href', environment.baseHref);
-            }
-        }
-    }`);
+                public ngOnInit(): void {
+                    if (!isPlatformBrowser(this.platformId)) {
+                        let bases = this.document.getElementsByTagName('base');
+                
+                        if (bases.length > 0) {
+                            bases[0].setAttribute('href', environment.baseHref);
+                        }
+                    }
+                }`
+            );
         }
         return tree;
     }

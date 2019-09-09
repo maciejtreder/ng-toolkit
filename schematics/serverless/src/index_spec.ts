@@ -42,18 +42,18 @@ describe('Serverless', () => {
     });
 
     describe('AWS Lambda', () => {
-        beforeAll(() => defaultOptions['provider'] = 'aws');
-        afterAll(() => delete defaultOptions['provider']);
-        xit('Should create serverless configuration for AWS', (done) => {
+        beforeAll(() => defaultOptions.provider = 'aws');
+        afterAll(() => delete defaultOptions.provider);
+        it('Should create serverless configuration for AWS', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-                checkIfFileExists(tree, `serverless.yml`);
-                checkIfFileExists(tree, `lambda.js`);
+                checkIfFileExists(tree, `/serverless.yml`);
+                checkIfFileExists(tree, `/lambda.js`);
                 shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\saws/);
                 done();
             });
         });
 
-        xit('Should add proper scripts to package.json', (done) => {
+        it('Should add proper scripts to package.json', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \/production\/"/);
                 done();
@@ -65,17 +65,17 @@ describe('Serverless', () => {
         beforeAll(() => defaultOptions['provider'] = 'firebase');
         afterAll(() => delete defaultOptions['provider']);
 
-        xit('Should create files', (done) => {
+        it('Should create files', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-                checkIfFileExists(tree, `functions/package.json`);
-                checkIfFileExists(tree, `functions/index.js`);
-                checkIfFileExists(tree, `.firebaserc`);
-                checkIfFileExists(tree, `firebase.json`);
+                checkIfFileExists(tree, `/functions/package.json`);
+                checkIfFileExists(tree, `/functions/index.js`);
+                checkIfFileExists(tree, `/.firebaserc`);
+                checkIfFileExists(tree, `/firebase.json`);
                 done();
             });
         });
 
-        xit('Should add proper scripts to package.json', (done) => {
+        it('Should add proper scripts to package.json', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \//);
                 done();
@@ -86,16 +86,16 @@ describe('Serverless', () => {
     describe('Google Cloud Functions', () => {
         beforeAll(() => defaultOptions['provider'] = 'gcloud');
         afterAll(() => delete defaultOptions['provider']);
-        xit('Should create serverless configuration and files', (done) => {
+        it('Should create serverless configuration and files', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-                checkIfFileExists(tree, `serverless.yml`);
-                checkIfFileExists(tree, `index.js`);
+                checkIfFileExists(tree, `/serverless.yml`);
+                checkIfFileExists(tree, `/index.js`);
                 shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\sgoogle/);
                 done();
             });
         });
 
-        xit('Should add proper scripts to package.json', (done) => {
+        it('Should add proper scripts to package.json', (done) => {
             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \/http\/"/);
                 done();
@@ -103,26 +103,26 @@ describe('Serverless', () => {
         });
     });
 
-    xit('By default AWS should be choosen as provider', (done) => {
+    it('By default AWS should be choosen as provider', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-            checkIfFileExists(tree, `serverless.yml`);
-            checkIfFileExists(tree, `lambda.js`);
+            checkIfFileExists(tree, `/serverless.yml`);
+            checkIfFileExists(tree, `/lambda.js`);
             shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\saws/);
             done();
         });
     });
 
-    xit('Should create all common files', (done)=> {
+    it('Should create all common files', (done)=> {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-            checkIfFileExists(tree, `local.js`);
-            checkIfFileExists(tree, `server.ts`);
-            checkIfFileExists(tree, `webpack.server.config.js`);
-            checkIfFileExists(tree, `ng-toolkit.json`);
+            checkIfFileExists(tree, `/local.js`);
+            checkIfFileExists(tree, `/server.ts`);
+            checkIfFileExists(tree, `/webpack.server.config.js`);
+            checkIfFileExists(tree, `/ng-toolkit.json`);
             done();
         });
     });
 
-    xit('Should add proper scripts to package.json', (done) => {
+    it('Should add proper scripts to package.json', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
             shouldContainEntry(tree, `package.json`, /"build:browser:prod": "ng build --prod"/);
             shouldContainEntry(tree, `package.json`, /"build:prod": "npm run build:browser:prod && npm run build:server:prod"/);
