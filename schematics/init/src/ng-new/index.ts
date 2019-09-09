@@ -105,7 +105,7 @@ function adjustCLIConfig(options: any): Rule {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
 
         // delete cliConfig.projects[options.name].sourceRoot;
-        console.log('CLI Config: ', cliConfig);
+        console.log('CLI Config: ', JSON.stringify(cliConfig, null, 4));
         cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
         cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "manifest.json", input: "src", output: "/"});
