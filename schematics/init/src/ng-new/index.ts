@@ -43,6 +43,10 @@ export default function(options: Schema): Rule {
 
 function updatePackageJson(options: any): Rule {
     return chain([
+        addOrReplaceScriptInPackageJson('build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
+        addOrReplaceScriptInPackageJson('build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
+        addOrReplaceScriptInPackageJson('test', 'ng test --code-coverage'),
+        addOrReplaceScriptInPackageJson('test:watch', 'ng test --watch --code-coverage'),
         (tree) => {
             addPackageJsonDependency(tree, {
                 type: NodeDependencyType.Default,
@@ -86,11 +90,6 @@ function updatePackageJson(options: any): Rule {
             });
             return tree;
         },
-        addOrReplaceScriptInPackageJson('build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
-        addOrReplaceScriptInPackageJson('build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
-        addOrReplaceScriptInPackageJson('test', 'ng test --code-coverage'),
-        addOrReplaceScriptInPackageJson('test:watch', 'ng test --watch --code-coverage'),
-
         (tree) => {
             let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
             packageJsonContent = packageJsonContent.replace('__projectName__', options.name);
@@ -105,7 +104,7 @@ function adjustCLIConfig(options: any): Rule {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
 
         // delete cliConfig.projects[options.name].sourceRoot;
-        console.log('CLI Config: ', JSON.stringify(cliConfig, null, 4));
+        // console.log('CLI Config: ', JSON.stringify(cliConfig, null, 4));
         cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
         cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
         cliConfig.projects[options.name].architect.build.options.assets.push({glob: "manifest.json", input: "src", output: "/"});
@@ -113,7 +112,6 @@ function adjustCLIConfig(options: any): Rule {
         cliConfig.projects[options.name].architect.build.options.styles = [{input: "src/styles/main.scss"}];
         cliConfig.projects[options.name].architect.build.configurations.production.serviceWorker = true;
         delete cliConfig.defaultProject;
-
 
         cliConfig.projects[options.name].architect.serve.configurations.dev = {browserTarget: `${options.name}:build:dev`};
         delete cliConfig.projects[options.name].architect.serve.configurations.production;
@@ -130,7 +128,7 @@ function adjustCLIConfig(options: any): Rule {
             }
         };
 
-        cliConfig.projects[`${options.name}-e2e`].architect.e2e.options.devServerTarget = `${options.name}:serve`;
+        cliConfig.projects[options.name].architect.e2e.options.devServerTarget = `${options.name}:serve`;
 
         createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, "  "));
         return tree;
