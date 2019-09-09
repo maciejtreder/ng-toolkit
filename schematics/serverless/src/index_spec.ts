@@ -10,6 +10,11 @@ describe('Serverless', () => {
 
     const schematicRunner = new SchematicTestRunner('@ng-toolkit/serverless', collectionPath);
 
+    const workspaceOptions = {
+        name: 'workspace',
+        version: '6.0.0',
+        newProjectRoot: 'projects'
+    };
     const defaultOptions: any = {
         project: 'foo',
         disableBugsnag: true
@@ -21,18 +26,12 @@ describe('Serverless', () => {
     // };
 
     beforeEach( (done) => {
-        appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', {
-            name: 'workspace',
-            version: '6.0.0',
-            newProjectRoot: 'projects'
-        });
+        appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
 
         schematicRunner.runExternalSchematicAsync('@schematics/angular', 'application', {name: 'foo'}, appTree).subscribe(tree => {
             appTree = tree;
             done();
         });
-
-
 
         // appTree = new UnitTestTree(Tree.empty());
         // schematicRunner.runExternalSchematicAsync('@schematics/angular', 'ng-new', appOptions, appTree).subscribe(tree => {
