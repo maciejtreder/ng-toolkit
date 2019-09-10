@@ -3,7 +3,6 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
 // import { Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '../node_modules/@schematics/angular/utility/test';
-import { doesNotReject } from 'assert';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 

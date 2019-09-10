@@ -4,7 +4,7 @@ import { isString } from 'util';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as bugsnag from 'bugsnag';
-import * as ts from 'typescript';
+import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import {addSymbolToNgModuleMetadata, insertImport} from '@schematics/angular/utility/ast-utils';
 import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
