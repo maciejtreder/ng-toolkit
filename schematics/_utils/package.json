@@ -10,7 +10,6 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "prepublish": "npm test",
     "ci-publish": "ci-publish"
   },
   "keywords": [
