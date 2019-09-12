@@ -25,21 +25,20 @@ export function newApp(options: any): Rule {
         provider: options.provider,
         directory: options.directory
     };
-
     rules.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', serverlessOptions));
     if (options.firebug) {
         rules.push(externalSchematic('@ng-toolkit/firebug', 'ng-add', options));
     }
-    rules.push(((tree) => {
-        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-        packageJsonSource['collective'] = {
-            type: 'opencollective',
-            url: 'https://opencollective.com/ng-toolkit'
-        };
-        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
-        return tree;
-    }));
-    rules.push(updatePackageJson());
+    // rules.push(tree => {
+    //     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+    //     packageJsonSource['collective'] = {
+    //         type: 'opencollective',
+    //         url: 'https://opencollective.com/ng-toolkit'
+    //     };
+    //     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
+    //     return tree;
+    // });
+    // rules.push(updatePackageJson());
     if (options.gaTrackingCode) {
         rules.push(addGoogleAnalytics(options));
     }

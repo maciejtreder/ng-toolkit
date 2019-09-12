@@ -29,7 +29,7 @@ describe('Serverless', () => {
         });
     });
 
-    xit('Should create files', (done) => {
+    it('Should create files', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
             checkIfFileExists(tree, `/local.js`);
             checkIfFileExists(tree, `/server.ts`);
@@ -38,7 +38,7 @@ describe('Serverless', () => {
             checkIfFileExists(tree, `/projects/foo/src/main.server.ts`);
             checkIfFileExists(tree, `/projects/foo/src/tsconfig.server.json`);
             checkIfFileExists(tree, `/projects/foo/webpack.server.config.js`);
-            checkIfFileExists(tree, `/ng-toolkit.json`);
+            checkIfFileExists(tree, `/projects/foo/ng-toolkit.json`);
             done();
         });
     });

@@ -1,18 +1,18 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
-// import { Tree } from '@angular-devkit/schematics';
+import { checkIfFileExists, shouldContainEntry } from '@ng-toolkit/_utils/testing';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
-describe('my-component', () => {
+describe('My Schematic', () => {
     const schematicRunner = new SchematicTestRunner('@ng-toolkit/init', collectionPath);
+
     const workspaceOptions = {
         name: 'workspace',
         version: '6.0.0',
         newProjectRoot: 'projects'
     };
-    const defaultOptions = {
+    const defaultOptions: any = {
         name: 'foo',
         inlineStyle: false,
         inlineTemplate: false,
@@ -20,10 +20,12 @@ describe('my-component', () => {
         style: 'css',
         skipTests: false,
         skipPackageJson: false,
-        version: '7.0.0'
+        version: '7.0.0',
+        provider: 'aws',
+        disableBugsnag: true
     };
     let appTree: UnitTestTree;
-    // let workspaceTree: Tree;
+
     beforeEach((done) => {
         appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
 
@@ -31,11 +33,9 @@ describe('my-component', () => {
             appTree = tree;
             done();
         });
-        // workspaceTree = Tree.empty();
-        // workspaceTree = schematicRunner.runSchematic('workspace', workspaceOptions);
     });
 
-    it('should create all files of an application', () => {
+    it('should create all files of an application', (done) => {
         schematicRunner.runSchematicAsync('ng-new', defaultOptions, appTree).subscribe(tree => {
             checkIfFileExists(tree, '/foo/tsconfig.json');
             checkIfFileExists(tree, '/foo/tslint.json');
@@ -63,6 +63,33 @@ describe('my-component', () => {
             checkIfFileExists(tree, '/foo/src/app/app.component.html');
             checkIfFileExists(tree, '/foo/src/app/app.component.spec.ts');
             checkIfFileExists(tree, '/foo/src/app/app.component.ts');
+            done();
+        });
+    });
+
+    it('Should create serverless configuration for AWS', (done) => {
+        schematicRunner.runSchematicAsync('ng-new', defaultOptions, appTree).subscribe(tree => {
+            checkIfFileExists(tree, '/foo/serverless.yml');
+            checkIfFileExists(tree, '/foo/lambda.js');
+            shouldContainEntry(tree, '/foo/serverless.yml', /provider:[\s\S]*name:\saws/);
+            done();
+        })
+    });
+
+    it('Should create all common files', (done)=> {
+        schematicRunner.runSchematicAsync('ng-new', defaultOptions, appTree).subscribe(tree => {
+            checkIfFileExists(tree, '/foo/local.js');
+            checkIfFileExists(tree, '/foo/server.ts');
+            checkIfFileExists(tree, '/foo/webpack.server.config.js');
+            checkIfFileExists(tree, '/foo/ng-toolkit.json');
+            done();
+        });
+    });
+
+    it('Should add proper scripts to package.json', (done) => {
+        schematicRunner.runSchematicAsync('ng-new', defaultOptions, appTree).subscribe(tree => {
+            shouldContainEntry(tree, '/foo/package.json', /"build:browser:serverless": "ng build --prod --base-href \/production\/"/);
+            done();
         });
     });
 });

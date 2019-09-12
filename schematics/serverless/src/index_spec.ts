@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { checkIfFileExists, shouldContainEntry } from '@ng-toolkit/_utils/testing';
-// import { Tree } from '@angular-devkit/schematics';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
@@ -20,11 +19,6 @@ describe('Serverless', () => {
         disableBugsnag: true
     };
 
-    // const appOptions: any = {
-    //     name: 'foo',
-    //     version: '6.0.0',
-    // };
-
     beforeEach( (done) => {
         appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
 
@@ -32,12 +26,6 @@ describe('Serverless', () => {
             appTree = tree;
             done();
         });
-
-        // appTree = new UnitTestTree(Tree.empty());
-        // schematicRunner.runExternalSchematicAsync('@schematics/angular', 'ng-new', appOptions, appTree).subscribe(tree => {
-        //     appTree = tree
-        //     done();
-        // });
     });
 
     describe('AWS Lambda', () => {

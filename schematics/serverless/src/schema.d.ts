@@ -6,10 +6,21 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export interface Schema {
-    project?: string;
+interface IFilename {
+    filename?: string;
+}
+
+interface IServerless {
+    aws: IFilename;
+    gcloud: IFilename;
+}
+
+export interface IServerlessSchema {
     provider: ('aws' | 'gcloud' | 'firebase');
     skipInstall: boolean;
     directory: string;
     firebaseProject: string;
+    project?: string;
+    serverless?: IServerless;
+    disableBugsnag?: boolean;
 }

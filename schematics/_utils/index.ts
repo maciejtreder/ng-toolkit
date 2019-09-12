@@ -8,10 +8,7 @@ import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeSc
 import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';
 import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
-import {
-    addPackageJsonDependency,
-    NodeDependencyType,
-} from '@schematics/angular/utility/dependencies';
+import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree => {
@@ -50,6 +47,12 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
         tree.create(filePath, '');
     }
     tree.overwrite(filePath, fileContent);
+}
+
+export function addDependencyToPackageJson(tree: Tree, options: any, dependency: NodeDependency):void {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+    packageJsonSource[dependency.type][dependency.name] = dependency.version;
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
 }
 
 export function addOrReplaceScriptInPackageJson(name: string, script: string): Rule {
@@ -134,7 +137,7 @@ export function addOpenCollective(options: any): Rule {
             packageJsonSource.scripts['postinstall'] = 'opencollective postinstall'
         }
 
-        addPackageJsonDependency(tree, {
+        addDependencyToPackageJson(tree, options, {
             type: NodeDependencyType.Dev,
             name: 'opencollective',
             version: '^1.0.3'
@@ -476,15 +479,15 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     throw new NgToolkitException(`Can't find decorator ${decorator} in ${filePath}`, { fileContent: fileContent });
 }
 
-export function getNgToolkitInfo(tree: Tree) {
-    if (!tree.exists(`ng-toolkit.json`)) {
-        tree.create(`ng-toolkit.json`, `{}`);
+export function getNgToolkitInfo(tree: Tree, options: any) {
+    if (!tree.exists(`${options.directory}/ng-toolkit.json`)) {
+        tree.create(`${options.directory}/ng-toolkit.json`, `{}`);
     }
-    return JSON.parse(getFileContent(tree, `ng-toolkit.json`));
+    return JSON.parse(getFileContent(tree, `${options.directory}/ng-toolkit.json`));
 }
 
-export function updateNgToolkitInfo(tree: Tree, newSettings: any) {
-    tree.overwrite(`ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
+export function updateNgToolkitInfo(tree: Tree, newSettings: any, options: any) {
+    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
 }
 
 export function applyAndLog(rule: Rule): Rule {
@@ -494,13 +497,15 @@ export function applyAndLog(rule: Rule): Rule {
                 let subject: Subject<Tree> = new Subject();
                 console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
                 console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                bugsnag.notify(error, (error, response) => {
-                    if (!error && response === 'OK') {
-                        console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
-                    }
-                    subject.next(Tree.empty());
-                    subject.complete();
-                })
+                // bugsnag.notify(error, (error, response) => {
+                //     if (!error && response === 'OK') {
+                //         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
+                //     }
+                //     subject.next(Tree.empty());
+                //     subject.complete();
+                // })
+                subject.next(Tree.empty());
+                subject.complete();
                 return subject;
             }))
     }

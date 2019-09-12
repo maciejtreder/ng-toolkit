@@ -35,7 +35,7 @@ export default function index(options: any): Rule {
                 addToNgModule(tree, serverModulePath, 'imports', 'NgtPwaMockModule');
             }
 
-            const ngToolkitSettings = getNgToolkitInfo(tree);
+            const ngToolkitSettings = getNgToolkitInfo(tree, options);
             
             if (!ngToolkitSettings.pwa) {
 
