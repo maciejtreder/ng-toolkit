@@ -36,7 +36,7 @@
     "@angular/service-worker": "^7.1.0"
   },
   "dependencies": {
-    "@ng-toolkit/_utils": "7.1.2",
+    "@ng-toolkit/_utils": "8.0.0",
     "bugsnag": "^2.4.2"
   },
   "devDependencies": {
