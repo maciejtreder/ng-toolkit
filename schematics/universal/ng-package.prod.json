@@ -1,8 +1,15 @@
 {
-  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "dest": "./dist",
   "lib": {
     "entryFile": "src/public_api.ts"
   },
-  "whitelistedNonPeerDependencies": ["@ng-toolkit/_utils", "bugsnag", "@ng-toolkit/serverless", "@ng-toolkit/pwa", "@nguniversal/express-engine"]
+  "whitelistedNonPeerDependencies": [
+    "@angular-devkit/core",
+    "@angular-devkit/schematics",
+    "@ng-toolkit/_utils",
+    "@nguniversal/express-engine",
+    "schematics/angular",
+    "bugsnag"
+  ]
 }

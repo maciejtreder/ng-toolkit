@@ -49,7 +49,7 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
     tree.overwrite(filePath, fileContent);
 }
 
-export function addDependencyToPackageJson(tree: Tree, options: any, dependency: NodeDependency):void {
+export function addDependencyToPackageJson(tree: Tree, options: any, dependency: NodeDependency): void {
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource[dependency.type][dependency.name] = dependency.version;
     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
@@ -497,15 +497,13 @@ export function applyAndLog(rule: Rule): Rule {
                 let subject: Subject<Tree> = new Subject();
                 console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
                 console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                // bugsnag.notify(error, (error, response) => {
-                //     if (!error && response === 'OK') {
-                //         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
-                //     }
-                //     subject.next(Tree.empty());
-                //     subject.complete();
-                // })
-                subject.next(Tree.empty());
-                subject.complete();
+                bugsnag.notify(error, (error, response) => {
+                    if (!error && response === 'OK') {
+                        console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
+                    }
+                    subject.next(Tree.empty());
+                    subject.complete();
+                })
                 return subject;
             }))
     }
@@ -577,6 +575,43 @@ function getLiteral(inputNode: ts.Node, literal: string): ts.Node {
     return toReturn;
 }
 
+export function findStatements(tree: Tree, node: ts.Node, filePath: string, subject: string, replacement: string, toReplace: any[]) {
+    let fileContent = getFileContent(tree, filePath);
+    node.forEachChild(node => {
+        if (ts.isIdentifier(node)) {
+            let statement = fileContent.substr(node.pos, node.end - node.pos);
+            let index = statement.indexOf(subject);
+            if (index >= 0) {
+                toReplace.push({ key: replacement, start: node.pos + index, end: node.end });
+            }
+        }
+        else {
+            findStatements(tree, node, filePath, subject, replacement, toReplace);
+        }
+    });
+}
+
+export function updateCode(tree: Tree, filePath: string, varName: string) {
+    let fileContent = getFileContent(tree, filePath);
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
+
+    sourceFile.forEachChild(node => {
+        if (ts.isClassDeclaration(node)) {
+            let replacementTable: any[] = [];
+            node.members.forEach(node => {
+                if (ts.isMethodDeclaration(node)) {
+                    (node.body as ts.Block).statements.forEach(statement => {
+                        findStatements(tree, statement, filePath, varName, `this.${varName}`, replacementTable);
+                    })
+                }
+            });
+            replacementTable.reverse().forEach(element => {
+                fileContent = fileContent.substr(0, element.start) + element.key + fileContent.substr(element.end);
+            });
+            createOrOverwriteFile(tree, filePath, fileContent);
+        }
+    });
+}
 
 export function getBootStrapComponent(tree: Tree, modulePath: string): { component: string, appId: string, filePath: string }[] {
     const moduleSource = getFileContent(tree, modulePath);
