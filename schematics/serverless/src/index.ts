@@ -7,9 +7,9 @@ import {
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '@angular-devkit/core';
-import * as bugsnag from 'bugsnag';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IServerlessSchema } from './schema';
+import * as bugsnag from 'bugsnag';
 
 export default function addServerless(options: IServerlessSchema): Rule {
     // Register bugsnag in order to catch and notify any rule error.
@@ -120,7 +120,7 @@ export default function addServerless(options: IServerlessSchema): Rule {
         rules.push(updateAppEntryFile(options));
     }
 
-    // 
+    // Modify package scripts according to provider
     rules.push(addBuildScriptsAndFiles(options));
 
     if (!options.skipInstall) {
@@ -256,7 +256,7 @@ function setFirebaseFunctions(options: IServerlessSchema): Rule {
     }
 }
 
-function addBuildScriptsAndFiles(options: any): Rule {
+function addBuildScriptsAndFiles(options: IServerlessSchema): Rule {
     return (tree: Tree) => {
         const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
         const universal: boolean = isUniversal(tree, options);
@@ -299,8 +299,8 @@ function addBuildScriptsAndFiles(options: any): Rule {
     }
 }
 
-function addServerlessAWS(options: any): Rule {
-    const fileName = options.serverless.aws.filename || 'serverless.yml';
+function addServerlessAWS(options: IServerlessSchema): Rule {
+    const fileName = options.serverless && options.serverless.aws && options.serverless.aws.filename ? options.serverless.aws.filename : 'serverless.yml';
 
     const source = apply(url('./files/aws'), [
         move(options.directory)
@@ -326,8 +326,8 @@ function addServerlessAWS(options: any): Rule {
     ]);
 }
 
-function addServerlessGcloud(options: any): Rule {
-    const fileName = options.serverless.gcloud.filename || 'serverless.yml';
+function addServerlessGcloud(options: IServerlessSchema): Rule {
+    const fileName = options.serverless && options.serverless.gcloud && options.serverless.gcloud.filename ? options.serverless.gcloud.filename : 'serverless.yml';
 
     const source = apply(url('./files/gcloud'), [
         move(options.directory)
@@ -359,7 +359,7 @@ function addServerlessGcloud(options: any): Rule {
     ]);
 }
 
-function updateEnvironment(options: any): Rule {
+function updateEnvironment(options: IServerlessSchema): Rule {
     return tree => {
         if (!isUniversal(tree, options) || options.provider === 'firebase') {
             return tree;
@@ -400,7 +400,7 @@ function updateEnvironment(options: any): Rule {
     }
 }
 
-function updateAppEntryFile(options: any): Rule {
+function updateAppEntryFile(options: IServerlessSchema): Rule {
     return tree => {
         if (!isUniversal(tree, options)) {
             return tree;

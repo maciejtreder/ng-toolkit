@@ -6,15 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+/** Official ng-universal schema.
+ * check it at the [official repo](https://github.com/angular/universal/blob/master/modules/express-engine/schematics/install/schema.json).
+ */
 export interface IUniversalSchema {
     /** Skip installation of dependencies. */
     skipInstall?: boolean;
-    /** Determines if you want to install TransferHttpCacheModule */
-    http?: boolean;
     /** Name of related client app. */
     clientProject: string;
-    /** The directory name to create the workspace in. */
-    directory?: string;
     /** The appId to use with ServerTransition. */
     appId?: string;
     /** The name of the main entry-point file. */
@@ -41,6 +40,13 @@ export interface IUniversalSchema {
     skipUniversal?: boolean;
     /** Whether to add webpack configuration files. */
     webpack?: boolean;
+}
+
+export interface IToolkitUniversalSchema extends IUniversalSchema {
+    /** Determines if you want to install TransferHttpCacheModule */
+    http?: boolean;
+    /** The directory name to create the workspace in. */
+    directory: string;
     /** Disable Bugsnag report */
     disableBugsnag?: boolean;
 }

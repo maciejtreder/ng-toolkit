@@ -20,7 +20,7 @@ export interface IServerlessSchema {
     skipInstall: boolean;
     directory: string;
     firebaseProject: string;
-    project?: string;
+    project: string;
     serverless?: IServerless;
     disableBugsnag?: boolean;
 }

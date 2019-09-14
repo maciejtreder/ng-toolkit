@@ -11,31 +11,31 @@ import { getWorkspace } from '@schematics/angular/utility/config';
 import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
 
 export function createGitIgnore(dirName: string): Rule {
-    return (tree => {
+    return (tree: Tree) => {
         createOrOverwriteFile(tree, `./${dirName}/.gitignore`, `/node_modules/
-/dist/
-/lib/
-/yarn.lock
-*.log
-.idea
-.serverless
-*.iml
-*.js.map
-*.d.ts
-.DS_Store
-dll
-.awcache
-/src/styles/main.css
-/firebug-lite
-firebug-lite.tar.tgz
-/coverage
-`);
+            /dist/
+            /lib/
+            /yarn.lock
+            *.log
+            .idea
+            .serverless
+            *.iml
+            *.js.map
+            *.d.ts
+            .DS_Store
+            dll
+            .awcache
+            /src/styles/main.css
+            /firebug-lite
+            firebug-lite.tar.tgz
+            /coverage
+        `);
         return tree;
-    });
+    };
 }
 
 export function updateGitIgnore(options: any, entry: string): Rule {
-    return tree => {
+    return (tree: Tree) => {
         const content = getFileContent(tree, `${options.directory}/.gitignore`);
         tree.overwrite(`${options.directory}/.gitignore`, `${content}\n${entry}`);
         return tree;
@@ -56,7 +56,7 @@ export function addDependencyToPackageJson(tree: Tree, options: any, dependency:
 }
 
 export function addOrReplaceScriptInPackageJson(name: string, script: string): Rule {
-    return tree => {
+    return (tree: Tree) => {
         addOrReplaceScriptInPackageJson2(tree, name, script);
         return tree;
     }
@@ -142,6 +142,7 @@ export function addOpenCollective(options: any): Rule {
             name: 'opencollective',
             version: '^1.0.3'
         });
+        return tree;
     }
 }
 
@@ -725,7 +726,7 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
     return paramName;
 }
 
-export function addOrReplaceScriptInPackageJson2(tree: Tree, name: string, script: string) {
+export function addOrReplaceScriptInPackageJson2(tree: Tree, name: string, script: string): void {
     const packageJsonSource = JSON.parse(getFileContent(tree, `package.json`));
     packageJsonSource.scripts[name] = script;
     tree.overwrite(`package.json`, JSON.stringify(packageJsonSource, null, "  "));
