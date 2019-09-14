@@ -12,6 +12,11 @@ import { IServerlessSchema } from './schema';
 import * as bugsnag from 'bugsnag';
 
 export default function addServerless(options: IServerlessSchema): Rule {
+    /**
+     * This little assignment is due to imported functions like 'getServerDistFolder' that relies on
+     * project property instead of clientProject. (Not sure why the author did that)
+     */ 
+    options.clientProject = options.project;
     // Register bugsnag in order to catch and notify any rule error.
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {

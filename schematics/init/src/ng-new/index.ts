@@ -26,8 +26,8 @@ export default function (options: Schema): Rule {
 
         adjustCLIConfig(options),
         newApp(options),
-        // mergeWith(templateSource, MergeStrategy.Overwrite),
-        // updatePackageJson(options)
+        mergeWith(templateSource, MergeStrategy.Overwrite),
+        updatePackageJson(options)
     ]);
     return applyAndLog(rule);
 }

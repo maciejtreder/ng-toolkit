@@ -150,13 +150,14 @@ function applyOtherNgToolkitSchematics(options: IToolkitUniversalSchema): Rule {
 		if (ngToolkitSettings.serverless) {
 			ngToolkitSettings.serverless.directory = options.directory;
 			ngToolkitSettings.serverless.skipInstall = true;
+			ngToolkitSettings.serverless.project = options.clientProject;
 			externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
 		} else if (tree.exists(`${options.directory}/.firebaserc`)) {
 			ngToolkitSettings.serverless = {};
 			ngToolkitSettings.serverless.directory = options.directory;
 			ngToolkitSettings.serverless.skipInstall = true;
 			ngToolkitSettings.serverless.provider = 'firebase';
-
+			ngToolkitSettings.serverless.project = options.clientProject;
 			externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
 		}
 
@@ -172,8 +173,9 @@ function applyOtherNgToolkitSchematics(options: IToolkitUniversalSchema): Rule {
 			if (!ngToolkitSettings.pwa) {
 				ngToolkitSettings.pwa = {};
 			}
-			ngToolkitSettings.pwa.directory = '/';
+			ngToolkitSettings.pwa.directory = options.directory;
 			ngToolkitSettings.pwa.skipInstall = true;
+			ngToolkitSettings.pwa.clientProject = options.clientProject;
 			externals.push(externalSchematic('@ng-toolkit/pwa', 'ng-add', ngToolkitSettings.pwa));
 		}
 

@@ -23,12 +23,12 @@
       "default": false
     },
     "directory": {
-      "description": "App root catalog",
+      "description": "The directory name to create the workspace in.",
       "type": "string",
       "default": "."
     },
     "firebaseProject": {
-      "description": "Firebase project id",
+      "description": "Firebase project id.",
       "type": "string"
     }
   },

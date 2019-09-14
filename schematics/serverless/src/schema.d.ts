@@ -16,11 +16,19 @@ interface IServerless {
 }
 
 export interface IServerlessSchema {
+    /** Specify serverless provider. */
     provider: ('aws' | 'gcloud' | 'firebase');
+    /** Skip installation of dependencies. */
     skipInstall: boolean;
+    /** The directory name to create the workspace in." */
     directory: string;
+    /** Firebase project id */
     firebaseProject: string;
+    /** The name of the project. */
     project: string;
+    /** The name of the project (internal). */
+    clientProject: string;
+    /** Serverless filename object */
     serverless?: IServerless;
     disableBugsnag?: boolean;
 }

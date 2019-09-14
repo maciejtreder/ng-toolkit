@@ -17,12 +17,12 @@
       "default": false
     },
     "directory": {
-      "description": "App root catalog",
+      "description": "The directory name to create the workspace in.",
       "type": "string",
       "default": "."
     },
     "serverModule": {
-      "description": "Path to application server module",
+      "description": "Path to application server module.",
       "type": "string"
     }
   },

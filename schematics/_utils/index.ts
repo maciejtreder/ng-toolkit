@@ -92,7 +92,7 @@ function getTsSourceFile(tree: Tree, path: string): ts.SourceFile {
     return source;
 }
 
-export function addImportStatement(tree: Tree, filePath: string, type: string, file: string) {
+export function addImportStatement(tree: Tree, filePath: string, type: string, file: string): void {
     let source = getTsSourceFile(tree, filePath);
     const importChange = insertImport(source, filePath, type, file) as InsertChange;
     if (!(importChange instanceof NoopChange)) {
@@ -102,10 +102,8 @@ export function addImportStatement(tree: Tree, filePath: string, type: string, f
     }
 }
 
-export function implementInterface(tree: Tree, filePath: string, interfaceName: string, fileName: string) {
-
+export function implementInterface(tree: Tree, filePath: string, interfaceName: string, fileName: string): void {
     let results: any = getFileContent(tree, filePath).match(new RegExp("(.*class)\\s*(.*?)\\s*(:?implements\\s*(.*)|){"));
-
     if (results) {
         const oldClassDeclaration = results[0];
         let interfaces = results[5] || '';
@@ -146,7 +144,7 @@ export function addOpenCollective(options: any): Rule {
     }
 }
 
-export function updateMethod(tree: Tree, filePath: string, name: string, newBody: string) {
+export function updateMethod(tree: Tree, filePath: string, name: string, newBody: string): void {
     let fileContent = getFileContent(tree, filePath);
     let oldSignature = getMethodSignature(tree, filePath, name);
     if (oldSignature) {
@@ -289,7 +287,7 @@ export function addMethod(tree: Tree, filePath: string, body: string): void {
     tree.commitUpdate(changeRecorder);
 }
 
-export function addParamterToMethod(tree: Tree, filePath: string, name: string, parameterDeclaration: string) {
+export function addParamterToMethod(tree: Tree, filePath: string, name: string, parameterDeclaration: string): void {
     let method = getMethod(tree, filePath, name);
     const fileContent = getFileContent(tree, filePath);
     if (method) {
@@ -430,7 +428,7 @@ export function getAppEntryModule(tree: Tree, options: any): { moduleName: strin
     return { moduleName: entryModule, filePath: appModuleFilePath }
 }
 
-export function normalizePath(path: string) {
+export function normalizePath(path: string): string {
     return path.replace(/(([A-z0-9_-]*\/\.\.)|(\/\.))/g, '');
 }
 
@@ -480,15 +478,15 @@ export function getDecoratorSettings(tree: Tree, filePath: string, decorator: st
     throw new NgToolkitException(`Can't find decorator ${decorator} in ${filePath}`, { fileContent: fileContent });
 }
 
-export function getNgToolkitInfo(tree: Tree, options: any) {
+export function getNgToolkitInfo(tree: Tree, options: any): any {
     if (!tree.exists(`${options.directory}/ng-toolkit.json`)) {
         tree.create(`${options.directory}/ng-toolkit.json`, `{}`);
     }
     return JSON.parse(getFileContent(tree, `${options.directory}/ng-toolkit.json`));
 }
 
-export function updateNgToolkitInfo(tree: Tree, newSettings: any, options: any) {
-    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, "  "));
+export function updateNgToolkitInfo(tree: Tree, newSettings: any, options: any): void {
+    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, 4));
 }
 
 export function applyAndLog(rule: Rule): Rule {
@@ -576,7 +574,7 @@ function getLiteral(inputNode: ts.Node, literal: string): ts.Node {
     return toReturn;
 }
 
-export function findStatements(tree: Tree, node: ts.Node, filePath: string, subject: string, replacement: string, toReplace: any[]) {
+export function findStatements(tree: Tree, node: ts.Node, filePath: string, subject: string, replacement: string, toReplace: any[]): void {
     let fileContent = getFileContent(tree, filePath);
     node.forEachChild(node => {
         if (ts.isIdentifier(node)) {
@@ -592,7 +590,7 @@ export function findStatements(tree: Tree, node: ts.Node, filePath: string, subj
     });
 }
 
-export function updateCode(tree: Tree, filePath: string, varName: string) {
+export function updateCode(tree: Tree, filePath: string, varName: string): void {
     let fileContent = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
 
