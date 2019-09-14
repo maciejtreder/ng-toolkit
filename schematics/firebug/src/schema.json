@@ -4,6 +4,11 @@
   "title": "Angular Application Options Schema",
   "type": "object",
   "properties": {
+    "directory": {
+      "description": "The directory name to create the workspace in.",
+      "type": "string",
+      "default": "."
+    },
     "clientProject": {
       "type": "string",
       "description": "The name of the project.",

@@ -612,6 +612,24 @@ export function updateCode(tree: Tree, filePath: string, varName: string): void 
     });
 }
 
+export function updateBoostrapFirebug(tree: Tree, options: any) {
+    let mainFilePath = `${getMainFilePath(tree, options)}`;
+    let mainFileContent = getFileContent(tree, mainFilePath);
+    let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', mainFileContent, ts.ScriptTarget.Latest);
+
+    sourceFile.forEachChild(node => {
+        if (ts.isExpressionStatement(node)) {
+            let expression = mainFileContent.substring(node.pos, node.end);
+            if (expression.indexOf('bootstrapModule') > -1) {
+                //should be wrapped!
+                mainFileContent = mainFileContent.substr(0, node.pos) + `\nfireBug().then(() => { \n ${expression} \n});` + mainFileContent.substr(node.end);
+                createOrOverwriteFile(tree, mainFilePath, mainFileContent);
+                addImportLine(tree, mainFilePath, `import { fireBug } from './bootstrapScripts/firebug';`);
+            }
+        }
+    });
+}
+
 export function getBootStrapComponent(tree: Tree, modulePath: string): { component: string, appId: string, filePath: string }[] {
     const moduleSource = getFileContent(tree, modulePath);
     let components: string[] = [];

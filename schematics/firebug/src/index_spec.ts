@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
-// import { Tree } from '@angular-devkit/schematics';
 import { getFileContent } from '../node_modules/@schematics/angular/utility/test';
 
 const collectionPath = path.join(__dirname, '../collection.json');
@@ -9,7 +8,7 @@ const collectionPath = path.join(__dirname, '../collection.json');
 describe('Firebug', () => {
     let appTree: UnitTestTree;
 
-    const schematicRunner = new SchematicTestRunner('@ng-toolkit/serverless', collectionPath);
+    const schematicRunner = new SchematicTestRunner('@ng-toolkit/firebug', collectionPath);
     const workspaceOptions = {
         name: 'workspace',
         version: '6.0.0',

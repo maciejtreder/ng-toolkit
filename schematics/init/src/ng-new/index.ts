@@ -3,8 +3,8 @@ import { createOrOverwriteFile, addOrReplaceScriptInPackageJson, applyAndLog, ad
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
-import * as bugsnag from 'bugsnag';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
+import * as bugsnag from 'bugsnag';
 
 export default function (options: Schema): Rule {
     bugsnag.register('0b326fddc255310e516875c9874fed91');
@@ -23,7 +23,6 @@ export default function (options: Schema): Rule {
     ]);
     const rule: Rule = chain([
         externalSchematic('@schematics/angular', 'ng-new', options),
-
         adjustCLIConfig(options),
         newApp(options),
         mergeWith(templateSource, MergeStrategy.Overwrite),

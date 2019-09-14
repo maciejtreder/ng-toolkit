@@ -29,16 +29,16 @@ export function newApp(options: any): Rule {
     if (options.firebug) {
         rules.push(externalSchematic('@ng-toolkit/firebug', 'ng-add', options));
     }
-    // rules.push(tree => {
-    //     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
-    //     packageJsonSource['collective'] = {
-    //         type: 'opencollective',
-    //         url: 'https://opencollective.com/ng-toolkit'
-    //     };
-    //     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
-    //     return tree;
-    // });
-    // rules.push(updatePackageJson());
+    rules.push((tree: Tree) => {
+        const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+        packageJsonSource['collective'] = {
+            type: 'opencollective',
+            url: 'https://opencollective.com/ng-toolkit'
+        };
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
+        return tree;
+    });
+    rules.push(updatePackageJson());
     if (options.gaTrackingCode) {
         rules.push(addGoogleAnalytics(options));
     }
@@ -153,17 +153,17 @@ function overwriteMainFile(options: any): Rule {
     return (tree => {
         tree.rename(`${options.directory}/src/main.ts`, `${options.directory}/src/main.browser.ts`);
         createOrOverwriteFile(tree, `${options.directory}/src/main.browser.ts`, `import { enableProdMode } from '@angular/core';
-    import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+            import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-    import { environment } from './environments/environment';
-    import { AppBrowserModule } from './app/app.browser.module';
+            import { environment } from './environments/environment';
+            import { AppBrowserModule } from './app/app.browser.module';
 
-    if (environment.production) {
-        enableProdMode();
-    }
+            if (environment.production) {
+                enableProdMode();
+            }
 
-    platformBrowserDynamic().bootstrapModule(AppBrowserModule);
-    `);
+            platformBrowserDynamic().bootstrapModule(AppBrowserModule);
+        `);
         return tree;
     })
 

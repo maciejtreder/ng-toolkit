@@ -1,22 +1,15 @@
-import * as bugsnag from 'bugsnag';
 import { Rule, chain, mergeWith, MergeStrategy, apply, url, move, Tree, SchematicContext } from '@angular-devkit/schematics';
-import { applyAndLog, createOrOverwriteFile, addOrReplaceScriptInPackageJson, addEntryToEnvironment, getMainFilePath, addImportLine } from '@ng-toolkit/_utils';
+import { applyAndLog, createOrOverwriteFile, addOrReplaceScriptInPackageJson, addEntryToEnvironment, updateBoostrapFirebug, addDependencyToPackageJson } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '../node_modules/@angular-devkit/core';
-import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import { getWorkspace } from '@schematics/angular/utility/config';
-import {
-  addPackageJsonDependency,
-  NodeDependencyType,
-} from '@schematics/angular/utility/dependencies';
+import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
+import { IFirebugSchema } from './schema';
+import * as bugsnag from 'bugsnag';
 
-export default function addFirebug(options: any): Rule {
+export default function addFirebug(options: IFirebugSchema): Rule {
     options.project = options.clientProject;
-    function getSourceRoot(tree: Tree): string {
-        const workspace = getWorkspace(tree);
-        return `/${workspace.projects[options.clientProject].sourceRoot}`;
-    }
 
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
@@ -28,94 +21,95 @@ export default function addFirebug(options: any): Rule {
     });
 
     const templateSource = apply(url('files'), [
-        move('/')
+        move(options.directory)
     ]);
 
-    let rule: Rule = chain([
-        // adding build script and dependencies
-        addOrReplaceScriptInPackageJson('build:firebug', `node getFirebug.js && ng serve -c firebug`),
-        (tree: Tree, context: SchematicContext) => {
+    const rules: Rule[] = [];
+    // adding build script and dependencies
+    rules.push(addOrReplaceScriptInPackageJson('build:firebug', `node getFirebug.js && ng serve -c firebug`));
+    rules.push(updateCLIConfig(options));
+    rules.push(updatePackageDependencies(options));
+    rules.push(updateConfigFiles(options));
 
-            // updating CLI config
-            const CLIConfig = JSON.parse(getFileContent(tree, `angular.json`));
-            CLIConfig.projects[options.clientProject].architect.build.configurations.firebug = {
-                fileReplacements: [
-                    {
-                      "replace": "src/environments/environment.ts",
-                      "with": "src/environments/environment.firebug.ts"
-                    }
-                  ]
-            }
-
-            CLIConfig.projects[options.clientProject].architect.serve.configurations.firebug = { "browserTarget": `${options.clientProject}:build:firebug` };
-
-            CLIConfig.projects[options.clientProject].architect.build.options.assets.push({
-                "glob": "**/*.*",
-                "input": "firebug-lite",
-                "output": "/firebug-lite"
-              });
-
-            createOrOverwriteFile(tree,  `angular.json`, JSON.stringify(CLIConfig, null, "  "));
-
-            addPackageJsonDependency(tree, {
-                type: NodeDependencyType.Dev,
-                name: 'node-wget',
-                version: '^0.4.2'
-              });
-              addPackageJsonDependency(tree, {
-                type: NodeDependencyType.Dev,
-                name: 'decompress',
-                version: '^4.2.0'
-              });
-              addPackageJsonDependency(tree, {
-                type: NodeDependencyType.Dev,
-                name: 'decompress-targz',
-                version: '^4.1.1'
-              });
-
-
-            // update configuration files
-            tree.getDir(`${getSourceRoot(tree)}/environments`).visit( (path: Path) => {
-                if (path.endsWith('.ts')) {
-                    addEntryToEnvironment(tree, path, 'firebug', false);
-                }
-            });
-
-            //update bootstrap
-            
-            let mainFilePath = `${getMainFilePath(tree, options)}`;
-            let mainFileContent = getFileContent(tree, mainFilePath);
-            let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', mainFileContent, ts.ScriptTarget.Latest);
-
-            sourceFile.forEachChild(node => {
-                if (ts.isExpressionStatement(node)) {
-                    let expression = mainFileContent.substring(node.pos, node.end);
-                    if (expression.indexOf('bootstrapModule') > -1) {
-                        //should be wrapped!
-                        mainFileContent = mainFileContent.substr(0, node.pos) + `\nfireBug().then(() => { \n ${expression} \n});` + mainFileContent.substr(node.end);
-                        createOrOverwriteFile(tree, mainFilePath, mainFileContent);
-                        addImportLine(tree, mainFilePath, `import { fireBug } from './bootstrapScripts/firebug';`);
-                    }
-                }
-            });
-
-            if (!options.skipInstall) {
-                context.addTask(new NodePackageInstallTask());
-            }
-        },
-
-        mergeWith(templateSource, MergeStrategy.Overwrite),
-        tree => {
-            tree.rename(`/src/bootstrapScripts/firebug.ts`, `${getSourceRoot(tree)}/bootstrapScripts/firebug.ts`);
-            tree.rename(`/src/environments/environment.firebug.ts`, `${getSourceRoot(tree)}/environments/environment.firebug.ts`);
-            return tree;
-        }
-    ]);
+    rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
+    rules.push((tree: Tree) => {
+        tree.rename(`/src/bootstrapScripts/firebug.ts`, `${getSourceRoot(tree, options)}/bootstrapScripts/firebug.ts`);
+        tree.rename(`/src/environments/environment.firebug.ts`, `${getSourceRoot(tree, options)}/environments/environment.firebug.ts`);
+        return tree;
+    });
 
     if (!options.disableBugsnag) {
-        return applyAndLog(rule);
+        return applyAndLog(chain(rules));
     } else {
-        return rule;
+        return chain(rules);
     }
+}
 
+function getSourceRoot(tree: Tree, options: IFirebugSchema): string {
+    const workspace = getWorkspace(tree);
+    return `/${workspace.projects[options.clientProject].sourceRoot}`;
+}
+
+function updateCLIConfig(options: IFirebugSchema): Rule {
+    return (tree: Tree) => {
+        const CLIConfig = JSON.parse(getFileContent(tree, `angular.json`));
+        CLIConfig.projects[options.clientProject].architect.build.configurations.firebug = {
+            fileReplacements: [
+                {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.firebug.ts"
+                }
+            ]
+        };
+
+        CLIConfig.projects[options.clientProject].architect.serve.configurations.firebug = { "browserTarget": `${options.clientProject}:build:firebug` };
+
+        CLIConfig.projects[options.clientProject].architect.build.options.assets.push({
+            "glob": "**/*.*",
+            "input": "firebug-lite",
+            "output": "/firebug-lite"
+        });
+        createOrOverwriteFile(tree, `angular.json`, JSON.stringify(CLIConfig, null, 4));
+        return tree;
+    }
+}
+
+function updateConfigFiles(options: IFirebugSchema): Rule {
+    return (tree: Tree, context: SchematicContext) => {
+        // update configuration files
+        tree.getDir(`${getSourceRoot(tree, options)}/environments`).visit((path: Path) => {
+            if (path.endsWith('.ts')) {
+                addEntryToEnvironment(tree, path, 'firebug', false);
+            }
+        });
+
+        //update bootstrap
+        updateBoostrapFirebug(tree, options);
+
+        if (!options.skipInstall) {
+            context.addTask(new NodePackageInstallTask());
+        }
+        return tree;
+    }
+}
+
+function updatePackageDependencies(options: IFirebugSchema): Rule {
+    return (tree: Tree) => {
+        addDependencyToPackageJson(tree, options, {
+            type: NodeDependencyType.Dev,
+            name: 'node-wget',
+            version: '^0.4.2'
+        });
+        addDependencyToPackageJson(tree, options, {
+            type: NodeDependencyType.Dev,
+            name: 'decompress',
+            version: '^4.2.0'
+        });
+        addDependencyToPackageJson(tree, options, {
+            type: NodeDependencyType.Dev,
+            name: 'decompress-targz',
+            version: '^4.1.1'
+        });
+        return tree;
+    }
 }
