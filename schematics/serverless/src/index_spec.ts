@@ -19,10 +19,10 @@ describe('Serverless', () => {
         disableBugsnag: true
     };
 
-    beforeEach( (done) => {
+    beforeEach((done) => {
         appTree = schematicRunner.runExternalSchematic('@schematics/angular', 'workspace', workspaceOptions);
 
-        schematicRunner.runExternalSchematicAsync('@schematics/angular', 'application', {name: 'foo'}, appTree).subscribe(tree => {
+        schematicRunner.runExternalSchematicAsync('@schematics/angular', 'application', { name: 'foo' }, appTree).subscribe(tree => {
             appTree = tree;
             done();
         });
@@ -99,7 +99,7 @@ describe('Serverless', () => {
         });
     });
 
-    it('Should create all common files', (done)=> {
+    it('Should create all common files', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
             checkIfFileExists(tree, `/local.js`);
             checkIfFileExists(tree, `/server.ts`);
@@ -144,7 +144,7 @@ describe('Serverless', () => {
     //                 done();
     //             });
     //         });
-    
+
     //         xit('Should add proper scripts to package.json', (done) => {
     //             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \/production\/"/);
@@ -152,11 +152,11 @@ describe('Serverless', () => {
     //             });
     //         });
     //     });
-    
+
     //     fdescribe('Firebase', () => {
     //         beforeAll(() => defaultOptions['provider'] = 'firebase');
     //         afterAll(() => delete defaultOptions['provider']);
-    
+
     //         xit('Should create files', (done) => {
     //             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //                 checkIfFileExists(tree, `functions/package.json`);
@@ -166,7 +166,7 @@ describe('Serverless', () => {
     //                 done();
     //             });
     //         });
-    
+
     //         xit('Should add proper scripts to package.json', (done) => {
     //             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \//);
@@ -174,7 +174,7 @@ describe('Serverless', () => {
     //             });
     //         });
     //     });
-    
+
     //     describe('Google Cloud Functions', () => {
     //         beforeAll(() => defaultOptions['provider'] = 'gcloud');
     //         afterAll(() => delete defaultOptions['provider']);
@@ -186,7 +186,7 @@ describe('Serverless', () => {
     //                 done();
     //             });
     //         });
-    
+
     //         xit('Should add proper scripts to package.json', (done) => {
     //             schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //                 shouldContainEntry(tree, `package.json`, /"build:browser:serverless": "ng build --prod --base-href \/http\/"/);
@@ -194,7 +194,7 @@ describe('Serverless', () => {
     //             });
     //         });
     //     });
-    
+
     //     xit('By default AWS should be choosen as provider', (done) => {
     //         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //             checkIfFileExists(tree, `serverless.yml`);
@@ -203,7 +203,7 @@ describe('Serverless', () => {
     //             done();
     //         });
     //     });
-    
+
     //     xit('Should create all common files', (done)=> {
     //         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //             checkIfFileExists(tree, `local.js`);
@@ -214,7 +214,7 @@ describe('Serverless', () => {
     //             done();
     //         });
     //     });
-    
+
     //     xit('Should add proper scripts to package.json', (done) => {
     //         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
     //             shouldContainEntry(tree, `package.json`, /"build:browser:prod": "ng build --prod"/);

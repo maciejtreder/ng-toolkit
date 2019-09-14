@@ -4,6 +4,10 @@
   "title": "Angular Application Options Schema",
   "type": "object",
   "properties": {
+    "directory": {
+      "type": "string",
+      "description": "The directory name to create the workspace in.",
+    },
     "skipInstall": {
       "description": "Skip installation of dependencies.",
       "type": "boolean",
@@ -24,7 +28,7 @@
     "appId": {
       "type": "string",
       "format": "html-selector",
-      "description": "The appId to use withServerTransition.",
+      "description": "The appId to use with ServerTransition.",
       "default": "serverApp"
     },
     "main": {
@@ -68,7 +72,7 @@
     "rootModuleFileName": {
       "type": "string",
       "format": "path",
-      "description": "The name of the root module file",
+      "description": "The name of the root module file.",
       "default": "app.server.module.ts"
     },
     "rootModuleClassName": {
@@ -82,12 +86,12 @@
       "default": false
     },
     "skipUniversal": {
-      "description": "Skip the Angular Universal schematic",
+      "description": "Skip the Angular Universal schematic.",
       "type": "boolean",
       "default": false
     },
     "webpack": {
-      "description": "Whether to add webpack configuration files",
+      "description": "Whether to add webpack configuration files.",
       "type": "boolean",
       "default": true
     }

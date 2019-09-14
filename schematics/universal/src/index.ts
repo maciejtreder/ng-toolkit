@@ -1,12 +1,7 @@
+import { apply, chain, mergeWith, move, Rule, Tree, url, MergeStrategy, noop, SchematicsException, externalSchematic } from '@angular-devkit/schematics';
 import {
-	Rule, Tree, MergeStrategy, chain, externalSchematic, mergeWith,
-	apply, move, url, SchematicsException, noop
-} from '@angular-devkit/schematics';
-import {
-	applyAndLog, addImportStatement, addToNgModule, createOrOverwriteFile,
-	removeFromNgModule, addDependencyInjection, getNgToolkitInfo, updateNgToolkitInfo,
-	addDependencyToPackageJson,
-	updateCode
+	applyAndLog, addImportStatement, addToNgModule, createOrOverwriteFile, removeFromNgModule,
+	addDependencyInjection, getNgToolkitInfo, updateNgToolkitInfo, addDependencyToPackageJson, updateCode
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { getWorkspace } from '@schematics/angular/utility/config';
@@ -16,10 +11,9 @@ import { IUniversalSchema } from './schema';
 import * as bugsnag from 'bugsnag';
 
 export default function addUniversal(options: IUniversalSchema): Rule {
-	const templateSource = apply(url('files'), [
-		move('/')
-	]);
-
+	if (!options.directory) {
+		options.directory = options.clientProject;
+	}
 	const expressOptions = JSON.parse(JSON.stringify(options));
 
 	delete expressOptions.disableBugsnag;
@@ -34,65 +28,69 @@ export default function addUniversal(options: IUniversalSchema): Rule {
 		};
 	});
 
-	const rule: Rule = chain([
-		(tree: Tree) => {
-			const packageJsonSource = JSON.parse(getFileContent(tree, `./package.json`));
-			if (packageJsonSource.dependencies['@ng-toolkit/serverless']) {
-				tree.delete(`./local.js`);
-				tree.delete(`./server.ts`);
-				tree.delete(`./webpack.server.config.js`);
-			}
-			return tree;
-		},
-		mergeWith(templateSource, MergeStrategy.Overwrite),
-		applyExpressEngine(options, expressOptions),
-		(tree: Tree) => {
-			tree.overwrite(`/local.js`, getFileContent(tree, `/local.js`).replace(/__distFolder__/g, 'dist/server').replace(/__serverPort__/g, options.serverPort.toString()));
-			tree.overwrite(`/${options.serverFileName}`, getFileContent(tree, `/${options.serverFileName}`).replace(/\/\/ Start up the Node server.*/gs, '').replace('const app = express();', 'export const app = express();'));
-
-			const pkgPath = '/package.json';
-			const buffer = tree.read(pkgPath);
-			if (buffer === null) {
-				throw new SchematicsException('Could not find package.json');
-			}
-
-			const pkg = JSON.parse(buffer.toString());
-
-			pkg.scripts['server'] = 'node local.js';
-			pkg.scripts['build:prod'] = 'npm run build:ssr';
-			pkg.scripts['serve:ssr'] = 'node local.js';
-
-			tree.overwrite(pkgPath, JSON.stringify(pkg, null, 4));
-
-			addDependencyToPackageJson(tree, options, {
-				type: NodeDependencyType.Default,
-				name: '@nguniversal/common',
-				version: '0.0.0'
-			});
-
-			return tree;
-		},
-		enhanceServerModule(options),
-		renameAndEnhanceBrowserModule(options),
-		updateWebpackConfig(),
-		addWrappers(options),
-		applyOtherNgToolkitSchematics(options),
-		addPrerender(options)
+	const templateSource = apply(url('./files'), [
+		move(options.directory)
 	]);
 
+	const rules: Rule[] = [];
+	rules.push((tree: Tree) => {
+		const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
+		if (packageJsonSource.dependencies['@ng-toolkit/serverless']) {
+			tree.delete(`./local.js`);
+			tree.delete(`./server.ts`);
+			tree.delete(`./webpack.server.config.js`);
+		}
+		return tree;
+	});
+	rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
+	rules.push(applyExpressEngine(options, expressOptions));
+	rules.push((tree: Tree) => {
+		const serverPort = options.serverPort ? options.serverPort.toString() : '4000';
+		tree.overwrite(`/local.js`, getFileContent(tree, `/local.js`).replace(/__distFolder__/g, 'dist/server').replace(/__serverPort__/g, serverPort));
+		tree.overwrite(`/${options.serverFileName}`, getFileContent(tree, `/${options.serverFileName}`).replace(/\/\/ Start up the Node server.*/gs, '').replace('const app = express();', 'export const app = express();'));
+
+		const pkgPath = `${options.directory}/package.json`;
+		const buffer = tree.read(pkgPath);
+		if (buffer === null) {
+			throw new SchematicsException('Could not find package.json');
+		}
+
+		const pkg = JSON.parse(buffer.toString());
+
+		pkg.scripts['server'] = 'node local.js';
+		pkg.scripts['build:prod'] = 'npm run build:ssr';
+		pkg.scripts['serve:ssr'] = 'node local.js';
+
+		tree.overwrite(pkgPath, JSON.stringify(pkg, null, 4));
+
+		addDependencyToPackageJson(tree, options, {
+			type: NodeDependencyType.Default,
+			name: '@nguniversal/common',
+			version: '0.0.0'
+		});
+
+		return tree;
+	});
+	rules.push(enhanceServerModule(options));
+	rules.push(renameAndEnhanceBrowserModule(options));
+	rules.push(updateWebpackConfig());
+	rules.push(addWrappers(options));
+	rules.push(applyOtherNgToolkitSchematics(options));
+	rules.push(addPrerender(options));
+
 	if (!options.disableBugsnag) {
-		return applyAndLog(rule);
+		return applyAndLog(chain(rules));
 	} else {
-		return rule;
+		return chain(rules);
 	}
 }
 
-function getSourceRoot(tree: Tree, options: any): string {
+function getSourceRoot(tree: Tree, options: IUniversalSchema): string {
 	const workspace = getWorkspace(tree);
 	return `/${workspace.projects[options.clientProject].sourceRoot}`;
 }
 
-function enhanceServerModule(options: any): Rule {
+function enhanceServerModule(options: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		const serverModulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.rootModuleFileName}`;
 		addImportStatement(tree, serverModulePath, 'ServerTransferStateModule', '@angular/platform-server');
@@ -101,7 +99,7 @@ function enhanceServerModule(options: any): Rule {
 	};
 }
 
-function renameAndEnhanceBrowserModule(options: any): Rule {
+function renameAndEnhanceBrowserModule(options: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		const browserModulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.browser.module.ts`;
 		const modulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
@@ -144,7 +142,7 @@ function updateWebpackConfig(): Rule {
 	}
 }
 
-function addWrappers(options: any): Rule {
+function addWrappers(options: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		const modulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
 		addImportStatement(tree, modulePath, 'NgtUniversalModule', '@ng-toolkit/universal');
@@ -173,7 +171,7 @@ function addWrappers(options: any): Rule {
 	}
 }
 
-function applyOtherNgToolkitSchematics(options: any): Rule {
+function applyOtherNgToolkitSchematics(options: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		//applying other schematics (if installed)
 		const ngToolkitSettings = getNgToolkitInfo(tree, options);
@@ -218,7 +216,7 @@ function applyOtherNgToolkitSchematics(options: any): Rule {
 	}
 }
 
-function applyExpressEngine(options: any, expressOptions: any): Rule {
+function applyExpressEngine(options: IUniversalSchema, expressOptions: any): Rule {
 	return (tree: Tree) => {
 		let hasUniversalBuild = false;
 		const workspace = getWorkspace(tree);
@@ -238,7 +236,7 @@ function applyExpressEngine(options: any, expressOptions: any): Rule {
 	}
 }
 
-function addPrerender(options: any): Rule {
+function addPrerender(options: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		// add dependencies
 		addDependencyToPackageJson(tree, options, {
@@ -248,7 +246,7 @@ function addPrerender(options: any): Rule {
 		});
 
 		// add scripts
-		const pkgPath = '/package.json';
+		const pkgPath = `${options.directory}/package.json`;
 		const buffer = tree.read(pkgPath);
 		if (buffer === null) {
 			throw new SchematicsException('Could not find package.json');

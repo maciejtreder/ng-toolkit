@@ -11,7 +11,7 @@
   "scripts": {
     "build": "ng build --prod && tsc -p tsconfig.json && npm run copy_files",
     "copy_files": "cp-cli src/files dist/files && cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/schema.json",
-    "test": "npm run build && jasmine dist/**/*_spec.js",
+    "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
     "prepublish": "npm test",
     "ci-publish": "ci-publish"
@@ -56,7 +56,7 @@
     "cp-cli": "^2.0.0",
     "jasmine": "^3.4.0",
     "ng-packagr": "^5.5.0",
-    "rxjs": "^6.5.3",
+    "rxjs": "^6.4.0",
     "tsickle": "^0.37.0",
     "typescript": "~3.5.3"
   },
