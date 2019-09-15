@@ -31,7 +31,7 @@ export default function (options: Schema): Rule {
     return applyAndLog(rule);
 }
 
-function updatePackageJson(options: any): Rule {
+function updatePackageJson(options: Schema): Rule {
     const rules: Rule[] = [];
     rules.push(
         addOrReplaceScriptInPackageJson('build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
@@ -82,7 +82,7 @@ function updatePackageJson(options: any): Rule {
         });
         return tree;
     });
-    rules.push((tree) => {
+    rules.push((tree: Tree) => {
         let packageJsonContent = getFileContent(tree, `${options.directory}/package.json`);
         packageJsonContent = packageJsonContent.replace('__projectName__', options.name);
         createOrOverwriteFile(tree, `${options.directory}/package.json`, packageJsonContent);
@@ -91,7 +91,7 @@ function updatePackageJson(options: any): Rule {
     return chain(rules);
 }
 
-function adjustCLIConfig(options: any): Rule {
+function adjustCLIConfig(options: Schema): Rule {
     return (tree) => {
         const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
 
