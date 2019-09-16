@@ -16,8 +16,7 @@ describe('Firebug', () => {
     };
     const defaultOptions: any = {
         project: 'foo',
-        disableBugsnag: true,
-        clientProject: 'foo'
+        disableBugsnag: true
     };
 
     beforeEach((done) => {

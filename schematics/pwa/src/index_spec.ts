@@ -16,7 +16,7 @@ describe('PWA', () => {
         newProjectRoot: 'projects'
     };
     const defaultOptions: any = {
-        clientProject: 'foo',
+        project: 'foo',
         disableBugsnag: true
     };
 

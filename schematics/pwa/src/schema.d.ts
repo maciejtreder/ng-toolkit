@@ -7,9 +7,10 @@
  */
 
 export interface IToolkitPWASchema {
-    project: string;
-    /** The name of the project. */
+    /** The name of the project (internal). */
     clientProject: string;
+    /** The name of the project (From Angualr schema). */
+    project: string;
     /** Skip installation of dependencies. */
     skipInstall?: boolean;
     /** The directory name to create the workspace in. */

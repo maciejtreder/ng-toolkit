@@ -12,11 +12,9 @@ import { IServerlessSchema } from './schema';
 import * as bugsnag from 'bugsnag';
 
 export default function addServerless(options: IServerlessSchema): Rule {
-    /**
-     * This little assignment is due to imported functions like 'getServerDistFolder' that relies on
-     * project property instead of clientProject. (Not sure why the author did that)
-     */ 
-    options.clientProject = options.project;
+    if (!options.clientProject) {
+        options.clientProject = options.project;
+    }
     // Register bugsnag in order to catch and notify any rule error.
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
@@ -81,7 +79,7 @@ export default function addServerless(options: IServerlessSchema): Rule {
             move(options.directory)
         ]);
         rules.push(setFirebaseFunctions(options));
-        rules.push(addOrReplaceScriptInPackageJson('build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
+        rules.push(addOrReplaceScriptInPackageJson(options, 'build:prod:deploy', 'npm run build:prod && cd functions && npm install && cd .. && firebase deploy'));
 
         rules.push(mergeWith(source, MergeStrategy.Overwrite));
     }
@@ -288,11 +286,11 @@ function addBuildScriptsAndFiles(options: IServerlessSchema): Rule {
         }
 
         if (universal) {
-            packageJsonSource.scripts['build:server:prod'] = `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`;
+            packageJsonSource.scripts['build:server:prod'] = `ng run ${options.clientProject}:server && webpack --config webpack.server.config.js --progress --colors`;
             if (options.provider != 'firebase') {
-                packageJsonSource.scripts['build:server:serverless'] = `ng run ${options.project}:server:serverless && webpack --config webpack.server.config.js --progress --colors`;
+                packageJsonSource.scripts['build:server:serverless'] = `ng run ${options.clientProject}:server:serverless && webpack --config webpack.server.config.js --progress --colors`;
             } else {
-                packageJsonSource.scripts['build:server:serverless'] = `ng run ${options.project}:server && webpack --config webpack.server.config.js --progress --colors`;
+                packageJsonSource.scripts['build:server:serverless'] = `ng run ${options.clientProject}:server && webpack --config webpack.server.config.js --progress --colors`;
             }
         } else {
             packageJsonSource.scripts['build:server:prod'] = `webpack --config webpack.server.config.js --progress --colors`;
@@ -315,7 +313,7 @@ function addServerlessAWS(options: IServerlessSchema): Rule {
         mergeWith(source),
         (tree: Tree) => {
             tree.rename(`${options.directory}/serverless-aws.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.clientProject.toLowerCase()));
             addDependencyToPackageJson(tree, options, {
                 type: NodeDependencyType.Default,
                 name: 'aws-serverless-express',
@@ -342,7 +340,7 @@ function addServerlessGcloud(options: IServerlessSchema): Rule {
         mergeWith(source),
         tree => {
             tree.rename(`${options.directory}/serverless-gcloud.yml`, `${options.directory}/${fileName}`);
-            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.project.toLowerCase()));
+            tree.overwrite(`${options.directory}/${fileName}`, getFileContent(tree, `${options.directory}/${fileName}`).replace('__appName__', options.clientProject.toLowerCase()));
 
             addDependencyToPackageJson(tree, options, {
                 type: NodeDependencyType.Dev,
@@ -383,7 +381,7 @@ function updateEnvironment(options: IServerlessSchema): Rule {
 
         //update CLI with new configuration
         const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-        const project: any = cliConfig.projects[options.project].architect;
+        const project: any = cliConfig.projects[options.clientProject].architect;
         for (let property in project) {
             if (project.hasOwnProperty(property) && (project[property].builder === '@angular-devkit/build-angular:server')) {
                 if (!project[property].configurations) {

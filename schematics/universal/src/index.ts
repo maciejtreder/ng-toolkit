@@ -11,7 +11,11 @@ import { IToolkitUniversalSchema, IUniversalSchema } from './schema';
 import * as bugsnag from 'bugsnag';
 
 export default function addUniversal(options: IToolkitUniversalSchema): Rule {
-	const { disableBugsnag, http, directory, ...optionsReduced } = options;
+	if (!options.clientProject) {
+        options.clientProject = options.project;
+	}
+	// Remove extra properties to avoid schema errors while running @nguniversal/express-engine schematic.
+	const { disableBugsnag, http, directory, project, ...optionsReduced } = options;
 	const expressOptions: IUniversalSchema = optionsReduced;
 
 	bugsnag.register('0b326fddc255310e516875c9874fed91');
@@ -150,14 +154,14 @@ function applyOtherNgToolkitSchematics(options: IToolkitUniversalSchema): Rule {
 		if (ngToolkitSettings.serverless) {
 			ngToolkitSettings.serverless.directory = options.directory;
 			ngToolkitSettings.serverless.skipInstall = true;
-			ngToolkitSettings.serverless.project = options.clientProject;
+			ngToolkitSettings.serverless.clientProject = options.clientProject;
 			externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
 		} else if (tree.exists(`${options.directory}/.firebaserc`)) {
 			ngToolkitSettings.serverless = {};
 			ngToolkitSettings.serverless.directory = options.directory;
 			ngToolkitSettings.serverless.skipInstall = true;
 			ngToolkitSettings.serverless.provider = 'firebase';
-			ngToolkitSettings.serverless.project = options.clientProject;
+			ngToolkitSettings.serverless.clientProject = options.clientProject;
 			externals.push(externalSchematic('@ng-toolkit/serverless', 'ng-add', ngToolkitSettings.serverless));
 		}
 
@@ -249,7 +253,7 @@ function addPrerender(options: IToolkitUniversalSchema): Rule {
 		const pkgPath = `package.json`;
 		const buffer = tree.read(pkgPath);
 		if (buffer === null) {
-			throw new SchematicsException('Could not find package.json');
+			throw new SchematicsException('Could not find package.json at addPrerender function');
 		}
 
 		const pkg = JSON.parse(buffer.toString());

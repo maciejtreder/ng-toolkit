@@ -37,4 +37,6 @@ export interface Schema {
     firebug: boolean;
     /** Firebase project id */
     firebaseProject: string;
+    /** The name of the project (internal). */
+    clientProject?: string;
 }

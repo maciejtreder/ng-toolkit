@@ -9,8 +9,10 @@ import { IFirebugSchema } from './schema';
 import * as bugsnag from 'bugsnag';
 
 export default function addFirebug(options: IFirebugSchema): Rule {
-    options.project = options.clientProject;
-
+    if (!options.clientProject) {
+        options.clientProject = options.project;
+    }
+    
     bugsnag.register('0b326fddc255310e516875c9874fed91');
     bugsnag.onBeforeNotify((notification) => {
         let metaData = notification.events[0].metaData;
@@ -26,7 +28,7 @@ export default function addFirebug(options: IFirebugSchema): Rule {
 
     const rules: Rule[] = [];
     // adding build script and dependencies
-    rules.push(addOrReplaceScriptInPackageJson('build:firebug', `node getFirebug.js && ng serve -c firebug`));
+    rules.push(addOrReplaceScriptInPackageJson(options, 'build:firebug', `node getFirebug.js && ng serve -c firebug`));
     rules.push(updateCLIConfig(options));
     rules.push(updatePackageDependencies(options));
     rules.push(updateConfigFiles(options));

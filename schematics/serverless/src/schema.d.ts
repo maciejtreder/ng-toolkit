@@ -24,11 +24,12 @@ export interface IServerlessSchema {
     directory: string;
     /** Firebase project id */
     firebaseProject: string;
-    /** The name of the project. */
-    project: string;
     /** The name of the project (internal). */
     clientProject: string;
+    /** The name of the project (From Angular schema). */
+    project: string;
     /** Serverless filename object */
     serverless?: IServerless;
+    /** Disable Bugsnag report */
     disableBugsnag?: boolean;
 }

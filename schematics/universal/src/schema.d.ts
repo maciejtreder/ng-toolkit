@@ -12,7 +12,7 @@
 export interface IUniversalSchema {
     /** Skip installation of dependencies. */
     skipInstall?: boolean;
-    /** Name of related client app. */
+    /** The name of the project (internal). */
     clientProject: string;
     /** The appId to use with ServerTransition. */
     appId?: string;
@@ -43,6 +43,8 @@ export interface IUniversalSchema {
 }
 
 export interface IToolkitUniversalSchema extends IUniversalSchema {
+    /** The name of the project (From Angular schema). */
+    project: string;
     /** Determines if you want to install TransferHttpCacheModule */
     http?: boolean;
     /** The directory name to create the workspace in. */

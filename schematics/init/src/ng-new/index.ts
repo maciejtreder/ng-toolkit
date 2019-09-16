@@ -1,9 +1,10 @@
 import { Rule, chain, Tree, move, apply, url, mergeWith, MergeStrategy, externalSchematic } from '@angular-devkit/schematics';
 import { createOrOverwriteFile, addOrReplaceScriptInPackageJson, applyAndLog, addDependencyToPackageJson } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
+import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
-import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
+import { WorkspaceSchema, WorkspaceTargets, Builders } from '@schematics/angular/utility/workspace-models';
 import * as bugsnag from 'bugsnag';
 
 export default function (options: Schema): Rule {
@@ -18,11 +19,13 @@ export default function (options: Schema): Rule {
     if (!options.directory) {
         options.directory = options.name;
     }
+    // clientProject is not a property of angular schematic schema.
+    const { clientProject, ...angularOptions } = options;
     const templateSource = apply(url('./files'), [
         move(options.directory),
     ]);
     const rule: Rule = chain([
-        externalSchematic('@schematics/angular', 'ng-new', options),
+        externalSchematic('@schematics/angular', 'ng-new', angularOptions),
         adjustCLIConfig(options),
         newApp(options),
         mergeWith(templateSource, MergeStrategy.Overwrite),
@@ -34,10 +37,10 @@ export default function (options: Schema): Rule {
 function updatePackageJson(options: Schema): Rule {
     const rules: Rule[] = [];
     rules.push(
-        addOrReplaceScriptInPackageJson('build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
-        addOrReplaceScriptInPackageJson('build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
-        addOrReplaceScriptInPackageJson('test', 'ng test --code-coverage'),
-        addOrReplaceScriptInPackageJson('test:watch', 'ng test --watch --code-coverage'),
+        addOrReplaceScriptInPackageJson(options, 'build:client-and-server-bundles', 'ng build --prod && ng run __projectName__:server'),
+        addOrReplaceScriptInPackageJson(options, 'build:prod', 'npm run build:client-and-server-bundles && npm run webpack:server'),
+        addOrReplaceScriptInPackageJson(options, 'test', 'ng test --code-coverage'),
+        addOrReplaceScriptInPackageJson(options, 'test:watch', 'ng test --watch --code-coverage'),
     );
     rules.push((tree: Tree) => {
         addDependencyToPackageJson(tree, options, {
@@ -91,35 +94,55 @@ function updatePackageJson(options: Schema): Rule {
     return chain(rules);
 }
 
+/**
+ * Check angular.json file and assign proper values to each build options if they exists.
+ */
 function adjustCLIConfig(options: Schema): Rule {
     return (tree) => {
-        const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-
-        // delete cliConfig.projects[options.name].sourceRoot;
-        cliConfig.projects[options.name].architect.build.options.outputPath = 'dist/browser';
-        cliConfig.projects[options.name].architect.build.options.main = 'src/main.browser.ts';
-        cliConfig.projects[options.name].architect.build.options.assets.push({ glob: "manifest.json", input: "src", output: "/" });
-        cliConfig.projects[options.name].architect.build.options.assets.push({ glob: "ngsw-worker.js", input: "src/assets/fakeSW", output: "/" });
-        cliConfig.projects[options.name].architect.build.options.styles = [{ input: "src/styles/main.scss" }];
-        cliConfig.projects[options.name].architect.build.configurations.production.serviceWorker = true;
-        delete cliConfig.defaultProject;
-
-        cliConfig.projects[options.name].architect.serve.configurations.dev = { browserTarget: `${options.name}:build:dev` };
-        delete cliConfig.projects[options.name].architect.serve.configurations.production;
-
-        cliConfig.projects[options.name].architect.test.options.assets.push({ glob: "manifest.json", input: "src", output: "/" });
-        cliConfig.projects[options.name].architect.test.options.styles = [{ input: "src/styles/main.scss" }];
-
-        cliConfig.projects[options.name].architect.server = {
-            builder: '@angular-devkit/build-angular:server',
-            options: {
-                outputPath: 'dist/server',
-                main: 'src/main.server.ts',
-                tsConfig: 'src/tsconfig.server.json'
+        const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));;
+        const architect: WorkspaceTargets | undefined = cliConfig.projects[options.name].architect;
+        if (architect && architect.build) {
+            architect.build.options.outputPath = 'dist/browser';
+            architect.build.options.main = 'src/main.browser.ts';
+            architect.build.options.styles = [{ input: "src/styles/main.scss" }];
+            if (architect.build.options.assets) {
+                architect.build.options.assets.push({ glob: "manifest.json", input: "src", output: "/" });
+                architect.build.options.assets.push({ glob: "ngsw-worker.js", input: "src/assets/fakeSW", output: "/" });
             }
-        };
+            if (architect.build.configurations) {
+                architect.build.configurations.production.serviceWorker = true;
+            }
+            delete cliConfig.defaultProject;
+        }
+       
+        if (architect && architect.serve && architect.serve.configurations) {
+            architect.serve.configurations.dev = { browserTarget: `${options.name}:build:dev` };
+            delete architect.serve.configurations.production;
+        }
 
-        cliConfig.projects[options.name].architect.e2e.options.devServerTarget = `${options.name}:serve`;
+        if (architect && architect.test) {
+            if (architect.test.options.assets) {
+                architect.test.options.assets.push({ glob: "manifest.json", input: "src", output: "/" });
+            }
+            architect.test.options.styles = [{ input: "src/styles/main.scss" }];
+        }
+
+        if (architect && architect.server) {
+            architect.server = {
+                builder: Builders.Server,
+                options: {
+                    outputPath: 'dist/server',
+                    main: 'src/main.server.ts',
+                    tsConfig: 'src/tsconfig.server.json'
+                }
+            }
+        }
+
+        if (architect && architect.e2e) {
+            architect.e2e.options.devServerTarget = `${options.name}:serve`;
+        }
+
+        cliConfig.projects[options.name].architect = architect;
         createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, 4));
         return tree;
     }

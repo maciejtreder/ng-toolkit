@@ -7,13 +7,14 @@
  */
 
 export interface IFirebugSchema {
-    /** The name of the project. */
-    clientProject: string;
     /** The name of the project (internal). */
-    project?: string;
+    clientProject: string;
+    /** The name of the project (From Angualr schema). */
+    project: string;
     /** Skip installation of dependencies. */
     skipInstall: boolean;
     /** The directory name to create the workspace in." */
     directory: string;
+    /** Disable Bugsnag report */
     disableBugsnag?: boolean;
 }

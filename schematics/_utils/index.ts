@@ -1,14 +1,13 @@
 import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
+import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';
+import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
+import { WorkspaceSchema, WorkspaceTargets, ProjectType } from '@schematics/angular/utility/workspace-models';
 import { getFileContent } from '@schematics/angular/utility/test';
-import { isString } from 'util';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as bugsnag from 'bugsnag';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
-import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';
 import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
-import { getWorkspace } from '@schematics/angular/utility/config';
-import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
@@ -55,9 +54,9 @@ export function addDependencyToPackageJson(tree: Tree, options: any, dependency:
     tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
 }
 
-export function addOrReplaceScriptInPackageJson(name: string, script: string): Rule {
+export function addOrReplaceScriptInPackageJson(options: any, name: string, script: string): Rule {
     return (tree: Tree) => {
-        addOrReplaceScriptInPackageJson2(tree, name, script);
+        addOrReplaceScriptInPackageJson2(tree, options, name, script);
         return tree;
     }
 }
@@ -66,7 +65,7 @@ export function addEntryToEnvironment(tree: Tree, filePath: string, entryName: s
     const sourceText = getFileContent(tree, filePath);
     const changePos = sourceText.lastIndexOf("};") - 1;
     const changeRecorder = tree.beginUpdate(filePath);
-    if (isString(entryValue)) {
+    if (typeof entryValue === 'string') {
         changeRecorder.insertLeft(changePos, `,\n\t${entryName}: '${entryValue}'`);
     } else {
         changeRecorder.insertLeft(changePos, `,\n\t${entryName}: ${entryValue}`);
@@ -307,10 +306,9 @@ export function addParamterToMethod(tree: Tree, filePath: string, name: string, 
     }
 }
 
-
 export function getServerDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
             return project[property].options.outputPath;
@@ -320,32 +318,32 @@ export function getServerDistFolder(tree: Tree, options: any): string {
 }
 
 export function updateProject(tree: Tree, options: any): void {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
-            console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+            console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.clientProject}'.`);
             return;
         }
     }
 
-    if (cliConfig.defaultProject) {
-        options.project = cliConfig.defaultProject;
-        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+    if (project && project.defaultProject) {
+        options.clientProject = project.defaultProject;
+        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.clientProject}'.`);
         return;
     }
 
     // trying with regex - will take first project found with the browser builder
-
-    let results = /"projects":\s*{[\s\S]*?"(.*)"[\s\S]*@angular-devkit\/build-angular:browser/.exec(getFileContent(tree, `${options.directory}/angular.json`));
+    const angularFileContent: string = getFileContent(tree, `${options.directory}/angular.json`);
+    const results: RegExpExecArray | null = /"projects":\s*{[\s\S]*?"(.*)"[\s\S]*@angular-devkit\/build-angular:browser/.exec(angularFileContent);
     if (results) {
-        options.project = results[1];
-        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.project}'.`);
+        options.clientProject = results[1];
+        console.log(`\u001B[33mINFO: \u001b[0mProject property is set to '${options.clientProject}'.`);
     }
 }
 export function getBrowserDistFolder(tree: Tree, options: any): string {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
             return project[property].options.outputPath;
@@ -375,8 +373,8 @@ export function getDistFolder(tree: Tree, options: any): string {
 }
 
 export function isUniversal(tree: Tree, options: any): boolean {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
             return true;
@@ -386,8 +384,8 @@ export function isUniversal(tree: Tree, options: any): boolean {
 }
 
 export function getMainServerFilePath(tree: Tree, options: any): string | undefined {
-    const cliConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-    const project: any = cliConfig.projects[options.project].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:server') {
             return `${project[property].options.main}`;
@@ -397,19 +395,18 @@ export function getMainServerFilePath(tree: Tree, options: any): string | undefi
 }
 
 export function getMainFilePath(tree: Tree, options: any): string {
-    const workspace = getWorkspace(tree);
-    const project: any = workspace.projects[options.clientProject].architect;
+    const cliConfig: WorkspaceSchema = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+    const project: WorkspaceTargets<ProjectType.Application> | undefined = cliConfig.projects[options.clientProject].architect;
     for (let property in project) {
         if (project.hasOwnProperty(property) && project[property].builder === '@angular-devkit/build-angular:browser') {
             return `${project[property].options.main}`;
         }
     }
-    throw new NgToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', { workspace: workspace });
+    throw new NgToolkitException('Main file could not be found (lack of entry with build-angular:browser builder) in angular.json', { workspace: cliConfig });
 }
 
 export function getAppEntryModule(tree: Tree, options: any): { moduleName: string, filePath: string } {
     const mainFilePath = getMainFilePath(tree, options);
-
     const entryFileSource: string = getFileContent(tree, `${options.directory}/${mainFilePath}`);
 
     let results = entryFileSource.match(/bootstrapModule\((.*?)\)/);
@@ -742,10 +739,10 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
     return paramName;
 }
 
-export function addOrReplaceScriptInPackageJson2(tree: Tree, name: string, script: string): void {
-    const packageJsonSource = JSON.parse(getFileContent(tree, `package.json`));
+export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name: string, script: string): void {
+    const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource.scripts[name] = script;
-    tree.overwrite(`package.json`, JSON.stringify(packageJsonSource, null, "  "));
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
 }
 
 export function getAngularVersion(tree: Tree, options: any): string {

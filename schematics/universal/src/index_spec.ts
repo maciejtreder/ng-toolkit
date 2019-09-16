@@ -16,7 +16,7 @@ describe('Universal', () => {
         newProjectRoot: 'projects'
     };
     const defaultOptions: any = {
-        clientProject: 'foo',
+        project: 'foo',
         disableBugsnag: true
     };
 
