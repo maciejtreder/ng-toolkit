@@ -156,7 +156,7 @@ function checkIfUniversal(options: IServerlessSchema, templateSource: Source): R
                     subTree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/server.ts`);
                     subTree.rename(`${options.directory}/server_static.ts`, `${options.directory}/temp/server_static.ts${new Date().getDate()}`);
                 } else {
-                    subTree.rename(`${options.directory}/server_universal.ts`, `${options.directory}temp/server_universal.ts${new Date().getDate()}`);
+                    subTree.rename(`${options.directory}/server_universal.ts`, `${options.directory}/temp/server_universal.ts${new Date().getDate()}`);
                     subTree.rename(`${options.directory}/server_static.ts`, `${options.directory}/server.ts`);
                 }
 
