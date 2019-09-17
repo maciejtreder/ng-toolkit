@@ -5,20 +5,25 @@ import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { Schema } from './schema';
 import { newApp } from '../utils/new-app/index';
 import { WorkspaceSchema, WorkspaceTargets, Builders } from '@schematics/angular/utility/workspace-models';
-import * as bugsnag from 'bugsnag';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
+
+const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function (options: Schema): Rule {
-    bugsnag.register('0b326fddc255310e516875c9874fed91');
-    bugsnag.onBeforeNotify((notification) => {
-        const metaData = notification.events[0].metaData;
-        metaData.subsystem = {
-            package: 'ng-new',
-            options
-        };
-    });
     if (!options.directory) {
         options.directory = options.name;
     }
+
+    // Register bugsnag in order to catch and notify any rule error.
+    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+        report.metaData = {
+            subsystem: {
+                package: 'ng-new',
+                options: options
+            }
+        }
+    }
+
     // clientProject is not a property of angular schematic schema.
     const { clientProject, ...angularOptions } = options;
     const templateSource = apply(url('./files'), [
@@ -31,7 +36,7 @@ export default function (options: Schema): Rule {
         mergeWith(templateSource, MergeStrategy.Overwrite),
         updatePackageJson(options)
     ]);
-    return applyAndLog(rule);
+    return applyAndLog(rule, bugsnagClient);
 }
 
 function updatePackageJson(options: Schema): Rule {
@@ -105,6 +110,7 @@ function adjustCLIConfig(options: Schema): Rule {
             architect.build.options.outputPath = 'dist/browser';
             architect.build.options.main = 'src/main.browser.ts';
             architect.build.options.styles = [{ input: "src/styles/main.scss" }];
+            architect.build.options.tsConfig = 'src/tsconfig.app.json';
             if (architect.build.options.assets) {
                 architect.build.options.assets.push({ glob: "manifest.json", input: "src", output: "/" });
                 architect.build.options.assets.push({ glob: "ngsw-worker.js", input: "src/assets/fakeSW", output: "/" });
@@ -114,7 +120,7 @@ function adjustCLIConfig(options: Schema): Rule {
             }
             delete cliConfig.defaultProject;
         }
-       
+
         if (architect && architect.serve && architect.serve.configurations) {
             architect.serve.configurations.dev = { browserTarget: `${options.name}:build:dev` };
             delete architect.serve.configurations.production;
@@ -127,7 +133,14 @@ function adjustCLIConfig(options: Schema): Rule {
             architect.test.options.styles = [{ input: "src/styles/main.scss" }];
         }
 
-        if (architect && architect.server) {
+        if (architect) {
+            architect.lint = {
+                builder: Builders.TsLint,
+                options: {
+                    tsConfig: ["src/tsconfig.app.json", "src/tsconfig.spec.json", "e2e/tsconfig.json"],
+                    exclude: ["**/node_modules/**"]
+                }
+            };
             architect.server = {
                 builder: Builders.Server,
                 options: {
@@ -135,7 +148,7 @@ function adjustCLIConfig(options: Schema): Rule {
                     main: 'src/main.server.ts',
                     tsConfig: 'src/tsconfig.server.json'
                 }
-            }
+            };
         }
 
         if (architect && architect.e2e) {
@@ -143,7 +156,7 @@ function adjustCLIConfig(options: Schema): Rule {
         }
 
         cliConfig.projects[options.name].architect = architect;
-        createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, 4));
+        createOrOverwriteFile(tree, `${options.directory}/angular.json`, JSON.stringify(cliConfig, null, 2));
         return tree;
     }
 }

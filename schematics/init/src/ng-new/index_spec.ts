@@ -37,6 +37,7 @@ describe('My Schematic', () => {
 
     it('should create all files of an application', (done) => {
         schematicRunner.runSchematicAsync('ng-new', defaultOptions, appTree).subscribe(tree => {
+            // console.debug(tree.files.filter(file => file.startsWith('/foo')));
             checkIfFileExists(tree, '/foo/tsconfig.json');
             checkIfFileExists(tree, '/foo/tslint.json');
             checkIfFileExists(tree, '/foo/angular.json');

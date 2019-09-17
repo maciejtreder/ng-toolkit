@@ -37,7 +37,7 @@ export function newApp(options: Schema): Rule {
             type: 'opencollective',
             url: 'https://opencollective.com/ng-toolkit'
         };
-        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 2));
         return tree;
     });
     rules.push(updatePackageJson(options));

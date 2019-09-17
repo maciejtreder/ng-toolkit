@@ -9,21 +9,23 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '@angular-devkit/core';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IServerlessSchema } from './schema';
-import * as bugsnag from 'bugsnag';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
+
+const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addServerless(options: IServerlessSchema): Rule {
     if (!options.clientProject) {
         options.clientProject = options.project;
     }
     // Register bugsnag in order to catch and notify any rule error.
-    bugsnag.register('0b326fddc255310e516875c9874fed91');
-    bugsnag.onBeforeNotify((notification) => {
-        let metaData = notification.events[0].metaData;
-        metaData.subsystem = {
-            package: 'serverless',
-            options: options
-        };
-    });
+    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+        report.metaData = {
+            subsystem: {
+                package: 'serverless',
+                options: options
+            }
+        }
+    }
 
     // Initialize Serverless property with empty object values.
     options.serverless = {
@@ -133,13 +135,13 @@ export default function addServerless(options: IServerlessSchema): Rule {
         })
     }
 
-    rules.push(tree => {
+    rules.push((tree: Tree) => {
         const ngToolkitSettings = getNgToolkitInfo(tree, options);
         ngToolkitSettings.serverless = options;
         updateNgToolkitInfo(tree, ngToolkitSettings, options);
     });
     if (!options.disableBugsnag) {
-        return applyAndLog(chain(rules));
+        return applyAndLog(chain(rules), bugsnagClient);
     } else {
         return chain(rules);
     }
@@ -226,7 +228,7 @@ function setFirebaseFunctions(options: IServerlessSchema): Rule {
             };
         }
         if (!tree.exists(`${options.directory}/.firebaserc`)) {
-            tree.create(`${options.directory}/.firebaserc`, JSON.stringify(firebaseProjectSettings, null, "  "));
+            tree.create(`${options.directory}/.firebaserc`, JSON.stringify(firebaseProjectSettings, null, 2));
         }
 
         let firebaseJson: any;
@@ -254,7 +256,7 @@ function setFirebaseFunctions(options: IServerlessSchema): Rule {
                 }
             };
         }
-        createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, "  "));
+        createOrOverwriteFile(tree, `${options.directory}/firebase.json`, JSON.stringify(firebaseJson, null, 2));
         return tree;
     }
 }
@@ -297,7 +299,7 @@ function addBuildScriptsAndFiles(options: IServerlessSchema): Rule {
             packageJsonSource.scripts['build:server:serverless'] = `webpack --config webpack.server.config.js --progress --colors`;
         }
 
-        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, "  "));
+        tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 2));
         return tree;
     }
 }
@@ -398,7 +400,7 @@ function updateEnvironment(options: IServerlessSchema): Rule {
             }
         }
 
-        tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, 4));
+        tree.overwrite(`${options.directory}/angular.json`, JSON.stringify(cliConfig, null, 2));
         return tree;
     }
 }

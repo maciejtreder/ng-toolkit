@@ -6,21 +6,24 @@ import { Path } from '../node_modules/@angular-devkit/core';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IFirebugSchema } from './schema';
-import * as bugsnag from 'bugsnag';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
+
+const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addFirebug(options: IFirebugSchema): Rule {
     if (!options.clientProject) {
         options.clientProject = options.project;
     }
     
-    bugsnag.register('0b326fddc255310e516875c9874fed91');
-    bugsnag.onBeforeNotify((notification) => {
-        let metaData = notification.events[0].metaData;
-        metaData.subsystem = {
-            package: 'firebug',
-            options: options
-        };
-    });
+    // Register bugsnag in order to catch and notify any rule error.
+    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+        report.metaData = {
+            subsystem: {
+                package: 'firebug',
+                options: options
+            }
+        }
+    }
 
     const templateSource = apply(url('files'), [
         move(options.directory)
@@ -41,7 +44,7 @@ export default function addFirebug(options: IFirebugSchema): Rule {
     });
 
     if (!options.disableBugsnag) {
-        return applyAndLog(chain(rules));
+        return applyAndLog(chain(rules), bugsnagClient);
     } else {
         return chain(rules);
     }
@@ -71,7 +74,7 @@ function updateCLIConfig(options: IFirebugSchema): Rule {
             "input": "firebug-lite",
             "output": "/firebug-lite"
         });
-        createOrOverwriteFile(tree, `angular.json`, JSON.stringify(CLIConfig, null, 4));
+        createOrOverwriteFile(tree, `angular.json`, JSON.stringify(CLIConfig, null, 2));
         return tree;
     }
 }

@@ -1,90 +1,98 @@
 import { Rule, chain, Tree, SchematicContext } from '@angular-devkit/schematics';
 import {
-    applyAndLog, addImportStatement, addToNgModule,
-    getMainServerFilePath, normalizePath, NgToolkitException,
-    getBootStrapComponent, getAppEntryModule, addDependencyInjection,
-    createOrOverwriteFile, getMethodBodyEdges, implementInterface,
-    addMethod, getNgToolkitInfo, updateNgToolkitInfo
+    applyAndLog, addImportStatement, addToNgModule, getMainServerFilePath, normalizePath,
+    NgToolkitException, getBootStrapComponent, getAppEntryModule, addDependencyInjection, createOrOverwriteFile,
+    getMethodBodyEdges, implementInterface, addMethod, getNgToolkitInfo, updateNgToolkitInfo
 } from '@ng-toolkit/_utils';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { IToolkitPWASchema } from './schema';
-import * as bugsnag from 'bugsnag';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
+
+const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addPWA(options: IToolkitPWASchema): Rule {
     if (!options.clientProject) {
         options.clientProject = options.project;
     }
-    bugsnag.register('0b326fddc255310e516875c9874fed91');
-    bugsnag.onBeforeNotify((notification) => {
-        let metaData = notification.events[0].metaData;
-        metaData.subsystem = {
-            package: 'pwa',
-            options: options
-        };
+
+    // Register bugsnag in order to catch and notify any rule error.
+    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+        report.metaData = {
+            subsystem: {
+                package: 'pwa',
+                options: options
+            }
+        }
+    }
+
+    const rules: Rule[] = [];
+
+    // Check if @angular/pwa was applied.
+    rules.push((tree: Tree) => {
+        const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
+        if (!cliConfig.projects[options.clientProject].architect.build.configurations.production.serviceWorker) {
+            throw new NgToolkitException(`Run 'ng add @angular/pwa' before applying this schematics.`);
+        }
+        return tree;
     });
 
-    const rule: Rule = chain([
-        (tree: Tree, context: SchematicContext) => {
-            //check if angular/pwa was applied
-            const cliConfig = JSON.parse(getFileContent(tree, `${options.directory}/angular.json`));
-            if (!cliConfig.projects[options.clientProject].architect.build.configurations.production.serviceWorker) {
-                throw new NgToolkitException(`Run 'ng add @angular/pwa' before applying this schematics.`);
-            }
-
-            // add entry to server module
-            let serverModulePath = options.serverModule ? options.serverModule : findServerModule(tree, options);
-            if (serverModulePath) {
-                addImportStatement(tree, serverModulePath, 'NgtPwaMockModule', '@ng-toolkit/pwa');
-                addToNgModule(tree, serverModulePath, 'imports', 'NgtPwaMockModule');
-            }
-
-            const ngToolkitSettings = getNgToolkitInfo(tree, options);
-            if (!ngToolkitSettings.pwa) {
-                //add update mechanism
-                let bootstrapComponent = getBootStrapComponent(tree, getAppEntryModule(tree, options).filePath)[0];
-                let swUpdateVar = addDependencyInjection(tree, bootstrapComponent.filePath, 'swUpdate', 'SwUpdate', '@angular/service-worker');
-                implementInterface(tree, bootstrapComponent.filePath, 'OnInit', '@angular/core');
-
-                let methodBodyEdges = getMethodBodyEdges(tree, bootstrapComponent.filePath, 'ngOnInit');
-                let fileContent = getFileContent(tree, bootstrapComponent.filePath);
-                if (!methodBodyEdges) {
-                    addMethod(tree, bootstrapComponent.filePath, 'public ngOnInit():void {}');
-                    methodBodyEdges = getMethodBodyEdges(tree, bootstrapComponent.filePath, 'ngOnInit');
-                    fileContent = getFileContent(tree, bootstrapComponent.filePath);
-                }
-                if (methodBodyEdges) {
-                    fileContent = fileContent.substring(0, methodBodyEdges.start) + `
-                    if (this.${swUpdateVar}.isEnabled) {
-                        this.${swUpdateVar}.available.subscribe((evt) => {
-                            console.log('service worker updated');
-                        });
-                
-                        this.${swUpdateVar}.checkForUpdate().then(() => {
-                            // noop
-                        }).catch((err) => {
-                            console.error('error when checking for update', err);
-                        });
-                    }` + fileContent.substring(methodBodyEdges.end);
-                    createOrOverwriteFile(tree, bootstrapComponent.filePath, fileContent);
-                }
-            }
-            ngToolkitSettings.pwa = options;
-            updateNgToolkitInfo(tree, ngToolkitSettings, options);
-
-            if (!options.skipInstall) {
-                context.addTask(new NodePackageInstallTask(options.directory));
-            }
-
-            return tree;
+    // add entry to server module
+    rules.push((tree: Tree) => {
+        let serverModulePath = options.serverModule ? options.serverModule : findServerModule(tree, options);
+        if (serverModulePath) {
+            addImportStatement(tree, serverModulePath, 'NgtPwaMockModule', '@ng-toolkit/pwa');
+            addToNgModule(tree, serverModulePath, 'imports', 'NgtPwaMockModule');
         }
-    ]);
+        return tree;
+    });
 
+    rules.push((tree: Tree, context: SchematicContext) => {
+        const ngToolkitSettings = getNgToolkitInfo(tree, options);
+        // Add update mechanism.
+        if (!ngToolkitSettings.pwa) {
+            let bootstrapComponent = getBootStrapComponent(tree, getAppEntryModule(tree, options).filePath)[0];
+            let swUpdateVar = addDependencyInjection(tree, bootstrapComponent.filePath, 'swUpdate', 'SwUpdate', '@angular/service-worker');
+            implementInterface(tree, bootstrapComponent.filePath, 'OnInit', '@angular/core');
+
+            let methodBodyEdges = getMethodBodyEdges(tree, bootstrapComponent.filePath, 'ngOnInit');
+            let fileContent = getFileContent(tree, bootstrapComponent.filePath);
+            if (!methodBodyEdges) {
+                addMethod(tree, bootstrapComponent.filePath, 'public ngOnInit():void {}');
+                methodBodyEdges = getMethodBodyEdges(tree, bootstrapComponent.filePath, 'ngOnInit');
+                fileContent = getFileContent(tree, bootstrapComponent.filePath);
+            }
+            if (methodBodyEdges) {
+                fileContent = fileContent.substring(0, methodBodyEdges.start) + `
+                if (this.${swUpdateVar}.isEnabled) {
+                    this.${swUpdateVar}.available.subscribe((evt) => {
+                        console.log('service worker updated');
+                    });
+            
+                    this.${swUpdateVar}.checkForUpdate().then(() => {
+                        // noop
+                    }).catch((err) => {
+                        console.error('error when checking for update', err);
+                    });
+                }` + fileContent.substring(methodBodyEdges.end);
+                createOrOverwriteFile(tree, bootstrapComponent.filePath, fileContent);
+            }
+        }
+
+        ngToolkitSettings.pwa = options;
+        updateNgToolkitInfo(tree, ngToolkitSettings, options);
+
+        if (!options.skipInstall) {
+            context.addTask(new NodePackageInstallTask(options.directory));
+        }
+
+        return tree;
+    });
 
     if (!options.disableBugsnag) {
-        return applyAndLog(rule);
+        return applyAndLog(chain(rules), bugsnagClient);
     } else {
-        return rule;
+        return chain(rules);
     }
 }
 

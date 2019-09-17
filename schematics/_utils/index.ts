@@ -1,13 +1,13 @@
+import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';
 import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
 import { WorkspaceSchema, WorkspaceTargets, ProjectType } from '@schematics/angular/utility/workspace-models';
+import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import * as bugsnag from 'bugsnag';
-import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
-import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
@@ -51,7 +51,7 @@ export function createOrOverwriteFile(tree: Tree, filePath: string, fileContent:
 export function addDependencyToPackageJson(tree: Tree, options: any, dependency: NodeDependency): void {
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource[dependency.type][dependency.name] = dependency.version;
-    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 2));
 }
 
 export function addOrReplaceScriptInPackageJson(options: any, name: string, script: string): Rule {
@@ -364,7 +364,7 @@ export function getDistFolder(tree: Tree, options: any): string {
 
         toReturn = a1.substring(0, i - 1);
     } else {
-        toReturn = getBrowserDistFolder(tree, options)
+        toReturn = getBrowserDistFolder(tree, options);
         if (toReturn.lastIndexOf('/') >= 0) {
             toReturn = toReturn.substr(0, toReturn.lastIndexOf('/'));
         }
@@ -483,23 +483,23 @@ export function getNgToolkitInfo(tree: Tree, options: any): any {
 }
 
 export function updateNgToolkitInfo(tree: Tree, newSettings: any, options: any): void {
-    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, 4));
+    tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, 2));
 }
 
-export function applyAndLog(rule: Rule): Rule {
+export function applyAndLog(rule: Rule, bugsnagClient: Bugsnag.Client): Rule {
     return (tree: Tree, context: SchematicContext) => {
         return (<Observable<Tree>>rule(tree, context))
             .pipe(catchError((error: any) => {
                 let subject: Subject<Tree> = new Subject();
                 console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
                 console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                bugsnag.notify(error, (error, response) => {
-                    if (!error && response === 'OK') {
+                bugsnagClient.notify(error, {}, (error, report) => {
+                    if (!error && report.errorMessage) {
                         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
                     }
                     subject.next(Tree.empty());
                     subject.complete();
-                })
+                });
                 return subject;
             }))
     }
@@ -507,7 +507,7 @@ export function applyAndLog(rule: Rule): Rule {
 
 export function checkCLIcompatibility(tree: Tree, options: any): boolean {
     if (!tree.exists(`${options.directory}/angular.json`)) {
-        throw new NgToolkitException('@ng-toolkit works only with CLI version 6 or higher. Update your Angular CLI and/or project.')
+        throw new NgToolkitException('@ng-toolkit works only with CLI version 6 or higher. Update your Angular CLI and/or project.');
     }
     return true;
 }
@@ -676,10 +676,10 @@ export function getBootStrapComponent(tree: Tree, modulePath: string): { compone
 export class NgToolkitException extends SchematicsException {
     constructor(message: string, additionalData?: any) {
         super(message);
-        bugsnag.onBeforeNotify((notification) => {
-            let metaData = notification.events[0].metaData;
-            metaData.subsystem.additionalData = additionalData;
-        });
+        const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
+        bugsnagClient.config.beforeSend = (report: Bugsnag.Report): void => {
+            report.metaData = { subsystem: additionalData };
+        }
     }
 }
 
@@ -742,7 +742,7 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
 export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name: string, script: string): void {
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     packageJsonSource.scripts[name] = script;
-    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 4));
+    tree.overwrite(`${options.directory}/package.json`, JSON.stringify(packageJsonSource, null, 2));
 }
 
 export function getAngularVersion(tree: Tree, options: any): string {

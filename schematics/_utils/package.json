@@ -28,8 +28,8 @@
   "dependencies": {
     "@angular-devkit/core": "^8.3.3",
     "@angular-devkit/schematics": "^8.3.3",
-    "@schematics/angular": "^8.3.3",
-    "bugsnag": "^2.4.3"
+    "@bugsnag/js": "^6.4.0",
+    "@schematics/angular": "^8.3.3"
   },
   "devDependencies": {
     "@types/jasmine": "^3.4.0",

@@ -8,24 +8,27 @@ import { getWorkspace } from '@schematics/angular/utility/config';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { BrowserBuilderOptions } from '@schematics/angular/utility/workspace-models';
 import { IToolkitUniversalSchema, IUniversalSchema } from './schema';
-import * as bugsnag from 'bugsnag';
+import bugsnag, { Bugsnag } from '@bugsnag/js';
+
+const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 	if (!options.clientProject) {
-        options.clientProject = options.project;
+		options.clientProject = options.project;
 	}
 	// Remove extra properties to avoid schema errors while running @nguniversal/express-engine schematic.
 	const { disableBugsnag, http, directory, project, ...optionsReduced } = options;
 	const expressOptions: IUniversalSchema = optionsReduced;
 
-	bugsnag.register('0b326fddc255310e516875c9874fed91');
-	bugsnag.onBeforeNotify((notification) => {
-		let metaData = notification.events[0].metaData;
-		metaData.subsystem = {
-			package: 'universal',
-			options: options
-		};
-	});
+	// Register bugsnag in order to catch and notify any rule error.
+	bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+		report.metaData = {
+			subsystem: {
+				package: 'universal',
+				options: options
+			}
+		}
+	}
 
 	const templateSource = apply(url('./files'), [
 		move(options.directory)
@@ -52,7 +55,7 @@ export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 	rules.push(addPrerender(options));
 
 	if (!options.disableBugsnag) {
-		return applyAndLog(chain(rules));
+		return applyAndLog(chain(rules), bugsnagClient);
 	} else {
 		return chain(rules);
 	}
@@ -228,7 +231,7 @@ function applyPackageJsonScripts(options: IToolkitUniversalSchema) {
 		pkg.scripts['build:prod'] = 'npm run build:ssr';
 		pkg.scripts['serve:ssr'] = 'node local.js';
 
-		tree.overwrite(pkgPath, JSON.stringify(pkg, null, 4));
+		tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2));
 
 		addDependencyToPackageJson(tree, options, {
 			type: NodeDependencyType.Default,

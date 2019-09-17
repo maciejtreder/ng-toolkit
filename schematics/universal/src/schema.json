@@ -55,8 +55,9 @@
     },
     "tsconfigFileName": {
       "type": "string",
-      "default": "tsconfig.server",
-      "description": "The name of the TypeScript configuration file."
+      "format": "path",
+      "description": "The name of the TypeScript configuration file.",
+      "default": "tsconfig.server"
     },
     "testTsconfigFileName": {
       "type": "string",

@@ -37,10 +37,10 @@
   "dependencies": {
     "@angular-devkit/core": "^8.3.3",
     "@angular-devkit/schematics": "^8.3.3",
+    "@bugsnag/js": "^6.4.0",
     "@ng-toolkit/_utils": "8.0.0",
     "@nguniversal/express-engine": "^8.1.1",
-    "@schematics/angular": "^8.3.3",
-    "bugsnag": "^2.4.3"
+    "@schematics/angular": "^8.3.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.4",
