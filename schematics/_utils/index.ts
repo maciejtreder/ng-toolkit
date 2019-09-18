@@ -7,11 +7,13 @@ import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import outdent from 'outdent';
 import bugsnag, { Bugsnag } from '@bugsnag/js';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
-        createOrOverwriteFile(tree, `./${dirName}/.gitignore`, `/node_modules/
+        createOrOverwriteFile(tree, `./${dirName}/.gitignore`, outdent`
+            /node_modules/
             /dist/
             /lib/
             /yarn.lock

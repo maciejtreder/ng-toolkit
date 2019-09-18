@@ -9,6 +9,7 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { Path } from '@angular-devkit/core';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IServerlessSchema } from './schema';
+import outdent from 'outdent';
 import bugsnag, { Bugsnag } from '@bugsnag/js';
 
 const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
@@ -106,7 +107,7 @@ export default function addServerless(options: IServerlessSchema): Rule {
 
     // Generate files in order to run local server on development mode.
     rules.push(tree => {
-        createOrOverwriteFile(tree, `${options.directory}/local.js`, `
+        createOrOverwriteFile(tree, `${options.directory}/local.js`, outdent`
             const port = process.env.PORT || 8080;
 
             const server = require('./${getDistFolder(tree, options)}/server');
@@ -202,7 +203,8 @@ function checkIfServerless(options: IServerlessSchema): Rule {
 
 function setFirebaseFunctions(options: IServerlessSchema): Rule {
     return (tree: Tree) => {
-        createOrOverwriteFile(tree, `${options.directory}/functions/package.json`, `{
+        createOrOverwriteFile(tree, `${options.directory}/functions/package.json`, outdent`
+        {
             "name": "functions",
             "description": "Cloud Functions for Firebase",
             "scripts": {
@@ -421,9 +423,9 @@ function updateAppEntryFile(options: IServerlessSchema): Rule {
         addDependencyInjection(tree, appComponentFilePath, 'platformId', 'any', '@angular/core', 'PLATFORM_ID');
 
         if (ngOnInit) {
-            updateMethod(tree, appComponentFilePath, 'ngOnInit', ngOnInit + `
+            updateMethod(tree, appComponentFilePath, 'ngOnInit', ngOnInit + outdent`
                 if (!isPlatformBrowser(this.platformId)) {
-                    let bases = this.document.getElementsByTagName('base');
+                    const bases = this.document.getElementsByTagName('base');
 
                     if (bases.length > 0) {
                         bases[0].setAttribute('href', environment.baseHref);
@@ -431,10 +433,10 @@ function updateAppEntryFile(options: IServerlessSchema): Rule {
                 }`
             );
         } else {
-            addMethod(tree, appComponentFilePath, `
+            addMethod(tree, appComponentFilePath, outdent`
                 public ngOnInit(): void {
                     if (!isPlatformBrowser(this.platformId)) {
-                        let bases = this.document.getElementsByTagName('base');
+                        const bases = this.document.getElementsByTagName('base');
                 
                         if (bases.length > 0) {
                             bases[0].setAttribute('href', environment.baseHref);

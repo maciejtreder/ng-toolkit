@@ -4,6 +4,7 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { addOrReplaceScriptInPackageJson, createGitIgnore, createOrOverwriteFile, addDependencyToPackageJson } from '@ng-toolkit/_utils';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { Schema } from 'init/src/ng-new/schema';
+import outdent from 'outdent';
 
 export function newApp(options: Schema): Rule {
     const templateSource = apply(url('../utils/new-app/files'), [
@@ -159,7 +160,8 @@ function addDependencies(options: Schema): Rule {
 function overwriteMainFile(options: Schema): Rule {
     return (tree: Tree) => {
         tree.rename(`${options.directory}/src/main.ts`, `${options.directory}/src/main.browser.ts`);
-        createOrOverwriteFile(tree, `${options.directory}/src/main.browser.ts`, `import { enableProdMode } from '@angular/core';
+        createOrOverwriteFile(tree, `${options.directory}/src/main.browser.ts`, outdent`
+            import { enableProdMode } from '@angular/core';
             import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
             import { environment } from './environments/environment';

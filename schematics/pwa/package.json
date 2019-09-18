@@ -59,6 +59,7 @@
     "cp-cli": "^2.0.0",
     "jasmine": "^3.4.0",
     "ng-packagr": "^5.5.0",
+    "outdent": "^0.7.0",
     "rxjs": "^6.4.0",
     "tsickle": "^0.37.0",
     "typescript": "~3.5.3"

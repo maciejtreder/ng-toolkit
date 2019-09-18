@@ -7,6 +7,7 @@ import {
 import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { IToolkitPWASchema } from './schema';
+import outdent from 'outdent';
 import bugsnag, { Bugsnag } from '@bugsnag/js';
 
 const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
@@ -63,7 +64,7 @@ export default function addPWA(options: IToolkitPWASchema): Rule {
                 fileContent = getFileContent(tree, bootstrapComponent.filePath);
             }
             if (methodBodyEdges) {
-                fileContent = fileContent.substring(0, methodBodyEdges.start) + `
+                fileContent = fileContent.substring(0, methodBodyEdges.start) + outdent`
                 if (this.${swUpdateVar}.isEnabled) {
                     this.${swUpdateVar}.available.subscribe((evt) => {
                         console.log('service worker updated');
