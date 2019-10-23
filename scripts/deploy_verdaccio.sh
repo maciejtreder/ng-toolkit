@@ -1,6 +1,6 @@
 CATALOGS=(_utils pwa serverless universal firebug)
 
-echo "//localhost:4873/:_authToken=\"fooBar\"" >> ~/.npmrc
+echo "//localhost:4873/:_authToken=\"CjmKyL6UDkX6FDpNnP64fw==\"" >> ~/.npmrc
 
 npm install -g @angular/cli
 npm install -g verdaccio
