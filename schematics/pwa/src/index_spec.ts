@@ -1,11 +1,10 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
-// import { getFileContent } from '@schematics/angular/utility/test';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
-describe('PWA', () => {
+xdescribe('PWA', () => {
     let appTree: UnitTestTree;
 
     const schematicRunner = new SchematicTestRunner('@ng-toolkit/pwa', collectionPath);

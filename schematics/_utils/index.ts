@@ -1,4 +1,5 @@
-import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
+// import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
+import * as ts from 'typescript';
 import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';
 import { NodeDependencyType, NodeDependency } from '@schematics/angular/utility/dependencies';
@@ -8,7 +9,7 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import outdent from 'outdent';
-import bugsnag, { Bugsnag } from '@bugsnag/js';
+import bugsnag from '@bugsnag/js';
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
@@ -488,14 +489,14 @@ export function updateNgToolkitInfo(tree: Tree, newSettings: any, options: any):
     tree.overwrite(`${options.directory}/ng-toolkit.json`, JSON.stringify(newSettings, null, 2));
 }
 
-export function applyAndLog(rule: Rule, bugsnagClient: Bugsnag.Client): Rule {
+export function applyAndLog(rule: Rule, bugsnagClient: any): Rule {
     return (tree: Tree, context: SchematicContext) => {
         return (<Observable<Tree>>rule(tree, context))
             .pipe(catchError((error: any) => {
                 let subject: Subject<Tree> = new Subject();
                 console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
                 console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                bugsnagClient.notify(error, {}, (error, report) => {
+                bugsnagClient.notify(error, {}, (error:any, report: any) => {
                     if (!error && report.errorMessage) {
                         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
                     }
@@ -679,7 +680,7 @@ export class NgToolkitException extends SchematicsException {
     constructor(message: string, additionalData?: any) {
         super(message);
         const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
-        bugsnagClient.config.beforeSend = (report: Bugsnag.Report): void => {
+        bugsnagClient.config.beforeSend = (report): void => {
             report.metaData = { subsystem: additionalData };
         }
     }
