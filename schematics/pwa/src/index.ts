@@ -8,9 +8,9 @@ import { getFileContent } from '@schematics/angular/utility/test';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { IToolkitPWASchema } from './schema';
 import outdent from 'outdent';
-import bugsnag, { Bugsnag } from '@bugsnag/js';
+import bugsnag from '@bugsnag/js';
 
-const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
+const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addPWA(options: IToolkitPWASchema): Rule {
     if (!options.clientProject) {
@@ -18,7 +18,7 @@ export default function addPWA(options: IToolkitPWASchema): Rule {
     }
 
     // Register bugsnag in order to catch and notify any rule error.
-    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+    bugsnagClient.config.beforeSend = (report) => {
         report.metaData = {
             subsystem: {
                 package: 'pwa',

@@ -8,9 +8,9 @@ import { getWorkspace } from '@schematics/angular/utility/config';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { BrowserBuilderOptions } from '@schematics/angular/utility/workspace-models';
 import { IToolkitUniversalSchema, IUniversalSchema } from './schema';
-import bugsnag, { Bugsnag } from '@bugsnag/js';
+import bugsnag from '@bugsnag/js';
 
-const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
+const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 	if (!options.clientProject) {
@@ -21,7 +21,7 @@ export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 	const expressOptions: IUniversalSchema = optionsReduced;
 
 	// Register bugsnag in order to catch and notify any rule error.
-	bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+	bugsnagClient.config.beforeSend = (report: any) => {
 		report.metaData = {
 			subsystem: {
 				package: 'universal',

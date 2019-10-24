@@ -6,9 +6,9 @@ import { Path } from '../node_modules/@angular-devkit/core';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IFirebugSchema } from './schema';
-import bugsnag, { Bugsnag } from '@bugsnag/js';
+import bugsnag from '@bugsnag/js';
 
-const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
+const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addFirebug(options: IFirebugSchema): Rule {
     if (!options.clientProject) {
@@ -16,7 +16,7 @@ export default function addFirebug(options: IFirebugSchema): Rule {
     }
     
     // Register bugsnag in order to catch and notify any rule error.
-    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+    bugsnagClient.config.beforeSend = (report: any) => {
         report.metaData = {
             subsystem: {
                 package: 'firebug',
