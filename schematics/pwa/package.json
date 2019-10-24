@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/pwa",
   "main": "dist/index.js",
-  "version": "8.0.0-beta.8",
+  "version": "8.0.0-beta.10",
   "description": "Extension for @angular/pwa - adds server-side rendering fixes and update mechanism",
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@bugsnag/js": "^6.4.0",
-    "@ng-toolkit/_utils": "8.0.0-beta.8"
+    "@ng-toolkit/_utils": "8.0.0-beta.10"
   },
   "devDependencies": {
     "@ng-toolkit/universal": "^7.1.2",
