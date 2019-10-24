@@ -10,16 +10,16 @@ import { Path } from '@angular-devkit/core';
 import { NodeDependencyType } from '@schematics/angular/utility/dependencies';
 import { IServerlessSchema } from './schema';
 import outdent from 'outdent';
-import bugsnag, { Bugsnag } from '@bugsnag/js';
+import bugsnag from '@bugsnag/js';
 
-const bugsnagClient: Bugsnag.Client = bugsnag('0b326fddc255310e516875c9874fed91');
+const bugsnagClient = bugsnag('0b326fddc255310e516875c9874fed91');
 
 export default function addServerless(options: IServerlessSchema): Rule {
     if (!options.clientProject) {
         options.clientProject = options.project;
     }
     // Register bugsnag in order to catch and notify any rule error.
-    bugsnagClient.config.beforeSend = (report: Bugsnag.Report) => {
+    bugsnagClient.config.beforeSend = (report) => {
         report.metaData = {
             subsystem: {
                 package: 'serverless',
