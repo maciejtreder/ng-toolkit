@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/pwa",
   "main": "dist/index.js",
-  "version": "8.0.0-beta.10",
+  "version": "8.0.1",
   "description": "Extension for @angular/pwa - adds server-side rendering fixes and update mechanism",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "ng build --prod && tsc -p tsconfig.json && npm run copy_files",
-    "copy_files": "cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/schema.json",
+    "copy_files": "cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/src/schema.json && cp-cli src/index.js dist/src/index.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
     "prepublish": "npm test",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@bugsnag/js": "^6.4.0",
-    "@ng-toolkit/_utils": "8.0.0-beta.10"
+    "@ng-toolkit/_utils": "8.0.1"
   },
   "devDependencies": {
     "@ng-toolkit/universal": "^7.1.2",
