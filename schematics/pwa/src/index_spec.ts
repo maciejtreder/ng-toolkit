@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
+// import { checkIfFileExists } from '@ng-toolkit/_utils/testing';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
@@ -11,7 +11,7 @@ xdescribe('PWA', () => {
 
     const workspaceOptions = {
         name: 'workspace',
-        version: '6.0.0',
+        version: '8.0.0',
         newProjectRoot: 'projects'
     };
     const defaultOptions: any = {
@@ -36,14 +36,14 @@ xdescribe('PWA', () => {
 
     it('Should create files', (done) => {
         schematicRunner.runSchematicAsync('ng-add', defaultOptions, appTree).subscribe(tree => {
-            checkIfFileExists(tree, `/local.js`);
-            checkIfFileExists(tree, `/server.ts`);
-            checkIfFileExists(tree, `/ng-toolkit.json`);
-            checkIfFileExists(tree, `/webpack.server.config.js`);
-            checkIfFileExists(tree, `/projects/foo/tsconfig.server.json`);
-            checkIfFileExists(tree, `/projects/foo/src/main.server.ts`);
-            checkIfFileExists(tree, `/projects/foo/src/app/app.browser.module.ts`);
-            checkIfFileExists(tree, `/projects/foo/src/app/app.server.module.ts`);
+            // checkIfFileExists(tree, `/local.js`);
+            // checkIfFileExists(tree, `/server.ts`);
+            // checkIfFileExists(tree, `/ng-toolkit.json`);
+            // checkIfFileExists(tree, `/webpack.server.config.js`);
+            // checkIfFileExists(tree, `/projects/foo/tsconfig.server.json`);
+            // checkIfFileExists(tree, `/projects/foo/src/main.server.ts`);
+            // checkIfFileExists(tree, `/projects/foo/src/app/app.browser.module.ts`);
+            // checkIfFileExists(tree, `/projects/foo/src/app/app.server.module.ts`);
             done();
         });
     });

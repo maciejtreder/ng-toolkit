@@ -15,9 +15,11 @@ cd schematics
 
 for i in "${CATALOGS[@]}"
 do :
+    echo publishing $i
     cd $i
     npm install
-    echo publishing $i
+    echo 'INSTALLED INSTALLED'
+    ls node_modules/@ng-toolkit/_utils/testing
     if ./publish_verdaccio.sh
     then
         echo $i passed
