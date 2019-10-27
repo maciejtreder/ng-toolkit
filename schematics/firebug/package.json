@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
-    "prepublish": "npm test",
+    "prepare": "npm test",
     "ci-publish": "ci-publish"
   },
   "keywords": [

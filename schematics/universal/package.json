@@ -13,7 +13,7 @@
     "copy_files": "cp-cli src/files dist/src/files && cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/src/schema.json && cp-cli src/index.js dist/src/index.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
-    "prepublish": "npm test",
+    "prepare": "npm test",
     "ci-publish": "ci-publish"
   },
   "keywords": [
