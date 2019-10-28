@@ -1,4 +1,3 @@
-// import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import * as ts from 'typescript';
 import { Rule, SchematicsException, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { addSymbolToNgModuleMetadata, insertImport } from '@schematics/angular/utility/ast-utils';

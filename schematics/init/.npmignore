@@ -8,4 +8,6 @@
 ./src/utils/googleAnalytics/index_spec.ts
 ./src/utils/new-app/index.ts
 ./src/utils/new-app/index_spec.ts
-./tsconfig.json
+
+# Ignore typescript config json file
+tsconfig.json
