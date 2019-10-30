@@ -1,8 +1,8 @@
 language: node_js
 node_js: 10
 script:
-- if [ "$TRAVIS_BRANCH" = "master" ]; then ./scripts/deploy.sh; fi
-- if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/deploy_verdaccio.sh; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./scripts/deploy.sh; fi
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/deploy_verdaccio.sh; fi
 env:
   global:
     secure: yPhiY6aqwJ0cDLVYLvY6g9r8T1W/mVh7oFXnQS+Qqp5YUTDGI2O6SKGMzQeMpV8mtql5vyeGgWtEyZ5aZqsX83LJFpSY5375ClcwIA2MIMCzeici3jqt00BnXW1t75U1i4F5T8THbKKc4IzvS3ORTKwJo+lZx4dZR5JBagI1sZAU++mO+aXEOJUwfOCbE/cDHh4ROC8e0D4UOfwp5Bk9NQ4K6P5Rl/aIwSc/77AVh95qzlXkg+V6py9jJgg1F6dl62XHLft8uNC/67oxHXIOWTcu4s11ob0cBza33DzwSa1nYX1jRdMd9Uq0gU8MxGulkv6RXwju7wQw4btY6eKqD+da1BisA14kUOaETPy04chVlyQGMUDzs77mYH8/A6TiNDBnZM+nlz6gnwutfMJKr6mRq1Wwsk5XijckFPmgoHj7B+vTz6gN6KtJ46PTR58LLEqWpILpLwOD430Qce6zfjbuAZKJiTzam3sxMtDDz4uOyPQXVDY+GIXE0pQ0bMjH8nE9fcNnYnldcbFV8j0LDTsgjL7I2HYzr49aupQYWLMT9dF1TK2ld1RCuUWiKUAYGzvMMM4StanRpDBptzSK9LsK+XcfUC4b3olQ1MF5IaHxJS9Sw/CGNhhelzC9sKvIrZ71XPhrK6WbsfTXCw4OQx3WD8Xxe39zFLS+WrziQzk=

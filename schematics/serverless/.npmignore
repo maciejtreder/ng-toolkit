@@ -1,3 +1,5 @@
-./src/index.ts
-./src/index_spec.ts
-./tsconfig.json
+# include the .ts files
+!*.ts
+
+# Ignore typescript config json file
+tsconfig.json

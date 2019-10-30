@@ -1,7 +1,7 @@
 {
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/firebug",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Add Firebug lite to your Angular project.",
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "postinstall": "node postinstall.js",
-    "prepublish": "npm test",
+    "prepare": "npm test",
     "ci-publish": "ci-publish"
   },
   "keywords": [
@@ -32,7 +32,7 @@
     "@angular-devkit/core": "^8.3.3",
     "@angular-devkit/schematics": "^8.3.3",
     "@bugsnag/js": "^6.4.0",
-    "@ng-toolkit/_utils": "8.0.1",
+    "@ng-toolkit/_utils": "8.0.2",
     "@schematics/angular": "^8.3.3"
   },
   "devDependencies": {

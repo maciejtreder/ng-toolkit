@@ -1,1 +1,2 @@
-./tsconfig.json
+# Ignore typescript config json file
+tsconfig.json
