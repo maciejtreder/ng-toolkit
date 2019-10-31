@@ -6,7 +6,7 @@ import { Meta } from '@angular/platform-browser';
 import { SnackBar } from './services/snack-bar.service';
 import * as sinon from 'sinon';
 import { SwUpdate } from '@angular/service-worker';
-import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker/src/low_level';
+import { UpdateActivatedEvent, UpdateAvailableEvent } from '@angular/service-worker';
 import { WindowRef } from './window-ref.service';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SwUpdateServerMock } from './services/swUpdate-server.mock.service';
