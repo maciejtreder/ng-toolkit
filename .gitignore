@@ -2,3 +2,5 @@
 .vscode/
 *.iml
 dist/
+verdacio_output
+scripts/storage/*
