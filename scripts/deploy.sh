@@ -2,7 +2,7 @@ npm install -g @angular/cli
 
 cd schematics
 
-CATALOGS=(_utils serverless universal pwa firebug)
+CATALOGS=(_utils serverless universal pwa firebug init)
 
 exitStatus=0
 
