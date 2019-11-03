@@ -1,4 +1,4 @@
-CATALOGS=(_utils serverless pwa universal firebug init)
+CATALOGS=(_utils serverless universal pwa firebug init)
 echo "//localhost:4873/:_authToken=\"CjmKyL6UDkX6FDpNnP64fw==\"" >>~/.npmrc
 
 npm install -g @angular/cli
@@ -23,9 +23,6 @@ for i in "${CATALOGS[@]}"; do
     cd $i
     npm install --verbose
     printf '\e[1;32m--- NPM INSTALL COMPLETED FOR %s ---\e[0m\n' "$i"
-    if [ "$i" != "_utils" ]; then
-        ls node_modules/@ng-toolkit/_utils
-    fi
     if ./publish_verdaccio.sh; then
         printf '\e[1;33m*** %s PASSED ***\e[0m\n' "$i"
     else
