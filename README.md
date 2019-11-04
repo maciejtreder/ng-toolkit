@@ -14,8 +14,12 @@ This project has two faces:
 [![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage)
 [![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
+
 [![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
+
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/maciejtreder/ng-toolkit.svg)](http://isitmaintained.com/project/maciejtreder/ng-toolkit "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/maciejtreder/ng-toolkit.svg)](http://isitmaintained.com/project/maciejtreder/ng-toolkit "Percentage of issues still open")
 
 ### Dependency Status
 
