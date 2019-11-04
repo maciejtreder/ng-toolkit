@@ -1,4 +1,4 @@
-CATALOGS=(_utils serverless universal pwa firebug init)
+CATALOGS=(_utils serverless pwa universal firebug init)
 echo "//localhost:4873/:_authToken=\"CjmKyL6UDkX6FDpNnP64fw==\"" >>~/.npmrc
 
 npm install -g @angular/cli
