@@ -1,5 +1,5 @@
 const domino = require('domino');
-const fs = require('fs');
+const fs = require('fs-extra');
 const template = fs.readFileSync('./dist/browser/index.html').toString();
 const win = domino.createWindow(template);
 const filesBrowser = fs.readdirSync(`${process.cwd()}/dist/browser`)
@@ -158,7 +158,7 @@ allRoutes.forEach((route) => {
 // copy static files
 filesBrowser.forEach(file => {
     if (file !== 'index.html') {
-        fs.copyFileSync(`./dist/browser/${file}`, `./dist/static/${file}`);
+        fs.copySync(`./dist/browser/${file}`, `./dist/static/${file}`);
     }
 });
 
@@ -179,39 +179,40 @@ function findRoutes(sourceCode: string, path: string) {
                 const importsNode = node.properties.find(node => {
                   return (<ts.Identifier> node.name).escapedText === 'imports';
                 });
-                const identifierNodes = (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment> importsNode).initializer).elements.filter(node => {
-                  return ts.isIdentifier(node) || ts.isCallExpression(node);
-                });
+                if (!!importsNode){
+                  const identifierNodes = (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment> importsNode).initializer).elements.filter(node => {
+                    return ts.isIdentifier(node) || ts.isCallExpression(node);
+                  });
+                  identifierNodes.forEach(node => {
+                    if (ts.isCallExpression(node)) {
+                      if ((<ts.Identifier> (<ts.PropertyAccessExpression> node.expression).expression).escapedText === 'RouterModule') {
+                        // RouterModule Found!
+                        const argument = node.arguments[0];
+                        let routes;
+                        if (ts.isIdentifier(argument)) {
+                          // variable 
+                          const varName = argument.escapedText;
+                          SourceCodeObj.forEachChild(node => {
+                            if(ts.isVariableStatement(node) && (<ts.Identifier> node.declarationList.declarations[0].name).escapedText === varName)  {
+                              const initializer = node.declarationList.declarations[0].initializer;
+                              routes = sourceCode.substring(initializer.pos, initializer.end);
+                            }
+                          });
 
-                identifierNodes.forEach(node => {
-                  if (ts.isCallExpression(node)) {
-                    if ((<ts.Identifier> (<ts.PropertyAccessExpression> node.expression).expression).escapedText === 'RouterModule') {
-                      // RouterModule Found!
-                      const argument = node.arguments[0];
-                      let routes;
-                      if (ts.isIdentifier(argument)) {
-                        // variable 
-                        const varName = argument.escapedText;
-                        SourceCodeObj.forEachChild(node => {
-                          if(ts.isVariableStatement(node) && (<ts.Identifier> node.declarationList.declarations[0].name).escapedText === varName)  {
-                            const initializer = node.declarationList.declarations[0].initializer;
-                            routes = sourceCode.substring(initializer.pos, initializer.end);
-                          }
-                        });
-
-                      } else {
-                        // array
-                        routes = sourceCode.substring(node.arguments.pos, node.arguments.end);
+                        } else {
+                          // array
+                          routes = sourceCode.substring(node.arguments.pos, node.arguments.end);
+                        }
+                        
+                        routes = routes.replace(/(.*?:\s)([^'"`].*?[^'"`])((\s*?),|(\s*?)})/g, "$1'$2'$3");
+                        eval('routes = ' + routes);
+                        // console.log(routes);
                       }
-                      
-                      routes = routes.replace(/(.*?:\s)([^'"`].*?[^'"`])((\s*?),|(\s*?)})/g, "$1'$2'$3");
-                      eval('routes = ' + routes);
-                      // console.log(routes);
+                      node = (<ts.PropertyAccessExpression> node.expression).expression;
                     }
-                    node = (<ts.PropertyAccessExpression> node.expression).expression;
-                  }
-                  identifiers.push((<ts.Identifier> node).escapedText);
-                });
+                    identifiers.push((<ts.Identifier> node).escapedText);
+                  });
+                }
               }
             });
           }
