@@ -7,9 +7,9 @@ import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { safeLoad, safeDump } from 'js-yaml';
 import outdent from 'outdent';
 import bugsnag from '@bugsnag/js';
+const jsyaml = require('js-yaml');
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
@@ -757,7 +757,7 @@ export function getAngularVersion(tree: Tree, options: any): string {
 export function parseYML2JS(tree: Tree, filePath: string): any {
     const fileContent = getFileContent(tree, filePath);
     try {
-        const data = safeLoad(fileContent);
+        const data = jsyaml.safeLoad(fileContent);
         return data;
     } catch (error) {
         throw new NgToolkitException(`Unable to parse ${filePath} file into JS Object.`, error);
@@ -766,7 +766,7 @@ export function parseYML2JS(tree: Tree, filePath: string): any {
 
 export function parseJS2YML(tree: Tree, data: string, outputPath: string) {
     try {
-        const fileContent = safeDump(data);
+        const fileContent = jsyaml.safeDump(data);
         createOrOverwriteFile(tree, outputPath, fileContent);
     } catch (error) {
         throw new NgToolkitException(`Unable to write parsed JS Object into ${outputPath} file.`, error);
