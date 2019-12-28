@@ -7,6 +7,7 @@ import { InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getFileContent } from '@schematics/angular/utility/test';
 import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { safeLoad, safeDump } from 'js-yaml';
 import outdent from 'outdent';
 import bugsnag from '@bugsnag/js';
 
@@ -751,4 +752,23 @@ export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name:
 export function getAngularVersion(tree: Tree, options: any): string {
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     return packageJsonSource.dependencies['@angular/core'];
+}
+
+export function parseYML2JS(tree: Tree, filePath: string): any {
+    const fileContent = getFileContent(tree, filePath);
+    try {
+        const data = safeLoad(fileContent);
+        return data;
+    } catch (error) {
+        throw new NgToolkitException(`Unable to parse ${filePath} file into JS Object.`, error);
+    }
+}
+
+export function parseJS2YML(tree: Tree, data: string, outputPath: string) {
+    try {
+        const fileContent = safeDump(data);
+        createOrOverwriteFile(tree, outputPath, fileContent);
+    } catch (error) {
+        throw new NgToolkitException(`Unable to write parsed JS Object into ${outputPath} file.`, error);
+    }
 }
