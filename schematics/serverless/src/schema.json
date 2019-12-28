@@ -30,6 +30,16 @@
     "firebaseProject": {
       "description": "Firebase project id.",
       "type": "string"
+    },
+    "lambdaTS": {
+      "description": "Generate lambda files using Typescript instead of Javascript.",
+      "type": "boolean",
+      "default": false
+    },
+    "offline": {
+      "description": "Include serverless-offline package for local development.",
+      "type": "boolean",
+      "default": false
     }
   },
   "required": []
