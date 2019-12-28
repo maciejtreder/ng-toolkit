@@ -116,6 +116,7 @@ export default function addServerless(options: IServerlessSchema): Rule {
     // TODO: Check if I shall include all the typescript lambda logic plus webpack in a single function or 
     // keep the splitted like now.
     rules.push(addLocalFile(options));
+    rules.push(editTSConfigFile(options));
     // TODO: Add webpack typescript config file option.
     rules.push((tree: Tree) => {
         let webpack = getFileContent(tree, `${options.directory}/webpack.server.config.js`);
@@ -425,6 +426,22 @@ function addLocalTypescript(options: IServerlessSchema): Rule {
             // Run locally our express server
             run();
         `);
+    }
+}
+
+/**
+ * Change the default `tsconfig.json` file to enable default imports for some JS packages.
+ * Also set the module code generation to CommonJS to enable webpack typescript compilation and other stuff.
+ * @param options serverless options schema
+ */
+function editTSConfigFile(options: IServerlessSchema): Rule {
+    return tree => {
+        const tsConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/tsconfig.json`));
+        tsConfig.compilerOptions['esModuleInterop'] = true;
+        tsConfig.compilerOptions['allowSyntheticDefaultImports'] = true;
+        tsConfig.compilerOptions['module'] = 'commonjs';
+        tree.overwrite(`${options.directory}/tsconfig.json`, JSON.stringify(tsConfig, null, 2));
+        return tree;
     }
 }
 
