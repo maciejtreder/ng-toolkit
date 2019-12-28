@@ -493,9 +493,10 @@ export function applyAndLog(rule: Rule, bugsnagClient: any): Rule {
         return (<Observable<Tree>>rule(tree, context))
             .pipe(catchError((error: any) => {
                 let subject: Subject<Tree> = new Subject();
-                console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
-                console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                bugsnagClient.notify(error, {}, (error:any, report: any) => {
+                console.log(`\u001B[31mERROR MESSAGE: \u001b[0m${error.message}`);
+                console.log(`\u001B[31mERROR STACKTRACE: \u001b[0m${error.stack}`);
+                console.log(`\u001B[31mERROR TIP: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
+                bugsnagClient.notify(error, {}, (error: any, report: any) => {
                     if (!error && report.errorMessage) {
                         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
                     }
