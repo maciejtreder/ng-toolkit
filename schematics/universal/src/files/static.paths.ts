@@ -1,2 +1,7 @@
 // specifies additional routes for prerender
-export const ROUTES = [];
+const routeData = {
+	hostname: '',
+	routes: [],
+};
+
+export default routeData;
