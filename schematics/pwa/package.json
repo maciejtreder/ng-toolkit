@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "ng build --prod && tsc -p tsconfig.json && npm run copy_files",
-    "copy_files": "cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/src/schema.json && cp-cli src/index.js dist/src/index.js",
+    "copy_files": "cpy-cli collection.json dist/collection.json && cpy-cli src/schema.json dist/src/schema.json && cp-cli src/index.js dist/src/index.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "test:dev": "npm run test && npm publish --registry http://localhost:4873",
     "postinstall": "node postinstall.js",
@@ -56,7 +56,7 @@
     "@types/jasmine": "^3.4.0",
     "@types/node": "^12.7.4",
     "ci-publish": "^1.3.1",
-    "cp-cli": "^2.0.0",
+    "cpy-cli": "^3.0.0",
     "jasmine": "^3.4.0",
     "ng-packagr": "^5.5.0",
     "outdent": "^0.7.0",
