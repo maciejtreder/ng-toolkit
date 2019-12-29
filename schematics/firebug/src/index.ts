@@ -37,11 +37,7 @@ export default function addFirebug(options: IFirebugSchema): Rule {
     rules.push(updateConfigFiles(options));
 
     rules.push(mergeWith(templateSource, MergeStrategy.Overwrite));
-    rules.push((tree: Tree) => {
-        tree.rename(`/src/bootstrapScripts/firebug.ts`, `${getSourceRoot(tree, options)}/bootstrapScripts/firebug.ts`);
-        tree.rename(`/src/environments/environment.firebug.ts`, `${getSourceRoot(tree, options)}/environments/environment.firebug.ts`);
-        return tree;
-    });
+    rules.push(renameFirebugFiles(options));
 
     if (!options.disableBugsnag) {
         return applyAndLog(chain(rules), bugsnagClient);
@@ -57,8 +53,8 @@ function getSourceRoot(tree: Tree, options: IFirebugSchema): string {
 
 function updateCLIConfig(options: IFirebugSchema): Rule {
     return (tree: Tree) => {
-        const CLIConfig = JSON.parse(getFileContent(tree, `angular.json`));
-        CLIConfig.projects[options.clientProject].architect.build.configurations.firebug = {
+        const cliConfig = JSON.parse(getFileContent(tree, `angular.json`));
+        cliConfig.projects[options.clientProject].architect.build.configurations.firebug = {
             fileReplacements: [
                 {
                     "replace": "src/environments/environment.ts",
@@ -67,14 +63,16 @@ function updateCLIConfig(options: IFirebugSchema): Rule {
             ]
         };
 
-        CLIConfig.projects[options.clientProject].architect.serve.configurations.firebug = { "browserTarget": `${options.clientProject}:build:firebug` };
+        cliConfig.projects[options.clientProject].architect.serve.configurations.firebug = {
+            "browserTarget": `${options.clientProject}:build:firebug`
+        };
 
-        CLIConfig.projects[options.clientProject].architect.build.options.assets.push({
+        cliConfig.projects[options.clientProject].architect.build.options.assets.push({
             "glob": "**/*.*",
             "input": "firebug-lite",
             "output": "/firebug-lite"
         });
-        createOrOverwriteFile(tree, `angular.json`, JSON.stringify(CLIConfig, null, 2));
+        createOrOverwriteFile(tree, `angular.json`, JSON.stringify(cliConfig, null, 2));
         return tree;
     }
 }
@@ -103,7 +101,7 @@ function updatePackageDependencies(options: IFirebugSchema): Rule {
         addDependencyToPackageJson(tree, options, {
             type: NodeDependencyType.Dev,
             name: 'node-wget',
-            version: '^0.4.2'
+            version: '^0.4.3'
         });
         addDependencyToPackageJson(tree, options, {
             type: NodeDependencyType.Dev,
@@ -115,6 +113,14 @@ function updatePackageDependencies(options: IFirebugSchema): Rule {
             name: 'decompress-targz',
             version: '^4.1.1'
         });
+        return tree;
+    }
+}
+
+function renameFirebugFiles(options:IFirebugSchema): Rule {
+    return (tree: Tree) => {
+        tree.rename(`/src/bootstrapScripts/firebug.ts`, `${getSourceRoot(tree, options)}/bootstrapScripts/firebug.ts`);
+        tree.rename(`/src/environments/environment.firebug.ts`, `${getSourceRoot(tree, options)}/environments/environment.firebug.ts`);
         return tree;
     }
 }
