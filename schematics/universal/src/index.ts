@@ -46,6 +46,7 @@ export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 	rules.push(addWrappers(options));
 	rules.push(applyOtherNgToolkitSchematics(options));
 	rules.push(addPrerender(options));
+	rules.push(editTSConfigFile(options));
 	rules.push(addRobotFile(options));
 
 	if (!options.disableBugsnag) {
@@ -304,6 +305,22 @@ function addPrerender(options: IToolkitUniversalSchema): Rule {
 
 		return tree;
 	}
+}
+
+/**
+ * Change the default `tsconfig.json` file to enable default imports for some JS packages.
+ * Also set the module code generation to CommonJS to enable webpack typescript compilation and other stuff.
+ * @param options serverless options schema
+ */
+function editTSConfigFile(options: IToolkitUniversalSchema): Rule {
+    return tree => {
+        const tsConfig: any = JSON.parse(getFileContent(tree, `${options.directory}/tsconfig.json`));
+        tsConfig.compilerOptions['esModuleInterop'] = true;
+        tsConfig.compilerOptions['allowSyntheticDefaultImports'] = true;
+        tsConfig.compilerOptions['module'] = 'commonjs';
+        tree.overwrite(`${options.directory}/tsconfig.json`, JSON.stringify(tsConfig, null, 2));
+        return tree;
+    }
 }
 
 function addRobotFile(options: IToolkitUniversalSchema): Rule {
