@@ -26,10 +26,7 @@ xdescribe('PWA', () => {
             appTree = tree;
             schematicRunner.runExternalSchematicAsync('@angular/pwa', 'ng-add', { project: 'foo' }, appTree).subscribe(tree => {
                 appTree = tree;
-                schematicRunner.runExternalSchematicAsync('@ng-toolkit/universal', 'ng-add', defaultOptions, appTree).subscribe(tree => {
-                    appTree = tree;
-                    done();
-                });
+                done();
             });
         });
     });
