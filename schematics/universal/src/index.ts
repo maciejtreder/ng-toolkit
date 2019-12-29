@@ -76,8 +76,8 @@ function removePreviousServerlessFiles(options: IToolkitUniversalSchema): Rule {
 function applyExpressEngine(options: IToolkitUniversalSchema, expressOptions: IUniversalSchema): Rule {
 	return (tree: Tree) => {
 		let hasUniversalBuild = false;
-		const workspace = getWorkspace(tree);
-		const architect = workspace.projects[options.clientProject].architect;
+		const workspace: WorkspaceSchema = getWorkspace(tree);
+		const architect: WorkspaceTargets | undefined = workspace.projects[options.clientProject].architect;
 		if (architect) {
 			for (let builder in architect) {
 				if (architect[builder].builder === '@angular-devkit/build-angular:server') {
@@ -161,7 +161,11 @@ function renameAndEnhanceBrowserModule(options: IToolkitUniversalSchema): Rule {
 
 		// Change entry in main.ts
 		addImportStatement(tree, mainPath, 'AppBrowserModule', `./${options.appDir}/app.browser.module`)
-		createOrOverwriteFile(tree, mainPath, getFileContent(tree, mainPath).replace('.bootstrapModule(AppModule)', '.bootstrapModule(AppBrowserModule)'));
+		createOrOverwriteFile(tree, mainPath, getFileContent(tree, mainPath).replace(
+				'.bootstrapModule(AppModule)',
+				'.bootstrapModule(AppBrowserModule)'
+			)
+		);
 
 		return tree;
 	}
@@ -170,11 +174,17 @@ function renameAndEnhanceBrowserModule(options: IToolkitUniversalSchema): Rule {
 function updateWebpackConfig(): Rule {
 	return (tree: Tree) => {
 		const webpackConfig = getFileContent(tree, `./webpack.server.config.js`);
-		let newWebpackConfig = webpackConfig.replace('output: {', `output: {\n\tlibraryTarget: 'commonjs2',`);
+		let newWebpackConfig = webpackConfig.replace('output: {', `output: {\n\t\tlibraryTarget: 'commonjs2',`);
 
 		// For some reason, this line was added on 8.1.0 of `@nguniversal/express-engine` package.
 		// Commenting this line will let our serverless lambda to properly run.
-		newWebpackConfig = newWebpackConfig.replace('externals: {', `externals: {\n\t // './dist/server/main': 'require("./server/main")'`);
+		// const ngToolkitSettings = getNgToolkitInfo(tree, options);
+		// if (ngToolkitSettings.serverless) {}
+		const externalsRegex: RegExp = new RegExp('externals: {((.|\n)*?)}');
+		newWebpackConfig = newWebpackConfig.replace(
+			externalsRegex,
+			`externals: {\n\t\t\// './dist/server/main': 'require("./server/main")'\n\t}`
+		);
 		createOrOverwriteFile(tree, `./webpack.server.config.js`, newWebpackConfig);
 		return tree;
 	}
@@ -284,9 +294,13 @@ function addPrerender(options: IToolkitUniversalSchema): Rule {
 
 		tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2));
 
-		//add entry in webpack configuration
+		// Add entry in webpack configuration
 		const webpackConfig = getFileContent(tree, `./webpack.server.config.js`);
-		createOrOverwriteFile(tree, `./webpack.server.config.js`, webpackConfig.replace(`server: './server.ts'`, `server: './server.ts',\n\tprerender: './prerender.ts'`));
+		createOrOverwriteFile(tree, `./webpack.server.config.js`, webpackConfig.replace(
+				`server: './server.ts'`, 
+				`server: './server.ts',\n\t\tprerender: './prerender.ts'`
+			)
+		);
 
 		return tree;
 	}
@@ -298,8 +312,7 @@ function addRobotFile(options: IToolkitUniversalSchema): Rule {
 		const robotFileContent = outdent`
 			# Allow all URLs (see http://www.robotstxt.org/robotstxt.html)
 			User-agent: *
-			Disallow:
-			Sitemap: https://angular.io/generated/sitemap.xml
+			Allow: /
 		`
 		createOrOverwriteFile(tree, `/${getSourceRoot(tree, options)}/robots.txt`, robotFileContent);
 
