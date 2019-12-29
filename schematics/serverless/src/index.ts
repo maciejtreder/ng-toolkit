@@ -186,6 +186,7 @@ function checkIfServerless(options: IServerlessSchema): Rule {
             switch (options.provider) {
                 case 'aws': {
                     tree.delete(`${options.directory}/lambda.js`);
+                    tree.delete(`${options.directory}/lambda.ts`);
                     tree.delete(`${options.directory}/serverless.yml`);
                     break;
                 }
