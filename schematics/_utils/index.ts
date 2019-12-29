@@ -697,7 +697,7 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
 
     let fileContent = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
-    let paramName: any = null;
+    let paramName: string | undefined;
 
     sourceFile.forEachChild(node => {
         if (ts.isClassDeclaration(node)) {
@@ -731,16 +731,19 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            if (constructorFound && !paramName) {
-                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+
+            if (!paramName) {
                 paramName = varName;
-            } else if (!constructorFound) {
+            }
+            if (constructorFound) {
+                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `);
+            } else {
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
         }
     });
     createOrOverwriteFile(tree, filePath, fileContent);
-    return paramName;
+    return paramName ? paramName : '';
 }
 
 export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name: string, script: string): void {
