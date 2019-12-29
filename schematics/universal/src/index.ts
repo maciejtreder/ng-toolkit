@@ -57,7 +57,7 @@ export default function addUniversal(options: IToolkitUniversalSchema): Rule {
 
 function getSourceRoot(tree: Tree, options: IToolkitUniversalSchema): string {
 	const workspace = getWorkspace(tree);
-	return `/${workspace.projects[options.clientProject].sourceRoot}`;
+	return `${workspace.projects[options.clientProject].sourceRoot}`;
 }
 
 function removePreviousServerlessFiles(options: IToolkitUniversalSchema): Rule {
@@ -125,7 +125,7 @@ function applyPackageJsonScripts(options: IToolkitUniversalSchema) {
 
 function enhanceServerModule(options: IToolkitUniversalSchema): Rule {
 	return (tree: Tree) => {
-		const serverModulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.rootModuleFileName}`;
+		const serverModulePath = `/${getSourceRoot(tree, options)}/${options.appDir}/${options.rootModuleFileName}`;
 		addImportStatement(tree, serverModulePath, 'ServerTransferStateModule', '@angular/platform-server');
 		addToNgModule(tree, serverModulePath, 'imports', 'ServerTransferStateModule');
 		return tree;
@@ -134,9 +134,9 @@ function enhanceServerModule(options: IToolkitUniversalSchema): Rule {
 
 function renameAndEnhanceBrowserModule(options: IToolkitUniversalSchema): Rule {
 	return (tree: Tree) => {
-		const browserModulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.browser.module.ts`;
-		const modulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
-		const mainPath = `${getSourceRoot(tree, options)}/main.ts`;
+		const browserModulePath = `/${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.browser.module.ts`;
+		const modulePath = `/${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
+		const mainPath = `/${getSourceRoot(tree, options)}/main.ts`;
 
 		// Create browser entry module
 		createOrOverwriteFile(tree, browserModulePath, getFileContent(tree, modulePath).replace('AppModule', 'AppBrowserModule'));
@@ -182,12 +182,12 @@ function updateWebpackConfig(): Rule {
 
 function addWrappers(options: IToolkitUniversalSchema): Rule {
 	return (tree: Tree) => {
-		const modulePath = `${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
+		const modulePath = `/${getSourceRoot(tree, options)}/${options.appDir}/${options.appDir}.module.ts`;
 		addImportStatement(tree, modulePath, 'NgtUniversalModule', '@ng-toolkit/universal');
 		addToNgModule(tree, modulePath, 'imports', 'NgtUniversalModule');
 
 		// search for 'window' occurences and replace them with injected Window instance
-		tree.getDir(getSourceRoot(tree, options)).visit(visitor => {
+		tree.getDir(`/${getSourceRoot(tree, options)}`).visit(visitor => {
 			if (visitor.endsWith('.ts')) {
 				let fileContent = getFileContent(tree, visitor);
 				if (fileContent.match(/class.*{[\s\S]*?((?:[()'"`\s])localStorage)/)) {
