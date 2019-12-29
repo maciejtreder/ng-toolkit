@@ -10,9 +10,9 @@
   },
   "scripts": {
     "build": "ng build --prod && tsc -p tsconfig.json && npm run copy_files",
-    "copy_files": "cpy src/files/*.* dist/src/files && cpy collection.json dist/collection.json && cpy src/schema.json dist/src/schema.json && cpy src/index.js dist/src/index.js",
+    "copy_files": "cpy src/files/*.* dist/src/files && cpy collection.json dist && cpy src/schema.json dist/src/ && cpy src/index.js dist/src/",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "test:dev": "npm run test && npm publish --registry http://localhost:4873",
+    "test:dev": "npm run test && cd dist && npm publish --registry http://localhost:4873",
     "postinstall": "node postinstall.js",
     "prepare": "npm test",
     "ci-publish": "ci-publish"
