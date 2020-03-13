@@ -9,6 +9,7 @@ import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import outdent from 'outdent';
 import bugsnag from '@bugsnag/js';
+const jsyaml = require('js-yaml');
 
 export function createGitIgnore(dirName: string): Rule {
     return (tree: Tree) => {
@@ -493,9 +494,10 @@ export function applyAndLog(rule: Rule, bugsnagClient: any): Rule {
         return (<Observable<Tree>>rule(tree, context))
             .pipe(catchError((error: any) => {
                 let subject: Subject<Tree> = new Subject();
-                console.log(`\u001B[31mERROR: \u001b[0m${error.message}`);
-                console.log(`\u001B[31mERROR: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
-                bugsnagClient.notify(error, {}, (error:any, report: any) => {
+                console.log(`\u001B[31mERROR MESSAGE: \u001b[0m${error.message}`);
+                console.log(`\u001B[31mERROR STACKTRACE: \u001b[0m${error.stack}`);
+                console.log(`\u001B[31mERROR TIP: \u001b[0mIf you think that this error shouldn't occur, please fill up bug report here: \u001B[32mhttps://github.com/maciejtreder/ng-toolkit/issues/new`);
+                bugsnagClient.notify(error, {}, (error: any, report: any) => {
                     if (!error && report.errorMessage) {
                         console.log(`\u001B[33mINFO: \u001b[0mstacktrace has been sent to tracking system.`);
                     }
@@ -695,7 +697,7 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
 
     let fileContent = getFileContent(tree, filePath);
     let sourceFile: ts.SourceFile = ts.createSourceFile('temp.ts', fileContent, ts.ScriptTarget.Latest);
-    let paramName: any = null;
+    let paramName: string | undefined;
 
     sourceFile.forEachChild(node => {
         if (ts.isClassDeclaration(node)) {
@@ -729,16 +731,19 @@ export function addDependencyInjection(tree: Tree, filePath: string, varName: st
                     constructorFound = true;
                 }
             });
-            if (constructorFound && !paramName) {
-                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `)
+
+            if (!paramName) {
                 paramName = varName;
-            } else if (!constructorFound) {
+            }
+            if (constructorFound) {
+                fileContent = fileContent.replace('constructor(', `constructor(${toAdd}, `);
+            } else {
                 fileContent = fileContent.substr(0, firstMethodPosition) + `\n constructor(${toAdd}) {}\n` + fileContent.substr(firstMethodPosition);
             }
         }
     });
     createOrOverwriteFile(tree, filePath, fileContent);
-    return paramName;
+    return paramName ? paramName : '';
 }
 
 export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name: string, script: string): void {
@@ -750,4 +755,23 @@ export function addOrReplaceScriptInPackageJson2(tree: Tree, options: any, name:
 export function getAngularVersion(tree: Tree, options: any): string {
     const packageJsonSource = JSON.parse(getFileContent(tree, `${options.directory}/package.json`));
     return packageJsonSource.dependencies['@angular/core'];
+}
+
+export function parseYML2JS(tree: Tree, filePath: string): any {
+    const fileContent = getFileContent(tree, filePath);
+    try {
+        const data = jsyaml.safeLoad(fileContent);
+        return data;
+    } catch (error) {
+        throw new NgToolkitException(`Unable to parse ${filePath} file into JS Object.`, error);
+    }
+}
+
+export function parseJS2YML(tree: Tree, data: string, outputPath: string) {
+    try {
+        const fileContent = jsyaml.safeDump(data);
+        createOrOverwriteFile(tree, outputPath, fileContent);
+    } catch (error) {
+        throw new NgToolkitException(`Unable to write parsed JS Object into ${outputPath} file.`, error);
+    }
 }

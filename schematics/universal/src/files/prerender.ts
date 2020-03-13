@@ -1,252 +1,359 @@
-const domino = require('domino');
-const fs = require('fs');
-const template = fs.readFileSync('./dist/browser/index.html').toString();
-const win = domino.createWindow(template);
-const filesBrowser = fs.readdirSync(`${process.cwd()}/dist/browser`)
+/** 
+ * TODO: Check for Domino support with this new prerendering script.
+*/
 
-global['window'] = win;
-Object.defineProperty(win.document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
-      configurable: true,
-    };
-  },
-});
-global['document'] = win.document;
-global['CSS'] = null;
-global['Prism'] = null;
+// const domino = require('domino');
+// const fs = require('fs');
+// const template = fs.readFileSync('./dist/browser/index.html').toString();
+// const win = domino.createWindow(template);
+// const filesBrowser = fs.readdirSync(`${process.cwd()}/dist/browser`)
 
-import * as ts from 'typescript';
+// global['window'] = win;
+// Object.defineProperty(win.document.body.style, 'transform', {
+//   value: () => {
+//     return {
+//       enumerable: true,
+//       configurable: true,
+//     };
+//   },
+// });
+// global['document'] = win.document;
+// global['CSS'] = null;
+// global['Prism'] = null;
 
-// Load zone.js for the server.
+// tslint:disable: ordered-imports
 import 'zone.js/dist/zone-node';
+
 import 'reflect-metadata';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+// tslint:disable-next-line: ordered-imports
+import { readFileSync, writeFile, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
-import { enableProdMode } from '@angular/core';
-// Faster server renders w/ Prod mode (dev mode never needed)
-enableProdMode();
+// * NOTE :: leave this as require() since this file is built Dynamically from webpack
+// tslint:disable-next-line: no-var-requires
+const { AppServerModuleNgFactory, LAZY_MODULE_MAP, provideModuleMap, renderModuleFactory } = require('./dist/server/main');
 
-// Import module map for lazy loading
-import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
-import { renderModuleFactory } from '@angular/platform-server';
-import { ROUTES } from './static.paths';
+import routeData from './static.paths';
 
-const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require(`./dist/server/main.js`);
-import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
+const BROWSER_FOLDER = join(process.cwd(), 'dist', 'browser');
 
-const BROWSER_FOLDER = join(process.cwd(), 'dist/static');
-
-// Load the index.html file containing referances to your application bundle.
-const index = readFileSync('./dist/browser/index.html', 'utf8');
+// Load the index.html file containing references to your application bundle.
+const index = readFileSync(join(BROWSER_FOLDER, 'index.html'), 'utf8');
 
 let previousRender = Promise.resolve();
 
-const angularConfiguration = JSON.parse(fs.readFileSync('./angular.json').toString());
+// Iterate each route path
+routeData.routes.forEach(route => {
+	const fullPath = join(BROWSER_FOLDER, route);
 
-let universalProjectEntryFile;
+	// Make sure the directory structure is there
+	if (!existsSync(fullPath)) {
+		mkdirSync(fullPath);
+	}
 
-for (let project in angularConfiguration.projects) {
-  if(angularConfiguration.projects.hasOwnProperty(project)) {
-    for (let architect in angularConfiguration.projects[project].architect ) {
-      if (angularConfiguration.projects[project].architect.hasOwnProperty(architect)) {
-        const architectSettings = angularConfiguration.projects[project].architect[architect];
-        if (architectSettings.builder === '@angular-devkit/build-angular:server') {
-          universalProjectEntryFile = architectSettings.options.main;
-        }
-      }
-    }
-  }
-}
-
-const sourceDir = universalProjectEntryFile.substring(0,universalProjectEntryFile.lastIndexOf('/')+1);
-
-const entryFileSource = ts.createSourceFile('temp', fs.readFileSync(universalProjectEntryFile).toString(), ts.ScriptTarget.Latest);
-
-let entryModulePath;
-
-entryFileSource.forEachChild(node => {
-  if(ts.isExportDeclaration(node)) {
-    node.forEachChild(node => {
-      if (ts.isStringLiteral(node)) {
-        entryModulePath = (sourceDir + node.text + '.ts');
-      }
-    })
-  }
+	// Writes rendered HTML to index.html, replacing the file if it already exists.
+	previousRender = previousRender
+		.then(_ =>
+			renderModuleFactory(AppServerModuleNgFactory, {
+				document: index,
+				url: route,
+				extraProviders: [provideModuleMap(LAZY_MODULE_MAP)],
+			}),
+		)
+		.then(html => writeFileSync(join(fullPath, 'index.html'), html));
 });
 
-// let importedModules = findImports(fs.readFileSync(entryModulePath).toString(), entryModulePath);
+const siteMap = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  ${routeData.routes.map(route => `<url><loc>${routeData.hostname ? routeData.hostname : ''}${route}</loc></url>`)}
+</urlset>`;
 
-let routing = findRoutes(fs.readFileSync(entryModulePath).toString(), entryModulePath).routes;
+writeFile(join(BROWSER_FOLDER, 'sitemap.xml'), siteMap, 'utf8', err => {
+	if (err) {
+		throw err;
+	}
+	// tslint:disable-next-line: no-console
+	console.log('Sitemap has been created.');
+});
 
-function routingMapper(entry) {
-  if (entry.children) {
-    return {path: entry.path, children: entry.children.map(routingMapper), visit: (!!entry.component || !!entry.redirectTo)};
-  } else {
-    return {path: entry.path, visit: (!!entry.component || !!entry.redirectTo)};
-  }
-};
+/**
+ * This section provides the logic to auto-import routes for an already existing app,
+ * so the user does not have to add them manually on the static.paths file.
+ */
+// tslint:disable: no-implicit-dependencies no-console
+import ts from 'typescript';
+import { Route, Routes } from '@angular/router';
+import { WorkspaceSchema, Builders, WorkspaceTargets } from '@schematics/angular/utility/workspace-models';
+import { getProjectTargets } from '@schematics/angular/utility/project-targets';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 
-routing = routing.map(routingMapper);
-
-let allRoutes = ROUTES;
-
-if(allRoutes.length == 0) {
-  allRoutes.push('/');
+interface IRouteIdentifiers {
+	identifiers: any[];
+	routes: any[];
 }
 
-console.log(`Got following static routes:`);
-allRoutes.forEach(route => console.log(route));
-console.log(`And following found in the application:`)
-
-function addToRoutes(routing: any[], basePath: string) {
-  routing.forEach(element => {
-    if (element.visit && element.path.indexOf(':') == -1) {
-      if (allRoutes.indexOf(basePath + element.path) == -1 ) {
-        allRoutes = allRoutes.concat(basePath + element.path);
-        console.log(basePath + element.path);
-      }
-      if (element.children) {
-        basePath += element.path != ''?element.path + '/':element.path;
-        addToRoutes(element.children, basePath);
-      }
-    }
-  });
+interface IRoutingMapper {
+	path: string;
+	visit: boolean;
+	children?: any;
 }
 
-addToRoutes(routing, '/');
+// Store our Angular configuration file.
+const angularConfiguration: WorkspaceSchema = JSON.parse(readFileSync('./angular.json').toString());
+
+// Initialize our universal entry file variable to store later.
+let universalProjectEntryFile: string;
+
+// Loop on each project defined on Angular Configuration file.
+for (const project in angularConfiguration.projects) {
+	// For each project, get workspace targets (build, server, lint, ...)
+	if (angularConfiguration.projects.hasOwnProperty(project)) {
+		const workspaceTargets: WorkspaceTargets = getProjectTargets(angularConfiguration.projects[project]);
+		// Loop over each workspace target and check if it exists (just in case).
+		for (const targetKey in workspaceTargets) {
+			if (workspaceTargets.hasOwnProperty(targetKey)) {
+				const target = workspaceTargets[targetKey];
+				// If the architect builder setting is equal to `build-angular:server`, assign it to our universal entry file.
+				if (target.builder === Builders.Server) {
+					universalProjectEntryFile = target.options.main;
+				}
+			}
+		}
+	}
+}
+
+console.log('------- Universal Project Entry File -------');
+console.log(universalProjectEntryFile);
+
+// Extract the source directory from the universal entry file (usually src).
+const sourceDir: string = universalProjectEntryFile.substring(0, universalProjectEntryFile.lastIndexOf('/') + 1);
+
+// Create a temporal source file from the entry file string.
+const entryFileSource: ts.SourceFile = ts.createSourceFile(
+	'temp',
+	readFileSync(universalProjectEntryFile).toString(),
+	ts.ScriptTarget.Latest,
+);
+
+// Initialize entry module path variable to store later.
+let entryModulePath: string;
+
+// Read the temporal source file and navigate into each export declaration to extract entry module path (app.server.module in this case).
+entryFileSource.forEachChild((parentNode: ts.Node) => {
+	if (ts.isExportDeclaration(parentNode)) {
+		parentNode.forEachChild((childNode: ts.Node) => {
+			if (ts.isStringLiteral(childNode)) {
+				const moduleDir: string = childNode.text.substring(childNode.text.lastIndexOf('/') + 1, childNode.text.length);
+				if (moduleDir === 'app.server.module') {
+					entryModulePath = sourceDir + childNode.text + '.ts';
+				}
+			}
+		});
+	}
+});
+
+console.log('------- Entry Module Path -------');
+console.log(entryModulePath);
+
+// Find all app routes.
+const routesList: Routes = findRoutes(readFileSync(entryModulePath).toString(), entryModulePath).routes;
+
+// Map the route list in order to
+const mappedRoutes: IRoutingMapper[] = routesList.map(routingMapper);
+
+// Load existing routes from the `static.paths` file.
+let allRoutes = routeData.routes;
+
+// Print the entire static routes along with the ones found at the app.
+console.log('-------- Static Routes Found --------');
+
+allRoutes.forEach((route, idx) => console.log(`Route ${idx}: ${route}`));
+// After mapping, add those to allRoutes array by using addToRoutes function.
+addToRoutes(mappedRoutes, '/');
+
+// If the routes array is empty, push the base route.
+if (allRoutes.length === 0) {
+	allRoutes.push('/');
+}
+
+//  Print the app routes.
+console.log('---------- App Routes Found ---------');
+allRoutes.forEach((route, idx) => console.log(`Route ${idx}: ${route}`));
 
 // Iterate each route path
-allRoutes.forEach((route) => {
-  const fullPath = join(BROWSER_FOLDER, route);
+allRoutes.forEach(route => {
+	const fullPath = join(BROWSER_FOLDER, route);
 
-  // Make sure the directory structure is there
-  if (!existsSync(fullPath)) {
-    let syncpath = BROWSER_FOLDER;
-    route.split('/').forEach((element) => {
-      syncpath = syncpath + '/' + element;
-      if (!fs.existsSync(syncpath)) {
-        mkdirSync(syncpath);
-      }
-    });
-  }
+	// Make sure the directory structure is there
+	if (!existsSync(fullPath)) {
+		let syncpath = BROWSER_FOLDER;
+		route.split('/').forEach(element => {
+			syncpath = syncpath + '/' + element;
+			if (!existsSync(syncpath)) {
+				mkdirSync(syncpath);
+			}
+		});
+	}
 
-  // Writes rendered HTML to index.html, replacing the file if it already exists.
-  previousRender = previousRender
-    .then((_) =>
-      renderModuleFactory(AppServerModuleNgFactory, {
-        document: index,
-        url: route,
-        extraProviders: [
-          provideModuleMap(LAZY_MODULE_MAP),
-          {
-            provide: REQUEST,
-            useValue: { cookie: '', headers: {} },
-          },
-          {
-            provide: RESPONSE,
-            useValue: {},
-          }
-        ],
-      }),
-    )
-    .then((html) => writeFileSync(join(fullPath, 'index.html'), html));
+	// Writes rendered HTML to index.html, replacing the file if it already exists.
+	previousRender = previousRender
+		.then(_ =>
+			renderModuleFactory(AppServerModuleNgFactory, {
+				document: index,
+				url: route,
+				extraProviders: [
+					provideModuleMap(LAZY_MODULE_MAP),
+					{
+						provide: REQUEST,
+						useValue: { cookie: '', headers: {} },
+					},
+					{
+						provide: RESPONSE,
+						useValue: {},
+					},
+				],
+			}),
+		)
+		.then(html => writeFileSync(join(fullPath, 'index.html'), html))
+		.finally(() => console.log('🚀 Pre-rendering Finished!'));
 });
 
-// copy static files
-filesBrowser.forEach(file => {
-    if (file !== 'index.html') {
-        fs.copyFileSync(`./dist/browser/${file}`, `./dist/static/${file}`);
-    }
-});
+function routingMapper(entry: Route): IRoutingMapper {
+	if (entry.children) {
+		return { path: entry.path, children: entry.children.map(routingMapper), visit: !!entry.component || !!entry.redirectTo };
+	} else {
+		return { path: entry.path, visit: !!entry.component || !!entry.redirectTo };
+	}
+}
 
-function findRoutes(sourceCode: string, path: string) {
-  let identifiers = [];
-  let routes = [];
-  const SourceCodeObj = ts.createSourceFile('temp', sourceCode, ts.ScriptTarget.Latest);
-  SourceCodeObj.getChildren().forEach(node => {
-    node.getChildren().filter(node => ts.isClassDeclaration(node)).forEach((node: ts.Node) => {
-      if (node.decorators) {
-        node.forEachChild(node => node.forEachChild(decoratorNode => {
-          if (ts.isCallExpression(decoratorNode) && 
-          ts.isIdentifier(decoratorNode.expression) && 
-          decoratorNode.expression.escapedText === 'NgModule'
-          ) {
-            decoratorNode.arguments.forEach(node => {
-              if (ts.isObjectLiteralExpression(node)) {
-                const importsNode = node.properties.find(node => {
-                  return (<ts.Identifier> node.name).escapedText === 'imports';
-                });
-                const identifierNodes = (<ts.ArrayLiteralExpression>(<ts.PropertyAssignment> importsNode).initializer).elements.filter(node => {
-                  return ts.isIdentifier(node) || ts.isCallExpression(node);
-                });
+function addToRoutes(routing: IRoutingMapper[], basePath: string): void {
+	routing.forEach(element => {
+		if (element.visit && element.path.indexOf(':') === -1) {
+			if (allRoutes.indexOf(basePath + element.path) === -1) {
+				allRoutes = allRoutes.concat(basePath + element.path);
+			}
+			if (element.children) {
+				basePath += element.path !== '' ? element.path + '/' : element.path;
+				addToRoutes(element.children, basePath);
+			}
+		}
+	});
+}
 
-                identifierNodes.forEach(node => {
-                  if (ts.isCallExpression(node)) {
-                    if ((<ts.Identifier> (<ts.PropertyAccessExpression> node.expression).expression).escapedText === 'RouterModule') {
-                      // RouterModule Found!
-                      const argument = node.arguments[0];
-                      let routes;
-                      if (ts.isIdentifier(argument)) {
-                        // variable 
-                        const varName = argument.escapedText;
-                        SourceCodeObj.forEachChild(node => {
-                          if(ts.isVariableStatement(node) && (<ts.Identifier> node.declarationList.declarations[0].name).escapedText === varName)  {
-                            const initializer = node.declarationList.declarations[0].initializer;
-                            routes = sourceCode.substring(initializer.pos, initializer.end);
-                          }
-                        });
+function findRoutes(sourceCode: string, path: string): IRouteIdentifiers {
+	let identifiers = [];
+	let routes = [];
+	const SourceCodeObj = ts.createSourceFile('temp', sourceCode, ts.ScriptTarget.Latest);
+	SourceCodeObj.getChildren().forEach(nodes => {
+		nodes
+			.getChildren()
+			.filter(node => ts.isClassDeclaration(node))
+			.forEach((node: ts.Node) => {
+				if (node.decorators) {
+					node.forEachChild(subNode =>
+						subNode.forEachChild(decoratorNode => {
+							if (
+								ts.isCallExpression(decoratorNode) &&
+								ts.isIdentifier(decoratorNode.expression) &&
+								decoratorNode.expression.escapedText === 'NgModule'
+							) {
+								decoratorNode.arguments.forEach((argumentNode: ts.Expression) => {
+									if (ts.isObjectLiteralExpression(argumentNode)) {
+										const importsNode = argumentNode.properties.find((propertyNode: ts.ObjectLiteralElementLike) => {
+											return (propertyNode.name as ts.Identifier).escapedText === 'imports';
+										});
+										if (!!importsNode) {
+											const identifierNodes = ((importsNode as ts.PropertyAssignment)
+												.initializer as ts.ArrayLiteralExpression).elements.filter(initNode => {
+												return ts.isIdentifier(initNode) || ts.isCallExpression(initNode);
+											});
 
-                      } else {
-                        // array
-                        routes = sourceCode.substring(node.arguments.pos, node.arguments.end);
-                      }
-                      
-                      routes = routes.replace(/(.*?:\s)([^'"`].*?[^'"`])((\s*?),|(\s*?)})/g, "$1'$2'$3");
-                      eval('routes = ' + routes);
-                      // console.log(routes);
-                    }
-                    node = (<ts.PropertyAccessExpression> node.expression).expression;
-                  }
-                  identifiers.push((<ts.Identifier> node).escapedText);
-                });
-              }
-            });
-          }
-        }))
-      }
-    });
-  });
+											identifierNodes.forEach((identifierNode: ts.Expression) => {
+												if (ts.isCallExpression(identifierNode)) {
+													if (
+														((identifierNode.expression as ts.PropertyAccessExpression)
+															.expression as ts.Identifier).escapedText === 'RouterModule'
+													) {
+														// RouterModule Found!
+														const argument = identifierNode.arguments[0];
+														let subRoutes: any;
+														if (ts.isIdentifier(argument)) {
+															// variable
+															const varName = argument.escapedText;
+															SourceCodeObj.forEachChild((sourceNode: ts.Node) => {
+																if (
+																	ts.isVariableStatement(sourceNode) &&
+																	(sourceNode.declarationList.declarations[0].name as ts.Identifier)
+																		.escapedText === varName
+																) {
+																	const initializer =
+																		sourceNode.declarationList.declarations[0].initializer;
+																	subRoutes = sourceCode.substring(initializer.pos, initializer.end);
+																}
+															});
+														} else {
+															// array
+															subRoutes = sourceCode.substring(
+																identifierNode.arguments.pos,
+																identifierNode.arguments.end,
+															);
+														}
 
-  SourceCodeObj.forEachChild(node => {
-    if (ts.isImportDeclaration(node)) {
-      node.importClause.namedBindings.forEachChild(name => {
-        const identifierIndex = identifiers.indexOf((<ts.ImportSpecifier> name).name.escapedText);
-        if (identifierIndex > -1 && (<ts.StringLiteral>node.moduleSpecifier).text.indexOf('.') == 0) {
-          identifiers[identifierIndex] = {
-            module: identifiers[identifierIndex],
-            path: path.substring(0,entryModulePath.lastIndexOf('/')+1) + (<ts.StringLiteral>node.moduleSpecifier).text + '.ts'
-          }
-        }
-      });
-    }
-  });
+														routes = subRoutes.replace(
+															/(.*?:\s)([^'"`].*?[^'"`])((\s*?),|(\s*?)})/g,
+															"$1'$2'$3",
+														);
+														// tslint:disable-next-line: no-eval
+														eval('routes = ' + routes);
+														// console.log(routes);
+													}
+													node = (identifierNode.expression as ts.PropertyAccessExpression).expression;
+												}
+												if ((identifierNode as ts.Identifier).escapedText) {
+													identifiers.push((identifierNode as ts.Identifier).escapedText);
+												}
+											});
+										}
+									}
+								});
+							}
+						}),
+					);
+				}
+			});
+	});
 
-  identifiers = identifiers.filter(element => element.hasOwnProperty('module')).map(entry => {
-    return {path: entry.path, importedIn: path};
-  });
+	SourceCodeObj.forEachChild(node => {
+		if (ts.isImportDeclaration(node)) {
+			node.importClause.namedBindings.forEachChild(name => {
+				const identifierIndex = identifiers.indexOf((name as ts.ImportSpecifier).name.escapedText);
+				if (identifierIndex > -1 && (node.moduleSpecifier as ts.StringLiteral).text.indexOf('.') === 0) {
+					identifiers[identifierIndex] = {
+						module: identifiers[identifierIndex],
+						path:
+							path.substring(0, entryModulePath.lastIndexOf('/') + 1) +
+							(node.moduleSpecifier as ts.StringLiteral).text +
+							'.ts',
+					};
+				}
+			});
+		}
+	});
 
-  if (routes.length == 0) {
-    identifiers.forEach(identifier => {
-      const nested = findRoutes(fs.readFileSync(identifier.path).toString(), identifier.path);
-      // if (nested.length >= 1) {
-        identifiers = identifiers.concat(nested.identifiers);
-        routes = routes.concat(nested.routes);
-      // }
-    });
-  }
+	identifiers = identifiers
+		.filter(element => element.hasOwnProperty('module'))
+		.map(entry => {
+			return { path: entry.path, importedIn: path };
+		});
 
-  return {identifiers: identifiers, routes: routes };
+	if (routes.length === 0) {
+		identifiers.forEach(identifier => {
+			const nested = findRoutes(readFileSync(identifier.path).toString(), identifier.path);
+			// if (nested.length >= 1) {
+			identifiers = identifiers.concat(nested.identifiers);
+			routes = routes.concat(nested.routes);
+			// }
+		});
+	}
+
+	return { identifiers, routes } as IRouteIdentifiers;
 }

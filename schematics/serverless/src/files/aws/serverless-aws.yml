@@ -3,6 +3,7 @@ service: __appName__
 
 plugins:
   - serverless-apigw-binary
+  - serverless-api-compression
 
 provider:
   name: aws
@@ -27,6 +28,7 @@ package:
    - '!node_modules/mime-db/**'
 
 custom:
+  contentCompression: 1024
   apigwBinary:
     types:
       - '*/*'

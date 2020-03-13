@@ -2,7 +2,7 @@
   "author": "Maciej Treder <contact@maciejtreder.com>",
   "name": "@ng-toolkit/pwa",
   "main": "dist/index.js",
-  "version": "8.0.3",
+  "version": "8.0.4",
   "description": "Extension for @angular/pwa - adds server-side rendering fixes and update mechanism",
   "repository": {
     "type": "git",
@@ -10,8 +10,9 @@
   },
   "scripts": {
     "build": "ng build --prod && tsc -p tsconfig.json && npm run copy_files",
-    "copy_files": "cp-cli collection.json dist/collection.json && cp-cli src/schema.json dist/src/schema.json && cp-cli src/index.js dist/src/index.js",
+    "copy_files": "cpy collection.json dist/ && cpy src/schema.json dist/src/ && cpy src/index.js dist/src/",
     "test": "npm run build && jasmine src/**/*_spec.js",
+    "test:dev": "npm run test && cd dist && npm publish --registry http://localhost:4873",
     "postinstall": "node postinstall.js",
     "prepare": "npm test",
     "ci-publish": "ci-publish"
@@ -37,10 +38,9 @@
   },
   "dependencies": {
     "@bugsnag/js": "^6.4.0",
-    "@ng-toolkit/_utils": "8.0.3"
+    "@ng-toolkit/_utils": "8.0.4"
   },
   "devDependencies": {
-    "@ng-toolkit/universal": "^8.0.1",
     "@angular-devkit/build-angular": "^0.803.4",
     "@angular-devkit/build-ng-packagr": "^0.803.4",
     "@angular-devkit/core": "^8.3.3",
@@ -56,7 +56,7 @@
     "@types/jasmine": "^3.4.0",
     "@types/node": "^12.7.4",
     "ci-publish": "^1.3.1",
-    "cp-cli": "^2.0.0",
+    "cpy-cli": "^3.0.0",
     "jasmine": "^3.4.0",
     "ng-packagr": "^5.5.0",
     "outdent": "^0.7.0",

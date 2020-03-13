@@ -12,8 +12,10 @@ module.exports = {
   resolve: { extensions: ['.ts', '.js'] },
   externals: [/(node_modules|main\..*\.js)/,],
   output: {
+    // This line is needed to ensure proper module exports on our serverless deployment.
     libraryTarget: 'commonjs2',
-      path: path.join(__dirname, '__distFolder__/'),
+    // Puts the output at the root of the dist folder
+    path: path.join(__dirname, '__distFolder__/'),
     filename: '[name].js'
   },
   module: {

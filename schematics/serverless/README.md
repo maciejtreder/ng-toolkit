@@ -19,6 +19,7 @@ Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your A
 
 ## Content
  - [Getting started](#start)
+ - [Options](#options)
  - [Question, Problem, Feature Request](#question)
  - [Support @ng-toolkit](#funding)
 
@@ -63,6 +64,19 @@ You can chain this package with:
 - [@ng-toolkit/universal](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/universal)
 - [@ng-toolkit/pwa](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/pwa)
 - [@ng-toolkit/firebug](https://github.com/maciejtreder/ng-toolkit/blob/master/schematics/firebug)
+
+
+## <a name="options"></a> Options
+This schematic supports several options in order to fit your needs.
+
+| name            | type    | default | description                                                   |
+|-----------------|---------|---------|---------------------------------------------------------------|
+| provider        | string  | 'aws'   | Specify serverless provider.                                  |
+| skipInstall     | boolean | false   | Skip installation of dependencies.                            |
+| directory       | string  | '.'     | The directory name to create the workspace in.                |
+| firebaseProject | string  |         | Firebase project id.                                          |
+| lambdaTS        | boolean | false   | Generate lambda files using Typescript instead of Javascript. |
+| offline         | boolean | false   | Include serverless-offline package for local development.     |
 
 
 ## <a name="question"></a> Looking for something more?

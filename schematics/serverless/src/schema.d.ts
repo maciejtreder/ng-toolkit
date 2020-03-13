@@ -32,4 +32,8 @@ export interface IServerlessSchema {
     serverless?: IServerless;
     /** Disable Bugsnag report */
     disableBugsnag?: boolean;
+    /** Generate lambda files using Typescript instead of Javascript */
+    lambdaTS?: boolean;
+    /** Include serverless-offline package for local development */
+    offline?: boolean;
 }
