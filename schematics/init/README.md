@@ -15,6 +15,9 @@ _This is part of the @ng-toolkit project. [Check main page for more](https://git
 This is boilerplate for **(PWA) progressive web app** with Angular Universal (serverside rendering).
 It is prepared to be easily deployed on serverless environment (Google Cloud Functions & AWS Lambda supported).
 
+@ng-toolkit is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
+<!--<a href="https://tracking.gitads.io/?repo=ng-toolkit"> <img src="https://images.gitads.io/ng-toolkit" alt="GitAds"/> </a>-->
+
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)
 

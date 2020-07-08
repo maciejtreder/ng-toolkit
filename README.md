@@ -1,7 +1,5 @@
 # @ng-toolkit [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20ng-toolkit%20-%20collection%20of%20great%20tools%20for%20angular&url=https://github.com/maciejtreder/ng-toolkit&via=maciejtreder&hashtags=angular,pwa,webapp,software,developers)
 
-<!-- TODO: Provide a quick summary of the package -->
-
 This project has two faces:
 
 - First, a Angular Universal PWA boilerplate, prepared for easy deployment on Serverless environment. The boilerplate contains all of the best practices and is continously evolving. [Find out more about the boilerplate here.](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
@@ -10,6 +8,9 @@ This project has two faces:
 ## _**Star it and share with others!**_
 
 **[Online Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)**
+
+@ng-toolkit is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
+<!--<a href="https://tracking.gitads.io/?repo=ng-toolkit"> <img src="https://images.gitads.io/ng-toolkit" alt="GitAds"/> </a>-->
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage)
