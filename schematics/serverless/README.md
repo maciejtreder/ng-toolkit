@@ -15,7 +15,7 @@ Add serverless support (AWS Lambda; Google Cloud Functions & Firebase) to your A
 [Check deep overview article on Medium](https://medium.com/@maciejtreder/angular-serverless-a713e86ea07a)
 
 @ng-toolkit is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
-<!--<a href="https://tracking.gitads.io/?repo=ng-toolkit"> <img src="https://images.gitads.io/ng-toolkit" alt="GitAds"/> </a>-->
+<a href="https://tracking.gitads.io/?repo=ng-toolkit"> <img src="https://images.gitads.io/ng-toolkit" alt="GitAds"/> </a>
 
 ## Live demo
 [Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-toolkit.maciejtreder.com)
