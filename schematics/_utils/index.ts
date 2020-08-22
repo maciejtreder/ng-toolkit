@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { Rule, SchematicsException, Tree, SchematicContext } from "@angular-devkit/schematics";
 import { addSymbolToNgModuleMetadata, insertImport } from "@schematics/angular/utility/ast-utils";
 import { NodeDependencyType, NodeDependency } from "@schematics/angular/utility/dependencies";
