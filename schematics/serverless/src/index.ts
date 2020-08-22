@@ -515,7 +515,7 @@ function addLocalTypescript(options: ServerlessSchema): Rule {
         });
         addDependencyToPackageJson(tree, options, {
             type: NodeDependencyType.Dev,
-            name: "serverless-plugin-typescript",
+            name: "@kingdarboja/serverless-plugin-typescript",
             version: "^1.4.1",
         });
         addDependencyToPackageJson(tree, options, {
