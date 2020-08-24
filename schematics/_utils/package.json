@@ -7,6 +7,8 @@
     "type": "git",
     "url": "git+https://github.com/maciejtreder/ng-toolkit.git"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "pretest": "npm run lint",
     "build": "rimraf dist && tsc -p tsconfig.json",

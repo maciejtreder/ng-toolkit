@@ -1,4 +1,4 @@
-import ts from "typescript";
+import * as ts from "typescript";
 import { Rule, SchematicsException, Tree, SchematicContext } from "@angular-devkit/schematics";
 import { addSymbolToNgModuleMetadata, insertImport } from "@schematics/angular/utility/ast-utils";
 import { NodeDependencyType, NodeDependency } from "@schematics/angular/utility/dependencies";
@@ -104,6 +104,7 @@ export function addImportLine(tree: Tree, filePath: string, importLine: string):
         tree.commitUpdate(changeRecorder);
     }
 }
+
 function getTsSourceFile(tree: Tree, path: string): ts.SourceFile {
     const buffer = tree.read(path);
     if (!buffer) {

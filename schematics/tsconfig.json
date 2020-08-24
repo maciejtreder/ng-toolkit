@@ -27,7 +27,6 @@
     ]
   },
   "exclude": [
-    "./**/spec/**/*",
     "./**/files/**/*",
     "./**/universal-window/**",
     "./**/public_api.ts"
