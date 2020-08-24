@@ -11,7 +11,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "pretest": "npm run lint",
-    "build": "rimraf dist && tsc -p tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.prod.json",
     "build:check": "tsc --noEmit",
     "format": "prettier --loglevel error --write \"**/*.{js,ts}\"",
     "lint": "eslint --ext ts .",
@@ -43,6 +43,7 @@
     "comment-json": "^3.0.3"
   },
   "devDependencies": {
+    "@nguniversal/express-engine": "^10.0.2",
     "@types/comment-json": "^1.1.1",
     "@types/jasmine": "^3.5.13",
     "@types/node": "^14.6.0",

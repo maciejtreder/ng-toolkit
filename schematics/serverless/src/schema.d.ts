@@ -36,4 +36,6 @@ export type ServerlessSchema = {
     lambdaTS?: boolean;
     /** Include serverless-offline package for local development */
     offline?: boolean;
+    /** Path to project */
+    path: string;
 };

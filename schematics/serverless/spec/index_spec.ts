@@ -43,9 +43,19 @@ describe("Serverless", () => {
         it("Should create serverless configuration for AWS", (done) => {
             schematicRunner.runSchematicAsync("ng-add", defaultOptions, appTree).subscribe(
                 (tree) => {
-                    checkIfFileExists(tree, `/serverless.yml`);
-                    checkIfFileExists(tree, `/lambda.js`);
-                    shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\saws/);
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                    );
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/lambda.js`,
+                    );
+                    shouldContainEntry(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                        /provider:[\s\S]*name:\saws/,
+                    );
                     done();
                 },
                 (err) => console.error(err),
@@ -74,8 +84,14 @@ describe("Serverless", () => {
             schematicRunner
                 .runSchematicAsync("ng-add", defaultOptions, appTree)
                 .subscribe((tree) => {
-                    checkIfFileExists(tree, `/functions/package.json`);
-                    checkIfFileExists(tree, `/functions/index.js`);
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/functions/package.json`,
+                    );
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/functions/index.js`,
+                    );
                     checkIfFileExists(tree, `/.firebaserc`);
                     checkIfFileExists(tree, `/firebase.json`);
                     done();
@@ -103,9 +119,19 @@ describe("Serverless", () => {
             schematicRunner
                 .runSchematicAsync("ng-add", defaultOptions, appTree)
                 .subscribe((tree) => {
-                    checkIfFileExists(tree, `/serverless.yml`);
-                    checkIfFileExists(tree, `/index.js`);
-                    shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\sgoogle/);
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                    );
+                    checkIfFileExists(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/index.js`,
+                    );
+                    shouldContainEntry(
+                        tree,
+                        `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                        /provider:[\s\S]*name:\sgoogle/,
+                    );
                     done();
                 });
         });
@@ -126,16 +152,29 @@ describe("Serverless", () => {
 
     it("By default AWS should be choosen as provider", (done) => {
         schematicRunner.runSchematicAsync("ng-add", defaultOptions, appTree).subscribe((tree) => {
-            checkIfFileExists(tree, `/serverless.yml`);
-            checkIfFileExists(tree, `/lambda.js`);
-            shouldContainEntry(tree, `serverless.yml`, /provider:[\s\S]*name:\saws/);
+            checkIfFileExists(
+                tree,
+                `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+            );
+            checkIfFileExists(
+                tree,
+                `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/lambda.js`,
+            );
+            shouldContainEntry(
+                tree,
+                `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                /provider:[\s\S]*name:\saws/,
+            );
             done();
         });
     });
 
     it("Should create all common files", (done) => {
         schematicRunner.runSchematicAsync("ng-add", defaultOptions, appTree).subscribe((tree) => {
-            checkIfFileExists(tree, `/local.js`);
+            checkIfFileExists(
+                tree,
+                `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/local.js`,
+            );
             // checkIfFileExists(tree, `/server.ts`);
             // checkIfFileExists(tree, `/webpack.server.config.js`);
             checkIfFileExists(tree, `/ng-toolkit.json`);
@@ -146,38 +185,58 @@ describe("Serverless", () => {
     it("Should add proper scripts to package.json", (done) => {
         schematicRunner.runSchematicAsync("ng-add", defaultOptions, appTree).subscribe((tree) => {
             shouldContainEntry(tree, `package.json`, /"build:browser:prod": "ng build --prod"/);
-            shouldContainEntry(
-                tree,
-                `package.json`,
-                /"build:prod": "npm run build:browser:prod && npm run build:server:prod"/,
-            );
             shouldContainEntry(tree, `package.json`, /"server": "node local.js"/);
             shouldContainEntry(
                 tree,
                 `package.json`,
                 /"build:prod:deploy": "npm run build:prod && npm run deploy"/,
             );
-            // shouldContainEntry(
-            //     tree,
-            //     `package.json`,
-            //     /"build:server:prod": "webpack --config webpack.server.config.js --progress --colors"/,
-            // );
-            shouldContainEntry(
-                tree,
-                `package.json`,
-                /"build:serverless": "npm run build:browser:serverless && npm run build:server:serverless"/,
-            );
             shouldContainEntry(
                 tree,
                 `package.json`,
                 /"build:serverless:deploy": "npm run build:serverless && npm run deploy"/,
             );
-            // shouldContainEntry(
-            //     tree,
-            //     `package.json`,
-            //     /"build:server:serverless": "webpack --config webpack.server.config.js --progress --colors"/,
-            // );
             done();
+        });
+    });
+
+    describe("After Universal Express Engine", () => {
+        beforeEach(async (done) => {
+            appTree = await schematicRunner
+                .runExternalSchematicAsync(
+                    "@nguniversal/express-engine",
+                    "ng-add",
+                    { clientProject: "foo" },
+                    appTree,
+                )
+                .toPromise();
+            done();
+        });
+
+        describe("AWS Lambda", () => {
+            beforeAll(() => (defaultOptions["provider"] = "aws"));
+            afterAll(() => delete defaultOptions["provider"]);
+            it("Should create serverless configuration for AWS", (done) => {
+                schematicRunner.runSchematicAsync("ng-add", defaultOptions, appTree).subscribe(
+                    (tree) => {
+                        checkIfFileExists(
+                            tree,
+                            `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                        );
+                        checkIfFileExists(
+                            tree,
+                            `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/lambda.js`,
+                        );
+                        shouldContainEntry(
+                            tree,
+                            `/${workspaceOptions.newProjectRoot}/${defaultOptions.project}/serverless.yml`,
+                            /provider:[\s\S]*name:\saws/,
+                        );
+                        done();
+                    },
+                    (err) => console.error(err),
+                );
+            });
         });
     });
 

@@ -8,6 +8,10 @@ import {
     url,
     MergeStrategy,
     SchematicContext,
+    SchematicsException,
+    template,
+    forEach,
+    FileEntry,
 } from "@angular-devkit/schematics";
 import {
     applyAndLog,
@@ -34,18 +38,15 @@ import {
 } from "@ng-toolkit/_utils";
 import { getFileContent } from "@schematics/angular/utility/test";
 import { NodePackageInstallTask } from "@angular-devkit/schematics/tasks";
-import { Path } from "@angular-devkit/core";
+import { Path, experimental } from "@angular-devkit/core";
 import { NodeDependencyType } from "@schematics/angular/utility/dependencies";
 import { ServerlessSchema } from "./schema";
 import { parse, stringify } from "comment-json";
 import outdent from "outdent";
 import Bugsnag from "@bugsnag/js";
+import { normalize } from "path";
 
 export default function addServerless(options: ServerlessSchema): Rule {
-    if (!options.clientProject) {
-        options.clientProject = options.project;
-    }
-
     // Initialize Serverless property with empty object values.
     options.serverless = {
         aws: {},
@@ -54,6 +55,34 @@ export default function addServerless(options: ServerlessSchema): Rule {
 
     // Create an empty array to push our rules.
     const rules: Rule[] = [];
+
+    // Check if it is a workspace or an application
+    rules.push((tree: Tree) => {
+        const workspaceConfig = tree.read("/angular.json");
+        if (!workspaceConfig) {
+            throw new SchematicsException("Could not find Angular workspace configuration");
+        }
+
+        // convert workspace to string
+        const workspaceContent = workspaceConfig.toString();
+
+        // parse workspace string into JSON object
+        const workspace: experimental.workspace.WorkspaceSchema = JSON.parse(workspaceContent);
+
+        if (!options.project && workspace.defaultProject) {
+            options.project = workspace.defaultProject;
+        } else {
+            if (!options.clientProject) {
+                options.clientProject = options.project;
+            }
+        }
+        // Move into project if workspace
+        const project = workspace.projects[options.project];
+        if (project) {
+            options.path = normalize(project.root);
+        }
+        return tree;
+    });
 
     // Check if Universal and Serverless Rules
     // rules.push(checkIfUniversal(options));
@@ -67,11 +96,6 @@ export default function addServerless(options: ServerlessSchema): Rule {
             name: "ts-loader",
             version: "^8.0.0",
         });
-        // addDependencyToPackageJson(tree, options, {
-        //     type: NodeDependencyType.Dev,
-        //     name: "webpack-cli",
-        //     version: "^3.3.10",
-        // });
         addDependencyToPackageJson(tree, options, {
             type: NodeDependencyType.Default,
             name: "cors",
@@ -94,17 +118,7 @@ export default function addServerless(options: ServerlessSchema): Rule {
 
     // Check passed providers and generate proper files along with further package json changes.
     if (options.provider === "firebase") {
-        rules.push(updateGitIgnore(options, "/functions/node_modules/"));
-        const source = apply(url("./files/firebase"), [move(options.directory)]);
-        rules.push(setFirebaseFunctions(options));
-        rules.push(
-            addOrReplaceScriptInPackageJson(
-                options,
-                "build:prod:deploy",
-                "npm run build:prod && cd functions && npm install && cd .. && firebase deploy",
-            ),
-        );
-        rules.push(mergeWith(source, MergeStrategy.Overwrite));
+        rules.push(addServerlessFirebase(options));
     }
 
     if (options.provider === "gcloud" || options.provider === "aws") {
@@ -130,18 +144,8 @@ export default function addServerless(options: ServerlessSchema): Rule {
     }
 
     // Generate files in order to run local server on development mode.
-    // TODO: Check if I shall include all the typescript lambda logic plus webpack in a single function or
-    // keep the splitted like now.
     rules.push(addLocalFile(options));
     rules.push(editTSConfigFile(options));
-    // TODO: Add webpack typescript config file option.
-    // rules.push((tree: Tree) => {
-    //     const webpack = getFileContent(tree, `${options.directory}/webpack.server.config.js`);
-    //     tree.overwrite(
-    //         `${options.directory}/webpack.server.config.js`,
-    //         webpack.replace("__distFolder__", getDistFolder(tree, options)),
-    //     );
-    // });
 
     if (options.provider !== "firebase") {
         rules.push(updateEnvironment(options));
@@ -222,18 +226,21 @@ function checkIfServerless(options: ServerlessSchema): Rule {
         if (ngToolkitSettings.serverless) {
             switch (options.provider) {
                 case "aws": {
-                    tree.delete(`${options.directory}/lambda.js`);
-                    tree.delete(`${options.directory}/lambda.ts`);
-                    tree.delete(`${options.directory}/serverless.yml`);
+                    if (options.lambdaTS) {
+                        tree.delete(`${options.path}/lambda.ts`);
+                    } else {
+                        tree.delete(`${options.path}/lambda.js`);
+                    }
+                    tree.delete(`${options.path}/serverless.yml`);
                     break;
                 }
                 case "gcloud": {
-                    tree.delete(`${options.directory}/index.js`);
-                    tree.delete(`${options.directory}/serverless.yml`);
+                    tree.delete(`${options.path}/index.js`);
+                    tree.delete(`${options.path}/serverless.yml`);
                     break;
                 }
                 case "firebase": {
-                    tree.delete(`${options.directory}/functions/index.js`);
+                    tree.delete(`${options.path}/functions/index.js`);
                     break;
                 }
             }
@@ -246,7 +253,7 @@ function setFirebaseFunctions(options: ServerlessSchema): Rule {
     return (tree: Tree) => {
         createOrOverwriteFile(
             tree,
-            `${options.directory}/functions/package.json`,
+            `${options.path}/functions/package.json`,
             outdent`
         {
             "name": "functions",
@@ -337,12 +344,6 @@ function addBuildScriptsAndFiles(options: ServerlessSchema): Rule {
         packageJsonSource.scripts[
             "build:browser:serverless"
         ] = `ng build --prod --base-href ${serverlessBasePath}`;
-        packageJsonSource.scripts[
-            "build:serverless"
-        ] = `npm run build:browser:serverless && npm run build:server:serverless`;
-        packageJsonSource.scripts[
-            "build:prod"
-        ] = `npm run build:browser:prod && npm run build:server:prod`;
         packageJsonSource.scripts["server"] = `${options.lambdaTS ? "ts-" : ""}node local.${
             options.lambdaTS ? "ts" : "js"
         }`;
@@ -357,6 +358,21 @@ function addBuildScriptsAndFiles(options: ServerlessSchema): Rule {
             ] = `cpy-cli dist/ functions/dist/ && cd functions && npm install && firebase deploy`;
         } else {
             packageJsonSource.scripts["deploy"] = `serverless deploy`;
+        }
+
+        if (universal) {
+            packageJsonSource.scripts[
+                "build:serverless"
+            ] = `npm run build:browser:serverless && npm run build:server`;
+            packageJsonSource.scripts[
+                "build:server:prod"
+            ] = `ng run ${options.clientProject}:server:production`;
+            packageJsonSource.scripts[
+                "build:prod"
+            ] = `npm run build:browser:prod && npm run build:server:prod`;
+        } else {
+            packageJsonSource.scripts["build:serverless"] = `npm run build:browser:serverless`;
+            packageJsonSource.scripts["build:prod"] = `npm run build:browser:prod`;
         }
 
         // if (universal) {
@@ -389,97 +405,134 @@ function addBuildScriptsAndFiles(options: ServerlessSchema): Rule {
     };
 }
 
-function addServerlessAWS(options: ServerlessSchema): Rule {
-    const fileName =
-        options.serverless && options.serverless.aws && options.serverless.aws.filename
-            ? options.serverless.aws.filename
-            : "serverless.yml";
-
-    const source = apply(url("./files/aws"), [move(options.directory)]);
-
-    return chain([
-        mergeWith(source),
-        (tree: Tree) => {
-            tree.rename(
-                `${options.directory}/serverless-aws.yml`,
-                `${options.directory}/${fileName}`,
-            );
-            tree.overwrite(
-                `${options.directory}/${fileName}`,
-                getFileContent(tree, `${options.directory}/${fileName}`).replace(
-                    "__appName__",
-                    options.clientProject.toLowerCase(),
-                ),
-            );
-
-            // Add `serverless-plugin-typescript` to the serverless yml file.
-            if (options.lambdaTS) {
-                const data = parseYML2JS(tree, `${options.directory}/${fileName}`);
-                if (data && typeof data === "object") {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const newData: Record<string, any> = data as Record<string, any>;
-                    newData.plugins.push("serverless-plugin-typescript");
-                    parseJS2YML(tree, newData, `${options.directory}/${fileName}`);
+function addServerlessFirebase(options: ServerlessSchema): Rule {
+    return (tree: Tree) => {
+        const sourceTemplate = apply(url("./files/firebase/"), [
+            template(options),
+            move(options.path),
+            forEach((fileEntry: FileEntry) => {
+                if (tree.exists(fileEntry.path)) {
+                    tree.overwrite(fileEntry.path, fileEntry.content);
                 }
-            }
+                return fileEntry;
+            }),
+        ]);
+        return chain([
+            updateGitIgnore(options, "/functions/node_modules/"),
+            setFirebaseFunctions(options),
+            addOrReplaceScriptInPackageJson(
+                options,
+                "build:prod:deploy",
+                "npm run build:prod && cd functions && npm install && cd .. && firebase deploy",
+            ),
+            mergeWith(sourceTemplate, MergeStrategy.Overwrite),
+        ]);
+    };
+}
 
-            // Remove lambda file based on `lambdaTS` option.
-            tree.delete(`${options.directory}/lambda.${options.lambdaTS ? "js" : "ts"}`);
-            addDependencyToPackageJson(tree, options, {
-                type: NodeDependencyType.Default,
-                name: "aws-serverless-express",
-                version: "^3.3.8",
-            });
-            addDependencyToPackageJson(tree, options, {
-                type: NodeDependencyType.Dev,
-                name: "serverless-apigw-binary",
-                version: "^0.4.4",
-            });
-            return tree;
-        },
-    ]);
+function addServerlessAWS(options: ServerlessSchema): Rule {
+    return (tree: Tree) => {
+        const fileName =
+            options.serverless && options.serverless.aws && options.serverless.aws.filename
+                ? options.serverless.aws.filename
+                : "serverless.yml";
+        const sourceTemplate = apply(url("./files/aws/"), [
+            template(options),
+            move(options.path),
+            forEach((fileEntry: FileEntry) => {
+                if (tree.exists(fileEntry.path)) {
+                    tree.overwrite(fileEntry.path, fileEntry.content);
+                }
+                return fileEntry;
+            }),
+        ]);
+        return chain([
+            mergeWith(sourceTemplate, MergeStrategy.Overwrite),
+            (tree: Tree) => {
+                tree.rename(`${options.path}/serverless-aws.yml`, `${options.path}/${fileName}`);
+                tree.overwrite(
+                    `${options.path}/${fileName}`,
+                    getFileContent(tree, `${options.path}/${fileName}`).replace(
+                        "__appName__",
+                        options.clientProject.toLowerCase(),
+                    ),
+                );
+
+                // Add `serverless-plugin-typescript` to the serverless yml file.
+                if (options.lambdaTS) {
+                    const data = parseYML2JS(tree, `${options.path}/${fileName}`);
+                    if (data && typeof data === "object") {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        const newData: Record<string, any> = data as Record<string, any>;
+                        newData.plugins.push("serverless-plugin-typescript");
+                        parseJS2YML(tree, newData, `${options.path}/${fileName}`);
+                    }
+                }
+
+                // Remove lambda file based on `lambdaTS` option.
+                tree.delete(`${options.path}/lambda.${options.lambdaTS ? "js" : "ts"}`);
+                addDependencyToPackageJson(tree, options, {
+                    type: NodeDependencyType.Default,
+                    name: "aws-serverless-express",
+                    version: "^3.3.8",
+                });
+                addDependencyToPackageJson(tree, options, {
+                    type: NodeDependencyType.Dev,
+                    name: "serverless-apigw-binary",
+                    version: "^0.4.4",
+                });
+                return tree;
+            },
+        ]);
+    };
 }
 
 function addServerlessGcloud(options: ServerlessSchema): Rule {
-    const fileName =
-        options.serverless && options.serverless.gcloud && options.serverless.gcloud.filename
-            ? options.serverless.gcloud.filename
-            : "serverless.yml";
-
-    const source = apply(url("./files/gcloud"), [move(options.directory)]);
-
-    return chain([
-        mergeWith(source),
-        (tree: Tree) => {
-            tree.rename(
-                `${options.directory}/serverless-gcloud.yml`,
-                `${options.directory}/${fileName}`,
-            );
-            tree.overwrite(
-                `${options.directory}/${fileName}`,
-                getFileContent(tree, `${options.directory}/${fileName}`).replace(
-                    "__appName__",
-                    options.clientProject.toLowerCase(),
-                ),
-            );
-            addDependencyToPackageJson(tree, options, {
-                type: NodeDependencyType.Dev,
-                name: "firebase-admin",
-                version: "^9.0.0",
-            });
-            addDependencyToPackageJson(tree, options, {
-                type: NodeDependencyType.Dev,
-                name: "firebase-functions",
-                version: "^3.11.0",
-            });
-            addDependencyToPackageJson(tree, options, {
-                type: NodeDependencyType.Default,
-                name: "serverless-google-cloudfunctions",
-                version: "^3.1.0",
-            });
-            return tree;
-        },
-    ]);
+    return (tree: Tree) => {
+        const fileName =
+            options.serverless && options.serverless.gcloud && options.serverless.gcloud.filename
+                ? options.serverless.gcloud.filename
+                : "serverless.yml";
+        const sourceTemplate = apply(url("./files/gcloud/"), [
+            template(options),
+            move(options.path),
+            forEach((fileEntry: FileEntry) => {
+                if (tree.exists(fileEntry.path)) {
+                    tree.overwrite(fileEntry.path, fileEntry.content);
+                }
+                return fileEntry;
+            }),
+        ]);
+        return chain([
+            mergeWith(sourceTemplate, MergeStrategy.Overwrite),
+            (tree: Tree) => {
+                tree.rename(`${options.path}/serverless-gcloud.yml`, `${options.path}/${fileName}`);
+                tree.overwrite(
+                    `${options.path}/${fileName}`,
+                    getFileContent(tree, `${options.path}/${fileName}`).replace(
+                        "__appName__",
+                        options.clientProject.toLowerCase(),
+                    ),
+                );
+                addDependencyToPackageJson(tree, options, {
+                    type: NodeDependencyType.Dev,
+                    name: "firebase-admin",
+                    version: "^9.0.0",
+                });
+                addDependencyToPackageJson(tree, options, {
+                    type: NodeDependencyType.Dev,
+                    name: "firebase-functions",
+                    version: "^3.11.0",
+                });
+                addDependencyToPackageJson(tree, options, {
+                    type: NodeDependencyType.Default,
+                    name: "serverless-google-cloudfunctions",
+                    version: "^3.1.0",
+                });
+                return tree;
+            },
+        ]);
+    };
 }
 
 // Generate lambda handles by using Typescript instead of plain javascript.
@@ -492,7 +545,7 @@ function addLocalJavascript(options: ServerlessSchema): Rule {
     return (tree) => {
         createOrOverwriteFile(
             tree,
-            `${options.directory}/local.js`,
+            `${options.path}/local.js`,
             outdent`
             const port = process.env.PORT || 8080;
 
@@ -530,7 +583,7 @@ function addLocalTypescript(options: ServerlessSchema): Rule {
         });
         createOrOverwriteFile(
             tree,
-            `${options.directory}/local.ts`,
+            `${options.path}/local.ts`,
             outdent`
             import { run } from './dist/server';
 
@@ -549,7 +602,7 @@ function addLocalTypescript(options: ServerlessSchema): Rule {
 function editTSConfigFile(options: ServerlessSchema): Rule {
     return (tree) => {
         const tsConfig = parse(getFileContent(tree, `${options.directory}/tsconfig.base.json`));
-        tsConfig.compilerOptions["esModuleInterop"] = true;
+        // tsConfig.compilerOptions["esModuleInterop"] = true;
         tsConfig.compilerOptions["allowSyntheticDefaultImports"] = true;
         tsConfig.compilerOptions["module"] = "commonjs";
         tree.overwrite(`${options.directory}/tsconfig.base.json`, stringify(tsConfig, null, 2));
@@ -568,13 +621,13 @@ function addServerlessOffline(options: ServerlessSchema): Rule {
             : "serverless.yml";
 
     return (tree) => {
-        const data = parseYML2JS(tree, `${options.directory}/${fileName}`);
+        const data = parseYML2JS(tree, `${options.path}/${fileName}`);
         if (data && typeof data === "object") {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const newData: Record<string, any> = data as Record<string, any>;
             newData.plugins.push("serverless-offline");
             newData.package.include = ["dist/**"];
-            parseJS2YML(tree, newData, `${options.directory}/${fileName}`);
+            parseJS2YML(tree, newData, `${options.path}/${fileName}`);
         }
 
         // Add serverless-offline as dev dependency.
@@ -597,11 +650,11 @@ function updateEnvironment(options: ServerlessSchema): Rule {
 
         createOrOverwriteFile(
             tree,
-            `${options.directory}/src/environments/environment.serverless.ts`,
-            getFileContent(tree, `${options.directory}/src/environments/environment.prod.ts`),
+            `${options.path}/src/environments/environment.serverless.ts`,
+            getFileContent(tree, `${options.path}/src/environments/environment.prod.ts`),
         );
 
-        tree.getDir(`${options.directory}/src/environments`).visit((path: Path) => {
+        tree.getDir(`${options.path}/src/environments`).visit((path: Path) => {
             if (path.endsWith(".ts")) {
                 addEntryToEnvironment(
                     tree,
@@ -644,13 +697,13 @@ function updateAppEntryFile(options: ServerlessSchema): Rule {
         if (!isUniversal(tree, options)) {
             return tree;
         }
-        const appComponentFilePath = `${options.directory}/src/app/app.component.ts`;
+        const appComponentFilePath = `${options.path}/src/app/app.component.ts`;
         const ngOnInit = getMethodBody(tree, appComponentFilePath, "ngOnInit");
         addImportStatement(
             tree,
             appComponentFilePath,
             "environment",
-            "../environments/environment",
+            "./src/environments/environment.ts",
         );
         implementInterface(tree, appComponentFilePath, "OnInit", "@angular/core");
         addImportStatement(tree, appComponentFilePath, "Inject", "@angular/core");
