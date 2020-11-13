@@ -5,33 +5,8 @@ This project has two faces:
 - First, a Angular Universal PWA boilerplate, prepared for easy deployment on Serverless environment. The boilerplate contains all of the best practices and is continously evolving. [Find out more about the boilerplate here.](https://github.com/maciejtreder/ng-toolkit/tree/master/schematics/init)
 - Second, a collection of `schematics` (used with the `ng add` command) which can be applied to existing Angular projects. All `schematics` comes from the boilerplate mentioned above. The main goal is to make those schematics **interchangeably** (developer can apply them in any order)!
 
-## _**Star it and share with others!**_
-
-**[Online Demo: Angular Universal PWA on AWS Lambda + API Gateway](https://www.angular-universal-pwa.maciejtreder.com)**
-
-@ng-toolkit is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
-<a href="https://tracking.gitads.io/?repo=ng-toolkit"> <img src="https://images.gitads.io/ng-toolkit" alt="GitAds"/> </a>
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/maintainability)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/feb1889ed8bd09672fae/test_coverage)](https://codeclimate.com/github/maciejtreder/angular-universal-pwa/test_coverage)
-[![Build Status](https://travis-ci.org/maciejtreder/ng-toolkit.png)](https://travis-ci.org/maciejtreder/ng-toolkit)
-
-[![Backers on Open Collective](https://opencollective.com/ng-toolkit/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/ng-toolkit/sponsors/badge.svg)](#sponsors)
-
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/maciejtreder/ng-toolkit.svg)](http://isitmaintained.com/project/maciejtreder/ng-toolkit "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/maciejtreder/ng-toolkit.svg)](http://isitmaintained.com/project/maciejtreder/ng-toolkit "Percentage of issues still open")
-
-### Dependency Status
-
-| Package             | Dependencies                                                                                                                                                                | Dev Dependencies | npm version
-| ------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- | :--------------- |
-| `ng-toolkit/_utils` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/_utils)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/_utils) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/_utils&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/_utils?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2F_utils.svg)](https://badge.fury.io/js/%40ng-toolkit%2F_utils) |
-| `ng-toolkit/serverless` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/serverless)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/serverless) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/serverless&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/serverless?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fserverless.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fserverless) |
-| `ng-toolkit/pwa` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/pwa)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/pwa) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/pwa&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/pwa?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Fpwa.svg)](https://badge.fury.io/js/%40ng-toolkit%2Fpwa) |
-| `ng-toolkit/universal` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/universal)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/universal) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/universal&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/universal?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Funiversal.svg)](https://badge.fury.io/js/%40ng-toolkit%2Funiversal) |
-| `ng-toolkit/firebug` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/firebug)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/firebug) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/firebug&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/firebug?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Ffirebug.svg)](https://badge.fury.io/js/%40ng-toolkit%2Ffirebug) |
-| `ng-toolkit/init` | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/status.svg?path=schematics/init)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/init) | [![Dependency Status](https://david-dm.org/maciejtreder/ng-toolkit/dev-status.svg?path=schematics/init&type=dev)](https://david-dm.org/maciejtreder/ng-toolkit?path=schematics/init?type=dev) | [![npm version](https://badge.fury.io/js/%40ng-toolkit%2Finit.svg)](https://badge.fury.io/js/%40ng-toolkit%2Finit) |
+## Wanna be a server-side Angular hero?
+If you want to sharpen your skills in Angular Universal or you won't find what you're looking for in this project; check out the [Guide to Angular Universal](https://www.newline.co/courses/newline-guide-to-angular-universal) written by me for Newline.co!
 
 ## Content
 
